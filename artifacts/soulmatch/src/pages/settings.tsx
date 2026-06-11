@@ -1,0 +1,173 @@
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Settings, Shield, Bell, Lock, LogOut, Trash2, ChevronRight, Eye, EyeOff } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Separator } from "@/components/ui/separator";
+import { AppLayout } from "@/components/layout/AppLayout";
+import { useAuth } from "@/lib/auth-context";
+import { useToast } from "@/hooks/use-toast";
+import { Link, useLocation } from "wouter";
+import { useGetBlockedUsers } from "@workspace/api-client-react";
+import { getAccessToken } from "@/lib/auth-context";
+import { getInitials } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+function authHeaders() {
+  const token = getAccessToken();
+  if (!token) return {};
+  return { Authorization: `Bearer ${token}` } as Record<string, string>;
+}
+
+export default function SettingsPage() {
+  const { user, logout } = useAuth();
+  const { toast } = useToast();
+  const [, navigate] = useLocation();
+  const [profileVisible, setProfileVisible] = useState(true);
+  const [notifications, setNotifications] = useState(true);
+  const [emailNotifs, setEmailNotifs] = useState(true);
+
+  const { data: blocked = [] } = useGetBlockedUsers({
+    query: { enabled: true } as any,
+    request: { headers: authHeaders() },
+  });
+
+  function handleLogout() {
+    logout();
+    navigate("/login");
+  }
+
+  const sections = [
+    {
+      title: "Privacy",
+      icon: Eye,
+      items: [
+        {
+          label: "Profile Visibility",
+          description: "Make your profile visible to potential matches",
+          control: <Switch checked={profileVisible} onCheckedChange={setProfileVisible} />,
+        },
+      ],
+    },
+    {
+      title: "Notifications",
+      icon: Bell,
+      items: [
+        {
+          label: "Push Notifications",
+          description: "Receive notifications about interests and matches",
+          control: <Switch checked={notifications} onCheckedChange={setNotifications} />,
+        },
+        {
+          label: "Email Notifications",
+          description: "Get email updates about your activity",
+          control: <Switch checked={emailNotifs} onCheckedChange={setEmailNotifs} />,
+        },
+      ],
+    },
+  ];
+
+  return (
+    <AppLayout>
+      <div className="max-w-2xl mx-auto px-4 py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+          <h1 className="text-3xl font-bold flex items-center gap-3 mb-1">
+            <Settings className="w-7 h-7 text-primary" />Settings
+          </h1>
+          <p className="text-muted-foreground">Manage your account and preferences.</p>
+        </motion.div>
+
+        <div className="space-y-4">
+          {/* Account info */}
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="glass rounded-2xl p-5">
+            <h2 className="font-semibold mb-4">Account</h2>
+            <div className="space-y-3">
+              <div>
+                <Label className="text-xs text-muted-foreground">Email</Label>
+                <p className="text-sm font-medium mt-0.5">{user?.email}</p>
+              </div>
+              <div>
+                <Label className="text-xs text-muted-foreground">Role</Label>
+                <p className="text-sm font-medium mt-0.5 capitalize">{user?.role}</p>
+              </div>
+              <div>
+                <Label className="text-xs text-muted-foreground">Verification Status</Label>
+                <p className="text-sm font-medium mt-0.5 capitalize">{user?.verificationStatus}</p>
+              </div>
+              <Link href="/verification">
+                <Button variant="outline" size="sm" className="border-white/20 bg-white/5 gap-2">
+                  <Shield className="w-4 h-4" />Submit Verification
+                </Button>
+              </Link>
+            </div>
+          </motion.div>
+
+          {/* Toggle sections */}
+          {sections.map((section, si) => (
+            <motion.div
+              key={section.title}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 + si * 0.05 }}
+              className="glass rounded-2xl p-5"
+            >
+              <h2 className="font-semibold mb-4 flex items-center gap-2">
+                <section.icon className="w-4 h-4 text-primary" />{section.title}
+              </h2>
+              <div className="space-y-4">
+                {section.items.map((item, ii) => (
+                  <div key={item.label}>
+                    {ii > 0 && <Separator className="bg-white/10 mb-4" />}
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium">{item.label}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">{item.description}</p>
+                      </div>
+                      {item.control}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+
+          {/* Blocked users */}
+          {(blocked as any[]).length > 0 && (
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="glass rounded-2xl p-5">
+              <h2 className="font-semibold mb-4">Blocked Users</h2>
+              <div className="space-y-2">
+                {(blocked as any[]).map((u: any) => {
+                  const photo = u.photos?.find((p: any) => p.isPrimary) ?? u.photos?.[0];
+                  return (
+                    <div key={u.id} className="flex items-center gap-3">
+                      <Avatar className="w-8 h-8">
+                        <AvatarImage src={photo?.url} />
+                        <AvatarFallback className="text-xs">{getInitials(u.firstName ?? "U")}</AvatarFallback>
+                      </Avatar>
+                      <span className="text-sm">{u.firstName}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+
+          {/* Danger zone */}
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="glass rounded-2xl p-5 border border-destructive/20">
+            <h2 className="font-semibold mb-4 text-destructive">Danger Zone</h2>
+            <div className="space-y-3">
+              <Button onClick={handleLogout} variant="outline" className="w-full border-white/20 bg-white/5 gap-2 justify-start">
+                <LogOut className="w-4 h-4" />Sign Out
+              </Button>
+              <Button variant="outline" className="w-full border-destructive/40 text-destructive hover:bg-destructive/10 gap-2 justify-start" onClick={() => toast({ title: "Contact support to delete your account", variant: "destructive" })}>
+                <Trash2 className="w-4 h-4" />Delete Account
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </AppLayout>
+  );
+}

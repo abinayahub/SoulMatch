@@ -1,22 +1,43 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: SoulMatch AI - AI-powered matrimony platform API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: auth
+    description: Authentication operations
+  - name: users
+    description: User profile management
+  - name: journey
+    description: 30-day question journey
+  - name: matches
+    description: Match discovery and compatibility
+  - name: interests
+    description: Interest management
+  - name: chat
+    description: Real-time messaging (premium)
+  - name: subscriptions
+    description: Premium subscription plans
+  - name: notifications
+    description: User notifications
+  - name: admin
+    description: Admin panel operations
+  - name: analytics
+    description: Platform analytics
+  - name: reports
+    description: Trust & safety reports
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,13 +45,2212 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  # ── AUTH ──────────────────────────────────────────────────────────────────
+
+  /auth/register:
+    post:
+      operationId: register
+      tags: [auth]
+      summary: Register new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterInput"
+      responses:
+        "201":
+          description: Registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Login with email/password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: Authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+
+  /auth/send-otp:
+    post:
+      operationId: sendOtp
+      tags: [auth]
+      summary: Send email/phone OTP
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendOtpInput"
+      responses:
+        "200":
+          description: OTP sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /auth/verify-otp:
+    post:
+      operationId: verifyOtp
+      tags: [auth]
+      summary: Verify OTP
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VerifyOtpInput"
+      responses:
+        "200":
+          description: Verified
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+
+  /auth/google:
+    post:
+      operationId: googleLogin
+      tags: [auth]
+      summary: Google OAuth login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GoogleLoginInput"
+      responses:
+        "200":
+          description: Authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+
+  /auth/refresh:
+    post:
+      operationId: refreshToken
+      tags: [auth]
+      summary: Refresh access token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RefreshTokenInput"
+      responses:
+        "200":
+          description: New token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      summary: Logout
+      responses:
+        "200":
+          description: Logged out
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /auth/forgot-password:
+    post:
+      operationId: forgotPassword
+      tags: [auth]
+      summary: Send password reset email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ForgotPasswordInput"
+      responses:
+        "200":
+          description: Reset email sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /auth/reset-password:
+    post:
+      operationId: resetPassword
+      tags: [auth]
+      summary: Reset password with token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResetPasswordInput"
+      responses:
+        "200":
+          description: Password reset
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  # ── USERS ─────────────────────────────────────────────────────────────────
+
+  /users/me:
+    get:
+      operationId: getMe
+      tags: [users]
+      summary: Get current user profile
+      responses:
+        "200":
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+    patch:
+      operationId: updateMe
+      tags: [users]
+      summary: Update current user profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProfileUpdate"
+      responses:
+        "200":
+          description: Updated profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+
+  /users/me/photos:
+    post:
+      operationId: uploadPhoto
+      tags: [users]
+      summary: Upload profile photo (Cloudinary URL)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PhotoUploadInput"
+      responses:
+        "200":
+          description: Photo uploaded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+
+  /users/me/photos/{photoId}:
+    delete:
+      operationId: deletePhoto
+      tags: [users]
+      summary: Delete a profile photo
+      parameters:
+        - name: photoId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Photo deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /users/me/preferences:
+    get:
+      operationId: getPreferences
+      tags: [users]
+      summary: Get match preferences
+      responses:
+        "200":
+          description: Preferences
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchPreferences"
+    put:
+      operationId: updatePreferences
+      tags: [users]
+      summary: Update match preferences
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MatchPreferencesInput"
+      responses:
+        "200":
+          description: Updated preferences
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchPreferences"
+
+  /users/{userId}:
+    get:
+      operationId: getUserProfile
+      tags: [users]
+      summary: Get a specific user's public profile
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Public profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicProfile"
+
+  /users/me/stats:
+    get:
+      operationId: getMyStats
+      tags: [users]
+      summary: Get profile stats (profile views, match rate, etc.)
+      responses:
+        "200":
+          description: Stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileStats"
+
+  /users/me/verification:
+    post:
+      operationId: submitVerification
+      tags: [users]
+      summary: Submit identity verification documents
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VerificationInput"
+      responses:
+        "200":
+          description: Verification submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  # ── JOURNEY ───────────────────────────────────────────────────────────────
+
+  /journey/questions:
+    get:
+      operationId: getJourneyQuestions
+      tags: [journey]
+      summary: Get all 30-day journey questions
+      responses:
+        "200":
+          description: Questions list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/JourneyQuestion"
+
+  /journey/progress:
+    get:
+      operationId: getJourneyProgress
+      tags: [journey]
+      summary: Get user's journey progress
+      responses:
+        "200":
+          description: Progress
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JourneyProgress"
+
+  /journey/answers:
+    post:
+      operationId: submitAnswer
+      tags: [journey]
+      summary: Submit answer to a journey question
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AnswerInput"
+      responses:
+        "201":
+          description: Answer submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JourneyAnswer"
+
+  /journey/answers/{questionId}:
+    put:
+      operationId: updateAnswer
+      tags: [journey]
+      summary: Update an existing answer
+      parameters:
+        - name: questionId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AnswerUpdate"
+      responses:
+        "200":
+          description: Answer updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JourneyAnswer"
+
+  /journey/personality:
+    get:
+      operationId: getPersonalityProfile
+      tags: [journey]
+      summary: Get AI-generated personality profile
+      responses:
+        "200":
+          description: Personality profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PersonalityProfile"
+
+  # ── MATCHES ───────────────────────────────────────────────────────────────
+
+  /matches:
+    get:
+      operationId: getMatches
+      tags: [matches]
+      summary: Get curated matches for the current user
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+      responses:
+        "200":
+          description: Matches list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchesPage"
+
+  /matches/{matchId}/compatibility:
+    get:
+      operationId: getCompatibility
+      tags: [matches]
+      summary: Get AI compatibility score with a user
+      parameters:
+        - name: matchId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Compatibility
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompatibilityScore"
+
+  /matches/daily:
+    get:
+      operationId: getDailyMatches
+      tags: [matches]
+      summary: Get today's curated matches (premium spotlight)
+      responses:
+        "200":
+          description: Daily matches
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MatchCard"
+
+  /matches/who-viewed-me:
+    get:
+      operationId: getProfileViewers
+      tags: [matches]
+      summary: Get users who viewed current user's profile (premium)
+      responses:
+        "200":
+          description: Viewers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PublicProfile"
+
+  # ── INTERESTS ─────────────────────────────────────────────────────────────
+
+  /interests:
+    get:
+      operationId: getInterests
+      tags: [interests]
+      summary: Get sent and received interests
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [sent, received, mutual]
+      responses:
+        "200":
+          description: Interests
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Interest"
+    post:
+      operationId: sendInterest
+      tags: [interests]
+      summary: Send interest to a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InterestInput"
+      responses:
+        "201":
+          description: Interest sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Interest"
+
+  /interests/{interestId}:
+    patch:
+      operationId: respondToInterest
+      tags: [interests]
+      summary: Accept or decline an interest
+      parameters:
+        - name: interestId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InterestResponse"
+      responses:
+        "200":
+          description: Response recorded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Interest"
+    delete:
+      operationId: withdrawInterest
+      tags: [interests]
+      summary: Withdraw a sent interest
+      parameters:
+        - name: interestId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Withdrawn
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /interests/summary:
+    get:
+      operationId: getInterestSummary
+      tags: [interests]
+      summary: Get interest counts and pending actions
+      responses:
+        "200":
+          description: Summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InterestSummary"
+
+  # ── CHAT ──────────────────────────────────────────────────────────────────
+
+  /chat/conversations:
+    get:
+      operationId: getConversations
+      tags: [chat]
+      summary: Get all conversations (premium)
+      responses:
+        "200":
+          description: Conversations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Conversation"
+
+  /chat/conversations/{conversationId}/messages:
+    get:
+      operationId: listMessages
+      tags: [chat]
+      summary: Get messages in a conversation
+      parameters:
+        - name: conversationId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: before
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+      responses:
+        "200":
+          description: Messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Message"
+    post:
+      operationId: sendMessage
+      tags: [chat]
+      summary: Send a message
+      parameters:
+        - name: conversationId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MessageInput"
+      responses:
+        "201":
+          description: Message sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+
+  /chat/conversations/{conversationId}/read:
+    post:
+      operationId: markConversationRead
+      tags: [chat]
+      summary: Mark all messages in conversation as read
+      parameters:
+        - name: conversationId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Marked read
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  # ── SUBSCRIPTIONS ─────────────────────────────────────────────────────────
+
+  /subscriptions/plans:
+    get:
+      operationId: getPlans
+      tags: [subscriptions]
+      summary: Get all subscription plans
+      responses:
+        "200":
+          description: Plans
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Plan"
+
+  /subscriptions/current:
+    get:
+      operationId: getCurrentSubscription
+      tags: [subscriptions]
+      summary: Get current user's subscription
+      responses:
+        "200":
+          description: Subscription
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Subscription"
+
+  /subscriptions/checkout:
+    post:
+      operationId: createCheckout
+      tags: [subscriptions]
+      summary: Create Stripe checkout session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckoutInput"
+      responses:
+        "200":
+          description: Checkout session
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckoutSession"
+
+  /subscriptions/cancel:
+    post:
+      operationId: cancelSubscription
+      tags: [subscriptions]
+      summary: Cancel current subscription
+      responses:
+        "200":
+          description: Cancelled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /subscriptions/rewards:
+    get:
+      operationId: getRewards
+      tags: [subscriptions]
+      summary: Get user rewards and coins balance
+      responses:
+        "200":
+          description: Rewards
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RewardsProfile"
+
+  # ── NOTIFICATIONS ─────────────────────────────────────────────────────────
+
+  /notifications:
+    get:
+      operationId: getNotifications
+      tags: [notifications]
+      summary: Get user notifications
+      parameters:
+        - name: unreadOnly
+          in: query
+          schema:
+            type: boolean
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+      responses:
+        "200":
+          description: Notifications
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationsPage"
+
+  /notifications/read-all:
+    post:
+      operationId: markAllNotificationsRead
+      tags: [notifications]
+      summary: Mark all notifications as read
+      responses:
+        "200":
+          description: Marked
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /notifications/{notificationId}/read:
+    post:
+      operationId: markNotificationRead
+      tags: [notifications]
+      summary: Mark single notification as read
+      parameters:
+        - name: notificationId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Marked
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /notifications/count:
+    get:
+      operationId: getUnreadCount
+      tags: [notifications]
+      summary: Get unread notification count
+      responses:
+        "200":
+          description: Count
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnreadCount"
+
+  # ── REPORTS ───────────────────────────────────────────────────────────────
+
+  /reports:
+    post:
+      operationId: createReport
+      tags: [reports]
+      summary: Report a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportInput"
+      responses:
+        "201":
+          description: Report submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /reports/block:
+    post:
+      operationId: blockUser
+      tags: [reports]
+      summary: Block a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BlockInput"
+      responses:
+        "200":
+          description: Blocked
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /reports/blocked:
+    get:
+      operationId: getBlockedUsers
+      tags: [reports]
+      summary: Get list of blocked users
+      responses:
+        "200":
+          description: Blocked users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PublicProfile"
+
+  # ── ADMIN ─────────────────────────────────────────────────────────────────
+
+  /admin/users:
+    get:
+      operationId: adminGetUsers
+      tags: [admin]
+      summary: Get all users with filters
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: role
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+        - name: search
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Users
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminUsersPage"
+
+  /admin/users/{userId}:
+    get:
+      operationId: adminGetUser
+      tags: [admin]
+      summary: Get single user details
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminUserDetail"
+    patch:
+      operationId: adminUpdateUser
+      tags: [admin]
+      summary: Update user status/role
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminUserUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminUserDetail"
+
+  /admin/reports:
+    get:
+      operationId: adminGetReports
+      tags: [admin]
+      summary: Get all user reports
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [pending, reviewed, resolved, dismissed]
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+      responses:
+        "200":
+          description: Reports
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminReportsPage"
+
+  /admin/reports/{reportId}:
+    patch:
+      operationId: adminResolveReport
+      tags: [admin]
+      summary: Resolve or dismiss a report
+      parameters:
+        - name: reportId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportResolution"
+      responses:
+        "200":
+          description: Resolved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /admin/verifications:
+    get:
+      operationId: adminGetVerifications
+      tags: [admin]
+      summary: Get pending verification requests
+      responses:
+        "200":
+          description: Verifications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/VerificationRequest"
+
+  /admin/verifications/{verificationId}:
+    patch:
+      operationId: adminProcessVerification
+      tags: [admin]
+      summary: Approve or reject a verification
+      parameters:
+        - name: verificationId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VerificationDecision"
+      responses:
+        "200":
+          description: Processed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  # ── ANALYTICS ─────────────────────────────────────────────────────────────
+
+  /analytics/overview:
+    get:
+      operationId: getAnalyticsOverview
+      tags: [analytics]
+      summary: Platform overview stats
+      responses:
+        "200":
+          description: Overview
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalyticsOverview"
+
+  /analytics/users:
+    get:
+      operationId: getUserAnalytics
+      tags: [analytics]
+      summary: User growth and registration trends
+      parameters:
+        - name: period
+          in: query
+          schema:
+            type: string
+            enum: [7d, 30d, 90d, 1y]
+            default: 30d
+      responses:
+        "200":
+          description: User analytics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserAnalytics"
+
+  /analytics/revenue:
+    get:
+      operationId: getRevenueAnalytics
+      tags: [analytics]
+      summary: Revenue and subscription trends
+      parameters:
+        - name: period
+          in: query
+          schema:
+            type: string
+            enum: [7d, 30d, 90d, 1y]
+            default: 30d
+      responses:
+        "200":
+          description: Revenue analytics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RevenueAnalytics"
+
+  /analytics/matches:
+    get:
+      operationId: getMatchAnalytics
+      tags: [analytics]
+      summary: Match and engagement analytics
+      responses:
+        "200":
+          description: Match analytics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchAnalytics"
+
 components:
   schemas:
     HealthStatus:
       type: object
+      required: [status]
       properties:
         status:
           type: string
-      required:
-        - status
 
+    MessageResponse:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+
+    # ── AUTH SCHEMAS ────────────────────────────────────────────────────────
+
+    RegisterInput:
+      type: object
+      required: [email, password, firstName, lastName, dateOfBirth, gender]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+        firstName:
+          type: string
+        lastName:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+        gender:
+          type: string
+          enum: [male, female, other]
+        phone:
+          type: ["string", "null"]
+
+    LoginInput:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
+    SendOtpInput:
+      type: object
+      required: [type, value]
+      properties:
+        type:
+          type: string
+          enum: [email, phone]
+        value:
+          type: string
+
+    VerifyOtpInput:
+      type: object
+      required: [type, value, otp]
+      properties:
+        type:
+          type: string
+          enum: [email, phone]
+        value:
+          type: string
+        otp:
+          type: string
+
+    GoogleLoginInput:
+      type: object
+      required: [idToken]
+      properties:
+        idToken:
+          type: string
+
+    RefreshTokenInput:
+      type: object
+      required: [refreshToken]
+      properties:
+        refreshToken:
+          type: string
+
+    ForgotPasswordInput:
+      type: object
+      required: [email]
+      properties:
+        email:
+          type: string
+          format: email
+
+    ResetPasswordInput:
+      type: object
+      required: [token, newPassword]
+      properties:
+        token:
+          type: string
+        newPassword:
+          type: string
+          minLength: 8
+
+    AuthResponse:
+      type: object
+      required: [accessToken, refreshToken, user]
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+        user:
+          $ref: "#/components/schemas/UserProfile"
+
+    # ── USER SCHEMAS ────────────────────────────────────────────────────────
+
+    UserProfile:
+      type: object
+      required: [id, email, firstName, lastName, role, createdAt]
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        displayName:
+          type: ["string", "null"]
+        dateOfBirth:
+          type: ["string", "null"]
+        age:
+          type: ["integer", "null"]
+        gender:
+          type: ["string", "null"]
+        phone:
+          type: ["string", "null"]
+        bio:
+          type: ["string", "null"]
+        occupation:
+          type: ["string", "null"]
+        education:
+          type: ["string", "null"]
+        religion:
+          type: ["string", "null"]
+        motherTongue:
+          type: ["string", "null"]
+        city:
+          type: ["string", "null"]
+        country:
+          type: ["string", "null"]
+        height:
+          type: ["integer", "null"]
+        maritalStatus:
+          type: ["string", "null"]
+        dietaryPreference:
+          type: ["string", "null"]
+        smoking:
+          type: ["string", "null"]
+        drinking:
+          type: ["string", "null"]
+        photos:
+          type: array
+          items:
+            $ref: "#/components/schemas/Photo"
+        role:
+          type: string
+          enum: [user, premium, admin, superadmin]
+        verificationStatus:
+          type: string
+          enum: [unverified, pending, verified, rejected]
+        isPhoneVerified:
+          type: boolean
+        isEmailVerified:
+          type: boolean
+        journeyProgress:
+          type: integer
+        isPremium:
+          type: boolean
+        profileCompleteness:
+          type: integer
+        createdAt:
+          type: string
+
+    Photo:
+      type: object
+      required: [id, url, isPrimary]
+      properties:
+        id:
+          type: integer
+        url:
+          type: string
+        isPrimary:
+          type: boolean
+        publicId:
+          type: ["string", "null"]
+
+    ProfileUpdate:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        displayName:
+          type: string
+        bio:
+          type: string
+        occupation:
+          type: string
+        education:
+          type: string
+        religion:
+          type: string
+        motherTongue:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        height:
+          type: integer
+        maritalStatus:
+          type: string
+        dietaryPreference:
+          type: string
+        smoking:
+          type: string
+        drinking:
+          type: string
+        interests:
+          type: array
+          items:
+            type: string
+        languages:
+          type: array
+          items:
+            type: string
+
+    PhotoUploadInput:
+      type: object
+      required: [url, publicId]
+      properties:
+        url:
+          type: string
+        publicId:
+          type: string
+        isPrimary:
+          type: boolean
+
+    MatchPreferences:
+      type: object
+      required: [id, userId]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        minAge:
+          type: ["integer", "null"]
+        maxAge:
+          type: ["integer", "null"]
+        minHeight:
+          type: ["integer", "null"]
+        maxHeight:
+          type: ["integer", "null"]
+        preferredReligions:
+          type: array
+          items:
+            type: string
+        preferredEducation:
+          type: array
+          items:
+            type: string
+        preferredLocations:
+          type: array
+          items:
+            type: string
+        maritalStatus:
+          type: array
+          items:
+            type: string
+
+    MatchPreferencesInput:
+      type: object
+      properties:
+        minAge:
+          type: integer
+        maxAge:
+          type: integer
+        minHeight:
+          type: integer
+        maxHeight:
+          type: integer
+        preferredReligions:
+          type: array
+          items:
+            type: string
+        preferredEducation:
+          type: array
+          items:
+            type: string
+        preferredLocations:
+          type: array
+          items:
+            type: string
+        maritalStatus:
+          type: array
+          items:
+            type: string
+
+    PublicProfile:
+      type: object
+      required: [id, firstName, age, city]
+      properties:
+        id:
+          type: integer
+        firstName:
+          type: string
+        displayName:
+          type: ["string", "null"]
+        age:
+          type: ["integer", "null"]
+        occupation:
+          type: ["string", "null"]
+        education:
+          type: ["string", "null"]
+        city:
+          type: ["string", "null"]
+        country:
+          type: ["string", "null"]
+        religion:
+          type: ["string", "null"]
+        bio:
+          type: ["string", "null"]
+        photos:
+          type: array
+          items:
+            $ref: "#/components/schemas/Photo"
+        verificationStatus:
+          type: string
+        isPremium:
+          type: boolean
+        compatibilityScore:
+          type: ["integer", "null"]
+        journeyProgress:
+          type: integer
+
+    ProfileStats:
+      type: object
+      required: [profileViews, interestsSent, interestsReceived, mutualInterests, matchRate]
+      properties:
+        profileViews:
+          type: integer
+        interestsSent:
+          type: integer
+        interestsReceived:
+          type: integer
+        mutualInterests:
+          type: integer
+        matchRate:
+          type: number
+        recentViewers:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublicProfile"
+        weeklyViews:
+          type: integer
+        responseRate:
+          type: number
+
+    VerificationInput:
+      type: object
+      required: [documentType, documentUrl]
+      properties:
+        documentType:
+          type: string
+          enum: [national_id, passport, driving_license]
+        documentUrl:
+          type: string
+        selfieUrl:
+          type: ["string", "null"]
+
+    # ── JOURNEY SCHEMAS ─────────────────────────────────────────────────────
+
+    JourneyQuestion:
+      type: object
+      required: [id, day, category, question, questionType]
+      properties:
+        id:
+          type: integer
+        day:
+          type: integer
+        category:
+          type: string
+        question:
+          type: string
+        description:
+          type: ["string", "null"]
+        questionType:
+          type: string
+          enum: [text, choice, scale, multi_choice]
+        options:
+          type: array
+          items:
+            type: string
+        isAnswered:
+          type: boolean
+
+    JourneyProgress:
+      type: object
+      required: [totalQuestions, answeredQuestions, currentDay, completionPercentage]
+      properties:
+        totalQuestions:
+          type: integer
+        answeredQuestions:
+          type: integer
+        currentDay:
+          type: integer
+        completionPercentage:
+          type: integer
+        streak:
+          type: integer
+        lastAnsweredAt:
+          type: ["string", "null"]
+        unlockedAt:
+          type: ["string", "null"]
+        recentAnswers:
+          type: array
+          items:
+            $ref: "#/components/schemas/JourneyAnswer"
+
+    JourneyAnswer:
+      type: object
+      required: [id, questionId, answer, createdAt]
+      properties:
+        id:
+          type: integer
+        questionId:
+          type: integer
+        answer:
+          type: string
+        createdAt:
+          type: string
+
+    AnswerInput:
+      type: object
+      required: [questionId, answer]
+      properties:
+        questionId:
+          type: integer
+        answer:
+          type: string
+
+    AnswerUpdate:
+      type: object
+      required: [answer]
+      properties:
+        answer:
+          type: string
+
+    PersonalityProfile:
+      type: object
+      required: [traits, summary, compatibilityKeywords]
+      properties:
+        traits:
+          type: array
+          items:
+            $ref: "#/components/schemas/PersonalityTrait"
+        summary:
+          type: string
+        compatibilityKeywords:
+          type: array
+          items:
+            type: string
+        dominantType:
+          type: string
+        generatedAt:
+          type: ["string", "null"]
+
+    PersonalityTrait:
+      type: object
+      required: [trait, score, description]
+      properties:
+        trait:
+          type: string
+        score:
+          type: integer
+        description:
+          type: string
+
+    # ── MATCH SCHEMAS ───────────────────────────────────────────────────────
+
+    MatchCard:
+      type: object
+      required: [userId, profile, compatibilityScore]
+      properties:
+        userId:
+          type: integer
+        profile:
+          $ref: "#/components/schemas/PublicProfile"
+        compatibilityScore:
+          type: integer
+        commonTraits:
+          type: array
+          items:
+            type: string
+        aiInsight:
+          type: ["string", "null"]
+        isNew:
+          type: boolean
+        isMutualInterest:
+          type: boolean
+
+    MatchesPage:
+      type: object
+      required: [matches, total, page, totalPages]
+      properties:
+        matches:
+          type: array
+          items:
+            $ref: "#/components/schemas/MatchCard"
+        total:
+          type: integer
+        page:
+          type: integer
+        totalPages:
+          type: integer
+
+    CompatibilityScore:
+      type: object
+      required: [score, breakdown]
+      properties:
+        score:
+          type: integer
+        breakdown:
+          type: array
+          items:
+            $ref: "#/components/schemas/CompatibilityDimension"
+        summary:
+          type: string
+        strengthAreas:
+          type: array
+          items:
+            type: string
+        growthAreas:
+          type: array
+          items:
+            type: string
+
+    CompatibilityDimension:
+      type: object
+      required: [dimension, score, description]
+      properties:
+        dimension:
+          type: string
+        score:
+          type: integer
+        description:
+          type: string
+
+    # ── INTEREST SCHEMAS ────────────────────────────────────────────────────
+
+    Interest:
+      type: object
+      required: [id, fromUserId, toUserId, status, createdAt]
+      properties:
+        id:
+          type: integer
+        fromUserId:
+          type: integer
+        toUserId:
+          type: integer
+        status:
+          type: string
+          enum: [pending, accepted, declined, withdrawn]
+        message:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+        fromUser:
+          $ref: "#/components/schemas/PublicProfile"
+        toUser:
+          $ref: "#/components/schemas/PublicProfile"
+
+    InterestInput:
+      type: object
+      required: [toUserId]
+      properties:
+        toUserId:
+          type: integer
+        message:
+          type: string
+
+    InterestResponse:
+      type: object
+      required: [action]
+      properties:
+        action:
+          type: string
+          enum: [accept, decline]
+
+    InterestSummary:
+      type: object
+      required: [pendingReceived, totalSent, mutualCount, acceptanceRate]
+      properties:
+        pendingReceived:
+          type: integer
+        totalSent:
+          type: integer
+        mutualCount:
+          type: integer
+        acceptanceRate:
+          type: number
+
+    # ── CHAT SCHEMAS ────────────────────────────────────────────────────────
+
+    Conversation:
+      type: object
+      required: [id, participants, lastMessage, unreadCount, createdAt]
+      properties:
+        id:
+          type: integer
+        participants:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublicProfile"
+        lastMessage:
+          $ref: "#/components/schemas/Message"
+        unreadCount:
+          type: integer
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+
+    Message:
+      type: object
+      required: [id, conversationId, senderId, content, createdAt]
+      properties:
+        id:
+          type: integer
+        conversationId:
+          type: integer
+        senderId:
+          type: integer
+        content:
+          type: string
+        messageType:
+          type: string
+          enum: [text, image, emoji]
+        isRead:
+          type: boolean
+        createdAt:
+          type: string
+
+    MessageInput:
+      type: object
+      required: [content]
+      properties:
+        content:
+          type: string
+        messageType:
+          type: string
+          enum: [text, image, emoji]
+
+    # ── SUBSCRIPTION SCHEMAS ────────────────────────────────────────────────
+
+    Plan:
+      type: object
+      required: [id, name, price, currency, interval, features]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+        currency:
+          type: string
+        interval:
+          type: string
+          enum: [month, quarter, year]
+        features:
+          type: array
+          items:
+            type: string
+        stripePriceId:
+          type: string
+        isPopular:
+          type: boolean
+
+    Subscription:
+      type: object
+      required: [id, planId, status, currentPeriodEnd]
+      properties:
+        id:
+          type: integer
+        planId:
+          type: string
+        status:
+          type: string
+          enum: [active, cancelled, expired, trialing]
+        currentPeriodEnd:
+          type: string
+        currentPeriodStart:
+          type: string
+        cancelAtPeriodEnd:
+          type: boolean
+        plan:
+          $ref: "#/components/schemas/Plan"
+
+    CheckoutInput:
+      type: object
+      required: [planId]
+      properties:
+        planId:
+          type: string
+        successUrl:
+          type: string
+        cancelUrl:
+          type: string
+
+    CheckoutSession:
+      type: object
+      required: [url, sessionId]
+      properties:
+        url:
+          type: string
+        sessionId:
+          type: string
+
+    RewardsProfile:
+      type: object
+      required: [coins, totalEarned, tier, recentTransactions]
+      properties:
+        coins:
+          type: integer
+        totalEarned:
+          type: integer
+        tier:
+          type: string
+          enum: [bronze, silver, gold, platinum]
+        recentTransactions:
+          type: array
+          items:
+            $ref: "#/components/schemas/RewardTransaction"
+
+    RewardTransaction:
+      type: object
+      required: [id, type, amount, description, createdAt]
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum: [earned, spent]
+        amount:
+          type: integer
+        description:
+          type: string
+        createdAt:
+          type: string
+
+    # ── NOTIFICATION SCHEMAS ────────────────────────────────────────────────
+
+    Notification:
+      type: object
+      required: [id, type, title, body, isRead, createdAt]
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum: [interest, match, message, journey, system, verification, subscription]
+        title:
+          type: string
+        body:
+          type: string
+        isRead:
+          type: boolean
+        actionUrl:
+          type: ["string", "null"]
+        actorId:
+          type: ["integer", "null"]
+        actor:
+          $ref: "#/components/schemas/PublicProfile"
+        createdAt:
+          type: string
+
+    NotificationsPage:
+      type: object
+      required: [notifications, total, unreadCount]
+      properties:
+        notifications:
+          type: array
+          items:
+            $ref: "#/components/schemas/Notification"
+        total:
+          type: integer
+        unreadCount:
+          type: integer
+
+    UnreadCount:
+      type: object
+      required: [count]
+      properties:
+        count:
+          type: integer
+
+    # ── REPORT SCHEMAS ──────────────────────────────────────────────────────
+
+    ReportInput:
+      type: object
+      required: [reportedUserId, reason]
+      properties:
+        reportedUserId:
+          type: integer
+        reason:
+          type: string
+          enum: [fake_profile, harassment, inappropriate_content, spam, scam, other]
+        description:
+          type: string
+
+    BlockInput:
+      type: object
+      required: [userId]
+      properties:
+        userId:
+          type: integer
+
+    # ── ADMIN SCHEMAS ───────────────────────────────────────────────────────
+
+    AdminUsersPage:
+      type: object
+      required: [users, total, page, totalPages]
+      properties:
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/AdminUserDetail"
+        total:
+          type: integer
+        page:
+          type: integer
+        totalPages:
+          type: integer
+
+    AdminUserDetail:
+      type: object
+      required: [id, email, firstName, lastName, role, status, createdAt]
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        role:
+          type: string
+        status:
+          type: string
+          enum: [active, suspended, banned]
+        verificationStatus:
+          type: string
+        isPremium:
+          type: boolean
+        subscriptionPlan:
+          type: ["string", "null"]
+        reportCount:
+          type: integer
+        lastActive:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+        journeyProgress:
+          type: integer
+
+    AdminUserUpdate:
+      type: object
+      properties:
+        role:
+          type: string
+          enum: [user, premium, admin, superadmin]
+        status:
+          type: string
+          enum: [active, suspended, banned]
+
+    AdminReportsPage:
+      type: object
+      required: [reports, total, page, totalPages]
+      properties:
+        reports:
+          type: array
+          items:
+            $ref: "#/components/schemas/AdminReport"
+        total:
+          type: integer
+        page:
+          type: integer
+        totalPages:
+          type: integer
+
+    AdminReport:
+      type: object
+      required: [id, reason, status, createdAt]
+      properties:
+        id:
+          type: integer
+        reporterUserId:
+          type: integer
+        reportedUserId:
+          type: integer
+        reason:
+          type: string
+        description:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [pending, reviewed, resolved, dismissed]
+        resolution:
+          type: ["string", "null"]
+        reporter:
+          $ref: "#/components/schemas/PublicProfile"
+        reported:
+          $ref: "#/components/schemas/PublicProfile"
+        createdAt:
+          type: string
+
+    ReportResolution:
+      type: object
+      required: [status, resolution]
+      properties:
+        status:
+          type: string
+          enum: [resolved, dismissed]
+        resolution:
+          type: string
+        actionTaken:
+          type: string
+          enum: [none, warning, suspend, ban]
+
+    VerificationRequest:
+      type: object
+      required: [id, userId, documentType, status, createdAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        documentType:
+          type: string
+        documentUrl:
+          type: string
+        selfieUrl:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [pending, approved, rejected]
+        user:
+          $ref: "#/components/schemas/PublicProfile"
+        createdAt:
+          type: string
+
+    VerificationDecision:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [approved, rejected]
+        rejectionReason:
+          type: string
+
+    # ── ANALYTICS SCHEMAS ───────────────────────────────────────────────────
+
+    AnalyticsOverview:
+      type: object
+      required: [totalUsers, premiumUsers, totalMatches, totalMessages, monthlyRevenue, activeToday]
+      properties:
+        totalUsers:
+          type: integer
+        premiumUsers:
+          type: integer
+        totalMatches:
+          type: integer
+        totalMessages:
+          type: integer
+        monthlyRevenue:
+          type: number
+        activeToday:
+          type: integer
+        pendingVerifications:
+          type: integer
+        pendingReports:
+          type: integer
+        newUsersThisMonth:
+          type: integer
+        conversionRate:
+          type: number
+
+    UserAnalytics:
+      type: object
+      required: [period, data, totalGrowth]
+      properties:
+        period:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/TimeSeriesPoint"
+        totalGrowth:
+          type: number
+        genderBreakdown:
+          type: object
+          properties:
+            male:
+              type: integer
+            female:
+              type: integer
+            other:
+              type: integer
+        topLocations:
+          type: array
+          items:
+            $ref: "#/components/schemas/LocationCount"
+
+    TimeSeriesPoint:
+      type: object
+      required: [date, value]
+      properties:
+        date:
+          type: string
+        value:
+          type: integer
+
+    LocationCount:
+      type: object
+      required: [location, count]
+      properties:
+        location:
+          type: string
+        count:
+          type: integer
+
+    RevenueAnalytics:
+      type: object
+      required: [period, data, totalRevenue, planBreakdown]
+      properties:
+        period:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/TimeSeriesPoint"
+        totalRevenue:
+          type: number
+        planBreakdown:
+          type: array
+          items:
+            $ref: "#/components/schemas/PlanRevenue"
+
+    PlanRevenue:
+      type: object
+      required: [planId, planName, subscribers, revenue]
+      properties:
+        planId:
+          type: string
+        planName:
+          type: string
+        subscribers:
+          type: integer
+        revenue:
+          type: number
+
+    MatchAnalytics:
+      type: object
+      required: [totalInterests, mutualMatches, averageCompatibilityScore, topCategories]
+      properties:
+        totalInterests:
+          type: integer
+        mutualMatches:
+          type: integer
+        averageCompatibilityScore:
+          type: number
+        topCategories:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryCount"
+        dailyMatches:
+          type: array
+          items:
+            $ref: "#/components/schemas/TimeSeriesPoint"
+
+    CategoryCount:
+      type: object
+      required: [category, count]
+      properties:
+        category:
+          type: string
+        count:
+          type: integer
