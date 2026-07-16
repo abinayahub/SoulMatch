@@ -1,5 +1,6 @@
 import app from "./app";
 import { logger } from "./lib/logger";
+import { seedJourneyQuestions } from "./seed_journey";
 
 const rawPort = process.env["PORT"];
 
@@ -15,11 +16,18 @@ if (Number.isNaN(port) || port <= 0) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);
 }
 
-app.listen(port, "0.0.0.0", (err) => {
-  if (err) {
-    logger.error({ err }, "Error listening on port");
-    process.exit(1);
-  }
+seedJourneyQuestions(false)
+  .then(() => {
+    app.listen(port, "0.0.0.0", (err) => {
+      if (err) {
+        logger.error({ err }, "Error listening on port");
+        process.exit(1);
+      }
 
-  logger.info({ port }, "Server listening on 0.0.0.0");
-});
+      logger.info({ port }, "Server listening on 0.0.0.0");
+    });
+  })
+  .catch((err) => {
+    logger.error({ err }, "Server initialization failed");
+    process.exit(1);
+  });

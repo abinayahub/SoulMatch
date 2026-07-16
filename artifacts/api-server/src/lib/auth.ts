@@ -56,12 +56,12 @@ export function authenticate(req: AuthRequest, res: Response, next: NextFunction
   const token = authHeader.slice(7);
   try {
     req.user = verifyAccessToken(token);
-    // console.log("Updating lastActive for user:", req.user.userId);
+    const userId = req.user.userId;
     db.update(usersTable)
       .set({ lastActive: new Date() })
-      .where(eq(usersTable.id, req.user.userId))
+      .where(eq(usersTable.id, userId))
       .execute()
-      .then(() => console.log("Updated lastActive for user", req.user.userId))
+      .then(() => console.log("Updated lastActive for user", userId))
       .catch((err) => console.error("Error updating lastActive:", err));
     next();
   } catch (err) {

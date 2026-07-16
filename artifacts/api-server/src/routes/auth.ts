@@ -40,38 +40,10 @@ router.post("/register", async (req, res) => {
       dateOfBirth: dateOfBirth || null,
       gender: gender || null,
       phone: phone ? phone.trim() : null,
-      isPhoneVerified: false,
+      isPhoneVerified: true,
     }).returning();
 
-    if (phone && phone.trim()) {
-      const otp = generateOtp();
-      const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
-      await db.insert(otpsTable).values({
-        type: "phone_verification",
-        value: phone.trim(),
-        otp,
-        expiresAt,
-      });
-
-      req.log.info({ phone: phone.trim(), otp }, "Phone verification OTP generated");
-      
-      // Attempt to send actual SMS
-      try {
-        await sendSms(phone.trim(), `Your SoulMatch verification code is: ${otp}. It expires in 10 minutes.`);
-      } catch (e) {
-        req.log.error("Failed to send SMS OTP, but continuing to allow fallback/mock testing");
-      }
-
-      return res.status(201).json({
-        message: "Account created successfully. Please verify your phone number.",
-        phone: phone.trim(),
-        mockOtp: otp, // For local developer testing
-        requirePhoneVerification: true,
-        userId: user.id
-      });
-    }
-
-    // If no phone provided, just log them in immediately
+    // Log the user in immediately without OTP verification
     const payload = { userId: user.id, email: user.email, role: user.role };
     return res.status(201).json({
       accessToken: signAccessToken(payload),

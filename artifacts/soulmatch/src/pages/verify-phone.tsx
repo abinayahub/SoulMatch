@@ -93,23 +93,16 @@ export default function VerifyPhonePage() {
                 if (v.length === 6) handleVerify(v);
               }}
               disabled={loading}
-              render={({ slots }) => (
-                <InputOTPGroup className="gap-2 sm:gap-3">
-                  {slots.map((slot, index) => (
-                    <InputOTPSlot
-                      key={index}
-                      index={index}
-                      {...slot}
-                      className="w-10 h-12 sm:w-12 sm:h-14 text-xl sm:text-2xl rounded-lg border-white/10 bg-card/5 text-white shadow-inner"
-                      style={{
-                        borderColor: slot.isActive ? "hsl(340 82% 65%)" : "rgba(255,255,255,0.1)",
-                        boxShadow: slot.isActive ? "0 0 0 2px hsl(340 82% 65% / 0.2)" : "inset 0 2px 4px rgba(0,0,0,0.1)",
-                      }}
-                    />
-                  ))}
-                </InputOTPGroup>
-              )}
-            />
+            >
+              <InputOTPGroup className="gap-2 sm:gap-3">
+                <InputOTPSlot index={0} className="w-10 h-12 sm:w-12 sm:h-14 text-xl sm:text-2xl rounded-lg" />
+                <InputOTPSlot index={1} className="w-10 h-12 sm:w-12 sm:h-14 text-xl sm:text-2xl rounded-lg" />
+                <InputOTPSlot index={2} className="w-10 h-12 sm:w-12 sm:h-14 text-xl sm:text-2xl rounded-lg" />
+                <InputOTPSlot index={3} className="w-10 h-12 sm:w-12 sm:h-14 text-xl sm:text-2xl rounded-lg" />
+                <InputOTPSlot index={4} className="w-10 h-12 sm:w-12 sm:h-14 text-xl sm:text-2xl rounded-lg" />
+                <InputOTPSlot index={5} className="w-10 h-12 sm:w-12 sm:h-14 text-xl sm:text-2xl rounded-lg" />
+              </InputOTPGroup>
+            </InputOTP>
           </div>
 
           <Button 
