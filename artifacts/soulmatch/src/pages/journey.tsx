@@ -16,7 +16,10 @@ import { getMandatoryCompletion } from "@/lib/profile-utils";
 function authHeaders() {
   const token = getAccessToken();
   if (!token) return {};
-  return { Authorization: `Bearer ${token}` } as Record<string, string>;
+  return { 
+    Authorization: `Bearer ${token}`,
+    "x-timezone-offset": String(new Date().getTimezoneOffset())
+  } as Record<string, string>;
 }
 
 export default function JourneyPage() {

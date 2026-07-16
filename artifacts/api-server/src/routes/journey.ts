@@ -8,6 +8,48 @@ import { authenticate, type AuthRequest } from "../lib/auth";
 import { dailyPollsCache } from "../lib/dailyPolls";
 import { generateFullUserProfile } from "../services/profileGenerator";
 
+function getJourneyLockStatus(
+  answeredCount: number,
+  lastAnswer: any,
+  timezoneOffset: number // in minutes
+): { isLocked: boolean; unlockedAt: string | null } {
+  if (answeredCount === 0 || answeredCount % 5 !== 0 || !lastAnswer) {
+    return { isLocked: false, unlockedAt: null };
+  }
+  if (answeredCount >= 150) {
+    return { isLocked: true, unlockedAt: null };
+  }
+
+  const now = new Date();
+  // Adjust dates by the user's timezone offset so calendar math works relative to local time
+  const userLocalTime = now.getTime() - (timezoneOffset * 60 * 1000);
+  const userDate = new Date(userLocalTime);
+  
+  const lastAnswerLocalTime = new Date(lastAnswer.createdAt).getTime() - (timezoneOffset * 60 * 1000);
+  const lastAnswerDate = new Date(lastAnswerLocalTime);
+
+  const isSameDay = 
+    userDate.getUTCDate() === lastAnswerDate.getUTCDate() &&
+    userDate.getUTCMonth() === lastAnswerDate.getUTCMonth() &&
+    userDate.getUTCFullYear() === lastAnswerDate.getUTCFullYear();
+
+  if (isSameDay) {
+    // Lock until local midnight of tomorrow
+    const tomorrowLocal = new Date(userDate);
+    tomorrowLocal.setUTCDate(tomorrowLocal.getUTCDate() + 1);
+    tomorrowLocal.setUTCHours(0, 0, 0, 0);
+
+    // Convert local midnight back to UTC ISO string
+    const unlockTimeUTC = new Date(tomorrowLocal.getTime() + (timezoneOffset * 60 * 1000));
+    return {
+      isLocked: true,
+      unlockedAt: unlockTimeUTC.toISOString()
+    };
+  }
+
+  return { isLocked: false, unlockedAt: null };
+}
+
 const router = Router();
 
 const PERSONALITY_TRAITS = [
@@ -22,6 +64,16 @@ const PERSONALITY_TRAITS = [
 router.get("/questions", authenticate, async (req: AuthRequest, res) => {
   try {
     const answers = await db.select().from(journeyAnswersTable).where(eq(journeyAnswersTable.userId, req.user!.userId));
+    
+    // Check timezone-aware calendar lockout
+    const tzOffsetHeader = req.headers['x-timezone-offset'];
+    const timezoneOffset = tzOffsetHeader ? parseInt(tzOffsetHeader as string, 10) : 0;
+    const lastAnswer = answers.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+    const lockStatus = getJourneyLockStatus(answers.length, lastAnswer, timezoneOffset);
+    if (lockStatus.isLocked) {
+      return res.json([]);
+    }
+
     const answeredIds = new Set(answers.map((a) => a.questionId));
 
     const allActiveQuestions = await db.select().from(journeyQuestionsTable).where(eq(journeyQuestionsTable.isActive, true)).orderBy(journeyQuestionsTable.id);
@@ -83,17 +135,11 @@ router.get("/progress", authenticate, async (req: AuthRequest, res) => {
       createdAt: a.createdAt.toISOString(),
     }));
 
-    // 24-hour lockout is currently disabled for testing purposes
-    let unlockedAt = null;
-    /* 
-    if (answeredQuestions > 0 && answeredQuestions % 5 === 0) {
-      if (lastAnswer) {
-        const unlockTime = new Date(lastAnswer.createdAt);
-        unlockTime.setHours(unlockTime.getHours() + 24);
-        unlockedAt = unlockTime.toISOString();
-      }
-    }
-    */
+    // Enforce timezone-aware calendar lockout based on client offset
+    const tzOffsetHeader = req.headers['x-timezone-offset'];
+    const timezoneOffset = tzOffsetHeader ? parseInt(tzOffsetHeader as string, 10) : 0;
+    const lockStatus = getJourneyLockStatus(answeredQuestions, lastAnswer, timezoneOffset);
+    const unlockedAt = lockStatus.unlockedAt;
 
     // Calculate category completion
     const categoryCounts: Record<string, number> = {};
@@ -137,6 +183,16 @@ router.post("/answers", authenticate, async (req: AuthRequest, res) => {
   try {
     const { questionId, answer } = req.body;
     if (!questionId || !answer) return res.status(400).json({ error: "questionId and answer required" });
+
+    // Enforce lockout check
+    const answers = await db.select().from(journeyAnswersTable).where(eq(journeyAnswersTable.userId, req.user!.userId));
+    const lastAnswer = answers.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+    const tzOffsetHeader = req.headers['x-timezone-offset'];
+    const timezoneOffset = tzOffsetHeader ? parseInt(tzOffsetHeader as string, 10) : 0;
+    const lockStatus = getJourneyLockStatus(answers.length, lastAnswer, timezoneOffset);
+    if (lockStatus.isLocked) {
+      return res.status(403).json({ error: "Next day's questions are locked until midnight." });
+    }
 
     const existing = await db.query.journeyAnswersTable.findFirst({
       where: and(eq(journeyAnswersTable.userId, req.user!.userId), eq(journeyAnswersTable.questionId, questionId)),
