@@ -57,6 +57,19 @@ export const usersTable = pgTable("users", {
   drinking: varchar("drinking", { length: 50 }),
   interests: text("interests").array(),
   languages: text("languages").array(),
+  weight: integer("weight"),
+  fieldOfStudy: varchar("field_of_study", { length: 200 }),
+  company: varchar("company", { length: 200 }),
+  industry: varchar("industry", { length: 100 }),
+  annualIncomeRange: varchar("annual_income_range", { length: 100 }),
+  stateRegion: varchar("state_region", { length: 100 }),
+  citizenship: varchar("citizenship", { length: 100 }),
+  videoIntroUrl: text("video_intro_url"),
+  isGovIdVerified: boolean("is_gov_id_verified").notNull().default(false),
+  isSelfieVerified: boolean("is_selfie_verified").notNull().default(false),
+  govIdFrontUrl: text("gov_id_front_url"),
+  govIdBackUrl: text("gov_id_back_url"),
+  selfieUrl: text("selfie_url"),
   role: userRoleEnum("role").notNull().default("user"),
   status: userStatusEnum("status").notNull().default("active"),
   verificationStatus: verificationStatusEnum("verification_status")
@@ -66,6 +79,7 @@ export const usersTable = pgTable("users", {
   isEmailVerified: boolean("is_email_verified").notNull().default(false),
   journeyProgress: integer("journey_progress").notNull().default(0),
   googleId: text("google_id"),
+  journeyStartedAt: timestamp("journey_started_at"),
   lastActive: timestamp("last_active"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
@@ -78,3 +92,15 @@ export const insertUserSchema = createInsertSchema(usersTable).omit({
 });
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof usersTable.$inferSelect;
+
+export const profileViewsTable = pgTable("profile_views", {
+  id: serial("id").primaryKey(),
+  viewerId: integer("viewer_id").references(() => usersTable.id).notNull(),
+  targetUserId: integer("target_user_id").references(() => usersTable.id).notNull(),
+  viewedAt: timestamp("viewed_at").notNull().defaultNow(),
+});
+export const insertProfileViewSchema = createInsertSchema(profileViewsTable).omit({
+  id: true,
+  viewedAt: true,
+});
+export type ProfileView = typeof profileViewsTable.$inferSelect;

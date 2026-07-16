@@ -30,10 +30,22 @@ export const personalityProfilesTable = pgTable("personality_profiles", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").notNull().unique().references(() => usersTable.id, { onDelete: "cascade" }),
   traits: text("traits"),
+  behavioralTraits: text("behavioral_traits"),
+  storyCategoryScores: text("story_category_scores"),
+  questionnaireCategoryScores: text("questionnaire_category_scores"),
+  finalUnifiedCategoryScores: text("final_unified_category_scores"),
   summary: text("summary"),
   compatibilityKeywords: text("compatibility_keywords").array(),
   dominantType: varchar("dominant_type", { length: 100 }),
   generatedAt: timestamp("generated_at"),
+});
+
+export const dailyPollAnswersTable = pgTable("daily_poll_answers", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull().references(() => usersTable.id),
+  pollId: integer("poll_id").notNull(),
+  answer: text("answer").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 export const insertJourneyQuestionSchema = createInsertSchema(journeyQuestionsTable).omit({ id: true, createdAt: true });
@@ -43,3 +55,6 @@ export type JourneyQuestion = typeof journeyQuestionsTable.$inferSelect;
 export const insertJourneyAnswerSchema = createInsertSchema(journeyAnswersTable).omit({ id: true, createdAt: true, updatedAt: true });
 export type InsertJourneyAnswer = z.infer<typeof insertJourneyAnswerSchema>;
 export type JourneyAnswer = typeof journeyAnswersTable.$inferSelect;
+
+export const insertDailyPollAnswerSchema = createInsertSchema(dailyPollAnswersTable).omit({ id: true, createdAt: true });
+export type DailyPollAnswer = typeof dailyPollAnswersTable.$inferSelect;

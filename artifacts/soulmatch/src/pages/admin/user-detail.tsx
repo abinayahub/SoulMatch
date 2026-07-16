@@ -66,15 +66,15 @@ export default function AdminUserDetailPage({ userId }: Props) {
         </Button>
 
         {isLoading ? (
-          <Skeleton className="h-96 rounded-2xl bg-white/5" />
+          <Skeleton className="h-96 rounded-2xl bg-card/5" />
         ) : !u ? (
           <div className="text-center py-16 text-muted-foreground">User not found</div>
         ) : (
           <div className="space-y-5">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass rounded-2xl p-6">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-6">
               <div className="flex items-start gap-5">
                 <Avatar className="w-16 h-16 ring-2 ring-primary/30">
-                  <AvatarFallback className="gradient-primary text-white text-xl font-bold">
+                  <AvatarFallback className="bg-primary text-primary-foreground shadow-md text-white text-xl font-bold">
                     {getInitials(u.firstName, u.lastName)}
                   </AvatarFallback>
                 </Avatar>
@@ -99,16 +99,16 @@ export default function AdminUserDetailPage({ userId }: Props) {
               </div>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass rounded-2xl p-5">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-5">
               <h2 className="font-semibold mb-4">Admin Actions</h2>
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div className="space-y-1.5">
                   <label className="text-xs text-muted-foreground">Change Role</label>
                   <Select value={role} onValueChange={setRole}>
-                    <SelectTrigger className="bg-white/5 border-white/10">
+                    <SelectTrigger className="bg-card/5 border-white/10">
                       <SelectValue placeholder={u.role} />
                     </SelectTrigger>
-                    <SelectContent className="glass border-white/10">
+                    <SelectContent className="bg-card border border-border shadow-md rounded-2xl border-white/10">
                       <SelectItem value="user">User</SelectItem>
                       <SelectItem value="premium">Premium</SelectItem>
                       <SelectItem value="admin">Admin</SelectItem>
@@ -118,10 +118,10 @@ export default function AdminUserDetailPage({ userId }: Props) {
                 <div className="space-y-1.5">
                   <label className="text-xs text-muted-foreground">Change Status</label>
                   <Select value={status} onValueChange={setStatus}>
-                    <SelectTrigger className="bg-white/5 border-white/10">
+                    <SelectTrigger className="bg-card/5 border-white/10">
                       <SelectValue placeholder={u.status} />
                     </SelectTrigger>
-                    <SelectContent className="glass border-white/10">
+                    <SelectContent className="bg-card border border-border shadow-md rounded-2xl border-white/10">
                       <SelectItem value="active">Active</SelectItem>
                       <SelectItem value="suspended">Suspended</SelectItem>
                       <SelectItem value="banned">Banned</SelectItem>
@@ -129,7 +129,7 @@ export default function AdminUserDetailPage({ userId }: Props) {
                   </Select>
                 </div>
               </div>
-              <Button onClick={handleUpdate} className="gradient-primary border-0 text-white" disabled={update.isPending || (!role && !status)}>
+              <Button onClick={handleUpdate} className="bg-primary text-primary-foreground shadow-md border-0 text-white" disabled={update.isPending || (!role && !status)}>
                 {update.isPending ? "Updating..." : "Apply Changes"}
               </Button>
             </motion.div>

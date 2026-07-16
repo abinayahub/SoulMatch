@@ -1,0 +1,1802 @@
+[
+  {
+    "day": 1,
+    "category": "Personality",
+    "question": "You have been waiting for a long time to achieve something important, but at the last moment things don't go as planned. What would you most likely do?",
+    "options": [
+      "A. Take some time to process my emotions and then try again with a positive mindset.",
+      "B. Analyze what went wrong, identify mistakes, and create a better strategy for the next attempt.",
+      "C. Accept that setbacks are a part of life and patiently wait for another opportunity.",
+      "D. Look for a completely different approach or new opportunity that I may not have considered before."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 2,
+    "category": "Personality",
+    "question": "You are planning a vacation with your partner, but both of you have different ideas about where to go. How would you handle the situation?",
+    "options": [
+      "A. Discuss openly until we find a destination that makes both of us happy.",
+      "B. Compare the pros and cons of each option before making a decision.",
+      "C. Choose the option that causes the least stress and keeps things peaceful.",
+      "D. Combine both ideas into a unique trip experience."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 3,
+    "category": "Personality",
+    "question": "You suddenly receive an unexpected bonus from work. What would you be most likely to do with it?",
+    "options": [
+      "A. Spend part of it creating memories with family or loved ones.",
+      "B. Invest it in personal development or career growth.",
+      "C. Save it for future security and emergencies.",
+      "D. Use it for a unique experience or adventure."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 4,
+    "category": "Personality",
+    "question": "A close friend shares a personal problem with you. How do you naturally respond?",
+    "options": [
+      "A. Listen carefully and offer emotional support.",
+      "B. Help them create a practical plan to solve the issue.",
+      "C. Stay calm and reassure them that things will improve.",
+      "D. Encourage them to look at the situation from a new perspective."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 5,
+    "category": "Personality",
+    "question": "Imagine you are starting a completely new chapter in life. What excites you most?",
+    "options": [
+      "A. Building meaningful relationships with new people.",
+      "B. Setting ambitious goals and achieving them.",
+      "C. Creating a comfortable and stable environment.",
+      "D. Discovering new opportunities and experiences."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 6,
+    "category": "Personality",
+    "question": "If you had one free year with no financial worries, how would you spend most of your time?",
+    "options": [
+      "A. Strengthening relationships and spending time with loved ones.",
+      "B. Learning skills and working on personal ambitions.",
+      "C. Creating a balanced and peaceful lifestyle.",
+      "D. Traveling and experiencing different cultures."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 7,
+    "category": "Personality",
+    "question": "Your partner is upset about something unrelated to you. What would be your first reaction?",
+    "options": [
+      "A. Sit with them and let them express their feelings.",
+      "B. Ask questions to understand the problem and find solutions.",
+      "C. Give them space while staying available for support.",
+      "D. Try to lighten the mood and help them see a positive side."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 8,
+    "category": "Personality",
+    "question": "Which situation would make you feel most fulfilled at the end of the day?",
+    "options": [
+      "A. Knowing I made someone feel valued and understood.",
+      "B. Completing an important task or goal.",
+      "C. Having a peaceful and balanced day.",
+      "D. Experiencing something memorable or exciting."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 9,
+    "category": "Personality",
+    "question": "If you were part of a team working on an important project, what role would you naturally take?",
+    "options": [
+      "A. The person who keeps everyone connected and motivated.",
+      "B. The person who organizes goals and drives progress.",
+      "C. The person who ensures stability and consistency.",
+      "D. The person who introduces fresh ideas and innovation."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 10,
+    "category": "Personality",
+    "question": "When you think about your future relationship, what matters most to you?",
+    "options": [
+      "A. Emotional connection and mutual understanding.",
+      "B. Shared goals and personal growth together.",
+      "C. Trust, commitment, and long-term stability.",
+      "D. Adventure, excitement, and continuous discovery together."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 11,
+    "category": "Personality",
+    "question": "You have planned your entire weekend, but a close friend suddenly invites you to an unexpected gathering. What would you most likely do?",
+    "options": [
+      "A. Rearrange my plans because spending time with people I care about is important.",
+      "B. Evaluate both options and choose whichever benefits me most in the long run.",
+      "C. Stick to my original plan because I value commitment and consistency.",
+      "D. Accept the invitation because spontaneous experiences can be exciting."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 12,
+    "category": "Personality",
+    "question": "You are given the opportunity to lead a new project at work, but it comes with uncertainty and risk. What would you do?",
+    "options": [
+      "A. Accept it if it helps me build stronger relationships and teamwork.",
+      "B. Take the opportunity because challenges help me grow.",
+      "C. Carefully assess the risks before making a decision.",
+      "D. Take it because I enjoy exploring new possibilities."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 13,
+    "category": "Personality",
+    "question": "A disagreement arises between two people close to you. How would you naturally respond?",
+    "options": [
+      "A. Help both sides understand each other's feelings.",
+      "B. Focus on finding a fair solution.",
+      "C. Stay neutral and encourage calm discussion.",
+      "D. Suggest a different perspective that neither person considered."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 14,
+    "category": "Personality",
+    "question": "You have one completely free day with no responsibilities. What sounds most appealing?",
+    "options": [
+      "A. Spending quality time with loved ones.",
+      "B. Working on a personal goal or skill.",
+      "C. Relaxing and enjoying a peaceful day.",
+      "D. Trying something I've never done before."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 15,
+    "category": "Personality",
+    "question": "When someone gives you unexpected criticism, what is your first reaction?",
+    "options": [
+      "A. Reflect on how their feedback makes me feel.",
+      "B. Analyze whether the criticism can help me improve.",
+      "C. Stay calm and think before responding.",
+      "D. Look at the feedback from a broader perspective."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 16,
+    "category": "Personality",
+    "question": "Imagine you are moving to a completely new city. What would excite you most?",
+    "options": [
+      "A. Building new friendships and connections.",
+      "B. Discovering opportunities for personal growth.",
+      "C. Creating a comfortable and stable routine.",
+      "D. Exploring new places, cultures, and experiences."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 17,
+    "category": "Personality",
+    "question": "Your team successfully completes a difficult task. How do you celebrate?",
+    "options": [
+      "A. Thank everyone and appreciate the relationships built.",
+      "B. Set the next challenge and keep improving.",
+      "C. Take time to enjoy the achievement peacefully.",
+      "D. Celebrate with a memorable and unique experience."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 18,
+    "category": "Personality",
+    "question": "What would you do if your long-term plan suddenly became impossible?",
+    "options": [
+      "A. Seek support and advice from trusted people.",
+      "B. Create a new plan and move forward quickly.",
+      "C. Accept the situation and adjust gradually.",
+      "D. Look for new opportunities that may arise from the change."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 19,
+    "category": "Personality",
+    "question": "Which situation would make you feel most proud?",
+    "options": [
+      "A. Being someone others can rely on emotionally.",
+      "B. Achieving a goal through hard work.",
+      "C. Building a stable and secure life.",
+      "D. Having experiences that helped me grow and learn."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 20,
+    "category": "Personality",
+    "question": "When thinking about your future, what is most important to you?",
+    "options": [
+      "A. Having strong and meaningful relationships.",
+      "B. Continuously improving and achieving goals.",
+      "C. Living a balanced and secure life.",
+      "D. Experiencing life to its fullest and embracing new opportunities."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 21,
+    "category": "Personality",
+    "question": "You are given an unexpected week off from work with no responsibilities. How would you most likely spend it?",
+    "options": [
+      "A. Reconnecting with family and close friends.",
+      "B. Learning a new skill or completing a personal project.",
+      "C. Enjoying a peaceful routine and recharging.",
+      "D. Exploring new places and experiences."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 22,
+    "category": "Personality",
+    "question": "A close friend asks for help during a very busy period in your life. What would you do?",
+    "options": [
+      "A. Make time for them because relationships come first.",
+      "B. Help them while managing my priorities efficiently.",
+      "C. Offer support within my limits and commitments.",
+      "D. Find a creative way to assist without disrupting everything."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 23,
+    "category": "Personality",
+    "question": "When entering a room full of unfamiliar people, what do you usually do first?",
+    "options": [
+      "A. Start conversations and connect with others.",
+      "B. Observe who might be useful to know professionally.",
+      "C. Take time to understand the environment before engaging.",
+      "D. Explore the room and see what catches my interest."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 24,
+    "category": "Personality",
+    "question": "Imagine you are planning your future five years from now. What would satisfy you most?",
+    "options": [
+      "A. Having strong personal relationships.",
+      "B. Achieving major career milestones.",
+      "C. Living a stable and balanced life.",
+      "D. Having many unique experiences and memories."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 25,
+    "category": "Personality",
+    "question": "You are part of a group making an important decision. What role would you naturally take?",
+    "options": [
+      "A. Ensure everyone's opinion is heard.",
+      "B. Drive the group toward a clear decision.",
+      "C. Keep discussions organized and practical.",
+      "D. Introduce fresh ideas and possibilities."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 26,
+    "category": "Personality",
+    "question": "What usually makes you feel stressed?",
+    "options": [
+      "A. Conflict with people I care about.",
+      "B. Falling behind on important goals.",
+      "C. Uncertainty and lack of stability.",
+      "D. Feeling restricted or stuck in routine."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 27,
+    "category": "Personality",
+    "question": "If you received an offer to move abroad for a year, what would influence your decision most?",
+    "options": [
+      "A. How it affects my relationships.",
+      "B. The opportunities for growth and success.",
+      "C. The level of security and stability it provides.",
+      "D. The adventure and experiences it offers."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 28,
+    "category": "Personality",
+    "question": "When someone achieves something impressive, what is your first thought?",
+    "options": [
+      "A. I'm happy for them and their success.",
+      "B. It motivates me to improve myself.",
+      "C. I admire the consistency that got them there.",
+      "D. I wonder what unique experiences led them to that achievement."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 29,
+    "category": "Personality",
+    "question": "If your plans for the day suddenly get cancelled, how would you react?",
+    "options": [
+      "A. Reach out to someone and spend time together.",
+      "B. Use the free time productively.",
+      "C. Enjoy the extra time to relax.",
+      "D. Look for something spontaneous and exciting to do."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 30,
+    "category": "Personality",
+    "question": "Which situation sounds most fulfilling to you?",
+    "options": [
+      "A. Being surrounded by people who genuinely care about me.",
+      "B. Reaching a goal I worked hard for.",
+      "C. Living a peaceful and secure life.",
+      "D. Constantly discovering new opportunities and experiences."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 1,
+    "category": "Lifestyle",
+    "question": "After a busy week, what would your ideal weekend look like?",
+    "options": [
+      "A. Spending quality time with family and close friends.",
+      "B. Working on personal goals or learning something useful.",
+      "C. Relaxing at home and enjoying a peaceful routine.",
+      "D. Exploring a new place or trying a new activity."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 2,
+    "category": "Lifestyle",
+    "question": "When it comes to maintaining your health, what best describes you?",
+    "options": [
+      "A. I stay healthy so I can be there for the people I care about.",
+      "B. I follow routines that help me stay productive and energetic.",
+      "C. I prefer a balanced approach without strict rules.",
+      "D. I enjoy experimenting with different fitness or wellness activities."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 3,
+    "category": "Lifestyle",
+    "question": "How do you usually start your day?",
+    "options": [
+      "A. Checking in with family or loved ones.",
+      "B. Planning my tasks and goals.",
+      "C. Following a comfortable routine.",
+      "D. Seeing what opportunities the day brings."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 4,
+    "category": "Lifestyle",
+    "question": "If you had an extra hour every day, how would you spend it?",
+    "options": [
+      "A. Connecting with people who matter to me.",
+      "B. Developing a skill or working toward a goal.",
+      "C. Resting and recharging.",
+      "D. Exploring new interests or hobbies."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 5,
+    "category": "Lifestyle",
+    "question": "What type of living environment would you enjoy most?",
+    "options": [
+      "A. A warm home surrounded by family and community.",
+      "B. A place close to work and growth opportunities.",
+      "C. A peaceful and organized environment.",
+      "D. A vibrant location with lots of activities and experiences."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 6,
+    "category": "Lifestyle",
+    "question": "How do you usually manage your daily schedule?",
+    "options": [
+      "A. Around people and commitments.",
+      "B. With clear plans and objectives.",
+      "C. By maintaining a comfortable routine.",
+      "D. Keeping flexibility for unexpected opportunities."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 7,
+    "category": "Lifestyle",
+    "question": "How often do you like to travel?",
+    "options": [
+      "A. For family gatherings and special occasions.",
+      "B. When it helps me learn or grow.",
+      "C. Occasionally, when it fits my schedule.",
+      "D. As often as possible to experience new places."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 8,
+    "category": "Lifestyle",
+    "question": "When choosing food, what matters most to you?",
+    "options": [
+      "A. Sharing meals with loved ones.",
+      "B. Nutrition and long-term health benefits.",
+      "C. Comfort and familiar tastes.",
+      "D. Trying different cuisines and flavors."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 9,
+    "category": "Lifestyle",
+    "question": "How do you usually spend your evenings?",
+    "options": [
+      "A. Talking with family or friends.",
+      "B. Working on personal development.",
+      "C. Relaxing with a favorite activity.",
+      "D. Looking for something interesting or new to do."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 10,
+    "category": "Lifestyle",
+    "question": "What does a successful life look like to you?",
+    "options": [
+      "A. Strong relationships and happy family life.",
+      "B. Achieving meaningful goals.",
+      "C. Stability, peace, and balance.",
+      "D. A life full of memorable experiences."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 11,
+    "category": "Lifestyle",
+    "question": "You receive a long holiday. What excites you most?",
+    "options": [
+      "A. Spending more time with loved ones.",
+      "B. Completing projects I've been postponing.",
+      "C. Enjoying a break from responsibilities.",
+      "D. Planning an exciting trip or adventure."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 12,
+    "category": "Lifestyle",
+    "question": "How do you usually spend money?",
+    "options": [
+      "A. On experiences with family and friends.",
+      "B. On education, skills, or self-improvement.",
+      "C. On necessities and future security.",
+      "D. On travel, hobbies, and new experiences."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 13,
+    "category": "Lifestyle",
+    "question": "Which daily habit is most important to you?",
+    "options": [
+      "A. Staying connected with people I care about.",
+      "B. Following productive routines.",
+      "C. Maintaining consistency and balance.",
+      "D. Keeping life interesting and dynamic."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 14,
+    "category": "Lifestyle",
+    "question": "If you moved to a new city, what would you focus on first?",
+    "options": [
+      "A. Building meaningful relationships.",
+      "B. Finding opportunities for growth.",
+      "C. Creating a stable routine.",
+      "D. Exploring everything the city offers."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 15,
+    "category": "Lifestyle",
+    "question": "What kind of home would make you happiest?",
+    "options": [
+      "A. A home filled with family and togetherness.",
+      "B. A home that supports my ambitions and goals.",
+      "C. A comfortable and peaceful home.",
+      "D. A home that gives access to new experiences and activities."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 16,
+    "category": "Lifestyle",
+    "question": "After a long and tiring day, what helps you feel refreshed the most?",
+    "options": [
+      "A. Spending time talking with loved ones.",
+      "B. Working on something meaningful to me.",
+      "C. Relaxing in a peaceful environment.",
+      "D. Going out and experiencing something different."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 17,
+    "category": "Lifestyle",
+    "question": "If you had to choose where to live, which option would attract you most?",
+    "options": [
+      "A. A place close to family and friends.",
+      "B. A city with strong career opportunities.",
+      "C. A quiet and comfortable neighborhood.",
+      "D. A vibrant location with lots to explore."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 18,
+    "category": "Lifestyle",
+    "question": "How do you usually approach your monthly budget?",
+    "options": [
+      "A. Ensure family and loved ones are taken care of.",
+      "B. Invest in personal growth and future goals.",
+      "C. Save carefully and plan ahead.",
+      "D. Keep some flexibility for experiences and adventures."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 19,
+    "category": "Lifestyle",
+    "question": "What type of daily routine suits you best?",
+    "options": [
+      "A. One that includes quality time with people.",
+      "B. One that helps me stay productive.",
+      "C. One that is balanced and predictable.",
+      "D. One that allows flexibility and variety."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 20,
+    "category": "Lifestyle",
+    "question": "When planning a vacation, what matters most to you?",
+    "options": [
+      "A. Creating memories with loved ones.",
+      "B. Learning something valuable from the trip.",
+      "C. Relaxation and comfort.",
+      "D. Exploring exciting places and cultures."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 21,
+    "category": "Lifestyle",
+    "question": "How do you usually spend your evenings during weekdays?",
+    "options": [
+      "A. Connecting with family or friends.",
+      "B. Improving skills or pursuing goals.",
+      "C. Relaxing and unwinding.",
+      "D. Looking for new activities or experiences."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 22,
+    "category": "Lifestyle",
+    "question": "Which type of home environment appeals to you most?",
+    "options": [
+      "A. Warm, welcoming, and family-oriented.",
+      "B. Organized and supportive of my ambitions.",
+      "C. Calm, comfortable, and peaceful.",
+      "D. Modern, energetic, and full of possibilities."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 23,
+    "category": "Lifestyle",
+    "question": "What would you do if you unexpectedly had an entire day free?",
+    "options": [
+      "A. Meet people important to me.",
+      "B. Finish tasks or personal projects.",
+      "C. Enjoy a quiet day at home.",
+      "D. Go somewhere I've never been before."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 24,
+    "category": "Lifestyle",
+    "question": "Which statement best reflects your lifestyle?",
+    "options": [
+      "A. Relationships are an important part of my daily life.",
+      "B. I enjoy setting goals and making progress.",
+      "C. I appreciate consistency and stability.",
+      "D. I enjoy discovering new opportunities and experiences."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 25,
+    "category": "Lifestyle",
+    "question": "How do you usually celebrate special occasions?",
+    "options": [
+      "A. Gather with family and close friends.",
+      "B. Mark achievements and future goals.",
+      "C. Enjoy a simple and meaningful celebration.",
+      "D. Plan something exciting and memorable."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 26,
+    "category": "Lifestyle",
+    "question": "What type of weekend sounds most enjoyable?",
+    "options": [
+      "A. Family gatherings and meaningful conversations.",
+      "B. Productive activities and personal development.",
+      "C. Rest, comfort, and relaxation.",
+      "D. Adventure, travel, or new experiences."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 27,
+    "category": "Lifestyle",
+    "question": "When purchasing something expensive, what influences you most?",
+    "options": [
+      "A. How it benefits people I care about.",
+      "B. How it contributes to my future goals.",
+      "C. Its long-term value and reliability.",
+      "D. The unique experience it provides."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 28,
+    "category": "Lifestyle",
+    "question": "How important is maintaining a routine in your life?",
+    "options": [
+      "A. Important because it helps me stay connected with people.",
+      "B. Important because it improves productivity.",
+      "C. Very important because it creates stability.",
+      "D. Somewhat important, but I enjoy flexibility."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 29,
+    "category": "Lifestyle",
+    "question": "If you could add one thing to your current lifestyle, what would it be?",
+    "options": [
+      "A. More meaningful relationships.",
+      "B. More opportunities for growth.",
+      "C. More balance and peace.",
+      "D. More adventures and experiences."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 30,
+    "category": "Lifestyle",
+    "question": "Looking back years from now, what would make you feel your life was well lived?",
+    "options": [
+      "A. Building strong relationships and a loving family.",
+      "B. Achieving goals and making an impact.",
+      "C. Living a secure and balanced life.",
+      "D. Experiencing different cultures, places, and opportunities."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 1,
+    "category": "Family Values",
+    "question": "You have an important personal commitment, but a family member suddenly needs your support. What would you most likely do?",
+    "options": [
+      "A. Prioritize helping my family because they come first.",
+      "B. Try to manage both responsibilities effectively.",
+      "C. Assess the urgency before making a decision.",
+      "D. Find an alternative solution that supports everyone involved."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 2,
+    "category": "Family Values",
+    "question": "What does a strong family mean to you?",
+    "options": [
+      "A. Being emotionally available for each other.",
+      "B. Supporting each other's growth and goals.",
+      "C. Providing stability and security.",
+      "D. Encouraging individuality while staying connected."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 3,
+    "category": "Family Values",
+    "question": "How would you prefer to celebrate important life milestones?",
+    "options": [
+      "A. With close family and loved ones.",
+      "B. By sharing achievements and future plans together.",
+      "C. Through meaningful traditions and gatherings.",
+      "D. Creating unique experiences with family."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 4,
+    "category": "Family Values",
+    "question": "If your parents needed assistance as they grew older, how would you feel?",
+    "options": [
+      "A. Caring for them would be a natural responsibility.",
+      "B. I would ensure they receive the best possible support.",
+      "C. I would help maintain their comfort and stability.",
+      "D. I would look for solutions that balance everyone's needs."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 5,
+    "category": "Family Values",
+    "question": "What role do family traditions play in your life?",
+    "options": [
+      "A. They help strengthen emotional bonds.",
+      "B. They create opportunities to bring people together.",
+      "C. They provide stability and continuity.",
+      "D. They are important, but I'm open to creating new traditions."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 6,
+    "category": "Family Values",
+    "question": "How often do you prefer spending time with family members?",
+    "options": [
+      "A. As often as possible because relationships matter deeply.",
+      "B. Regularly while balancing personal goals.",
+      "C. During important occasions and family events.",
+      "D. Whenever meaningful opportunities arise."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 7,
+    "category": "Family Values",
+    "question": "A family member disagrees with one of your life choices. What would you do?",
+    "options": [
+      "A. Listen carefully and try to understand their concerns.",
+      "B. Explain my reasoning respectfully.",
+      "C. Stay patient and avoid unnecessary conflict.",
+      "D. Look for common ground that respects both perspectives."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 8,
+    "category": "Family Values",
+    "question": "What quality is most important in a family environment?",
+    "options": [
+      "A. Love and understanding.",
+      "B. Mutual support and encouragement.",
+      "C. Trust and stability.",
+      "D. Respect for individuality."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 9,
+    "category": "Family Values",
+    "question": "How would you describe your ideal future family life?",
+    "options": [
+      "A. Close-knit and emotionally connected.",
+      "B. Supportive of each other's ambitions.",
+      "C. Stable, secure, and peaceful.",
+      "D. Open-minded and adaptable to change."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 10,
+    "category": "Family Values",
+    "question": "When making a major life decision, whose opinion matters most?",
+    "options": [
+      "A. Family members I trust.",
+      "B. People who understand my goals and aspirations.",
+      "C. Those with wisdom and experience.",
+      "D. A combination of different viewpoints."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 11,
+    "category": "Family Values",
+    "question": "If there is a conflict within the family, how would you usually respond?",
+    "options": [
+      "A. Try to bring everyone together emotionally.",
+      "B. Focus on resolving the issue practically.",
+      "C. Encourage patience and calm discussion.",
+      "D. Help people see the situation from different perspectives."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 12,
+    "category": "Family Values",
+    "question": "What would make you most proud as a parent in the future?",
+    "options": [
+      "A. Raising kind and compassionate children.",
+      "B. Helping them achieve their goals.",
+      "C. Providing them with a stable foundation.",
+      "D. Encouraging them to explore their potential."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 13,
+    "category": "Family Values",
+    "question": "How important is staying connected with extended family?",
+    "options": [
+      "A. Very important because family bonds matter.",
+      "B. Important when relationships are meaningful.",
+      "C. Important for maintaining family unity.",
+      "D. Important, but quality matters more than frequency."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 14,
+    "category": "Family Values",
+    "question": "If your partner's family had different traditions than yours, what would you do?",
+    "options": [
+      "A. Embrace them with respect and understanding.",
+      "B. Find ways to blend both family cultures.",
+      "C. Preserve important traditions from both sides.",
+      "D. Create new traditions together."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 15,
+    "category": "Family Values",
+    "question": "Which statement best reflects your family values?",
+    "options": [
+      "A. Family should always support each other emotionally.",
+      "B. Family should help each other grow and succeed.",
+      "C. Family should provide stability and security.",
+      "D. Family should encourage individuality while staying connected."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 16,
+    "category": "Family Values",
+    "question": "Your family has a long-standing tradition, but you personally prefer a different approach. What would you do?",
+    "options": [
+      "A. Follow the tradition because family connections are important.",
+      "B. Discuss ways to modernize it while respecting its purpose.",
+      "C. Continue the tradition because it provides stability and identity.",
+      "D. Create a balance between tradition and new ideas."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 17,
+    "category": "Family Values",
+    "question": "What kind of relationship would you like your future children to have with grandparents?",
+    "options": [
+      "A. Very close and emotionally connected.",
+      "B. Supportive and encouraging of their growth.",
+      "C. Respectful and guided by family values.",
+      "D. Open and comfortable while maintaining independence."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 18,
+    "category": "Family Values",
+    "question": "If a family member makes a mistake that affects everyone, how would you respond?",
+    "options": [
+      "A. Support them emotionally and help them recover.",
+      "B. Help them learn from the experience.",
+      "C. Focus on fixing the situation calmly.",
+      "D. Encourage a fresh perspective and a new start."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 19,
+    "category": "Family Values",
+    "question": "What is the most important lesson a family can teach?",
+    "options": [
+      "A. Love and compassion.",
+      "B. Hard work and perseverance.",
+      "C. Responsibility and discipline.",
+      "D. Independence and adaptability."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 20,
+    "category": "Family Values",
+    "question": "How do you feel about family gatherings?",
+    "options": [
+      "A. They're a valuable way to strengthen relationships.",
+      "B. They're a good opportunity to support one another.",
+      "C. They're important for maintaining family unity.",
+      "D. They're enjoyable when meaningful and engaging."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 21,
+    "category": "Family Values",
+    "question": "If your partner wanted to spend every holiday with their family, how would you feel?",
+    "options": [
+      "A. Happy to participate and build stronger bonds.",
+      "B. Open to it while balancing both families' needs.",
+      "C. Comfortable if there's a fair and consistent arrangement.",
+      "D. Flexible and willing to create new traditions together."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 22,
+    "category": "Family Values",
+    "question": "When facing a difficult life decision, what role should family play?",
+    "options": [
+      "A. Provide emotional support and understanding.",
+      "B. Offer advice and guidance.",
+      "C. Help maintain stability and perspective.",
+      "D. Share viewpoints while respecting personal choice."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 23,
+    "category": "Family Values",
+    "question": "What does being a responsible family member mean to you?",
+    "options": [
+      "A. Being there when someone needs support.",
+      "B. Helping family members achieve their goals.",
+      "C. Contributing to the family's well-being and stability.",
+      "D. Encouraging everyone to grow as individuals."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 24,
+    "category": "Family Values",
+    "question": "How would you handle a difference of opinion between your partner and your parents?",
+    "options": [
+      "A. Focus on understanding everyone's feelings.",
+      "B. Find a solution that benefits all parties.",
+      "C. Remain calm and avoid escalating conflict.",
+      "D. Encourage open communication and compromise."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 25,
+    "category": "Family Values",
+    "question": "What type of family atmosphere would you want in your home?",
+    "options": [
+      "A. Warm, loving, and emotionally supportive.",
+      "B. Motivating and growth-oriented.",
+      "C. Peaceful, secure, and dependable.",
+      "D. Open-minded, flexible, and accepting."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 26,
+    "category": "Family Values",
+    "question": "If your career required moving far from family, what would you consider first?",
+    "options": [
+      "A. The emotional impact on family relationships.",
+      "B. The opportunities it creates for the future.",
+      "C. The stability and security of the move.",
+      "D. How everyone can adapt to the new situation."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 27,
+    "category": "Family Values",
+    "question": "How important is it to involve family in major celebrations?",
+    "options": [
+      "A. Extremely important because memories are shared.",
+      "B. Important because achievements should be celebrated together.",
+      "C. Important because it strengthens family traditions.",
+      "D. Important, but celebrations can be personalized too."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 28,
+    "category": "Family Values",
+    "question": "What would you value most in a future family relationship?",
+    "options": [
+      "A. Emotional closeness.",
+      "B. Mutual support and encouragement.",
+      "C. Trust and dependability.",
+      "D. Respect for individuality."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 29,
+    "category": "Family Values",
+    "question": "A younger family member asks you for guidance. What would you most likely do?",
+    "options": [
+      "A. Listen carefully and provide emotional support.",
+      "B. Help them create a plan to succeed.",
+      "C. Share practical advice based on experience.",
+      "D. Encourage them to explore different possibilities."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 30,
+    "category": "Family Values",
+    "question": "Which statement best matches your view of family?",
+    "options": [
+      "A. Family is a source of unconditional love and support.",
+      "B. Family helps us become better versions of ourselves.",
+      "C. Family provides security, guidance, and stability.",
+      "D. Family should encourage both connection and independence."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 1,
+    "category": "Career Goals",
+    "question": "You are offered a promotion that requires additional responsibility and effort. What would you most likely do?",
+    "options": [
+      "A. Accept it if it helps me create a better future for my loved ones.",
+      "B. Take it because it aligns with my long-term career ambitions.",
+      "C. Carefully evaluate whether it maintains work-life balance.",
+      "D. Consider it if it provides new learning opportunities and experiences."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 2,
+    "category": "Career Goals",
+    "question": "What gives you the greatest sense of achievement in your career?",
+    "options": [
+      "A. Being able to support and inspire others.",
+      "B. Reaching major professional milestones.",
+      "C. Building a stable and secure career.",
+      "D. Continuously learning and growing."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 3,
+    "category": "Career Goals",
+    "question": "If you had the opportunity to change careers completely, what would influence your decision most?",
+    "options": [
+      "A. How it affects the people who depend on me.",
+      "B. Whether it helps me achieve greater success.",
+      "C. The level of security it offers.",
+      "D. The opportunity to explore something I'm passionate about."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 4,
+    "category": "Career Goals",
+    "question": "How do you define career success?",
+    "options": [
+      "A. Having a positive impact on others.",
+      "B. Achieving ambitious goals and recognition.",
+      "C. Building a stable and respected career.",
+      "D. Constantly evolving and learning new things."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 5,
+    "category": "Career Goals",
+    "question": "A challenging project is assigned to your team. What role would you naturally take?",
+    "options": [
+      "A. Supporting and motivating team members.",
+      "B. Leading the project toward success.",
+      "C. Organizing tasks and ensuring consistency.",
+      "D. Bringing innovative ideas and solutions."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 6,
+    "category": "Career Goals",
+    "question": "What motivates you to work hard?",
+    "options": [
+      "A. Creating a better future for family and loved ones.",
+      "B. Achieving personal and professional growth.",
+      "C. Financial security and stability.",
+      "D. The excitement of learning and exploring opportunities."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 7,
+    "category": "Career Goals",
+    "question": "How important is continuous learning in your career?",
+    "options": [
+      "A. It helps me better support others.",
+      "B. It is essential for reaching my goals.",
+      "C. It is important when it improves long-term stability.",
+      "D. It is one of the most exciting parts of life."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 8,
+    "category": "Career Goals",
+    "question": "If you could choose your ideal work environment, what would it be?",
+    "options": [
+      "A. Collaborative and supportive.",
+      "B. Competitive and achievement-focused.",
+      "C. Structured and dependable.",
+      "D. Creative and dynamic."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 9,
+    "category": "Career Goals",
+    "question": "How would you react if a colleague received a promotion you wanted?",
+    "options": [
+      "A. Congratulate them and support their success.",
+      "B. Use it as motivation to improve myself.",
+      "C. Reflect on what I can do better next time.",
+      "D. Explore alternative opportunities for growth."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 10,
+    "category": "Career Goals",
+    "question": "What is more important to you in a job?",
+    "options": [
+      "A. Meaningful relationships and teamwork.",
+      "B. Advancement and achievement.",
+      "C. Stability and long-term security.",
+      "D. Variety and personal growth."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 11,
+    "category": "Career Goals",
+    "question": "If you received a significant salary increase, what would be your first thought?",
+    "options": [
+      "A. How it can improve life for my loved ones.",
+      "B. How I can use it to achieve bigger goals.",
+      "C. How it strengthens my financial security.",
+      "D. How it can help me explore new opportunities."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 12,
+    "category": "Career Goals",
+    "question": "When facing a difficult professional challenge, what is your usual approach?",
+    "options": [
+      "A. Seek support and collaborate with others.",
+      "B. Tackle it head-on and aim for excellence.",
+      "C. Create a structured plan and stay patient.",
+      "D. Think creatively and try new approaches."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 13,
+    "category": "Career Goals",
+    "question": "What type of recognition means the most to you?",
+    "options": [
+      "A. Appreciation from people I work with.",
+      "B. Awards, promotions, and achievements.",
+      "C. Being known as reliable and trustworthy.",
+      "D. Being recognized for innovation and creativity."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 14,
+    "category": "Career Goals",
+    "question": "If you could achieve one career goal in the next five years, what would it be?",
+    "options": [
+      "A. Building meaningful professional relationships.",
+      "B. Reaching a leadership position.",
+      "C. Establishing long-term career stability.",
+      "D. Gaining diverse experiences and skills."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 15,
+    "category": "Career Goals",
+    "question": "Which statement best reflects your career mindset?",
+    "options": [
+      "A. Success is meaningful when it benefits others too.",
+      "B. Success comes from ambition and persistence.",
+      "C. Success means building a secure and balanced future.",
+      "D. Success means continuously growing and discovering new possibilities."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 16,
+    "category": "Career Goals",
+    "question": "You are offered two jobs with the same salary. Which would you choose?",
+    "options": [
+      "A. The one with a supportive and positive team culture.",
+      "B. The one with faster promotion opportunities.",
+      "C. The one with long-term stability and security.",
+      "D. The one that offers new challenges and learning experiences."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 17,
+    "category": "Career Goals",
+    "question": "What would make you feel most satisfied at the end of your career?",
+    "options": [
+      "A. Knowing I positively impacted people around me.",
+      "B. Achieving major professional accomplishments.",
+      "C. Building a secure and respected career.",
+      "D. Having explored many opportunities and experiences."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 18,
+    "category": "Career Goals",
+    "question": "How do you usually set career goals?",
+    "options": [
+      "A. Based on how they improve my life and relationships.",
+      "B. Based on ambitious achievements I want to reach.",
+      "C. Based on long-term stability and practicality.",
+      "D. Based on curiosity and future possibilities."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 19,
+    "category": "Career Goals",
+    "question": "If a project fails despite your best efforts, what would you do next?",
+    "options": [
+      "A. Focus on supporting the team and learning together.",
+      "B. Analyze mistakes and work harder to succeed next time.",
+      "C. Stay patient and improve the process gradually.",
+      "D. Explore new approaches and opportunities."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 20,
+    "category": "Career Goals",
+    "question": "Which type of manager would you most enjoy working with?",
+    "options": [
+      "A. Someone who genuinely cares about people.",
+      "B. Someone who pushes me to achieve more.",
+      "C. Someone who provides clear direction and stability.",
+      "D. Someone who encourages creativity and innovation."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 21,
+    "category": "Career Goals",
+    "question": "What excites you most about a new job?",
+    "options": [
+      "A. Meeting new people and building relationships.",
+      "B. Opportunities for growth and achievement.",
+      "C. Job security and clear expectations.",
+      "D. Learning something completely new."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 22,
+    "category": "Career Goals",
+    "question": "How important is financial success in your career?",
+    "options": [
+      "A. Important because it helps support loved ones.",
+      "B. Important as a measure of achievement and growth.",
+      "C. Important for long-term security and peace of mind.",
+      "D. Important because it creates more life opportunities."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 23,
+    "category": "Career Goals",
+    "question": "You have completed a major career goal. What would you do next?",
+    "options": [
+      "A. Share the achievement with people who supported me.",
+      "B. Set an even bigger goal.",
+      "C. Enjoy the stability it provides.",
+      "D. Look for a completely new challenge."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 24,
+    "category": "Career Goals",
+    "question": "What type of work gives you the most energy?",
+    "options": [
+      "A. Helping and collaborating with others.",
+      "B. Solving difficult problems and achieving targets.",
+      "C. Managing responsibilities efficiently.",
+      "D. Creating new ideas and exploring possibilities."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 25,
+    "category": "Career Goals",
+    "question": "If you had unlimited resources, what would you pursue professionally?",
+    "options": [
+      "A. Work that positively impacts people's lives.",
+      "B. Building something successful and influential.",
+      "C. Creating a stable and meaningful career.",
+      "D. Exploring multiple interests and opportunities."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 26,
+    "category": "Career Goals",
+    "question": "What is your preferred approach to professional growth?",
+    "options": [
+      "A. Learning through collaboration and mentorship.",
+      "B. Taking on bigger responsibilities.",
+      "C. Developing expertise steadily over time.",
+      "D. Exploring diverse experiences and skills."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 27,
+    "category": "Career Goals",
+    "question": "How do you handle workplace competition?",
+    "options": [
+      "A. Focus on teamwork and mutual success.",
+      "B. Use it as motivation to improve.",
+      "C. Stay consistent and focus on my responsibilities.",
+      "D. Look for unique ways to stand out."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 28,
+    "category": "Career Goals",
+    "question": "What would be your biggest concern when changing jobs?",
+    "options": [
+      "A. Leaving behind valuable relationships.",
+      "B. Losing momentum toward my goals.",
+      "C. Sacrificing stability and security.",
+      "D. Missing future opportunities for growth."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 29,
+    "category": "Career Goals",
+    "question": "Which achievement would make you most proud?",
+    "options": [
+      "A. Being respected and appreciated by colleagues.",
+      "B. Reaching a top leadership position.",
+      "C. Building a secure and successful career.",
+      "D. Having a diverse and exciting professional journey."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 30,
+    "category": "Career Goals",
+    "question": "Which statement best describes your career vision?",
+    "options": [
+      "A. I want a career that allows me to make a positive difference in people's lives.",
+      "B. I want a career that challenges me to achieve my highest potential.",
+      "C. I want a career that provides long-term stability and balance.",
+      "D. I want a career filled with learning, exploration, and new opportunities."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 1,
+    "category": "Communication Style",
+    "question": "Your partner seems upset but says, \"I'm fine.\" What would you most likely do?",
+    "options": [
+      "A. Gently encourage them to share their feelings.",
+      "B. Ask direct questions to understand the issue.",
+      "C. Give them some space and wait until they're ready.",
+      "D. Try to lighten the mood before discussing it."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 2,
+    "category": "Communication Style",
+    "question": "When you disagree with someone, how do you usually express your opinion?",
+    "options": [
+      "A. Carefully so I don't hurt their feelings.",
+      "B. Clearly and directly.",
+      "C. Calmly after thinking through my response.",
+      "D. In a way that keeps the conversation positive."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 3,
+    "category": "Communication Style",
+    "question": "A friend misunderstands something you said. What would you do?",
+    "options": [
+      "A. Explain my intentions and reassure them.",
+      "B. Clarify the facts and correct the misunderstanding.",
+      "C. Stay patient and discuss it calmly.",
+      "D. Use examples or humor to make things clearer."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 4,
+    "category": "Communication Style",
+    "question": "What is most important during a serious conversation?",
+    "options": [
+      "A. Understanding each other's feelings.",
+      "B. Reaching a clear conclusion.",
+      "C. Maintaining respect and calmness.",
+      "D. Keeping an open mind to new perspectives."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 5,
+    "category": "Communication Style",
+    "question": "When someone shares a problem with you, your first instinct is to:",
+    "options": [
+      "A. Listen and provide emotional support.",
+      "B. Help find a solution.",
+      "C. Stay calm and let them speak fully.",
+      "D. Help them see different possibilities."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 6,
+    "category": "Communication Style",
+    "question": "How do you usually react when receiving feedback?",
+    "options": [
+      "A. Focus on understanding how others feel.",
+      "B. Look for ways to improve immediately.",
+      "C. Reflect on it carefully before responding.",
+      "D. Explore different viewpoints and interpretations."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 7,
+    "category": "Communication Style",
+    "question": "If there is tension in a relationship, how would you prefer to address it?",
+    "options": [
+      "A. Have an honest heart-to-heart conversation.",
+      "B. Discuss the issue directly and solve it.",
+      "C. Wait until emotions settle before talking.",
+      "D. Find a creative way to reconnect first."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 8,
+    "category": "Communication Style",
+    "question": "How do you usually communicate appreciation to others?",
+    "options": [
+      "A. Through heartfelt words and encouragement.",
+      "B. By recognizing their achievements.",
+      "C. Through consistent actions and support.",
+      "D. Through thoughtful gestures and surprises."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 9,
+    "category": "Communication Style",
+    "question": "In group discussions, what role do you naturally take?",
+    "options": [
+      "A. Making sure everyone feels heard.",
+      "B. Guiding the discussion toward decisions.",
+      "C. Listening carefully before speaking.",
+      "D. Bringing fresh ideas into the conversation."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 10,
+    "category": "Communication Style",
+    "question": "When discussing future plans with a partner, what matters most?",
+    "options": [
+      "A. Sharing feelings and expectations openly.",
+      "B. Creating clear goals together.",
+      "C. Building a realistic and stable plan.",
+      "D. Exploring possibilities and dreams together."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 11,
+    "category": "Communication Style",
+    "question": "Someone criticizes your idea during a meeting. What do you do?",
+    "options": [
+      "A. Try to understand their concerns.",
+      "B. Defend my reasoning logically.",
+      "C. Listen carefully and respond calmly.",
+      "D. Use the feedback to generate new ideas."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 12,
+    "category": "Communication Style",
+    "question": "How often do you express your feelings openly?",
+    "options": [
+      "A. Whenever I feel something important.",
+      "B. When it helps improve understanding.",
+      "C. After I've processed my thoughts.",
+      "D. In my own unique way."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 13,
+    "category": "Communication Style",
+    "question": "If your partner forgets an important date, how would you respond?",
+    "options": [
+      "A. Share how it made me feel.",
+      "B. Explain why it matters and discuss it.",
+      "C. Stay calm and understand the situation.",
+      "D. Turn it into a lighthearted conversation."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 14,
+    "category": "Communication Style",
+    "question": "What type of conversation do you enjoy most?",
+    "options": [
+      "A. Deep and meaningful discussions.",
+      "B. Goal-oriented and productive discussions.",
+      "C. Thoughtful and balanced conversations.",
+      "D. Creative and imaginative discussions."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 15,
+    "category": "Communication Style",
+    "question": "Which statement best describes your communication style?",
+    "options": [
+      "A. I focus on emotions and understanding.",
+      "B. I value honesty and clarity.",
+      "C. I prefer calm and respectful discussions.",
+      "D. I enjoy open-minded and engaging conversations."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 16,
+    "category": "Communication Style",
+    "question": "Your partner shares an opinion that is completely different from yours. What would you most likely do?",
+    "options": [
+      "A. Try to understand why they feel that way.",
+      "B. Explain my viewpoint and discuss the differences.",
+      "C. Listen carefully before responding.",
+      "D. Explore whether both perspectives can work together."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 17,
+    "category": "Communication Style",
+    "question": "When you are upset, how do you usually communicate it?",
+    "options": [
+      "A. Share my feelings openly.",
+      "B. Clearly explain what is bothering me.",
+      "C. Take time to think before talking.",
+      "D. Express it indirectly until I'm ready to discuss it."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 18,
+    "category": "Communication Style",
+    "question": "How do you prefer difficult conversations to happen?",
+    "options": [
+      "A. In a safe and emotionally supportive environment.",
+      "B. Directly and honestly.",
+      "C. Calmly without rushing.",
+      "D. Flexibly, depending on the situation."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 19,
+    "category": "Communication Style",
+    "question": "A friend asks for your honest opinion about something sensitive. What do you do?",
+    "options": [
+      "A. Give honest feedback while protecting their feelings.",
+      "B. Tell them exactly what I think.",
+      "C. Carefully choose my words.",
+      "D. Offer a different perspective they may not have considered."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 20,
+    "category": "Communication Style",
+    "question": "What do you value most in a conversation?",
+    "options": [
+      "A. Emotional connection.",
+      "B. Clarity and honesty.",
+      "C. Respect and understanding.",
+      "D. Openness to different ideas."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 21,
+    "category": "Communication Style",
+    "question": "If someone interrupts you while speaking, how do you react?",
+    "options": [
+      "A. Continue politely after they finish.",
+      "B. Address it directly and continue my point.",
+      "C. Stay patient and wait for the right moment.",
+      "D. Adapt the conversation naturally."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 22,
+    "category": "Communication Style",
+    "question": "How do you usually apologize when you make a mistake?",
+    "options": [
+      "A. Express genuine feelings and regret.",
+      "B. Clearly acknowledge what I did wrong.",
+      "C. Take responsibility and correct my actions.",
+      "D. Find a meaningful way to make things better."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 23,
+    "category": "Communication Style",
+    "question": "What type of message do you usually send to someone you care about?",
+    "options": [
+      "A. Thoughtful and emotional messages.",
+      "B. Direct and meaningful updates.",
+      "C. Consistent check-ins and support.",
+      "D. Fun, creative, or unexpected messages."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 24,
+    "category": "Communication Style",
+    "question": "When making a joint decision, what is most important?",
+    "options": [
+      "A. Ensuring everyone feels understood.",
+      "B. Reaching a practical conclusion.",
+      "C. Taking enough time to think it through.",
+      "D. Exploring all possible options."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 25,
+    "category": "Communication Style",
+    "question": "If a conversation becomes emotional, what would you do?",
+    "options": [
+      "A. Focus on feelings and empathy.",
+      "B. Keep the discussion productive.",
+      "C. Stay calm and balanced.",
+      "D. Change the approach to reduce tension."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 26,
+    "category": "Communication Style",
+    "question": "How do you usually react when someone disagrees with you?",
+    "options": [
+      "A. Try to understand their emotions.",
+      "B. Explain my reasoning confidently.",
+      "C. Listen and reflect before responding.",
+      "D. Stay curious about their perspective."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 27,
+    "category": "Communication Style",
+    "question": "Which communication quality do you admire most in others?",
+    "options": [
+      "A. Compassion and empathy.",
+      "B. Honesty and confidence.",
+      "C. Patience and understanding.",
+      "D. Creativity and open-mindedness."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 28,
+    "category": "Communication Style",
+    "question": "How do you handle misunderstandings in relationships?",
+    "options": [
+      "A. Discuss feelings openly.",
+      "B. Clarify facts and expectations.",
+      "C. Give both sides time to process.",
+      "D. Find a new way to reconnect and communicate."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 29,
+    "category": "Communication Style",
+    "question": "When someone shares exciting news with you, how do you respond?",
+    "options": [
+      "A. Celebrate their happiness emotionally.",
+      "B. Congratulate them and discuss their achievement.",
+      "C. Appreciate the effort that led to the success.",
+      "D. Get excited about what comes next for them."
+    ],
+    "questionType": "choice"
+  },
+  {
+    "day": 30,
+    "category": "Communication Style",
+    "question": "Which statement best describes your communication approach?",
+    "options": [
+      "A. I believe understanding feelings creates stronger relationships.",
+      "B. I believe honest communication solves most problems.",
+      "C. I believe patience and respect are essential for healthy conversations.",
+      "D. I believe every conversation is an opportunity to learn something new."
+    ],
+    "questionType": "choice"
+  }
+]

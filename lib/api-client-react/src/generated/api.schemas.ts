@@ -152,6 +152,30 @@ export interface UserProfile {
   /** @nullable */
   drinking?: string | null;
   photos?: Photo[];
+  /** @nullable */
+  weight?: number | null;
+  /** @nullable */
+  fieldOfStudy?: string | null;
+  /** @nullable */
+  company?: string | null;
+  /** @nullable */
+  industry?: string | null;
+  /** @nullable */
+  annualIncomeRange?: string | null;
+  /** @nullable */
+  stateRegion?: string | null;
+  /** @nullable */
+  citizenship?: string | null;
+  /** @nullable */
+  videoIntroUrl?: string | null;
+  isGovIdVerified?: boolean;
+  isSelfieVerified?: boolean;
+  /** @nullable */
+  govIdFrontUrl?: string | null;
+  /** @nullable */
+  govIdBackUrl?: string | null;
+  /** @nullable */
+  selfieUrl?: string | null;
   role: UserProfileRole;
   verificationStatus?: UserProfileVerificationStatus;
   isPhoneVerified?: boolean;
@@ -186,6 +210,19 @@ export interface ProfileUpdate {
   drinking?: string;
   interests?: string[];
   languages?: string[];
+  weight?: number;
+  fieldOfStudy?: string;
+  company?: string;
+  industry?: string;
+  annualIncomeRange?: string;
+  stateRegion?: string;
+  citizenship?: string;
+  videoIntroUrl?: string;
+  isGovIdVerified?: boolean;
+  isSelfieVerified?: boolean;
+  govIdFrontUrl?: string;
+  govIdBackUrl?: string;
+  selfieUrl?: string;
 }
 
 export interface PhotoUploadInput {
@@ -242,6 +279,22 @@ export interface PublicProfile {
   /** @nullable */
   bio?: string | null;
   photos?: Photo[];
+  /** @nullable */
+  weight?: number | null;
+  /** @nullable */
+  fieldOfStudy?: string | null;
+  /** @nullable */
+  company?: string | null;
+  /** @nullable */
+  industry?: string | null;
+  /** @nullable */
+  stateRegion?: string | null;
+  /** @nullable */
+  citizenship?: string | null;
+  /** @nullable */
+  videoIntroUrl?: string | null;
+  isGovIdVerified?: boolean;
+  isSelfieVerified?: boolean;
   verificationStatus?: string;
   isPremium?: boolean;
   /** @nullable */
@@ -717,6 +770,71 @@ export interface ReportResolution {
   status: ReportResolutionStatus;
   resolution: string;
   actionTaken?: ReportResolutionActionTaken;
+}
+
+export type ReportUpdateStatus = typeof ReportUpdateStatus[keyof typeof ReportUpdateStatus];
+
+
+export const ReportUpdateStatus = {
+  pending: 'pending',
+  reviewing: 'reviewing',
+  resolved: 'resolved',
+  dismissed: 'dismissed',
+} as const;
+
+export interface ReportUpdate {
+  status: ReportUpdateStatus;
+  adminNotes?: string;
+}
+
+export type SupportMessageStatus = typeof SupportMessageStatus[keyof typeof SupportMessageStatus];
+
+
+export const SupportMessageStatus = {
+  open: 'open',
+  resolved: 'resolved',
+} as const;
+
+export interface SupportMessage {
+  id: number;
+  userId?: number | null;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  status: SupportMessageStatus;
+  createdAt: string;
+  resolvedAt?: string | null;
+}
+
+export interface SupportMessageInput {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
+
+export type SupportMessageUpdateStatus = typeof SupportMessageUpdateStatus[keyof typeof SupportMessageUpdateStatus];
+
+
+export const SupportMessageUpdateStatus = {
+  open: 'open',
+  resolved: 'resolved',
+} as const;
+
+export type SupportMessageUpdateActionTaken = typeof SupportMessageUpdateActionTaken[keyof typeof SupportMessageUpdateActionTaken];
+
+
+export const SupportMessageUpdateActionTaken = {
+  none: 'none',
+  warning: 'warning',
+  suspend: 'suspend',
+  ban: 'ban',
+} as const;
+
+export interface SupportMessageUpdate {
+  status: SupportMessageUpdateStatus;
+  actionTaken?: SupportMessageUpdateActionTaken;
 }
 
 export type VerificationRequestStatus = typeof VerificationRequestStatus[keyof typeof VerificationRequestStatus];

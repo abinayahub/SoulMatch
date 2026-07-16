@@ -56,7 +56,7 @@ export default function AdminVerificationsPage() {
 
         <div className="space-y-4">
           {isLoading ? (
-            [...Array(4)].map((_, i) => <Skeleton key={i} className="h-36 rounded-2xl bg-white/5" />)
+            [...Array(4)].map((_, i) => <Skeleton key={i} className="h-36 rounded-2xl bg-card/5" />)
           ) : (verifications as any[]).length === 0 ? (
             <div className="text-center py-16 text-muted-foreground">
               <Shield className="w-10 h-10 mx-auto mb-3 opacity-30" />
@@ -71,12 +71,12 @@ export default function AdminVerificationsPage() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.06 }}
-                  className="glass rounded-2xl p-5"
+                  className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-5"
                 >
                   <div className="flex items-start gap-5">
                     <Avatar className="w-12 h-12 shrink-0">
                       <AvatarImage src={photo?.url} />
-                      <AvatarFallback className="gradient-primary text-white font-semibold">
+                      <AvatarFallback className="bg-primary text-primary-foreground shadow-md text-white font-semibold">
                         {getInitials(v.user?.firstName ?? "U")}
                       </AvatarFallback>
                     </Avatar>
@@ -89,11 +89,11 @@ export default function AdminVerificationsPage() {
                       <p className="text-xs text-muted-foreground mt-0.5">Submitted {formatDate(v.createdAt)}</p>
                       <div className="mt-3 flex gap-2">
                         <a href={v.documentUrl} target="_blank" rel="noopener noreferrer">
-                          <Button size="sm" variant="outline" className="border-white/20 bg-white/5 text-xs">View Document</Button>
+                          <Button size="sm" variant="outline" className="border-white/20 bg-card/5 text-xs">View Document</Button>
                         </a>
                         {v.selfieUrl && (
                           <a href={v.selfieUrl} target="_blank" rel="noopener noreferrer">
-                            <Button size="sm" variant="outline" className="border-white/20 bg-white/5 text-xs">View Selfie</Button>
+                            <Button size="sm" variant="outline" className="border-white/20 bg-card/5 text-xs">View Selfie</Button>
                           </a>
                         )}
                       </div>

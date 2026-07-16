@@ -4,7 +4,7 @@ import { z } from "zod/v4";
 import { usersTable } from "./users";
 
 export const notificationTypeEnum = pgEnum("notification_type", [
-  "interest", "match", "message", "journey", "system", "verification", "subscription",
+  "interest", "match", "message", "call", "journey", "system", "verification", "subscription",
 ]);
 
 export const notificationsTable = pgTable("notifications", {

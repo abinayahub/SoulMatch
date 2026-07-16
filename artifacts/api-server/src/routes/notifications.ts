@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { db } from "@workspace/db";
-import { notificationsTable } from "@workspace/db";
+import { notificationsTable, usersTable } from "@workspace/db";
 import { eq, and, desc, count } from "drizzle-orm";
 import { authenticate, type AuthRequest } from "../lib/auth";
 import { buildPublicProfile } from "../lib/helpers";
@@ -15,29 +15,49 @@ router.get("/", authenticate, async (req: AuthRequest, res) => {
     const limit = 20;
     const offset = (page - 1) * limit;
 
+    const currentUser = await db.query.usersTable.findFirst({ where: eq(usersTable.id, req.user!.userId) });
+    const oppositeGender = currentUser?.gender === "male" ? "female" : currentUser?.gender === "female" ? "male" : null;
+
     const conditions = unreadOnly
       ? and(eq(notificationsTable.userId, req.user!.userId), eq(notificationsTable.isRead, false))
       : eq(notificationsTable.userId, req.user!.userId);
 
     const notifications = await db.select().from(notificationsTable)
-      .where(conditions).orderBy(desc(notificationsTable.createdAt)).limit(limit).offset(offset);
+      .where(conditions).orderBy(desc(notificationsTable.createdAt));
 
-    const [totalResult] = await db.select({ count: count() }).from(notificationsTable).where(conditions);
-    const [unreadResult] = await db.select({ count: count() }).from(notificationsTable)
-      .where(and(eq(notificationsTable.userId, req.user!.userId), eq(notificationsTable.isRead, false)));
+    const enriched = await Promise.all(notifications.map(async (n) => {
+      let actorGender = null;
+      if (n.actorId) {
+        const actorUser = await db.query.usersTable.findFirst({ where: eq(usersTable.id, n.actorId) });
+        actorGender = actorUser?.gender;
+      }
+      return {
+        id: n.id, type: n.type, title: n.title, body: n.body, isRead: n.isRead,
+        actionUrl: n.actionUrl,
+        actorId: n.actorId,
+        actorGender,
+        actor: n.actorId ? await buildPublicProfile(n.actorId) : null,
+        createdAt: n.createdAt.toISOString(),
+      };
+    }));
 
-    const enriched = await Promise.all(notifications.map(async (n) => ({
-      id: n.id, type: n.type, title: n.title, body: n.body, isRead: n.isRead,
-      actionUrl: n.actionUrl,
-      actorId: n.actorId,
-      actor: n.actorId ? await buildPublicProfile(n.actorId) : null,
-      createdAt: n.createdAt.toISOString(),
-    })));
+    // Filter out notifications from same gender (unless system notifications where actorId is null, or it is a direct interaction like call/message)
+    let filtered = enriched.filter(n => 
+      !n.actorId || 
+      !oppositeGender || 
+      n.actorGender === oppositeGender ||
+      n.type === "call" ||
+      n.type === "message"
+    );
+    
+    // Manual pagination after filtering
+    const paginated = filtered.slice(offset, offset + limit);
+    const unreadCount = filtered.filter(n => !n.isRead).length;
 
     return res.json({
-      notifications: enriched,
-      total: Number(totalResult.count),
-      unreadCount: Number(unreadResult.count),
+      notifications: paginated,
+      total: filtered.length,
+      unreadCount,
     });
   } catch (err) { req.log.error(err); return res.status(500).json({ error: "Internal server error" }); }
 });
@@ -45,9 +65,25 @@ router.get("/", authenticate, async (req: AuthRequest, res) => {
 // GET /notifications/count
 router.get("/count", authenticate, async (req: AuthRequest, res) => {
   try {
-    const [result] = await db.select({ count: count() }).from(notificationsTable)
+    const currentUser = await db.query.usersTable.findFirst({ where: eq(usersTable.id, req.user!.userId) });
+    const oppositeGender = currentUser?.gender === "male" ? "female" : currentUser?.gender === "female" ? "male" : null;
+
+    const notifications = await db.select().from(notificationsTable)
       .where(and(eq(notificationsTable.userId, req.user!.userId), eq(notificationsTable.isRead, false)));
-    return res.json({ count: Number(result.count) });
+    
+    let unreadCount = 0;
+    for (const n of notifications) {
+      if (!n.actorId || n.type === "call" || n.type === "message") {
+        unreadCount++;
+      } else {
+        const actorUser = await db.query.usersTable.findFirst({ where: eq(usersTable.id, n.actorId) });
+        if (!oppositeGender || actorUser?.gender === oppositeGender) {
+          unreadCount++;
+        }
+      }
+    }
+    
+    return res.json({ count: unreadCount });
   } catch (err) { req.log.error(err); return res.status(500).json({ error: "Internal server error" }); }
 });
 

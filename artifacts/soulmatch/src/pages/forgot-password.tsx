@@ -19,7 +19,10 @@ export default function ForgotPasswordPage() {
     forgot.mutate(
       { data: { email: data.email } },
       {
-        onSuccess: () => { setSent(true); toast({ title: "Reset link sent!", description: "Check your email." }); },
+        onSuccess: () => { 
+          setSent(true); 
+          toast({ title: "Reset link sent!", description: "Check your email." }); 
+        },
         onError: (err: any) => toast({ title: "Error", description: err.message, variant: "destructive" }),
       },
     );
@@ -30,17 +33,20 @@ export default function ForgotPasswordPage() {
       <div className="orb orb-1" />
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md relative z-10">
         <div className="text-center mb-8">
-          <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center glow-primary mx-auto mb-4">
+          <div className="w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-md flex items-center justify-center shadow-lg shadow-primary/20 mx-auto mb-4">
             <Heart className="w-5 h-5 text-white" />
           </div>
           <h1 className="text-2xl font-bold">Reset Password</h1>
           <p className="text-muted-foreground mt-1 text-sm">Enter your email to receive a reset link</p>
         </div>
-        <div className="glass rounded-2xl p-6">
+        <div className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-6">
           {sent ? (
-            <div className="text-center py-4">
-              <p className="text-muted-foreground text-sm mb-4">We've sent a password reset link to your email.</p>
-              <Link href="/login"><Button variant="outline" className="border-white/20 bg-white/5">Back to Login</Button></Link>
+            <div className="text-center py-4 flex flex-col gap-4 items-center">
+              <p className="text-muted-foreground text-sm">We've sent a password reset link to your email.</p>
+              
+              <Link href="/login" className="w-full">
+                <Button variant="outline" className="border-white/20 bg-card/5 w-full">Back to Login</Button>
+              </Link>
             </div>
           ) : (
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -48,10 +54,10 @@ export default function ForgotPasswordPage() {
                 <Label>Email Address</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input type="email" placeholder="you@example.com" className="pl-9 bg-white/5 border-white/10" {...form.register("email", { required: true })} />
+                  <Input type="email" placeholder="you@example.com" className="pl-9 bg-card/5 border-white/10" {...form.register("email", { required: true })} />
                 </div>
               </div>
-              <Button type="submit" className="w-full gradient-primary border-0 text-white" disabled={forgot.isPending}>
+              <Button type="submit" className="w-full bg-primary text-primary-foreground shadow-md border-0 text-white" disabled={forgot.isPending}>
                 {forgot.isPending ? "Sending..." : "Send Reset Link"}
               </Button>
             </form>

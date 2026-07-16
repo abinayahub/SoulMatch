@@ -31,7 +31,7 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    runtimeErrorOverlay(),
+    // runtimeErrorOverlay(),
     ...(process.env.NODE_ENV !== "production" &&
     process.env.REPL_ID !== undefined
       ? [
@@ -66,6 +66,13 @@ export default defineConfig({
     fs: {
       strict: true,
     },
+    proxy: {
+      '/api': {
+        target: process.env.VITE_API_URL || 'http://127.0.0.1:5000',
+        changeOrigin: true,
+        secure: false,
+      }
+    }
   },
   preview: {
     port,

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useForm } from "react-hook-form";
-import { Heart, Mail, Lock, Eye, EyeOff, ArrowRight, Sparkles, Shield, Users } from "lucide-react";
+import { Heart, Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,17 +11,6 @@ import { useAuth } from "@/lib/auth-context";
 import { apiRequest } from "@/lib/api";
 
 interface LoginForm { email: string; password: string; }
-
-const STATS = [
-  { icon: Users, label: "Active members", value: "2.4M+" },
-  { icon: Heart, label: "Successful matches", value: "180K+" },
-  { icon: Sparkles, label: "AI compatibility score", value: "98%" },
-];
-
-const TESTIMONIALS = [
-  { name: "Priya S.", text: "Found my soulmate in 3 months. The AI matching is incredible!", avatar: "PS" },
-  { name: "Arjun M.", text: "Best matrimony platform — real connections, not just profiles.", avatar: "AM" },
-];
 
 export default function LoginPage() {
   const [, navigate] = useLocation();
@@ -46,7 +35,8 @@ export default function LoginPage() {
       login(res.accessToken, res.refreshToken, res.user);
       navigate("/dashboard");
     } catch (err: any) {
-      toast({ title: "Sign in failed", description: err.message || "Invalid email or password", variant: "destructive" });
+      const msg = err.message === "Failed to fetch" ? "Unable to connect to server. Please try again." : (err.message || "Invalid email or password");
+      toast({ title: "Sign in failed", description: msg, variant: "destructive" });
     } finally { setLoading(false); }
   }
 
@@ -58,7 +48,8 @@ export default function LoginPage() {
       setOtpSent(true);
       toast({ title: "Code sent!", description: "Check your inbox for the 6-digit code." });
     } catch (err: any) {
-      toast({ title: "Failed to send code", description: err.message, variant: "destructive" });
+      const msg = err.message === "Failed to fetch" ? "Unable to connect to server. Please try again." : err.message;
+      toast({ title: "Failed to send code", description: msg, variant: "destructive" });
     } finally { setSendingOtp(false); }
   }
 
@@ -72,291 +63,232 @@ export default function LoginPage() {
       login(res.accessToken, res.refreshToken, res.user);
       navigate("/dashboard");
     } catch (err: any) {
-      toast({ title: "Invalid code", description: err.message, variant: "destructive" });
+      const msg = err.message === "Failed to fetch" ? "Unable to connect to server. Please try again." : err.message;
+      toast({ title: "Invalid code", description: msg, variant: "destructive" });
     } finally { setLoading(false); }
   }
 
   return (
-    <div className="min-h-screen flex" style={{ background: "hsl(222 47% 5%)" }}>
-      {/* ── Left Hero Panel ── */}
-      <div
-        className="hidden lg:flex flex-col justify-between w-[480px] shrink-0 p-12 relative overflow-hidden"
-        style={{
-          background: "linear-gradient(145deg, hsl(222 47% 7%) 0%, hsl(280 35% 10%) 50%, hsl(340 35% 10%) 100%)",
-          borderRight: "1px solid rgba(255,255,255,0.06)",
-        }}
-      >
-        {/* Background orbs */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div style={{
-            position: "absolute", width: 400, height: 400, borderRadius: "50%",
-            background: "radial-gradient(circle, hsl(340 82% 65% / 0.18) 0%, transparent 70%)",
-            top: -80, left: -80, filter: "blur(60px)",
-          }} />
-          <div style={{
-            position: "absolute", width: 300, height: 300, borderRadius: "50%",
-            background: "radial-gradient(circle, hsl(280 70% 65% / 0.15) 0%, transparent 70%)",
-            bottom: -60, right: -60, filter: "blur(50px)",
-          }} />
-        </div>
-
-        {/* Logo */}
-        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-          <Link href="/">
-            <span className="inline-flex items-center gap-3 cursor-pointer">
-              <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center glow-sm">
-                <Heart className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-bold text-white">SoulMatch AI</span>
-            </span>
-          </Link>
-        </motion.div>
-
-        {/* Hero copy */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-          className="relative z-10 space-y-6"
-        >
-          <div>
-            <h1 className="text-4xl font-bold text-white leading-tight mb-3">
-              Your perfect match<br />
-              <span className="gradient-text">is waiting for you</span>
-            </h1>
-            <p className="text-white/50 text-base leading-relaxed">
-              AI-powered compatibility matching that goes beyond photos — understanding values, life goals, and personality.
-            </p>
-          </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-3">
-            {STATS.map(({ icon: Icon, label, value }) => (
-              <div key={label} className="glass rounded-xl p-3 text-center">
-                <Icon className="w-4 h-4 mx-auto mb-1" style={{ color: "hsl(340 82% 65%)" }} />
-                <div className="text-white font-bold text-sm">{value}</div>
-                <div className="text-white/40 text-xs mt-0.5">{label}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Testimonials */}
-          <div className="space-y-3">
-            {TESTIMONIALS.map((t) => (
-              <div key={t.name} className="glass rounded-xl p-4 flex items-start gap-3">
-                <div className="w-9 h-9 rounded-full gradient-primary flex items-center justify-center text-white text-xs font-bold shrink-0">
-                  {t.avatar}
-                </div>
-                <div>
-                  <p className="text-white/70 text-xs leading-relaxed">"{t.text}"</p>
-                  <p className="text-white/40 text-xs mt-1 font-medium">— {t.name}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Trust badge */}
-        <motion.div
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
-          className="flex items-center gap-2 text-white/30 text-xs relative z-10"
-        >
-          <Shield className="w-4 h-4" />
-          <span>256-bit encrypted · Privacy-first · Verified profiles</span>
-        </motion.div>
+    <div className="min-h-screen flex flex-col bg-background relative overflow-hidden">
+      {/* Background Orbs */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+        <div className="absolute w-[400px] h-[400px] rounded-full bg-primary/10 blur-[80px] -top-20 -left-20" />
+        <div className="absolute w-[300px] h-[300px] rounded-full bg-[#9B4DFF]/10 blur-[60px] top-1/2 -right-20" />
       </div>
 
-      {/* ── Right Form Panel ── */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 relative">
-        {/* Mobile logo */}
-        <div className="lg:hidden mb-8">
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 relative z-10">
+        
+        {/* Animated Logo */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="mb-8"
+        >
           <Link href="/">
-            <span className="inline-flex items-center gap-2 cursor-pointer">
-              <div className="w-9 h-9 rounded-xl gradient-primary flex items-center justify-center glow-sm">
-                <Heart className="w-4 h-4 text-white" />
+            <div className="flex flex-col items-center gap-4 cursor-pointer">
+              <div className="w-16 h-16 rounded-[1.5rem] bg-gradient-to-br from-primary to-[#9B4DFF] text-white shadow-lg shadow-primary/20 flex items-center justify-center transform hover:scale-105 transition-transform">
+                <Heart className="w-8 h-8 fill-white" />
               </div>
-              <span className="text-lg font-bold text-white">SoulMatch AI</span>
-            </span>
+              <span className="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-primary to-[#9B4DFF]">
+                SoulMatch
+              </span>
+            </div>
           </Link>
-        </div>
+        </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15, duration: 0.5 }}
           className="w-full max-w-sm"
         >
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold text-white mb-1">Welcome back</h2>
-            <p className="text-white/50 text-sm">Sign in to continue your journey</p>
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-extrabold text-foreground mb-2">Welcome back</h2>
+            <p className="text-muted-foreground text-sm font-medium">Sign in to continue your journey</p>
           </div>
 
-          {/* Tab switcher */}
-          <div className="flex gap-1 mb-6 p-1 rounded-xl" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}>
+          {/* Premium Segmented Control Tab Switcher */}
+          <div className="flex bg-foreground/5 p-1 rounded-2xl mb-8 relative">
+            <motion.div 
+              className="absolute top-1 bottom-1 w-[calc(50%-4px)] bg-background shadow-md rounded-[14px]"
+              animate={{ left: activeTab === "password" ? "4px" : "calc(50%)" }}
+              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+            />
             {(["password", "otp"] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className="flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all duration-200"
-                style={{
-                  background: activeTab === tab ? "linear-gradient(135deg, hsl(340 82% 60%), hsl(280 70% 65%))" : "transparent",
-                  color: activeTab === tab ? "white" : "hsl(215 20% 55%)",
-                  boxShadow: activeTab === tab ? "0 2px 12px rgba(219,68,120,0.3)" : "none",
-                }}
+                className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold z-10 transition-colors duration-200 ${
+                  activeTab === tab ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                }`}
               >
                 {tab === "password" ? "Password" : "Email Code"}
               </button>
             ))}
           </div>
 
-          {/* Password tab */}
-          {activeTab === "password" && (
-            <motion.form
-              key="pw"
-              initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }}
-              onSubmit={form.handleSubmit(onLogin)}
-              className="space-y-4"
-            >
-              <div className="space-y-1.5">
-                <Label className="text-white/70 text-sm">Email</Label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "hsl(215 20% 45%)" }} />
-                  <Input
-                    type="email"
-                    placeholder="you@example.com"
-                    autoComplete="email"
-                    className="auth-input pl-10 h-11 rounded-xl text-sm"
-                    {...form.register("email", { required: true })}
-                  />
+          <AnimatePresence mode="wait">
+            {/* Password Tab */}
+            {activeTab === "password" && (
+              <motion.form
+                key="pw"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 10 }}
+                transition={{ duration: 0.2 }}
+                onSubmit={form.handleSubmit(onLogin)}
+                className="space-y-5"
+              >
+                <div className="space-y-2">
+                  <Label className="text-foreground font-semibold ml-1">Email Address</Label>
+                  <div className="relative">
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                    <Input
+                      type="email"
+                      placeholder="you@example.com"
+                      autoComplete="email"
+                      className="pl-12 h-14 rounded-2xl text-base bg-foreground/[0.03] border-foreground/10 focus:bg-background focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all shadow-sm"
+                      {...form.register("email", { required: true })}
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div className="space-y-1.5">
-                <div className="flex justify-between items-center">
-                  <Label className="text-white/70 text-sm">Password</Label>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center ml-1">
+                    <Label className="text-foreground font-semibold">Password</Label>
+                  </div>
+                  <div className="relative">
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Your password"
+                      autoComplete="current-password"
+                      className="pl-12 pr-12 h-14 rounded-2xl text-base bg-foreground/[0.03] border-foreground/10 focus:bg-background focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all shadow-sm"
+                      {...form.register("password", { required: true })}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 p-1 text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    </button>
+                  </div>
+                </div>
+                
+                <div className="flex justify-end pr-1">
                   <Link href="/forgot-password">
-                    <span className="text-xs cursor-pointer transition-colors" style={{ color: "hsl(340 82% 65%)" }}>
+                    <span className="text-sm font-bold text-primary cursor-pointer hover:text-primary/80 transition-colors">
                       Forgot password?
                     </span>
                   </Link>
                 </div>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "hsl(215 20% 45%)" }} />
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Your password"
-                    autoComplete="current-password"
-                    className="auth-input pl-10 pr-11 h-11 rounded-xl text-sm"
-                    {...form.register("password", { required: true })}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors"
-                    style={{ color: "hsl(215 20% 45%)" }}
-                  >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
-                </div>
-              </div>
 
-              <Button
-                type="submit"
-                disabled={loading}
-                className="w-full h-11 rounded-xl font-semibold text-white border-0 mt-2"
-                style={{
-                  background: "linear-gradient(135deg, hsl(340 82% 60%) 0%, hsl(280 70% 65%) 100%)",
-                  boxShadow: "0 4px 20px rgba(219,68,120,0.35)",
-                }}
-              >
-                {loading ? (
-                  <span className="flex items-center gap-2">
-                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Signing in…
-                  </span>
-                ) : (
-                  <span className="flex items-center gap-2">Sign In <ArrowRight className="w-4 h-4" /></span>
-                )}
-              </Button>
-            </motion.form>
-          )}
-
-          {/* OTP tab */}
-          {activeTab === "otp" && (
-            <motion.div
-              key="otp"
-              initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }}
-              className="space-y-4"
-            >
-              <div className="space-y-1.5">
-                <Label className="text-white/70 text-sm">Email address</Label>
-                <div className="flex gap-2">
-                  <div className="relative flex-1">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "hsl(215 20% 45%)" }} />
-                    <Input
-                      type="email"
-                      placeholder="you@example.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="auth-input pl-10 h-11 rounded-xl text-sm"
-                    />
-                  </div>
-                  <Button
-                    type="button"
-                    onClick={sendOtp}
-                    disabled={sendingOtp || otpSent}
-                    className="h-11 px-4 rounded-xl text-sm font-medium shrink-0"
-                    style={{
-                      background: otpSent ? "rgba(255,255,255,0.06)" : "rgba(219,68,120,0.15)",
-                      border: "1px solid rgba(219,68,120,0.3)",
-                      color: otpSent ? "hsl(215 20% 55%)" : "hsl(340 82% 70%)",
-                    }}
-                  >
-                    {sendingOtp ? "…" : otpSent ? "Sent ✓" : "Send"}
-                  </Button>
-                </div>
-              </div>
-
-              {otpSent && (
-                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-1.5">
-                  <Label className="text-white/70 text-sm">6-digit code</Label>
-                  <Input
-                    type="text"
-                    inputMode="numeric"
-                    maxLength={6}
-                    placeholder="000000"
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-                    className="auth-input h-14 rounded-xl text-center text-2xl tracking-[0.5em] font-bold"
-                  />
-                </motion.div>
-              )}
-
-              {otpSent && (
                 <Button
-                  onClick={verifyOtp}
-                  disabled={loading || otp.length < 6}
-                  className="w-full h-11 rounded-xl font-semibold text-white border-0"
-                  style={{
-                    background: "linear-gradient(135deg, hsl(340 82% 60%) 0%, hsl(280 70% 65%) 100%)",
-                    boxShadow: "0 4px 20px rgba(219,68,120,0.35)",
-                  }}
+                  type="submit"
+                  disabled={loading}
+                  className="w-full h-14 rounded-2xl font-bold text-lg text-white mt-4 active:scale-[0.98] transition-all bg-gradient-to-r from-primary to-[#9B4DFF] hover:opacity-90 shadow-lg shadow-primary/20"
                 >
-                  {loading ? "Verifying…" : <span className="flex items-center gap-2">Verify & Sign In <ArrowRight className="w-4 h-4" /></span>}
+                  {loading ? (
+                    <span className="flex items-center gap-3">
+                      <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Signing in...
+                    </span>
+                  ) : (
+                    "Sign In"
+                  )}
                 </Button>
-              )}
-            </motion.div>
-          )}
+              </motion.form>
+            )}
+
+            {/* OTP Tab */}
+            {activeTab === "otp" && (
+              <motion.div
+                key="otp"
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+                transition={{ duration: 0.2 }}
+                className="space-y-5"
+              >
+                <div className="space-y-2">
+                  <Label className="text-foreground font-semibold ml-1">Email Address</Label>
+                  <div className="flex gap-2">
+                    <div className="relative flex-1">
+                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                      <Input
+                        type="email"
+                        placeholder="you@example.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="pl-12 h-14 rounded-2xl text-base bg-foreground/[0.03] border-foreground/10 focus:bg-background focus:border-primary shadow-sm"
+                      />
+                    </div>
+                    <Button
+                      type="button"
+                      onClick={sendOtp}
+                      disabled={sendingOtp || otpSent}
+                      variant="outline"
+                      className={`h-14 px-6 rounded-2xl font-bold transition-all ${
+                        otpSent 
+                          ? "bg-muted border-border text-muted-foreground" 
+                          : "border-primary text-primary hover:bg-primary/5 active:scale-95"
+                      }`}
+                    >
+                      {sendingOtp ? "..." : otpSent ? "Sent ✓" : "Send"}
+                    </Button>
+                  </div>
+                </div>
+
+                <AnimatePresence>
+                  {otpSent && (
+                    <motion.div 
+                      initial={{ opacity: 0, height: 0 }} 
+                      animate={{ opacity: 1, height: "auto" }} 
+                      exit={{ opacity: 0, height: 0 }}
+                      className="space-y-2 overflow-hidden pt-2"
+                    >
+                      <Label className="text-foreground font-semibold ml-1">6-digit code</Label>
+                      <Input
+                        type="text"
+                        inputMode="numeric"
+                        maxLength={6}
+                        placeholder="000000"
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
+                        className="h-16 rounded-2xl text-center text-3xl tracking-[0.5em] font-black bg-foreground/[0.03] border-foreground/10 focus:bg-background focus:border-primary shadow-sm"
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {otpSent && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
+                    <Button
+                      onClick={verifyOtp}
+                      disabled={loading || otp.length < 6}
+                      className="w-full h-14 rounded-2xl font-bold text-lg text-white mt-4 active:scale-[0.98] transition-all bg-gradient-to-r from-primary to-[#9B4DFF] hover:opacity-90 shadow-lg shadow-primary/20"
+                    >
+                      {loading ? "Verifying..." : "Verify & Sign In"}
+                    </Button>
+                  </motion.div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Divider */}
-          <div className="flex items-center gap-3 my-6">
-            <div className="flex-1 h-px" style={{ background: "rgba(255,255,255,0.08)" }} />
-            <span className="text-xs" style={{ color: "hsl(215 20% 40%)" }}>or</span>
-            <div className="flex-1 h-px" style={{ background: "rgba(255,255,255,0.08)" }} />
+          <div className="flex items-center gap-4 my-8">
+            <div className="flex-1 h-px bg-border/60" />
+            <span className="text-sm font-medium text-muted-foreground">or</span>
+            <div className="flex-1 h-px bg-border/60" />
           </div>
 
-          <p className="text-center text-sm" style={{ color: "hsl(215 20% 50%)" }}>
+          <p className="text-center text-base font-medium text-muted-foreground">
             New to SoulMatch?{" "}
             <Link href="/register">
-              <span className="font-semibold cursor-pointer hover:underline" style={{ color: "hsl(340 82% 68%)" }}>
+              <span className="font-bold text-primary cursor-pointer hover:underline underline-offset-4">
                 Create free account
               </span>
             </Link>

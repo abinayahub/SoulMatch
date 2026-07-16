@@ -1,20 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { TrendingUp, ChevronRight, Flame, CheckCircle2, Brain } from "lucide-react";
+import { CalendarDays, Flame, Lock, ChevronRight, ChevronLeft, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Progress } from "@/components/ui/progress";
-import { Skeleton } from "@/components/ui/skeleton";
-import { AppLayout } from "@/components/layout/AppLayout";
 import { useToast } from "@/hooks/use-toast";
 import {
-  useGetJourneyQuestions, useGetJourneyProgress, useSubmitAnswer,
-  getGetJourneyProgressQueryKey,
+  useGetJourneyQuestions, useGetJourneyProgress, useSubmitAnswer, useGetMe,
+  getGetJourneyProgressQueryKey, getGetJourneyQuestionsQueryKey
 } from "@workspace/api-client-react";
-import { getAccessToken } from "@/lib/auth-context";
+import { getAccessToken, useAuth } from "@/lib/auth-context";
 import { useQueryClient } from "@tanstack/react-query";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
+import { getMandatoryCompletion } from "@/lib/profile-utils";
 
 function authHeaders() {
   const token = getAccessToken();
@@ -23,30 +20,72 @@ function authHeaders() {
 }
 
 export default function JourneyPage() {
+  const { user } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const [currentIdx, setCurrentIdx] = useState(0);
+  const [, navigate] = useLocation();
   const [selectedOption, setSelectedOption] = useState<string>("");
   const [textAnswer, setTextAnswer] = useState("");
   const [scaleValue, setScaleValue] = useState(5);
   const [multiSelected, setMultiSelected] = useState<string[]>([]);
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const { data: questions = [], isLoading: loadingQ } = useGetJourneyQuestions({
     query: { enabled: true } as any,
     request: { headers: authHeaders() },
   });
 
-  const { data: progress } = useGetJourneyProgress({
-    query: { enabled: true } as any,
+  const { data: profile } = useGetMe({ query: { enabled: true }, request: { headers: authHeaders() } } as any);
+  const p = (profile as any) ?? user;
+  const mandatoryCompletion = useMemo(() => getMandatoryCompletion(p), [p]);
+
+  const { data: progress, isLoading: loadingP } = useGetJourneyProgress({
+    query: { enabled: true, refetchInterval: 5000 } as any, // poll to unlock automatically
     request: { headers: authHeaders() },
   });
 
   const submitAnswer = useSubmitAnswer({ request: { headers: authHeaders() } });
 
   const unanswered = (questions as any[]).filter((q: any) => !q.isAnswered);
-  const currentQ = unanswered[currentIdx];
-  const totalAnswered = (questions as any[]).filter((q: any) => q.isAnswered).length;
-  const pct = questions.length > 0 ? Math.round((totalAnswered / questions.length) * 100) : 0;
+  const currentQ = unanswered[0];
+  
+  // Calculate lock state
+  let isLocked = false;
+  let unlockDate = null;
+  if (progress?.unlockedAt) {
+    unlockDate = new Date(progress.unlockedAt);
+    if (unlockDate > now) {
+      isLocked = true;
+    }
+  }
+
+  const totalAnswered = (progress as any)?.answeredQuestions || 0;
+  const questionsRemaining = (progress as any)?.questionsRemainingToday;
+
+  // Enforce lock if they have no questions remaining today, or if they ran out of questions but haven't finished the 150-question journey
+  if ((questionsRemaining !== undefined && questionsRemaining <= 0 && totalAnswered < 150) || (!currentQ && totalAnswered < 150)) {
+    isLocked = true;
+    if (!unlockDate || unlockDate <= now) {
+      const tomorrow = new Date();
+      tomorrow.setHours(24, 0, 0, 0);
+      unlockDate = tomorrow;
+    }
+  }
+
+  // Frontend-only daily lock enforcement: Check if they were locked locally
+  const localLockStr = localStorage.getItem('journeyLockedUntil');
+  if (localLockStr) {
+    const localLockDate = new Date(localLockStr);
+    if (localLockDate > now && totalAnswered < 150) {
+      isLocked = true;
+      unlockDate = localLockDate;
+    }
+  }
 
   function getAnswer() {
     if (!currentQ) return "";
@@ -61,25 +100,28 @@ export default function JourneyPage() {
 
   function handleNext() {
     const answer = getAnswer();
-    if (!answer) { toast({ title: "Please provide an answer", variant: "destructive" }); return; }
+    if (!answer) { toast({ title: "Please select an answer", variant: "destructive" }); return; }
 
     submitAnswer.mutate(
       { data: { questionId: currentQ.id, answer } },
       {
         onSuccess: () => {
-          toast({ title: "Answer saved!", description: `Day ${currentQ.day} complete.` });
+          // If this was the last question for the day (e.g. 5th, 10th, etc.)
+          if ((totalAnswered + 1) % 5 === 0 && (totalAnswered + 1) < 150) {
+            const tomorrow = new Date();
+            tomorrow.setHours(24, 0, 0, 0);
+            localStorage.setItem('journeyLockedUntil', tomorrow.toISOString());
+          }
+          
           queryClient.invalidateQueries({ queryKey: getGetJourneyProgressQueryKey() });
-          setCurrentIdx(i => i + 1);
+          queryClient.invalidateQueries({ queryKey: getGetJourneyQuestionsQueryKey() });
           setSelectedOption(""); setTextAnswer(""); setScaleValue(5); setMultiSelected([]);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         },
         onError: (err: any) => {
-          if (err.message?.includes("Already answered")) {
-            setCurrentIdx(i => i + 1);
-          } else {
-            toast({ title: "Error", description: err.message, variant: "destructive" });
-          }
+          toast({ title: "Error", description: err.message, variant: "destructive" });
         },
-      },
+      }
     );
   }
 
@@ -87,146 +129,295 @@ export default function JourneyPage() {
     setMultiSelected(prev => prev.includes(opt) ? prev.filter(o => o !== opt) : [...prev, opt]);
   }
 
-  return (
-    <AppLayout>
-      <div className="max-w-3xl mx-auto px-4 py-8">
-        {/* Header */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-          <h1 className="text-3xl font-bold mb-1 flex items-center gap-3">
-            <TrendingUp className="w-7 h-7 text-accent" />
-            30-Day Journey
-          </h1>
-          <p className="text-muted-foreground">Daily questions that reveal your authentic self and improve your matches.</p>
-        </motion.div>
+  if (loadingQ || loadingP) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center">
+        <div className="w-8 h-8 rounded-full border-4 border-[#9B4DFF] border-t-transparent animate-spin" />
+      </div>
+    );
+  }
 
-        {/* Progress overview */}
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass rounded-2xl p-5 mb-6">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <Flame className="w-5 h-5 text-accent" />
-              <span className="font-semibold">{progress?.streak ?? 0} day streak</span>
-            </div>
-            <span className="text-sm font-semibold text-primary">{totalAnswered} / {questions.length} answered</span>
+  if (mandatoryCompletion.percentage < 100) {
+    return (
+      <div className="min-h-screen bg-background text-foreground flex flex-col">
+        <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/40 px-4 h-14 flex items-center">
+          <button onClick={() => window.history.back()} className="w-10 h-10 flex items-center justify-start">
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+          <h1 className="text-base font-bold flex-1 text-center pr-10">Locked</h1>
+        </div>
+        <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
+          <div className="w-20 h-20 bg-pink-500/10 rounded-full flex items-center justify-center mb-6">
+            <Lock className="w-10 h-10 text-pink-500" />
           </div>
-          <Progress value={pct} className="h-3 bg-white/10" />
-          <p className="text-xs text-muted-foreground mt-2">{pct}% complete — {questions.length - totalAnswered} questions remaining</p>
-        </motion.div>
+          <h2 className="text-2xl font-black mb-3">Profile Incomplete</h2>
+          <p className="text-muted-foreground text-sm mb-8 leading-relaxed">
+            Complete your profile to unlock personalized matching and start your journey.
+          </p>
+          <Button className="w-full h-14 rounded-full font-bold bg-gradient-to-r from-pink-500 to-[#9B4DFF] text-white shadow-lg" onClick={() => navigate('/profile')}>
+            Complete Profile Now
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
-        {/* Question card */}
-        {loadingQ ? (
-          <Skeleton className="h-72 rounded-2xl bg-white/5" />
-        ) : unanswered.length === 0 ? (
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="glass rounded-2xl p-8 text-center">
-            <CheckCircle2 className="w-12 h-12 text-primary mx-auto mb-4" />
-            <h2 className="text-xl font-bold mb-2">Journey Complete!</h2>
-            <p className="text-muted-foreground mb-6 text-sm">You've answered all available questions. Your personality profile has been generated.</p>
-            <Link href="/personality">
-              <Button className="gradient-primary border-0 text-white glow-primary">View Personality Profile</Button>
-            </Link>
-          </motion.div>
-        ) : currentQ ? (
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentQ.id}
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -30 }}
-              className="glass rounded-2xl p-6"
-            >
-              <div className="flex items-center gap-2 mb-2">
-                <span className="px-2.5 py-0.5 bg-primary/20 text-primary text-xs rounded-full font-medium">Day {currentQ.day}</span>
-                <span className="px-2.5 py-0.5 bg-white/10 text-muted-foreground text-xs rounded-full">{currentQ.category}</span>
+  const currentDay = progress?.currentDay || 1;
+  const pct = progress?.completionPercentage || 0;
+  const displayDay = Math.max(1, Math.ceil(totalAnswered / 5));
+  const streak = Math.min(progress?.streak || 0, displayDay);
+  const alphabet = ['A', 'B', 'C', 'D', 'E', 'F'];
+
+  return (
+    <div className="min-h-screen bg-background text-foreground pb-32">
+      {/* 1. Top App Bar */}
+      <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/40 px-4 h-14 flex items-center justify-between">
+        <button onClick={() => window.history.back()} className="w-10 h-10 flex items-center justify-start text-foreground/80 hover:text-foreground">
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+        <h1 className="text-base font-bold tracking-tight">30-Day Journey</h1>
+        <div className="w-10 flex justify-end"></div>
+      </div>
+
+      <div className="px-4 py-6 max-w-lg mx-auto">
+        {/* 2. Top Header Area */}
+        <div className="mb-6 flex flex-col gap-4">
+          
+          {currentDay === 1 && (
+            <div className="text-left w-full mb-2">
+              <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-black mb-2">
+                Welcome back, {user?.firstName?.toUpperCase() || "KARTHI"}
+              </p>
+              <h1 className="text-3xl font-black mb-3 tracking-tight">Your 30-Day Journey</h1>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                5 deep questions unlocked a day across 5 key areas: Personality, Lifestyle, Family Values, Career Goals, and Communication. Honest answers help us build a more complete profile of who you really are.
+              </p>
+            </div>
+          )}
+
+          <div className="bg-card border border-border/40 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] rounded-[2rem] pt-5 pb-5 px-4 flex justify-between items-center w-full self-stretch relative overflow-hidden">
+            <div className="flex flex-col items-center flex-1 border-r border-border/40">
+              <div className="flex items-center gap-1.5 text-muted-foreground text-[10px] font-bold uppercase tracking-wider mb-1">
+                <CalendarDays className="w-3 h-3" /> Day
               </div>
-              <h2 className="text-xl font-bold mb-1">{currentQ.question}</h2>
-              {currentQ.description && <p className="text-sm text-muted-foreground mb-5">{currentQ.description}</p>}
+              <div className="text-xl font-black">{Math.min(Math.max(1, Math.ceil(totalAnswered / 5)), 30)}/30</div>
+            </div>
+            
+            <div className="flex flex-col items-center flex-1 border-r border-border/40">
+              <div className="flex items-center gap-1.5 text-muted-foreground text-[10px] font-bold uppercase tracking-wider mb-1">
+                <Flame className="w-3 h-3" /> Streak
+              </div>
+              <div className="text-xl font-black">{streak}</div>
+            </div>
+            
+            <div className="flex flex-col items-center flex-1">
+              <div className="flex items-center gap-1.5 text-muted-foreground text-[10px] font-bold uppercase tracking-wider mb-1">
+                 Progress
+              </div>
+              <div className="text-xl font-black">{pct}%</div>
+            </div>
 
-              <div className="mt-5 space-y-3">
+            {/* Progress Bar inside the stats card */}
+            <div className="absolute inset-x-0 bottom-0 h-1.5 bg-foreground/5">
+              <motion.div 
+                className="h-full bg-[#9B4DFF]" 
+                initial={{ width: 0 }} 
+                animate={{ width: `${pct}%` }} 
+                transition={{ duration: 1 }}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* 3. Main Content Flow */}
+        <AnimatePresence mode="wait">
+          {isLocked ? (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
+              className="flex flex-col items-center justify-center text-center py-12 px-6 bg-gradient-to-b from-pink-500/10 via-[#9B4DFF]/5 to-transparent rounded-[2.5rem] border border-[#9B4DFF]/20 relative overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] mt-4"
+            >
+              {/* Background glow effect */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[150%] h-[150%] bg-gradient-to-b from-[#9B4DFF]/10 to-transparent blur-3xl pointer-events-none" />
+
+              <div className="w-24 h-24 bg-gradient-to-br from-pink-500 to-[#9B4DFF] rounded-full flex items-center justify-center mb-8 shadow-[0_8px_30px_rgba(155,77,255,0.4)] relative">
+                <div className="absolute inset-0 bg-white/20 rounded-full animate-ping" style={{ animationDuration: '3s' }} />
+                <Check className="w-12 h-12 text-white relative z-10" />
+              </div>
+              
+              <h2 className="text-3xl font-black mb-4 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-[#9B4DFF]">
+                Day {Math.max(1, currentDay - 1)} Completed!
+              </h2>
+              
+              <p className="text-foreground/80 text-[15px] leading-relaxed mb-10 max-w-sm">
+                Amazing work! You've successfully finished today's questions. 
+                Your journey continues on <br/>
+                <span className="text-foreground font-black inline-block mt-2 text-lg">
+                  {unlockDate?.toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' })}
+                </span>
+              </p>
+              
+              <Link href="/my-story" className="w-full relative z-10">
+                <Button className="w-full h-14 rounded-full font-bold bg-card border-2 border-[#9B4DFF]/30 text-foreground hover:bg-[#9B4DFF]/10 transition-all shadow-sm">
+                  Write in your Journal
+                  <ChevronRight className="w-5 h-5 ml-2 text-[#9B4DFF]" />
+                </Button>
+              </Link>
+            </motion.div>
+          ) : !currentQ ? (
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+              className="flex flex-col items-center justify-center text-center py-10"
+            >
+              <div className="w-20 h-20 bg-[#9B4DFF]/10 rounded-full flex items-center justify-center mb-6">
+                <Check className="w-10 h-10 text-[#9B4DFF]" />
+              </div>
+              <h2 className="text-2xl font-black mb-3 tracking-tight">Journey Complete!</h2>
+              <p className="text-muted-foreground text-sm leading-relaxed mb-8">
+                You've answered all 150 questions. Your deep personality profile is fully mapped.
+              </p>
+              <div className="flex flex-col gap-3 w-full">
+                <Link href="/personality" className="w-full">
+                  <Button className="w-full h-14 rounded-full font-bold bg-gradient-to-r from-pink-500 to-[#9B4DFF] text-white shadow-lg">
+                    View Your Deep Profile
+                  </Button>
+                </Link>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div 
+              key={currentQ.id}
+              initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
+              className="space-y-8"
+            >
+              {/* Question Text */}
+              <div>
+                <div className="inline-flex items-center px-3 py-1 rounded-full bg-[#9B4DFF]/10 text-[#9B4DFF] text-[10px] font-black mb-4 uppercase tracking-widest border border-[#9B4DFF]/20">
+                  {currentQ.category}
+                </div>
+                <h2 className="text-3xl leading-[1.25] font-black tracking-tight mb-3">{currentQ.question}</h2>
+                {currentQ.description && <p className="text-[15px] text-muted-foreground leading-relaxed">{currentQ.description}</p>}
+              </div>
+
+              {/* Answer Options */}
+              <div className="space-y-3 pt-2">
                 {currentQ.questionType === "choice" && currentQ.options?.length > 0 && (
-                  <div className="space-y-2">
-                    {currentQ.options.map((opt: string) => (
-                      <button
-                        key={opt}
-                        onClick={() => setSelectedOption(opt)}
-                        className={`w-full text-left px-4 py-3 rounded-xl text-sm transition-all border ${
-                          selectedOption === opt ? "border-primary bg-primary/15 text-primary" : "border-white/10 bg-white/5 hover:bg-white/10"
-                        }`}
-                      >
-                        {opt}
-                      </button>
-                    ))}
+                  <div className="space-y-3">
+                    {currentQ.options.map((opt: string, index: number) => {
+                      const isSelected = selectedOption === opt;
+                      return (
+                        <button
+                          key={opt}
+                          onClick={() => setSelectedOption(opt)}
+                          className={`w-full flex items-center text-left p-4 rounded-2xl transition-all border-2 relative overflow-hidden ${
+                            isSelected 
+                              ? "border-[#9B4DFF] bg-[#9B4DFF]/5 shadow-[0_4px_20px_rgba(155,77,255,0.15)]" 
+                              : "border-border/60 bg-card hover:bg-muted/50"
+                          }`}
+                        >
+                          {isSelected && (
+                            <motion.div layoutId="choice-bg" className="absolute inset-0 bg-[#9B4DFF]/5" initial={false} transition={{ type: "spring", bounce: 0.2, duration: 0.6 }} />
+                          )}
+                          <div className={`w-8 h-8 shrink-0 rounded-full flex items-center justify-center text-sm font-black mr-4 transition-colors relative z-10 ${
+                            isSelected ? "bg-[#9B4DFF] text-white" : "bg-foreground/5 text-muted-foreground"
+                          }`}>
+                            {alphabet[index] || '-'}
+                          </div>
+                          <span className={`text-[15px] font-medium leading-snug relative z-10 ${isSelected ? "text-foreground" : "text-muted-foreground"}`}>
+                            {opt}
+                          </span>
+                        </button>
+                      );
+                    })}
                   </div>
                 )}
 
                 {currentQ.questionType === "multi_choice" && currentQ.options?.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {currentQ.options.map((opt: string) => (
-                      <button
-                        key={opt}
-                        onClick={() => toggleMulti(opt)}
-                        className={`px-3 py-1.5 rounded-full text-sm transition-all border ${
-                          multiSelected.includes(opt) ? "border-primary bg-primary/15 text-primary" : "border-white/10 bg-white/5 hover:bg-white/10"
-                        }`}
-                      >
-                        {opt}
-                      </button>
-                    ))}
+                  <div className="space-y-3">
+                    {currentQ.options.map((opt: string, index: number) => {
+                      const isSelected = multiSelected.includes(opt);
+                      return (
+                        <button
+                          key={opt}
+                          onClick={() => toggleMulti(opt)}
+                          className={`w-full flex items-center text-left p-4 rounded-2xl transition-all border-2 relative overflow-hidden ${
+                            isSelected 
+                              ? "border-[#9B4DFF] bg-[#9B4DFF]/5 shadow-[0_4px_20px_rgba(155,77,255,0.15)]" 
+                              : "border-border/60 bg-card hover:bg-muted/50"
+                          }`}
+                        >
+                          <div className={`w-8 h-8 shrink-0 rounded-lg flex items-center justify-center text-sm font-black mr-4 transition-colors relative z-10 ${
+                            isSelected ? "bg-[#9B4DFF] text-white" : "bg-foreground/5 border-2 border-border/60 text-transparent"
+                          }`}>
+                            <Check className="w-5 h-5" />
+                          </div>
+                          <span className={`text-[15px] font-medium leading-snug relative z-10 ${isSelected ? "text-foreground" : "text-muted-foreground"}`}>
+                            {opt}
+                          </span>
+                        </button>
+                      );
+                    })}
                   </div>
                 )}
 
                 {currentQ.questionType === "text" && (
                   <Textarea
-                    placeholder="Share your thoughts..."
+                    placeholder="Share your honest thoughts..."
                     value={textAnswer}
                     onChange={(e) => setTextAnswer(e.target.value)}
-                    className="bg-white/5 border-white/10 min-h-[120px]"
+                    className="bg-card border-2 border-border/60 min-h-[160px] text-[15px] resize-none rounded-2xl p-5 focus-visible:ring-0 focus-visible:border-[#9B4DFF] shadow-sm"
                   />
                 )}
 
                 {currentQ.questionType === "scale" && (
-                  <div>
-                    <input
-                      type="range" min={1} max={10} value={scaleValue}
-                      onChange={(e) => setScaleValue(Number(e.target.value))}
-                      className="w-full accent-primary"
-                    />
-                    <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                  <div className="pt-8 pb-4 px-2">
+                    <div className="relative mb-8">
+                      <div className="absolute top-1/2 left-0 right-0 h-3 bg-muted rounded-full -translate-y-1/2 pointer-events-none" />
+                      <div 
+                        className="absolute top-1/2 left-0 h-3 bg-gradient-to-r from-pink-500 to-[#9B4DFF] rounded-full -translate-y-1/2 pointer-events-none" 
+                        style={{ width: `${((scaleValue - 1) / 9) * 100}%` }}
+                      />
+                      <input
+                        type="range" min={1} max={10} value={scaleValue}
+                        onChange={(e) => setScaleValue(Number(e.target.value))}
+                        className="w-full relative z-10 opacity-0 cursor-pointer h-10"
+                      />
+                      <div 
+                        className="absolute top-1/2 w-8 h-8 bg-card border-4 border-[#9B4DFF] rounded-full -translate-y-1/2 -ml-4 pointer-events-none shadow-[0_4px_15px_rgba(155,77,255,0.4)]"
+                        style={{ left: `${((scaleValue - 1) / 9) * 100}%` }}
+                      />
+                    </div>
+                    <div className="flex justify-between items-end text-sm text-muted-foreground font-bold">
                       <span>Not at all</span>
-                      <span className="font-bold text-primary text-base">{scaleValue}</span>
+                      <div className="flex flex-col items-center justify-center">
+                        <span className="text-3xl font-black text-foreground">{scaleValue}</span>
+                        <span className="text-[10px] uppercase tracking-widest text-[#9B4DFF] mt-1">Selected</span>
+                      </div>
                       <span>Absolutely</span>
                     </div>
                   </div>
                 )}
               </div>
 
-              <Button onClick={handleNext} className="w-full mt-6 gradient-primary border-0 text-white glow-primary" disabled={submitAnswer.isPending}>
-                {submitAnswer.isPending ? "Saving..." : <>Save & Continue <ChevronRight className="w-4 h-4 ml-1" /></>}
-              </Button>
 
-              <div className="text-center mt-3 text-xs text-muted-foreground">
-                Question {currentIdx + 1} of {unanswered.length} remaining
-              </div>
             </motion.div>
-          </AnimatePresence>
-        ) : null}
-
-        {/* All questions list */}
-        {!loadingQ && questions.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mt-8">
-            <h2 className="font-semibold mb-4 flex items-center gap-2"><Brain className="w-5 h-5 text-primary" />All Questions</h2>
-            <div className="space-y-2">
-              {(questions as any[]).map((q: any) => (
-                <div key={q.id} className={`flex items-center gap-3 p-3 rounded-xl text-sm ${q.isAnswered ? "bg-green-500/5 border border-green-500/20" : "glass"}`}>
-                  <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${q.isAnswered ? "bg-green-500/20 text-green-400" : "bg-white/10 text-muted-foreground"}`}>
-                    {q.isAnswered ? <CheckCircle2 className="w-3.5 h-3.5" /> : q.day}
-                  </div>
-                  <span className={q.isAnswered ? "text-muted-foreground line-through" : ""}>{q.question}</span>
-                  <span className="ml-auto text-xs text-muted-foreground">{q.category}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        )}
+          )}
+        </AnimatePresence>
       </div>
-    </AppLayout>
+
+      {/* Sticky Bottom Continue Button */}
+      {(!isLocked && currentQ) && (
+        <div className="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background via-background/90 to-transparent z-40 pointer-events-none">
+          <div className="max-w-lg mx-auto pt-6 pointer-events-auto">
+            <Button 
+              onClick={handleNext} 
+              className="w-full h-14 rounded-full text-lg font-bold shadow-[0_8px_30px_rgba(155,77,255,0.3)] bg-gradient-to-r from-pink-500 to-[#9B4DFF] text-white transition-transform active:scale-[0.98]" 
+              disabled={submitAnswer.isPending}
+            >
+              {submitAnswer.isPending ? "Saving..." : <>Continue <ChevronRight className="w-6 h-6 ml-1" /></>}
+            </Button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

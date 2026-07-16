@@ -19,7 +19,7 @@ function authHeaders() {
 }
 
 const roleColors: Record<string, string> = {
-  user: "bg-white/10 text-muted-foreground",
+  user: "bg-card/10 text-muted-foreground",
   premium: "bg-accent/20 text-accent border-accent/30",
   admin: "bg-blue-500/20 text-blue-400 border-blue-500/30",
   superadmin: "bg-purple-500/20 text-purple-400 border-purple-500/30",
@@ -62,15 +62,15 @@ export default function AdminUsersPage() {
             placeholder="Search by name or email..."
             value={search}
             onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-            className="pl-9 bg-white/5 border-white/10"
+            className="pl-9 bg-card/5 border-white/10"
           />
         </div>
 
         {/* Table */}
-        <div className="glass rounded-2xl overflow-hidden">
+        <div className="bg-card border border-border shadow-md rounded-2xl rounded-2xl overflow-hidden">
           {isLoading ? (
             <div className="p-6 space-y-3">
-              {[...Array(8)].map((_, i) => <Skeleton key={i} className="h-14 rounded-xl bg-white/5" />)}
+              {[...Array(8)].map((_, i) => <Skeleton key={i} className="h-14 rounded-xl bg-card/5" />)}
             </div>
           ) : users.length === 0 ? (
             <div className="text-center py-16 text-muted-foreground">
@@ -99,12 +99,12 @@ export default function AdminUsersPage() {
                       animate={{ opacity: 1 }}
                       transition={{ delay: i * 0.03 }}
                       onClick={() => navigate(`/admin/users/${u.id}`)}
-                      className="border-b border-white/5 hover:bg-white/5 cursor-pointer transition-colors"
+                      className="border-b border-white/5 hover:bg-card/5 cursor-pointer transition-colors"
                     >
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
                           <Avatar className="w-8 h-8">
-                            <AvatarFallback className="gradient-primary text-white text-xs font-semibold">
+                            <AvatarFallback className="bg-primary text-primary-foreground shadow-md text-white text-xs font-semibold">
                               {getInitials(u.firstName, u.lastName)}
                             </AvatarFallback>
                           </Avatar>
@@ -143,9 +143,9 @@ export default function AdminUsersPage() {
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="flex justify-center gap-2 mt-6">
-            <Button variant="outline" disabled={page === 1} onClick={() => setPage(p => p - 1)} className="border-white/20 bg-white/5">Previous</Button>
+            <Button variant="outline" disabled={page === 1} onClick={() => setPage(p => p - 1)} className="border-white/20 bg-card/5">Previous</Button>
             <span className="flex items-center text-sm text-muted-foreground px-4">Page {page} of {totalPages}</span>
-            <Button variant="outline" disabled={page >= totalPages} onClick={() => setPage(p => p + 1)} className="border-white/20 bg-white/5">Next</Button>
+            <Button variant="outline" disabled={page >= totalPages} onClick={() => setPage(p => p + 1)} className="border-white/20 bg-card/5">Next</Button>
           </div>
         )}
       </div>

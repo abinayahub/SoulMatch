@@ -1,5 +1,7 @@
+import { API_URL } from '../config/api';
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { googleLogout } from "@react-oauth/google";
 
 const ACCESS_TOKEN_KEY = "soulmatch_access_token";
 const REFRESH_TOKEN_KEY = "soulmatch_refresh_token";
@@ -41,7 +43,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const token = localStorage.getItem(ACCESS_TOKEN_KEY);
     if (token) {
       setAccessToken(token);
-      fetch("/api/users/me", { headers: { Authorization: `Bearer ${token}` } })
+      fetch(`${API_URL}/api/users/me`, { headers: { Authorization: `Bearer ${token}` } })
         .then((r) => (r.ok ? r.json() : null))
         .then((data) => { if (data) setUser(data); })
         .catch(() => {})
@@ -64,6 +66,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setAccessToken(null);
     setUser(null);
     queryClient.clear();
+    googleLogout();
   }, [queryClient]);
 
   const updateUser = useCallback((partial: Partial<AuthUser>) => {

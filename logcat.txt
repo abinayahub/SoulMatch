@@ -1,0 +1,442 @@
+﻿--------- beginning of main
+07-14 10:30:33.670 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:33.670  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:33.691  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:33.705  5173  5173 I KeyboardModeUtils: KeyboardModeUtils.getKeyboardBottomOffset():435 inch: 0.000000 ydpi: 401.648987 adjustKeyboardBottomByDisplaySize: false currentDensityDpi: 440 defaultDensityDpi: 440 keyboardBottomToScreenPx: 0 keyboardBottomToNavBarPx: -116 navBarHeight: 116
+07-14 10:30:33.705  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:33.706  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:33.706  5173  5173 I AndroidIME: KeyboardViewManager.updateKeyboardBottomFrame():489 Set bottomFrameHeight = 5 while holderPaddingBottom = 5; navigationHeight = 116
+07-14 10:30:33.709  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:34.033  4871  7608 I NetworkScheduler.Stats: (REDACTED) Task %s/%s finished executing. cause:%s result: %s elapsed_millis: %s uptime_millis: %s exec_start_elapsed_seconds: %s
+07-14 10:30:34.072 27714 17002 I WM-WorkerWrapper: Worker result SUCCESS for Work [ id=7e01e12d-365a-47ae-8b25-b8f3f662ccb2, tags={ com.whatsapp.infra.networking.xmpp.lifecycle.XmppLifecycleWorker } ]
+07-14 10:30:34.079 27714 27714 D WM-Processor: N7W 7e01e12d-365a-47ae-8b25-b8f3f662ccb2 executed; reschedule = false
+07-14 10:30:34.079 27714 27714 D WM-GreedyScheduler: Stopping tracking for WorkGenerationalId(workSpecId=7e01e12d-365a-47ae-8b25-b8f3f662ccb2, generation=0)
+07-14 10:30:34.079 27714 27714 D WM-SystemJobService: 7e01e12d-365a-47ae-8b25-b8f3f662ccb2 executed on JobScheduler
+07-14 10:30:34.088 27714 17002 D WM-GreedyScheduler: Cancelling work ID 7e01e12d-365a-47ae-8b25-b8f3f662ccb2
+07-14 10:30:34.096 27714 17002 D WM-NetworkStateTracker: Unregistering network callback
+07-14 10:30:34.169 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:34.385  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:34.402  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:34.415  5173  5173 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():153 Tooltip with id SUGGESTION_VIEW_EDU_MINI_DIALOG not found in tooltipManager.
+07-14 10:30:34.433 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:34.437  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:34.453  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:34.466  5173  5173 I KeyboardModeUtils: KeyboardModeUtils.getKeyboardBottomOffset():435 inch: 0.000000 ydpi: 401.648987 adjustKeyboardBottomByDisplaySize: false currentDensityDpi: 440 defaultDensityDpi: 440 keyboardBottomToScreenPx: 0 keyboardBottomToNavBarPx: -116 navBarHeight: 116
+07-14 10:30:34.467  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:34.467  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:34.467  5173  5173 I AndroidIME: KeyboardViewManager.updateKeyboardBottomFrame():489 Set bottomFrameHeight = 5 while holderPaddingBottom = 5; navigationHeight = 116
+07-14 10:30:34.474  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:34.938 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+--------- beginning of system
+07-14 10:30:35.128  1854  5569 W BatteryStatsService: Unknown sensor handle 0 received in noteWakeupSensorEvent
+07-14 10:30:35.447 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.559  4871  4886 W .gms.persistent: Missing inline cache for int m204.dqq.a(java.lang.Object)
+07-14 10:30:35.579 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.595  5173  5173 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1384 onStartInput(EditorInfo{EditorInfo{packageName=com.whatsapp, inputType=2c001, inputTypeString=Normal[MultiLine|CapSentences|AutoCorrect], enableLearning=true, autoCorrection=true, autoComplete=true, imeOptions=40000006, privateImeOptions=null, actionName=DONE, actionLabel=null, initialSelStart=0, initialSelEnd=0, initialCapsMode=3000, label=null, fieldId=2131431839, fieldName=null, extras=null, hintText=null, hintLocales=[]}}, true)
+07-14 10:30:35.595  5173  5173 W SessionManager: SessionManager.beginSession():53 Try to begin an already begun session [INPUT_SESSION], end it first
+07-14 10:30:35.595  5173  5173 W SessionManager: SessionManager.endSession():96 Child session [INPUT_VIEW_SESSION] is not ended while ending session [{IME_SESSION=1784005226782, TRAINING_CACHE_SESSION=1784005226801, INPUT_SESSION=1784005226601, INPUT_VIEW_SESSION=1784005226780}], ending it now.
+07-14 10:30:35.595  5173  5173 W SessionManager: SessionManager.endSession():96 Child session [IME_SESSION] is not ended while ending session [{IME_SESSION=1784005226782, TRAINING_CACHE_SESSION=1784005226801, INPUT_SESSION=1784005226601, INPUT_VIEW_SESSION=1784005226780}], ending it now.
+07-14 10:30:35.596  5173  5173 I Module  : DeviceLockedStatusModuleProvider$Module.updateDeviceLockedStatus():103 repeatCheckTimes = 1, locked = false
+07-14 10:30:35.598  5173  5173 I GoogleInputMethodService: GoogleInputMethodService.onStartInputView():1472 onStartInputView(EditorInfo{EditorInfo{packageName=com.whatsapp, inputType=2c001, inputTypeString=Normal[MultiLine|CapSentences|AutoCorrect], enableLearning=true, autoCorrection=true, autoComplete=true, imeOptions=40000006, privateImeOptions=null, actionName=DONE, actionLabel=null, initialSelStart=0, initialSelEnd=0, initialCapsMode=3000, label=null, fieldId=2131431839, fieldName=null, extras=null, hintText=null, hintLocales=[]}}, true)
+07-14 10:30:35.598 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.600  5173  5173 I InputBundle: InputBundle.consumeEvent():1041 Skip consuming an event as keyboard status is INACTIVE
+07-14 10:30:35.604  5173  5173 I AndroidIME: AbstractIme.onDeactivate():213 LatinIme.onDeactivate()
+07-14 10:30:35.604  5173  5502 I NebulaeTrainingCacheMetricsProcessor: NebulaeTrainingCacheMetricsProcessor.processEndSession():568 End training cache session: com.google.android.dialer_2131428679/
+07-14 10:30:35.604  5173  5173 W SessionManager: SessionManager.endSession():88 Try to end a not begun session [IME_SESSION].
+07-14 10:30:35.605  5173  5173 W ModuleManager: ModuleManager.loadModule():578 Module ojx is not available
+07-14 10:30:35.605  5173  5173 I KeyboardHeightUtil: KeyboardHeightUtil.getOemKeyboardHeightRatio():81 systemKeyboardHeightRatio:1.000000.
+07-14 10:30:35.611  5173  5502 W ModuleManager: ModuleManager.loadModule():578 Module pdt is not available
+07-14 10:30:35.614 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.619  5173  5502 I OnDeviceWmrCalculator: OnDeviceWmrCalculator.calculateWmr():94 WMR: 0.0000 (0 / 1)
+07-14 10:30:35.624  5173  5173 I AndroidIME: InputBundleManager.loadActiveInputBundleId():531 loadActiveInputBundleId: en-IN, ime_english_india
+07-14 10:30:35.624  5173  5173 I AndroidIME: AbstractIme.onActivate():95 LatinIme.onActivate() : EditorInfo = EditorInfo{packageName=com.whatsapp, inputType=2c001, inputTypeString=Normal[MultiLine|CapSentences|AutoCorrect], enableLearning=true, autoCorrection=true, autoComplete=true, imeOptions=40000006, privateImeOptions=null, actionName=DONE, actionLabel=null, initialSelStart=0, initialSelEnd=0, initialCapsMode=3000, label=null, fieldId=2131431839, fieldName=null, extras=null, hintText=null, hintLocales=[]}, IncognitoMode = false, DeviceLocked = false
+07-14 10:30:35.625  5173  5502 I NebulaeTrainingCacheMetricsProcessor: NebulaeTrainingCacheMetricsProcessor.processBeginSession():247 Begin training cache session: com.google.android.dialer_2131428679/
+07-14 10:30:35.625  5173  5173 I Delight5Facilitator: Delight5Facilitator.initializeForIme():745 initializeForIme() : Locale = [en_IN], layout = qwerty
+07-14 10:30:35.626  5173  5173 I LatinIme: LatinIme.updateEnableInlineSuggestionsOnDecoderSideFlags():1255 inline flag updated to:false
+07-14 10:30:35.627  5173  5173 I LatinIme: LatinIme.updateEnableInlineSuggestionsOnDecoderSideFlags():1255 inline flag updated to:false
+07-14 10:30:35.628 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.630  5173  5173 I LatinIme: LatinIme.resetInputContext():2262 resetInputContext(): reason=1, externalEditsInfo=ExternalEditsInfo{action=0, offset=-1, text=null, originalText=null, edits=null}
+07-14 10:30:35.630  5173  5173 I InputBundle: InputBundle.consumeEvent():1041 Skip consuming an event as keyboard status is INACTIVE
+07-14 10:30:35.631  5173  5173 I KeyboardWrapper: KeyboardWrapper.activateKeyboard():582 activateKeyboard(): type=prime, status=INACTIVE, imeDef=nkh{stringId=ime_english_india, language=en-IN, languageTag=en-IN, processedConditions={writing_helper_enable_by_word_revert=false, true=true, enable_number_row=true, device=phone, enable_pk_simulator=false}, className=com.google.android.apps.inputmethod.libs.latin5.LatinIme, label=0, keyEventInterpreter=com.google.android.libraries.inputmethod.keyevent.interpreters.EnglishIndiaKeyEventInterpreter, inlineComposing=true, autoCapital=true, announceAutoSelectedCandidate=true, statusIcon=0, indicatorIcon=0, indicatorLabel=null, displayAppCompletions=true, extraValues=nka{#0x7f0b02e2=TypedValue{t=0x3/d=0x0 "com.google.android.apps.inputmethod.libs.latin5.LatinIme"}}, processors=nlz@76cec91, unacceptableMetaKeys=4098, languageSpecificSettings=0, asciiCapable=true, alwaysShowSuggestions=false, useAsciiPasswordKeyboard=false, keyboardGroupDef=nli@42c88a4, phenotypeFlagId=0, localizationLanguageTag=null, supportsInlineSuggestion=true}
+07-14 10:30:35.631  5173  5173 I KeyboardManager: KeyboardManager.requestKeyboard():249 Creating keyboard prime, imeId=ime_english_india, cacheKey=theme,!gsf,!pgsans,!pgsf,!use_system_font,BORDER,DYNAMIC_DARK_BRIGHT_KEY,FLAVOR_DPI=XXHDPI,KEYBOARD_WIDTH_CATEGORY=NORMAL,KEY_BORDER_SHAPE=1,LIGHT_THEME=false,PHYSICAL_DIAGONAL=5.816051,POPUP,SCREEN_SHORTEST_WIDTH=393,SCREEN_SHORTEST_WIDTH_NO_SCALE=393,XXHDPI,bottom4dp,bright_key_on_dynamic_color_dark_theme=true,enable_popup_on_keypress=true,keyboard_redesign_google_sans=true,non_linear_scale,noshadow,overlay_builtin_dynamic_color_dark_base.binarypb:gm3-dark-ff091515-ff00dddc-ce57cb9eb6c335f984cdd8616c3bb82c,silkpopup
+07-14 10:30:35.632  5173  5173 I KeyboardWrapper: KeyboardWrapper.onKeyboardReady():224 onKeyboardReady(): type=prime(prime), kb=com.google.android.apps.inputmethod.latin.keyboard.LatinPrimeKeyboard@e47cf
+07-14 10:30:35.632  5173  5173 I KeyboardWrapper: KeyboardWrapper.doActivateKeyboard():612 doActivateKeyboard(): prime
+07-14 10:30:35.635  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:35.635  5173  5173 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():153 Tooltip with id undo_access_point_promotion_banner not found in tooltipManager.
+07-14 10:30:35.635  5173  5173 I GlobeKeyExtension: GlobeKeyExtension.getKeyboardInitialStates():175 
+07-14 10:30:35.636  5173  5173 W Keyboard: Keyboard.getKeyboardViewHelper():604 null helper is returned: keyboardDef=nlc{processedConditions={show_comma_key=true, enable_more_candidates_view_for_multilingual=false, layout_9key_split=false, enable_secondary_symbols=false, pref_enable_flick_symbols=false, language=en-IN, deprecate_long_press_space_for_ime_picker=false, expressions=normal, android_software_xr_api_spatial=false, variant=qwerty, show_period_key=true, enable_number_row=true, device=phone, keyboard_mode=normal, show_secondary_digits=false, enable_pk_simulator=false, enable_preemptive_decode=true}, globalConditions={global_theme_key=theme,!gsf,!pgsans,!pgsf,!use_system_font,BORDER,DYNAMIC_DARK_BRIGHT_KEY,FLAVOR_DPI=XXHDPI,KEYBOARD_WIDTH_CATEGORY=NORMAL,KEY_BORDER_SHAPE=1,LIGHT_THEME=false,PHYSICAL_DIAGONAL=5.816051,POPUP,SCREEN_SHORTEST_WIDTH=393,SCREEN_SHORTEST_WIDTH_NO_SCALE=393,XXHDPI,bottom4dp,bright_key_on_dynamic_color_dark_theme=true,enable_popup_on_keypress=true,keyboard_redesign_google_sans=true,non_linear_scale,noshadow,overlay_builtin_dynamic_color_dark_base.binarypb:gm3-dark-ff091515-ff00dddc-ce57cb9eb6c335f984cdd8616c3bb82c,silkpopup, global_locale=en_IN, global_density_dpi=440, global_orientation=1}, className=.latin.keyboard.LatinPrimeKeyboard, resourceIds=[#0x7f1705f9, #0x7f17088b], initialStates=0, keyboardViewDefs=[nlq{direction=null, id=#0x7f0b0225, isScalable=true, layoutId=#0x7f0e02b3, type=BODY, touchable=true, defaultShow=true}, nlq{direction=null, id=#0x7f0b0225, isScalable=false, layoutId=#0x7f0e020f, type=FLOATING_CANDIDATES, touchable=false, defaultShow=false}, nlq{direction=LOCALE, id=#0x7f0b0225, isScalable=false, layoutId=#0x7f0e0516, type=HEADER, touchable=true, defaultShow=true}], persistentStates=0, persistentStatesPrefKey=null, popupBubbleLayoutId=#0x7f0e0604, recentKeyLayoutId=#0x0, recentKeyPopupLayoutId=#0x0, recentKeyType=null, rememberRecentKey=NONE, sessionStates=17592186044419}, type=WIDGET, helpersCreated={HEADER=mwp@7f57509, BODY=mwp@b21c30e, FLOATING_CANDIDATES=mwp@1a2812f}, context.getResources().getConfiguration(): {0.99999 404mcc94mnc [en_IN] ldltr sw393dp w393dp h801dp 440dpi nrml long port night finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 2408) mAppBounds=Rect(0, 66 - 1080, 2292) mMaxBounds=Rect(0, 0 - 1080, 2408) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0 isEmbedding:false} s.64 fontWeightAdjustment=0 themeId=2 themeParameter=0 nightModeLevel = -1}
+07-14 10:30:35.636  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:35.641  5173  5173 I AndroidIME: InputBundleManager.startInput():361 startInput() with nlm[keyboardType=prime, payload=null]
+07-14 10:30:35.642  5173  5173 I GlobeKeyExtension: GlobeKeyExtension.onDeactivate():144 
+07-14 10:30:35.642  5173  5173 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():153 Tooltip with id SUGGESTION_VIEW_EDU_MINI_DIALOG not found in tooltipManager.
+07-14 10:30:35.642  5173  5173 I EmojifyExtensionImpl: EmojifyExtensionImpl.onDeactivate():556 Deactivating Emojify extension fdb@e80b99a.
+07-14 10:30:35.643  5173  5173 I VoiceInputManagerWrapper: VoiceInputManagerWrapper.shutdown():131 shutdown()
+07-14 10:30:35.643  5173  5173 I PkModeUpdater: PkModeUpdater.onActivate():74 onActivate false true
+07-14 10:30:35.644  5173  5173 I AccessoryInputModeManager: AccessoryInputModeManager.onModeStarted():324 Accessory input mode started: null
+07-14 10:30:35.644  5173  5173 W SupplementaryKeyboardsWrapper: SupplementaryKeyboardsWrapper.deactivateKeyboard():162 keyboard accessory_candidates_consumer is not activated before!
+07-14 10:30:35.644  5173  5173 I KeyboardModeUtils: KeyboardModeUtils.getKeyboardBottomOffset():435 inch: 0.000000 ydpi: 401.648987 adjustKeyboardBottomByDisplaySize: false currentDensityDpi: 440 defaultDensityDpi: 440 keyboardBottomToScreenPx: 0 keyboardBottomToNavBarPx: -116 navBarHeight: 116
+07-14 10:30:35.644  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:35.644  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:35.644  5173  5173 I AndroidIME: KeyboardViewManager.updateKeyboardBottomFrame():489 Set bottomFrameHeight = 5 while holderPaddingBottom = 5; navigationHeight = 116
+07-14 10:30:35.645  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:35.645  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:35.645  5173  5173 W ExtensionWrapper: ExtensionWrapper.setExtensionViewVisibility():876 interface nac is not activate
+07-14 10:30:35.647  5173  5173 I GlobeKeyExtension: GlobeKeyExtension.onActivate():120 
+07-14 10:30:35.647  5173  5173 I EmojifyExtensionImpl: EmojifyExtensionImpl.onActivate():457 Activating Emojify extension fdb@e80b99a.
+07-14 10:30:35.647  5173  5173 I VoiceInputManagerWrapper: VoiceInputManagerWrapper.cancelShutdown():109 cancelShutdown()
+07-14 10:30:35.647  5173  5173 I VoiceInputManagerWrapper: VoiceInputManagerWrapper.syncLanguagePacks():121 syncLanguagePacks()
+07-14 10:30:35.647 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.648  5173  5173 I VoiceInputManager: VoiceInputManager.onKeyboardActivated():1215 onKeyboardActivated() [UD]
+07-14 10:30:35.648  5173 31866 I SpeechFactory: SpeechRecognitionFactory.maybeScheduleAutoPackDownloadForFallback():217 maybeScheduleAutoPackDownloadForFallback()
+07-14 10:30:35.648  5173 31866 I FallbackOnDeviceRecognitionProvider: FallbackOnDeviceRecognitionProvider.maybeScheduleAutoPackDownload():213 maybeScheduleAutoPackDownload() for language tag en-IN
+07-14 10:30:35.648  5173 31866 I SpeechPackManager: SpeechPackManager.isPackAvailableToDownload():224 isPackAvailableToDownload() : LanguageTag = en-IN : ManifestUrl = https://dl.google.com/android/voice/gboard/terse/superpacks-manifest-20210519.json
+07-14 10:30:35.648  5173  5173 I Module  : DeviceLockedStatusModuleProvider$Module.updateDeviceLockedStatus():103 repeatCheckTimes = 1, locked = false
+07-14 10:30:35.648  5173  5173 I VoiceImeExtension: VoiceImeExtension.shouldStartVoiceInputAutomaticallyInCurrentInputBox():384 No private IME option set to start voice input.
+07-14 10:30:35.649  5173  5173 I ShortcutsDataManager: AbstractContentDataManager.startImportContentTask():241 startImportContentTask()
+07-14 10:30:35.649  5173 31227 I FallbackOnDeviceRecognitionProvider: FallbackOnDeviceRecognitionProvider$1.onSuccess():221 auto download packs.
+07-14 10:30:35.650  5173 31227 I SpeechPackManager: SpeechPackManager.syncPacks():343 syncPacks()
+07-14 10:30:35.650  5173 31227 I SpeechPackManager: SpeechPackManager.isPackAvailableOnDisk():205 isPackAvailableOnDisk() : LanguageTag = en-US
+07-14 10:30:35.650  5173 31227 I SpeechPackManager: SpeechPackManager.isPackAvailableOnDisk():205 isPackAvailableOnDisk() : LanguageTag = ta-IN
+07-14 10:30:35.650  5173 31227 I SpeechPackManager: SpeechPackManager.isPackAvailableOnDisk():205 isPackAvailableOnDisk() : LanguageTag = ta-IN
+07-14 10:30:35.650  5173 31227 I SpeechPackManager: SpeechPackManager.isPackAvailableOnDisk():205 isPackAvailableOnDisk() : LanguageTag = ta-IN
+07-14 10:30:35.650  5173 31227 I SpeechPackManager: SpeechPackManager.isPackAvailableOnDisk():205 isPackAvailableOnDisk() : LanguageTag = ta-IN
+07-14 10:30:35.650  5173 31227 I SpeechPackManager: SpeechPackManager.registerManifest():509 registerManifest() : https://dl.google.com/android/voice/gboard/terse/superpacks-manifest-20210519.json
+07-14 10:30:35.651  5173 31227 I SpeechPackManager: SpeechPackManager.registerManifest():516 registerManifest() : Reusing hash 1327534105
+07-14 10:30:35.652  5173  5490 I SpeechPackSlicingStrategy: SpeechPackSlicingStrategy.getSlices():52 getSlices() : ForceUpdates = false : LanguageTags = [en-IN, en-US]
+07-14 10:30:35.652  5173  5490 I SpeechPackSlicingStrategy: SpeechPackSlicingStrategy.getSlices():66 getSlices(): slicing result: {slices=[{gboard-small-speech-packs:en-IN-v301-f25, W:C:*:*, bg}, {gboard-small-speech-packs:en-US-small-rnnt, W:C:*:*, bg}], last batch=true, sync metadata=false}
+07-14 10:30:35.652  5173  5490 I SP      : Syncing gboard-small-speech-packs (1327534105) with slices: [{en-IN-v301-f25, W:C:*:*, bg}, {en-US-small-rnnt, W:C:*:*, bg}], metadata: false
+07-14 10:30:35.654  5173  5173 I WindowMetricsNotification: WindowMetricsNotification.notifyWithWindow():166 
+07-14 10:30:35.654  5173  5173 I WindowMetricsNotification: WindowMetricsNotification.notify():159 qjg[bounds=Rect(0, 88 - 1080, 2408), insets=Rect(0, 0 - 0, 116), densityDpi=440, smallestScreenWidthDp=393, displayWidth=1080, displayHeight=2408, xdpi=400.315, ydpi=401.649, isTrustable=true, displayId=0]; DisplayMetrics{density=2.75, width=1080, height=2408, scaledDensity=2.75, xdpi=400.315, ydpi=401.649}
+07-14 10:30:35.663  5173  5173 I GoogleInputMethodService: GoogleInputMethodService$1.onKeyboardViewShown():331 onKeyboardViewShown: keyboardType=prime, keyboardViewType=HEADER keyboardView=com.google.android.libraries.inputmethod.widgets.SoftKeyboardView{478db53 V.E...... ........ 0,0-1080,121}
+07-14 10:30:35.663  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:35.663  5173  5173 I GoogleInputMethodService: GoogleInputMethodService$1.onKeyboardViewShown():331 onKeyboardViewShown: keyboardType=prime, keyboardViewType=BODY keyboardView=com.google.android.libraries.inputmethod.widgets.SoftKeyboardView{1a39313 V.E...... ........ 0,0-1080,693}
+07-14 10:30:35.664  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:35.664  5173  5173 I GlobeKeyExtension: GlobeKeyExtension$1.onKeyboardViewShown():72 maybeDisableLanguageSwitchKeyPref when the keyboard is shown
+07-14 10:30:35.664  5173  5173 I GlobeKeyExtension: GlobeKeyExtension.maybeDisableLanguageSwitchKeyPref():200 maybeDisableLanguageSwitchKeyPref hasGlobeKeyBeenDisabled: false, shouldDisableLanguageSwitchKey: false
+07-14 10:30:35.664  5173  5173 I NewLanguagePromptExtension: NewLanguagePromptExtension$1.onKeyboardViewShown():98 Not show new language banner: no change in enabled input method entries
+07-14 10:30:35.664  5173  5173 I DynamicLayoutHandler: DynamicLayoutHandler.loadDynamicKeys():92 This isn't a dynamic layout.
+07-14 10:30:35.664  5173  5522 I Delight5Decoder: Delight5DecoderWrapper.setKeyboardLayout():548 setKeyboardLayout()
+07-14 10:30:35.665  5173  5173 I KeyboardModeUtils: KeyboardModeUtils.getKeyboardBottomOffset():435 inch: 0.000000 ydpi: 401.648987 adjustKeyboardBottomByDisplaySize: false currentDensityDpi: 440 defaultDensityDpi: 440 keyboardBottomToScreenPx: 0 keyboardBottomToNavBarPx: -116 navBarHeight: 116
+07-14 10:30:35.665  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:35.665 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.665  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:35.665  5173  5173 I AndroidIME: KeyboardViewManager.updateKeyboardBottomFrame():489 Set bottomFrameHeight = 5 while holderPaddingBottom = 5; navigationHeight = 116
+07-14 10:30:35.665  5173  5534 I ShortcutsDataManager: AbstractContentDataManager$ImportContentTask.doInBackground():257 doInBackground()
+07-14 10:30:35.665  5173  5534 I PersonalDictionaryDataHandler: PersonalDictionaryDataHandler.beginProcess():114 LanguageTags = [en-US, ta-XT, en-IN, ta-IN]
+07-14 10:30:35.669  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.676 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.679 27714  8907 E ActivityThread: Failed to find provider info for com.facebook.stella.assistant.deviceconnectionstate
+07-14 10:30:35.680 27714  8907 E ActivityThread: Failed to find provider info for com.facebook.stella_debug.assistant.deviceconnectionstate
+07-14 10:30:35.686  5173  5534 I ShortcutsDataManager: AbstractContentDataManager.importRecords():348 importRecords() : Success : Count = 0
+07-14 10:30:35.691  5173  5534 I ShortcutsDataManager: AbstractContentDataManager.importContentData():297 importContentData() : Ending import process
+07-14 10:30:35.692 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.693  5173  5522 I Delight5Decoder: Delight5DecoderWrapper.unloadLanguageModel():984 unloadLanguageModel() : 4, version [n/a]
+07-14 10:30:35.697  5173  5490 I SP      : Sync for gboard-small-speech-packs succeeded in 46 ms: no changes
+07-14 10:30:35.697  5173  5490 I SP      : GC for 'gboard-small-speech-packs' (10) with ttl of 0 ms took 0 ms (0/0/0)
+07-14 10:30:35.698  5173 31227 I SpeechPackManager: SpeechPackManager$4.onSuccess():495 updatePackSetCacheAsync() : Updated the PackSet cache
+07-14 10:30:35.703 27714 16988 D WM-SystemJobScheduler: Scheduling work ID 154bd622-9c5e-4d57-9db5-7fc6956c2f11Job ID 250240
+07-14 10:30:35.706 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.715  5173  5534 I PersonalLanguageModelUpdater: PersonalLanguageModelUpdater$UpdateOperation.performInternal():165 run() : Added 0 words and 0 shortcuts
+07-14 10:30:35.716  5173  5534 I DynamicLanguageModelOperation: DynamicLanguageModelOperation.perform():43 perform() : 4 : eth : Completed
+07-14 10:30:35.716  5173  5522 I Delight5Decoder: Delight5DecoderWrapper.loadLanguageModel():771 loadLanguageModel() : 4, version [n/a]
+07-14 10:30:35.717 27714 16988 D WM-GreedyScheduler: Starting tracking for 154bd622-9c5e-4d57-9db5-7fc6956c2f11
+07-14 10:30:35.717  5173  5522 I Delight5Decoder: Delight5DecoderWrapper.loadLanguageModel():816 Loaded dynamic LM 4.en
+07-14 10:30:35.721 27714 16988 D WM-ConstraintTracker: MT2: initial state = NetworkState(isConnected=true, isValidated=true, isMetered=false, isNotRoaming=true)
+07-14 10:30:35.721 27714 16988 D WM-NetworkStateTracker: Registering network callback
+07-14 10:30:35.723 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.726  5173  5534 I PersonalLanguageModelUpdater: PersonalLanguageModelUpdater$UpdateOperation.performInternal():165 run() : Added 0 words and 0 shortcuts
+07-14 10:30:35.726  5173  5534 I DynamicLanguageModelOperation: DynamicLanguageModelOperation.perform():43 perform() : 4 : eth : Completed
+07-14 10:30:35.728 27714 16999 D WM-GreedyScheduler: Constraints met: Scheduling work ID WorkGenerationalId(workSpecId=154bd622-9c5e-4d57-9db5-7fc6956c2f11, generation=0)
+07-14 10:30:35.729 27714 17003 D WM-NetworkStateTracker: Network capabilities changed: [ Transports: WIFI Capabilities: NOT_METERED&INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN&VALIDATED&NOT_ROAMING&FOREGROUND&NOT_CONGESTED&NOT_SUSPENDED&NOT_VCN_MANAGED LinkUpBandwidth>=12000Kbps LinkDnBandwidth>=60000Kbps TransportInfo: <SSID: <unknown ssid>, BSSID: 02:**:**:**:00:00, MAC: 02:**:**:**:00:00, Security type: 2, Supplicant state: COMPLETED, Wi-Fi standard: 5, RSSI: -30, Link speed: 433Mbps, Tx Link speed: 390Mbps, Max Supported Tx Link speed: 433Mbps, Rx Link speed: 86Mbps, Max Supported Rx Link speed: 433Mbps, Frequency: 5180MHz, Net ID: -1, Metered hint: false, score: 60, isUsable: true, CarrierMerged: false, SubscriptionId: -1, IsPrimary: -1, Trusted: true, Restricted: false, Ephemeral: false, OEM paid: false, OEM private: false, OSU AP: false, FQDN: <none>, Provider friendly name: <none>, Requesting package name: <none><none>MLO Information: , Is TID-To-Link negotiation supported by the AP: false, AP MLD Address: <none>, AP MLO Link Id: <none>, AP MLO Affiliated links: <none>> SignalStrength: -30 UnderlyingNetworks: Null]
+07-14 10:30:35.730 27714 16999 D WM-Processor: N7W: processing WorkGenerationalId(workSpecId=154bd622-9c5e-4d57-9db5-7fc6956c2f11, generation=0)
+07-14 10:30:35.734  5173  5534 I PersonalLanguageModelUpdater: PersonalLanguageModelUpdater$UpdateOperation.performInternal():165 run() : Added 0 words and 0 shortcuts
+07-14 10:30:35.735  5173  5534 I DynamicLanguageModelOperation: DynamicLanguageModelOperation.perform():43 perform() : 4 : eth : Completed
+07-14 10:30:35.737 27714 27714 D WM-SystemJobService: onStartJob for WorkGenerationalId(workSpecId=154bd622-9c5e-4d57-9db5-7fc6956c2f11, generation=0)
+07-14 10:30:35.737 27714 27714 D WM-WorkerWrapper: Starting work for com.whatsapp.infra.networking.xmpp.lifecycle.XmppLifecycleWorker
+07-14 10:30:35.738 27714 17002 D WM-Processor: Work WorkGenerationalId(workSpecId=154bd622-9c5e-4d57-9db5-7fc6956c2f11, generation=0) is already enqueued for processing
+07-14 10:30:35.740 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.745  5173  5534 I PersonalLanguageModelUpdater: PersonalLanguageModelUpdater$UpdateOperation.performInternal():165 run() : Added 0 words and 0 shortcuts
+07-14 10:30:35.745  5173  5534 I DynamicLanguageModelOperation: DynamicLanguageModelOperation.perform():43 perform() : 4 : eth : Completed
+07-14 10:30:35.745  5173  5173 I ShortcutsDataManager: AbstractContentDataManager$ImportContentTask.onPostExecute():268 onPostExecute() : Result = [2,0]
+07-14 10:30:35.745  5173  5173 I ShortcutsDataManager: ShortcutsDataManager.onImportFinished():82 onImportFinished() : Result = 2 : Count = 0
+07-14 10:30:35.757 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.774 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.790 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.807 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.824 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.831  5173  5173 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():153 Tooltip with id spell_check_add_to_dictionary not found in tooltipManager.
+07-14 10:30:35.840 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.857 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.873 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.907 27714  8909 V MediaPlayerNative: constructor
+07-14 10:30:35.908 27714  8909 V MediaPlayerNative: setListener
+07-14 10:30:35.908 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.911 27714  8909 W MediaPlayer: Use of stream types is deprecated for operations other than volume control
+07-14 10:30:35.911 27714  8909 W MediaPlayer: See the documentation of setAudioStreamType() for what to use instead with android.media.AudioAttributes to qualify your playback use case
+07-14 10:30:35.911 27714  8909 V MediaPlayerNative: MediaPlayer::setAudioStreamType
+07-14 10:30:35.913  4871  4871 D AudioManager: dispatching onPlaybackConfigChanged()
+07-14 10:30:35.913 19872 19872 D AudioManager: dispatching onPlaybackConfigChanged()
+07-14 10:30:35.913 27714  8909 D VivoConfigStore: key:vivo.software.audiozenmode isCached is true and value is true
+07-14 10:30:35.917 27714  8909 V MediaPlayerNative: setDataSource(356, 75455172, 4568)
+07-14 10:30:35.923 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.930 27714  8909 V MediaPlayerNative: setVideoSurfaceTexture
+07-14 10:30:35.930 27714  8909 V MediaPlayerNative: prepare
+07-14 10:30:35.940 27714 26228 V MediaPlayerNative: message received msg=1, ext1=0, ext2=0
+07-14 10:30:35.940 27714 26228 V MediaPlayerNative: MediaPlayer::notify() prepared
+07-14 10:30:35.940 27714 26228 V MediaPlayerNative: signal application thread
+07-14 10:30:35.940 27714 26228 V MediaPlayerNative: callback application
+07-14 10:30:35.940 27714 26228 V MediaPlayerNative: back from callback
+07-14 10:30:35.940 27714  8909 V MediaPlayerNative: prepare complete - status=0
+07-14 10:30:35.940 27714  8909 V MediaPlayerNative: invoke 80
+07-14 10:30:35.943 27714 27714 V MediaPlayerNative: invoke 76
+07-14 10:30:35.944 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.945 27714  8909 V MediaPlayerNative: invoke 76
+07-14 10:30:35.946 27714  8909 D MediaPlayer: MediaPlayer start called
+07-14 10:30:35.948 27714  8909 V MediaPlayerNative: start
+07-14 10:30:35.949  4871  4871 D AudioManager: dispatching onPlaybackConfigChanged()
+07-14 10:30:35.949 19872 19872 D AudioManager: dispatching onPlaybackConfigChanged()
+07-14 10:30:35.958 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.972  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.974 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.987  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:35.990 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.008 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.025 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.053 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.055  5173  5173 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():153 Tooltip with id SUGGESTION_VIEW_EDU_MINI_DIALOG not found in tooltipManager.
+07-14 10:30:36.055  5173  5173 W LatinPrimeKeyboard: LatinPrimeKeyboard.consumeEvent():390 consumeEvent() : UPDATE_DYNAMIC_KEYS, no dynamic layout
+07-14 10:30:36.059 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.074  5173  5173 I KeyboardModeUtils: KeyboardModeUtils.getKeyboardBottomOffset():435 inch: 0.000000 ydpi: 401.648987 adjustKeyboardBottomByDisplaySize: false currentDensityDpi: 440 defaultDensityDpi: 440 keyboardBottomToScreenPx: 0 keyboardBottomToNavBarPx: -116 navBarHeight: 116
+07-14 10:30:36.075  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:36.075  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:36.075  5173  5173 I AndroidIME: KeyboardViewManager.updateKeyboardBottomFrame():489 Set bottomFrameHeight = 5 while holderPaddingBottom = 5; navigationHeight = 116
+07-14 10:30:36.076  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.077 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.088 27714 24099 V MediaPlayerNative: message received msg=6, ext1=0, ext2=0
+07-14 10:30:36.088 27714 24099 V MediaPlayerNative: Received media started message
+07-14 10:30:36.088 27714 24099 V MediaPlayerNative: callback application
+07-14 10:30:36.088 27714 24099 V MediaPlayerNative: back from callback
+07-14 10:30:36.088 27714 24099 V MediaPlayerNative: message received msg=10000, ext1=13, ext2=3
+07-14 10:30:36.088 27714 24099 V MediaPlayerNative: unrecognized message: (10000, 13, 3)
+07-14 10:30:36.088 27714 24099 V MediaPlayerNative: callback application
+07-14 10:30:36.088 27714 24099 V MediaPlayerNative: back from callback
+07-14 10:30:36.091 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.091  4871  4871 D AudioManager: dispatching onPlaybackConfigChanged()
+07-14 10:30:36.092  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.093 19872 19872 D AudioManager: dispatching onPlaybackConfigChanged()
+07-14 10:30:36.102 27714 27714 D MTP     : onPaused: false
+07-14 10:30:36.106 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.128 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.138  4871  4871 D AudioManager: dispatching onPlaybackConfigChanged()
+07-14 10:30:36.139 19872 19872 D AudioManager: dispatching onPlaybackConfigChanged()
+07-14 10:30:36.139 27714 27714 V MediaPlayerNative: isPlaying: 1
+07-14 10:30:36.139 27714 27714 D MTP     : onSeekComplete at 0
+07-14 10:30:36.142 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.145  5173  5173 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():153 Tooltip with id SUGGESTION_VIEW_EDU_MINI_DIALOG not found in tooltipManager.
+07-14 10:30:36.157  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.158 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.169  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.172 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.174  5173  5522 I native  : I0000 00:00:1784005236.174612    5522 input-context-store.cc:340] Ignoring stale client request for FetchSuggestions
+07-14 10:30:36.175  5173  5173 W InputContextProxy: InputContextProxy.applyClientDiffInternal():933 Ignore [FetchSuggestions] diff due to stale request: 118333<118335, inputStateId=8488, lastInputStateId=8488
+07-14 10:30:36.187 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.203  5173  5173 I KeyboardModeUtils: KeyboardModeUtils.getKeyboardBottomOffset():435 inch: 0.000000 ydpi: 401.648987 adjustKeyboardBottomByDisplaySize: false currentDensityDpi: 440 defaultDensityDpi: 440 keyboardBottomToScreenPx: 0 keyboardBottomToNavBarPx: -116 navBarHeight: 116
+07-14 10:30:36.203  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:36.203  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:36.203  5173  5173 I AndroidIME: KeyboardViewManager.updateKeyboardBottomFrame():489 Set bottomFrameHeight = 5 while holderPaddingBottom = 5; navigationHeight = 116
+07-14 10:30:36.206 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.209  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.220  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.220 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.235  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.237 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.253 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.270 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.290 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.305  5173  5173 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():153 Tooltip with id SUGGESTION_VIEW_EDU_MINI_DIALOG not found in tooltipManager.
+07-14 10:30:36.308 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.321  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.322 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.341  5173  5173 I KeyboardModeUtils: KeyboardModeUtils.getKeyboardBottomOffset():435 inch: 0.000000 ydpi: 401.648987 adjustKeyboardBottomByDisplaySize: false currentDensityDpi: 440 defaultDensityDpi: 440 keyboardBottomToScreenPx: 0 keyboardBottomToNavBarPx: -116 navBarHeight: 116
+07-14 10:30:36.341  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:36.341  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:36.341  5173  5173 I AndroidIME: KeyboardViewManager.updateKeyboardBottomFrame():489 Set bottomFrameHeight = 5 while holderPaddingBottom = 5; navigationHeight = 116
+07-14 10:30:36.342 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.342  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.354  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.355 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.371  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.375 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.390 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.407 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.420 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.421  5173  5173 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():153 Tooltip with id SUGGESTION_VIEW_EDU_MINI_DIALOG not found in tooltipManager.
+07-14 10:30:36.436 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.440  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.454 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.454  5173  5173 I KeyboardModeUtils: KeyboardModeUtils.getKeyboardBottomOffset():435 inch: 0.000000 ydpi: 401.648987 adjustKeyboardBottomByDisplaySize: false currentDensityDpi: 440 defaultDensityDpi: 440 keyboardBottomToScreenPx: 0 keyboardBottomToNavBarPx: -116 navBarHeight: 116
+07-14 10:30:36.454  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:36.454  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:36.454  5173  5173 I AndroidIME: KeyboardViewManager.updateKeyboardBottomFrame():489 Set bottomFrameHeight = 5 while holderPaddingBottom = 5; navigationHeight = 116
+07-14 10:30:36.459  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.503  5173  5173 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():153 Tooltip with id SUGGESTION_VIEW_EDU_MINI_DIALOG not found in tooltipManager.
+07-14 10:30:36.520 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.521  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.538  5173  5173 I KeyboardModeUtils: KeyboardModeUtils.getKeyboardBottomOffset():435 inch: 0.000000 ydpi: 401.648987 adjustKeyboardBottomByDisplaySize: false currentDensityDpi: 440 defaultDensityDpi: 440 keyboardBottomToScreenPx: 0 keyboardBottomToNavBarPx: -116 navBarHeight: 116
+07-14 10:30:36.538  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:36.538  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:36.539  5173  5173 I AndroidIME: KeyboardViewManager.updateKeyboardBottomFrame():489 Set bottomFrameHeight = 5 while holderPaddingBottom = 5; navigationHeight = 116
+07-14 10:30:36.543  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.610 31621 31621 I adbd    : adbd_auth: loading keys from /data/misc/adb/adb_keys
+07-14 10:30:36.642  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.652  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.670 27714 26228 V MediaPlayerNative: message received msg=2, ext1=0, ext2=0
+07-14 10:30:36.670 27714 26228 V MediaPlayerNative: playback complete
+07-14 10:30:36.670 27714 26228 V MediaPlayerNative: callback application
+07-14 10:30:36.670 27714 26228 V MediaPlayerNative: back from callback
+07-14 10:30:36.673  4871  4871 D AudioManager: dispatching onPlaybackConfigChanged()
+07-14 10:30:36.673 19872 19872 D AudioManager: dispatching onPlaybackConfigChanged()
+07-14 10:30:36.717  5173  5173 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():153 Tooltip with id SUGGESTION_VIEW_EDU_MINI_DIALOG not found in tooltipManager.
+07-14 10:30:36.739 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.740  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.750  5173  5173 I KeyboardModeUtils: KeyboardModeUtils.getKeyboardBottomOffset():435 inch: 0.000000 ydpi: 401.648987 adjustKeyboardBottomByDisplaySize: false currentDensityDpi: 440 defaultDensityDpi: 440 keyboardBottomToScreenPx: 0 keyboardBottomToNavBarPx: -116 navBarHeight: 116
+07-14 10:30:36.751  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:36.751  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:36.751  5173  5173 I AndroidIME: KeyboardViewManager.updateKeyboardBottomFrame():489 Set bottomFrameHeight = 5 while holderPaddingBottom = 5; navigationHeight = 116
+07-14 10:30:36.755  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:36.983  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.001  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.057  5173  5173 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():153 Tooltip with id SUGGESTION_VIEW_EDU_MINI_DIALOG not found in tooltipManager.
+07-14 10:30:37.066  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.066 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.085  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.102  5173  5173 I KeyboardModeUtils: KeyboardModeUtils.getKeyboardBottomOffset():435 inch: 0.000000 ydpi: 401.648987 adjustKeyboardBottomByDisplaySize: false currentDensityDpi: 440 defaultDensityDpi: 440 keyboardBottomToScreenPx: 0 keyboardBottomToNavBarPx: -116 navBarHeight: 116
+07-14 10:30:37.102  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:37.102  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:37.103  5173  5173 I AndroidIME: KeyboardViewManager.updateKeyboardBottomFrame():489 Set bottomFrameHeight = 5 while holderPaddingBottom = 5; navigationHeight = 116
+07-14 10:30:37.110  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.120  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.135  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.164 12900 13040 I oid.apps.photos: Waiting for a blocking GC ProfileSaver
+07-14 10:30:37.191  5173  5173 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():153 Tooltip with id SUGGESTION_VIEW_EDU_MINI_DIALOG not found in tooltipManager.
+07-14 10:30:37.202  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.215 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.222  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.235  5173  5173 I KeyboardModeUtils: KeyboardModeUtils.getKeyboardBottomOffset():435 inch: 0.000000 ydpi: 401.648987 adjustKeyboardBottomByDisplaySize: false currentDensityDpi: 440 defaultDensityDpi: 440 keyboardBottomToScreenPx: 0 keyboardBottomToNavBarPx: -116 navBarHeight: 116
+07-14 10:30:37.235  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:37.235  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:37.235  5173  5173 I AndroidIME: KeyboardViewManager.updateKeyboardBottomFrame():489 Set bottomFrameHeight = 5 while holderPaddingBottom = 5; navigationHeight = 116
+07-14 10:30:37.236 12900 13040 I oid.apps.photos: WaitForGcToComplete blocked ProfileSaver on Background for 71.982ms
+07-14 10:30:37.240  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.518 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.532 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.549 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.564 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.582 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.599 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.613 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.630 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.648 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.664 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.680 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.698 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.712 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.731 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.746 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.764 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:37.780 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.094  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.169  5173  5173 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():153 Tooltip with id SUGGESTION_VIEW_EDU_MINI_DIALOG not found in tooltipManager.
+07-14 10:30:38.181  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.194 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.246  5173  5173 I KeyboardModeUtils: KeyboardModeUtils.getKeyboardBottomOffset():435 inch: 0.000000 ydpi: 401.648987 adjustKeyboardBottomByDisplaySize: false currentDensityDpi: 440 defaultDensityDpi: 440 keyboardBottomToScreenPx: 0 keyboardBottomToNavBarPx: -116 navBarHeight: 116
+07-14 10:30:38.246  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:38.247  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:38.247  5173  5173 I AndroidIME: KeyboardViewManager.updateKeyboardBottomFrame():489 Set bottomFrameHeight = 5 while holderPaddingBottom = 5; navigationHeight = 116
+07-14 10:30:38.250  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.267  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.297  8955  8955 W getenforce: type=1400 audit(0.0:6842795): avc:  denied  { read } for  name="enforce" dev="selinuxfs" ino=4 scontext=u:r:untrusted_app:s0:c222,c256,c512,c768 tcontext=u:object_r:selinuxfs:s0 tclass=file permissive=0 app=com.google.android.apps.nbu.paisa.user
+07-14 10:30:38.297   871   871 W Thread-675: type=1400 audit(0.0:6842796): avc:  denied  { read } for  name="enforce" dev="selinuxfs" ino=4 scontext=u:r:untrusted_app:s0:c222,c256,c512,c768 tcontext=u:object_r:selinuxfs:s0 tclass=file permissive=0 app=in.amazon.mShop.android.shopping
+07-14 10:30:38.534 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.540 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.561 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.576 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.628  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.631  5173  5173 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():153 Tooltip with id SUGGESTION_VIEW_EDU_MINI_DIALOG not found in tooltipManager.
+07-14 10:30:38.643 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.644  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.658  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.676  5173  5173 I KeyboardModeUtils: KeyboardModeUtils.getKeyboardBottomOffset():435 inch: 0.000000 ydpi: 401.648987 adjustKeyboardBottomByDisplaySize: false currentDensityDpi: 440 defaultDensityDpi: 440 keyboardBottomToScreenPx: 0 keyboardBottomToNavBarPx: -116 navBarHeight: 116
+07-14 10:30:38.676  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:38.676  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:38.676  5173  5173 I AndroidIME: KeyboardViewManager.updateKeyboardBottomFrame():489 Set bottomFrameHeight = 5 while holderPaddingBottom = 5; navigationHeight = 116
+07-14 10:30:38.680  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.696  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.735  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.742  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.831  5173  5173 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():153 Tooltip with id SUGGESTION_VIEW_EDU_MINI_DIALOG not found in tooltipManager.
+07-14 10:30:38.841 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.845  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.859  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.874  5173  5173 I KeyboardModeUtils: KeyboardModeUtils.getKeyboardBottomOffset():435 inch: 0.000000 ydpi: 401.648987 adjustKeyboardBottomByDisplaySize: false currentDensityDpi: 440 defaultDensityDpi: 440 keyboardBottomToScreenPx: 0 keyboardBottomToNavBarPx: -116 navBarHeight: 116
+07-14 10:30:38.874  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:38.874  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:38.874  5173  5173 I AndroidIME: KeyboardViewManager.updateKeyboardBottomFrame():489 Set bottomFrameHeight = 5 while holderPaddingBottom = 5; navigationHeight = 116
+07-14 10:30:38.880  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.891  5173  5173 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():153 Tooltip with id SUGGESTION_VIEW_EDU_MINI_DIALOG not found in tooltipManager.
+07-14 10:30:38.908  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.908 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.923  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.940  5173  5173 I KeyboardModeUtils: KeyboardModeUtils.getKeyboardBottomOffset():435 inch: 0.000000 ydpi: 401.648987 adjustKeyboardBottomByDisplaySize: false currentDensityDpi: 440 defaultDensityDpi: 440 keyboardBottomToScreenPx: 0 keyboardBottomToNavBarPx: -116 navBarHeight: 116
+07-14 10:30:38.940  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:38.940  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:38.940  5173  5173 I AndroidIME: KeyboardViewManager.updateKeyboardBottomFrame():489 Set bottomFrameHeight = 5 while holderPaddingBottom = 5; navigationHeight = 116
+07-14 10:30:38.945  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.960  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.977  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:38.992  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:39.046  5173  5173 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():153 Tooltip with id SUGGESTION_VIEW_EDU_MINI_DIALOG not found in tooltipManager.
+07-14 10:30:39.055 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:39.058  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:39.076  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:39.091  5173  5173 I KeyboardModeUtils: KeyboardModeUtils.getKeyboardBottomOffset():435 inch: 0.000000 ydpi: 401.648987 adjustKeyboardBottomByDisplaySize: false currentDensityDpi: 440 defaultDensityDpi: 440 keyboardBottomToScreenPx: 0 keyboardBottomToNavBarPx: -116 navBarHeight: 116
+07-14 10:30:39.091  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:39.091  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:39.091  5173  5173 I AndroidIME: KeyboardViewManager.updateKeyboardBottomFrame():489 Set bottomFrameHeight = 5 while holderPaddingBottom = 5; navigationHeight = 116
+07-14 10:30:39.097  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:39.107  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:39.155  5173  5173 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():153 Tooltip with id SUGGESTION_VIEW_EDU_MINI_DIALOG not found in tooltipManager.
+07-14 10:30:39.174 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:39.174  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:39.190  5173  5173 I KeyboardModeUtils: KeyboardModeUtils.getKeyboardBottomOffset():435 inch: 0.000000 ydpi: 401.648987 adjustKeyboardBottomByDisplaySize: false currentDensityDpi: 440 defaultDensityDpi: 440 keyboardBottomToScreenPx: 0 keyboardBottomToNavBarPx: -116 navBarHeight: 116
+07-14 10:30:39.190  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:39.191  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:39.191  5173  5173 I AndroidIME: KeyboardViewManager.updateKeyboardBottomFrame():489 Set bottomFrameHeight = 5 while holderPaddingBottom = 5; navigationHeight = 116
+07-14 10:30:39.195  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:39.210  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:39.222  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:39.269 19872 19872 D ColorFade_MobileIconFlow: onPreciseDataConnectionStateChanged, apnTypes = [supl, hipri, default], transportInWLAN = false
+07-14 10:30:39.269 19872 19872 D ColorFade_MobileIconFlow: subId = 1, activeSubId = 1, onDisplayInfoChanged, overrideNetworkType = 0, networkType = 13
+07-14 10:30:39.269 19872 19872 D ColorFade_MobileIconFlow: onActiveDataSubscriptionIdChanged, activeDataSubscriptionId = 1
+07-14 10:30:39.289  5173  5173 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():153 Tooltip with id SUGGESTION_VIEW_EDU_MINI_DIALOG not found in tooltipManager.
+07-14 10:30:39.297 19872 19986 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:39.307  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:39.308  9009  9009 W libc    : Access denied finding property "persist.adb.tls_server.enable"
+07-14 10:30:39.305  9009  9009 W getprop : type=1400 audit(0.0:6842797): avc:  denied  { read } for  name="u:object_r:system_adbd_prop:s0" dev="tmpfs" ino=8620 scontext=u:r:untrusted_app:s0:c222,c256,c512,c768 tcontext=u:object_r:system_adbd_prop:s0 tclass=file permissive=0 app=com.google.android.apps.nbu.paisa.user
+07-14 10:30:39.319 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:39.322  5173  5173 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():153 Tooltip with id SUGGESTION_VIEW_EDU_MINI_DIALOG not found in tooltipManager.
+07-14 10:30:39.323  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:39.324  5173  5173 I KeyboardModeUtils: KeyboardModeUtils.getKeyboardBottomOffset():435 inch: 0.000000 ydpi: 401.648987 adjustKeyboardBottomByDisplaySize: false currentDensityDpi: 440 defaultDensityDpi: 440 keyboardBottomToScreenPx: 0 keyboardBottomToNavBarPx: -116 navBarHeight: 116
+07-14 10:30:39.324  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:39.324  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:39.324  5173  5173 I AndroidIME: KeyboardViewManager.updateKeyboardBottomFrame():489 Set bottomFrameHeight = 5 while holderPaddingBottom = 5; navigationHeight = 116
+07-14 10:30:39.336 27714 20611 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:39.337  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:39.357  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:39.371  5173  5173 I KeyboardModeUtils: KeyboardModeUtils.getKeyboardBottomOffset():435 inch: 0.000000 ydpi: 401.648987 adjustKeyboardBottomByDisplaySize: false currentDensityDpi: 440 defaultDensityDpi: 440 keyboardBottomToScreenPx: 0 keyboardBottomToNavBarPx: -116 navBarHeight: 116
+07-14 10:30:39.372  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:39.372  5173  5173 I BaseKeyboardSizeHelper: BaseKeyboardSizeHelper.calculateMaxKeyboardBodyHeight():73 leave 267 height for app when ime window height:2204, header height:121 and isFullscreenMode:false, so the max keyboard body height is:1816
+07-14 10:30:39.372  5173  5173 I AndroidIME: KeyboardViewManager.updateKeyboardBottomFrame():489 Set bottomFrameHeight = 5 while holderPaddingBottom = 5; navigationHeight = 116
+07-14 10:30:39.377  5173  5236 I gralloc4: @set_metadata: update dataspace from GM (0x00000000 -> 0x08010000)
+07-14 10:30:39.460  4871  4871 D BoundBrokerSvc: onUnbind: Intent { act=com.google.android.gms.libs.gmscorelogger.service.START dat=chimera-action:/... cmp=com.google.android.gms/.chimera.PersistentDirectBootAwareApiService }
+07-14 10:30:39.554 31621 31621 I adbd    : adbd service requested 'shell,v2:export ANDROID_LOG_TAGS=''; exec logcat '-d' '-t' '2000''

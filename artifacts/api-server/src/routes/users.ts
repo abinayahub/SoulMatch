@@ -3,12 +3,44 @@ import { db } from "@workspace/db";
 import {
   usersTable, photosTable, matchPreferencesTable,
   notificationsTable, reportsTable, blockedUsersTable, verificationsTable,
+  profileViewsTable
 } from "@workspace/db";
 import { eq, and, ne, not, inArray } from "drizzle-orm";
 import { authenticate, requireRole, type AuthRequest } from "../lib/auth";
 import { buildUserProfile, buildPublicProfile, calculateAge, calculateProfileCompleteness } from "../lib/helpers";
 
 const router = Router();
+
+// GET /users/active
+router.get("/active", authenticate, async (req: AuthRequest, res) => {
+  try {
+    const { sql } = require('drizzle-orm');
+    const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
+    const activeUsers = await db.query.usersTable.findMany({
+      where: (table, { gte }) => gte(table.lastActive, fiveMinutesAgo),
+      orderBy: (table, { desc }) => [desc(table.lastActive)],
+      limit: 10
+    });
+    
+    // Instead of using sql template literal with a string (which can fail due to Date formatting),
+    // let's just count the active users correctly using eq/gte or simple count.
+    const allActive = await db.query.usersTable.findMany({
+      where: (table, { gte }) => gte(table.lastActive, fiveMinutesAgo),
+      columns: { id: true }
+    });
+    
+    const profiles = (await Promise.all(activeUsers.slice(0, 5).map(async user => {
+      const p = await buildPublicProfile(user.id, req.user!.userId);
+      if (!p) return null;
+      return { id: p.id, displayName: p.displayName, photos: p.photos };
+    }))).filter(Boolean);
+    
+    res.json({ total: allActive.length, users: profiles });
+  } catch (err) { 
+    req.log.error(err); 
+    res.status(500).json({ error: "Internal server error" }); 
+  }
+});
 
 // GET /users/me
 router.get("/me", authenticate, async (req: AuthRequest, res) => {
@@ -26,6 +58,9 @@ router.patch("/me", authenticate, async (req: AuthRequest, res) => {
       firstName, lastName, displayName, bio, occupation, education, religion,
       motherTongue, city, country, height, maritalStatus, dietaryPreference,
       smoking, drinking, interests, languages,
+      videoIntroUrl, govIdFrontUrl, govIdBackUrl, selfieUrl, isGovIdVerified, isSelfieVerified,
+      weight, fieldOfStudy, company, industry, annualIncomeRange, stateRegion, citizenship,
+      gender, dateOfBirth, phone
     } = req.body;
 
     const [updated] = await db.update(usersTable).set({
@@ -35,11 +70,27 @@ router.patch("/me", authenticate, async (req: AuthRequest, res) => {
       ...(education !== undefined && { education }), ...(religion !== undefined && { religion }),
       ...(motherTongue !== undefined && { motherTongue }),
       ...(city !== undefined && { city }), ...(country !== undefined && { country }),
-      ...(height !== undefined && { height: Number(height) }),
+      ...(height !== undefined && { height: height === "" || height === null ? null : Number(height) }),
+      ...(weight !== undefined && { weight: weight === "" || weight === null ? null : Number(weight) }),
       ...(maritalStatus !== undefined && { maritalStatus }),
       ...(dietaryPreference !== undefined && { dietaryPreference }),
       ...(smoking !== undefined && { smoking }), ...(drinking !== undefined && { drinking }),
       ...(interests !== undefined && { interests }), ...(languages !== undefined && { languages }),
+      ...(fieldOfStudy !== undefined && { fieldOfStudy }),
+      ...(company !== undefined && { company }),
+      ...(industry !== undefined && { industry }),
+      ...(annualIncomeRange !== undefined && { annualIncomeRange }),
+      ...(stateRegion !== undefined && { stateRegion }),
+      ...(citizenship !== undefined && { citizenship }),
+      ...(videoIntroUrl !== undefined && { videoIntroUrl }),
+      ...(govIdFrontUrl !== undefined && { govIdFrontUrl }),
+      ...(govIdBackUrl !== undefined && { govIdBackUrl }),
+      ...(selfieUrl !== undefined && { selfieUrl }),
+      ...(isGovIdVerified !== undefined && { isGovIdVerified }),
+      ...(isSelfieVerified !== undefined && { isSelfieVerified }),
+      ...(gender !== undefined && { gender }),
+      ...(dateOfBirth !== undefined && { dateOfBirth }),
+      ...(phone !== undefined && { phone }),
       updatedAt: new Date(),
     }).where(eq(usersTable.id, req.user!.userId)).returning();
 
@@ -143,8 +194,18 @@ router.get("/me/stats", authenticate, async (req: AuthRequest, res) => {
 router.get("/:userId", authenticate, async (req: AuthRequest, res) => {
   try {
     const userId = parseInt(req.params.userId as string);
-    const profile = await buildPublicProfile(userId, req.user!.userId);
+    const viewerId = req.user!.userId;
+    const profile = await buildPublicProfile(userId, viewerId);
     if (!profile) return res.status(404).json({ error: "User not found" });
+    
+    // Log profile view if not viewing own profile
+    if (userId !== viewerId) {
+      await db.insert(profileViewsTable).values({
+        viewerId,
+        targetUserId: userId,
+      });
+    }
+
     return res.json(profile);
   } catch (err) { req.log.error(err); return res.status(500).json({ error: "Internal server error" }); }
 });

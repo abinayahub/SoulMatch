@@ -40,6 +40,7 @@ export default function RegisterPage() {
     firstName: "", lastName: "", dateOfBirth: "", gender: "",
     email: "", password: "", phone: "",
   });
+  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
 
   function set(field: keyof FormData, value: string) {
     setData((prev) => ({ ...prev, [field]: value }));
@@ -49,15 +50,43 @@ export default function RegisterPage() {
     if (!data.firstName.trim()) return "First name is required";
     if (!data.lastName.trim()) return "Last name is required";
     if (!data.gender) return "Please select your gender";
+    if (!data.dateOfBirth) return "Please enter your date of birth";
     return null;
   }
 
   function validateStep1(): string | null {
-    if (!data.email.trim()) return "Email address is required";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return "Enter a valid email address";
-    if (!data.password) return "Password is required";
-    if (data.password.length < 8) return "Password must be at least 8 characters";
+    setErrors({});
+    if (!data.email.trim()) { setErrors(e => ({...e, email: "Email address is required"})); return "Email address is required"; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) { setErrors(e => ({...e, email: "Enter a valid email address"})); return "Enter a valid email address"; }
+    
+    if (!data.password) { setErrors(e => ({...e, password: "Password is required"})); return "Password is required"; }
+    if (data.password.length < 8) { setErrors(e => ({...e, password: "Password must be at least 8 characters"})); return "Password must be at least 8 characters"; }
+    if (!/[A-Z]/.test(data.password)) { setErrors(e => ({...e, password: "Password must contain at least one uppercase letter"})); return "Password must contain at least one uppercase letter"; }
+    if (!/[a-z]/.test(data.password)) { setErrors(e => ({...e, password: "Password must contain at least one lowercase letter"})); return "Password must contain at least one lowercase letter"; }
+    if (!/[0-9]/.test(data.password)) { setErrors(e => ({...e, password: "Password must contain at least one number"})); return "Password must contain at least one number"; }
+    if (!/[^A-Za-z0-9]/.test(data.password)) { setErrors(e => ({...e, password: "Password must contain at least one special character"})); return "Password must contain at least one special character"; }
+
+    if (!data.phone || !data.phone.trim()) {
+      setErrors(e => ({...e, phone: "Phone number is required"}));
+      return "Phone number is required";
+    }
+    const phoneDigits = data.phone.replace(/\D/g, '');
+    if (phoneDigits.length !== 10) {
+      setErrors(e => ({...e, phone: "Phone number must be exactly 10 digits"}));
+      return "Phone number must be exactly 10 digits";
+    }
+
     return null;
+  }
+
+  function getPasswordStrength(pw: string): number {
+    if (!pw) return 0;
+    let score = 0;
+    if (pw.length >= 8) score++;
+    if (/[A-Z]/.test(pw) && /[a-z]/.test(pw)) score++;
+    if (/[0-9]/.test(pw)) score++;
+    if (/[^A-Za-z0-9]/.test(pw)) score++;
+    return score;
   }
 
   function goNext() {
@@ -95,15 +124,22 @@ export default function RegisterPage() {
         phone: data.phone.trim() || undefined,
       };
 
-      const res = await apiRequest<{ accessToken: string; refreshToken: string; user: any }>(
+      const res = await apiRequest<{ message?: string; phone?: string; mockOtp?: string; userId?: number; accessToken?: string; refreshToken?: string; user?: any; requirePhoneVerification: boolean }>(
         "/auth/register",
         { method: "POST", body: JSON.stringify(payload) },
       );
-      login(res.accessToken, res.refreshToken, res.user);
-      toast({ title: "Welcome to SoulMatch AI!", description: "Your journey to finding love begins now." });
-      navigate("/dashboard");
+      
+      if (res.requirePhoneVerification && res.phone) {
+        // Redirect to phone verification page with the phone number and mock OTP
+        window.location.href = `/verify-phone?phone=${encodeURIComponent(res.phone)}&mockOtp=${res.mockOtp}`;
+      } else if (res.accessToken && res.refreshToken) {
+        // Log them in immediately if phone verification wasn't required
+        login(res.accessToken, res.refreshToken, res.user);
+        setStep(3);
+      }
     } catch (err: any) {
-      toast({ title: "Registration failed", description: err.message || "Something went wrong", variant: "destructive" });
+      const msg = err.message === "Failed to fetch" ? "Unable to connect to server. Please try again." : (err.message || "Something went wrong");
+      toast({ title: "Registration failed", description: msg, variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -111,8 +147,58 @@ export default function RegisterPage() {
 
   const progress = ((step) / (STEPS.length - 1)) * 100;
 
+  if (step === 3) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4 py-8 relative" style={{ background: "hsl(var(--background))" }}>
+        {/* Ambient background */}
+        <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
+          <div style={{ position: "absolute", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, hsl(340 82% 65% / 0.15) 0%, transparent 70%)", top: -100, right: -100, filter: "blur(80px)" }} />
+          <div style={{ position: "absolute", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, hsl(280 70% 65% / 0.12) 0%, transparent 70%)", bottom: -80, left: -80, filter: "blur(70px)" }} />
+        </div>
+
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-8 z-10 w-full max-w-sm">
+          {/* Sparkles / Stars Animation */}
+          <div className="relative w-32 h-32 mx-auto mb-8">
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+              className="absolute inset-0 flex items-center justify-center"
+            >
+              
+              
+              
+              
+              
+            </motion.div>
+            <div className="absolute inset-0 flex items-center justify-center z-10">
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center" style={{ background: "hsl(var(--primary))", boxShadow: "0 0 30px hsl(340 82% 65% / 0.5)" }}>
+                <Heart className="w-8 h-8 text-white fill-white" />
+              </div>
+            </div>
+          </div>
+
+          <h2 className="text-2xl font-bold text-white mb-2 tracking-wide">Profile Completed<br />Successfully!</h2>
+          
+          <Button 
+            className="w-full mt-10 h-14 text-lg font-bold border-0 text-white rounded-xl shadow-xl transition-all"
+            style={{
+              background: "hsl(338, 70%, 55%)",
+              boxShadow: "0 4px 20px rgba(219,68,120,0.35)",
+            }}
+            onClick={() => {
+              toast({ title: "Welcome to SoulMatch!", description: "Your journey to finding love begins now." });
+              window.location.href = "/dashboard";
+            }}
+          >
+            Start My 30-Day Journey
+          </Button>
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-8 relative" style={{ background: "hsl(222 47% 5%)" }}>
+    <div className="min-h-screen flex items-center justify-center px-4 py-8 relative" style={{ background: "hsl(var(--background))" }}>
       {/* Ambient background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
         <div style={{ position: "absolute", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, hsl(340 82% 65% / 0.15) 0%, transparent 70%)", top: -100, right: -100, filter: "blur(80px)" }} />
@@ -130,16 +216,16 @@ export default function RegisterPage() {
         <div className="text-center mb-6">
           <Link href="/">
             <span className="inline-flex items-center gap-2 cursor-pointer justify-center mb-4">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, hsl(340 82% 60%), hsl(280 70% 65%))", boxShadow: "0 0 20px hsl(340 82% 65% / 0.3)" }}>
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "hsl(var(--primary))", boxShadow: "0 0 20px hsl(340 82% 65% / 0.3)" }}>
                 <Heart className="w-5 h-5 text-white" />
               </div>
               <span className="text-xl font-bold" style={{ background: "linear-gradient(135deg, hsl(340 82% 70%), hsl(280 70% 72%))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                SoulMatch AI
+                SoulMatch
               </span>
             </span>
           </Link>
-          <h1 className="text-2xl font-bold text-white">{STEPS[step].title}</h1>
-          <p className="text-sm mt-1" style={{ color: "hsl(215 20% 50%)" }}>{STEPS[step].sub}</p>
+          <h1 className="text-2xl font-bold text-foreground">{STEPS[step].title}</h1>
+          <p className="text-sm mt-1 text-muted-foreground">{STEPS[step].sub}</p>
         </div>
 
         {/* Progress bar */}
@@ -150,21 +236,21 @@ export default function RegisterPage() {
                 <div
                   className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300"
                   style={{
-                    background: i < step ? "linear-gradient(135deg, hsl(340 82% 60%), hsl(280 70% 65%))" : i === step ? "rgba(219,68,120,0.15)" : "rgba(255,255,255,0.06)",
+                    background: i < step ? "hsl(var(--primary))" : i === step ? "rgba(219,68,120,0.15)" : "hsl(var(--card))",
                     border: i === step ? "2px solid hsl(340 82% 65%)" : "2px solid transparent",
-                    color: i <= step ? (i < step ? "white" : "hsl(340 82% 70%)") : "hsl(215 20% 40%)",
+                    color: i <= step ? (i < step ? "white" : "hsl(var(--primary))") : "hsl(var(--muted-foreground))",
                     boxShadow: i < step ? "0 0 12px hsl(340 82% 65% / 0.3)" : "none",
                   }}
                 >
                   {i < step ? <Check className="w-4 h-4" /> : i + 1}
                 </div>
-                <span className="text-xs hidden sm:block" style={{ color: i === step ? "hsl(340 82% 68%)" : "hsl(215 20% 38%)" }}>
+                <span className="text-xs hidden sm:block" style={{ color: i === step ? "hsl(var(--primary))" : "hsl(var(--muted-foreground))" }}>
                   {s.title.split(" ")[0]}
                 </span>
               </div>
             ))}
           </div>
-          <div className="relative h-1 rounded-full mt-1" style={{ background: "rgba(255,255,255,0.06)" }}>
+          <div className="relative h-1 rounded-full mt-1" style={{ background: "hsl(var(--card))" }}>
             <motion.div
               className="absolute inset-y-0 left-0 rounded-full"
               animate={{ width: `${progress}%` }}
@@ -175,7 +261,7 @@ export default function RegisterPage() {
         </div>
 
         {/* Card */}
-        <div className="rounded-2xl p-6" style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.08)" }}>
+        <div className="rounded-2xl p-6" style={{ background: "hsl(var(--card))", backdropFilter: "blur(20px)", border: "1px solid hsl(var(--card))" }}>
           <AnimatePresence mode="wait">
 
             {/* ─── Step 0: Personal Info ─── */}
@@ -183,9 +269,9 @@ export default function RegisterPage() {
               <motion.div key="step0" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }} className="space-y-4">
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1.5">
-                    <Label className="text-white/70 text-sm">First Name <span style={{ color: "hsl(340 82% 65%)" }}>*</span></Label>
+                    <Label className="text-foreground/90 text-sm">First Name <span style={{ color: "hsl(340 82% 65%)" }}>*</span></Label>
                     <div className="relative">
-                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "hsl(215 20% 42%)" }} />
+                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                       <Input
                         placeholder="First"
                         value={data.firstName}
@@ -196,7 +282,7 @@ export default function RegisterPage() {
                     </div>
                   </div>
                   <div className="space-y-1.5">
-                    <Label className="text-white/70 text-sm">Last Name <span style={{ color: "hsl(340 82% 65%)" }}>*</span></Label>
+                    <Label className="text-foreground/90 text-sm">Last Name <span style={{ color: "hsl(340 82% 65%)" }}>*</span></Label>
                     <Input
                       placeholder="Last"
                       value={data.lastName}
@@ -208,28 +294,28 @@ export default function RegisterPage() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <Label className="text-white/70 text-sm">I am a <span style={{ color: "hsl(340 82% 65%)" }}>*</span></Label>
+                  <Label className="text-foreground/90 text-sm">I am a <span style={{ color: "hsl(340 82% 65%)" }}>*</span></Label>
                   <Select value={data.gender} onValueChange={(v) => set("gender", v)}>
                     <SelectTrigger className="auth-input h-11 rounded-xl text-sm">
                       <SelectValue placeholder="Select gender" />
                     </SelectTrigger>
-                    <SelectContent style={{ background: "hsl(222 47% 9%)", border: "1px solid rgba(255,255,255,0.1)" }}>
-                      <SelectItem value="male">Man</SelectItem>
-                      <SelectItem value="female">Woman</SelectItem>
+                    <SelectContent style={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))" }}>
+                      <SelectItem value="male">Male</SelectItem>
+                      <SelectItem value="female">Female</SelectItem>
                       <SelectItem value="other">Other / Prefer not to say</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div className="space-y-1.5">
-                  <Label className="text-white/70 text-sm">Date of Birth</Label>
+                  <Label className="text-foreground/90 text-sm">Date of Birth <span style={{ color: "hsl(340 82% 65%)" }}>*</span></Label>
                   <div className="relative">
-                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "hsl(215 20% 42%)" }} />
+                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style={{ color: "hsl(215 20% 42%)" }} />
                     <Input
                       type="date"
                       value={data.dateOfBirth}
                       onChange={(e) => set("dateOfBirth", e.target.value)}
-                      className="auth-input pl-10 h-11 rounded-xl text-sm"
+                      className="auth-input pl-10 h-11 rounded-xl text-sm [&::-webkit-calendar-picker-indicator]:opacity-100 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:invert"
                       max={new Date(Date.now() - 18 * 365.25 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]}
                     />
                   </div>
@@ -241,32 +327,33 @@ export default function RegisterPage() {
             {step === 1 && (
               <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }} className="space-y-4">
                 <div className="space-y-1.5">
-                  <Label className="text-white/70 text-sm">Email address <span style={{ color: "hsl(340 82% 65%)" }}>*</span></Label>
+                  <Label className="text-foreground/90 text-sm">Email address <span style={{ color: "hsl(340 82% 65%)" }}>*</span></Label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "hsl(215 20% 42%)" }} />
                     <Input
                       type="email"
                       placeholder="you@example.com"
                       value={data.email}
-                      onChange={(e) => set("email", e.target.value)}
-                      className="auth-input pl-10 h-11 rounded-xl text-sm"
+                      onChange={(e) => { set("email", e.target.value); setErrors(err => ({...err, email: undefined})); }}
+                      className={`auth-input pl-10 h-11 rounded-xl text-sm ${errors.email ? "border-red-500" : ""}`}
                       autoComplete="email"
                     />
                   </div>
+                  {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                 </div>
 
                 <div className="space-y-1.5">
-                  <Label className="text-white/70 text-sm">
+                  <Label className="text-foreground/90 text-sm">
                     Password <span style={{ color: "hsl(340 82% 65%)" }}>*</span>
                   </Label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "hsl(215 20% 42%)" }} />
                     <Input
                       type={showPassword ? "text" : "password"}
-                      placeholder="At least 8 characters"
+                      placeholder="At least 8 chars, 1 upper, 1 lower, 1 num, 1 special"
                       value={data.password}
-                      onChange={(e) => set("password", e.target.value)}
-                      className="auth-input pl-10 pr-11 h-11 rounded-xl text-sm"
+                      onChange={(e) => { set("password", e.target.value); setErrors(err => ({...err, password: undefined})); }}
+                      className={`auth-input pl-10 pr-11 h-11 rounded-xl text-sm ${errors.password ? "border-red-500" : ""}`}
                       autoComplete="new-password"
                     />
                     <button
@@ -278,37 +365,45 @@ export default function RegisterPage() {
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                   </div>
+                  {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
                   {/* Password strength hint */}
                   {data.password.length > 0 && (
                     <div className="flex gap-1 mt-1.5">
-                      {[1, 2, 3, 4].map((n) => (
-                        <div
-                          key={n}
-                          className="flex-1 h-1 rounded-full transition-all duration-300"
-                          style={{
-                            background: data.password.length >= n * 3
-                              ? n <= 1 ? "hsl(0 72% 51%)" : n === 2 ? "hsl(45 90% 60%)" : "hsl(120 50% 50%)"
-                              : "rgba(255,255,255,0.08)",
-                          }}
-                        />
-                      ))}
+                      {[1, 2, 3, 4].map((n) => {
+                        const score = getPasswordStrength(data.password);
+                        return (
+                          <div
+                            key={n}
+                            className="flex-1 h-1 rounded-full transition-all duration-300"
+                            style={{
+                              background: score >= n
+                                ? score <= 2 ? "hsl(0 72% 51%)" : score === 3 ? "hsl(45 90% 60%)" : "hsl(120 50% 50%)"
+                                : "hsl(var(--card))",
+                            }}
+                          />
+                        );
+                      })}
                     </div>
                   )}
                 </div>
 
                 <div className="space-y-1.5">
-                  <Label className="text-white/70 text-sm">Phone <span style={{ color: "hsl(215 20% 40%)" }}>(optional)</span></Label>
+                  <Label className="text-foreground/90 text-sm">Phone number <span style={{ color: "hsl(340 82% 65%)" }}>*</span></Label>
                   <div className="relative">
                     <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "hsl(215 20% 42%)" }} />
                     <Input
                       type="tel"
-                      placeholder="+1 (555) 000-0000"
+                      placeholder="e.g. 9876543210"
                       value={data.phone}
-                      onChange={(e) => set("phone", e.target.value)}
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+                        set("phone", val);
+                      }}
                       className="auth-input pl-10 h-11 rounded-xl text-sm"
                       autoComplete="tel"
                     />
                   </div>
+                  {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
                 </div>
               </motion.div>
             )}
@@ -327,8 +422,8 @@ export default function RegisterPage() {
                       ...(data.dateOfBirth ? [{ label: "Date of Birth", value: data.dateOfBirth }] : []),
                     ].map(({ label, value }) => (
                       <div key={label} className="flex justify-between">
-                        <span style={{ color: "hsl(215 20% 50%)" }}>{label}</span>
-                        <span className="text-white font-medium">{value}</span>
+                        <span className="text-muted-foreground">{label}</span>
+                        <span className="text-foreground font-medium">{value}</span>
                       </div>
                     ))}
                   </div>
@@ -345,7 +440,7 @@ export default function RegisterPage() {
                 {/* Feature list */}
                 <div className="space-y-2">
                   {[
-                    "AI-powered compatibility matching",
+                    "Compatibility-based matching",
                     "30-day personality discovery journey",
                     "Send & receive interests",
                     "Secure, verified profiles",
@@ -376,7 +471,7 @@ export default function RegisterPage() {
                 type="button"
                 onClick={() => setStep((s) => s - 1)}
                 className="h-11 px-4 rounded-xl font-medium"
-                style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", color: "hsl(215 20% 65%)" }}
+                style={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", color: "hsl(215 20% 65%)" }}
               >
                 <ChevronLeft className="w-4 h-4" />
               </Button>
@@ -388,7 +483,7 @@ export default function RegisterPage() {
               disabled={loading}
               className="flex-1 h-11 rounded-xl font-semibold text-white border-0"
               style={{
-                background: "linear-gradient(135deg, hsl(340 82% 60%) 0%, hsl(280 70% 65%) 100%)",
+                background: "hsl(var(--primary))",
                 boxShadow: "0 4px 20px rgba(219,68,120,0.35)",
               }}
             >

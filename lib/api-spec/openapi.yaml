@@ -31,6 +31,8 @@ tags:
     description: Platform analytics
   - name: reports
     description: Trust & safety reports
+  - name: support
+    description: Support messages
 
 paths:
   /healthz:
@@ -910,6 +912,67 @@ paths:
                 items:
                   $ref: "#/components/schemas/PublicProfile"
 
+  # ── SUPPORT ───────────────────────────────────────────────────────────────
+
+  /support:
+    post:
+      operationId: createSupportMessage
+      tags: [support]
+      summary: Submit a contact support message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SupportMessageInput"
+      responses:
+        "201":
+          description: Support message created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SupportMessage"
+
+  /admin/support:
+    get:
+      operationId: getAdminSupportMessages
+      tags: [admin]
+      summary: Get all support messages
+      responses:
+        "200":
+          description: List of support messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SupportMessage"
+
+  /admin/support/{id}:
+    patch:
+      operationId: updateSupportMessage
+      tags: [admin]
+      summary: Resolve or update a support message
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SupportMessageUpdate"
+      responses:
+        "200":
+          description: Support message updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SupportMessage"
+
   # ── ADMIN ─────────────────────────────────────────────────────────────────
 
   /admin/users:
@@ -1315,6 +1378,32 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Photo"
+        weight:
+          type: ["integer", "null"]
+        fieldOfStudy:
+          type: ["string", "null"]
+        company:
+          type: ["string", "null"]
+        industry:
+          type: ["string", "null"]
+        annualIncomeRange:
+          type: ["string", "null"]
+        stateRegion:
+          type: ["string", "null"]
+        citizenship:
+          type: ["string", "null"]
+        videoIntroUrl:
+          type: ["string", "null"]
+        isGovIdVerified:
+          type: boolean
+        isSelfieVerified:
+          type: boolean
+        govIdFrontUrl:
+          type: ["string", "null"]
+        govIdBackUrl:
+          type: ["string", "null"]
+        selfieUrl:
+          type: ["string", "null"]
         role:
           type: string
           enum: [user, premium, admin, superadmin]
@@ -1388,6 +1477,32 @@ components:
           type: array
           items:
             type: string
+        weight:
+          type: integer
+        fieldOfStudy:
+          type: string
+        company:
+          type: string
+        industry:
+          type: string
+        annualIncomeRange:
+          type: string
+        stateRegion:
+          type: string
+        citizenship:
+          type: string
+        videoIntroUrl:
+          type: string
+        isGovIdVerified:
+          type: boolean
+        isSelfieVerified:
+          type: boolean
+        govIdFrontUrl:
+          type: string
+        govIdBackUrl:
+          type: string
+        selfieUrl:
+          type: string
 
     PhotoUploadInput:
       type: object
@@ -1489,6 +1604,24 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Photo"
+        weight:
+          type: ["integer", "null"]
+        fieldOfStudy:
+          type: ["string", "null"]
+        company:
+          type: ["string", "null"]
+        industry:
+          type: ["string", "null"]
+        stateRegion:
+          type: ["string", "null"]
+        citizenship:
+          type: ["string", "null"]
+        videoIntroUrl:
+          type: ["string", "null"]
+        isGovIdVerified:
+          type: boolean
+        isSelfieVerified:
+          type: boolean
         verificationStatus:
           type: string
         isPremium:
@@ -2090,6 +2223,68 @@ components:
           enum: [resolved, dismissed]
         resolution:
           type: string
+        actionTaken:
+          type: string
+          enum: [none, warning, suspend, ban]
+
+    ReportUpdate:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [pending, reviewing, resolved, dismissed]
+        adminNotes:
+          type: string
+          
+    SupportMessage:
+      type: object
+      required: [id, name, email, subject, message, status, createdAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+          nullable: true
+        name:
+          type: string
+        email:
+          type: string
+        subject:
+          type: string
+        message:
+          type: string
+        status:
+          type: string
+          enum: [open, resolved]
+        createdAt:
+          type: string
+          format: date-time
+        resolvedAt:
+          type: string
+          format: date-time
+          nullable: true
+
+    SupportMessageInput:
+      type: object
+      required: [name, email, subject, message]
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        subject:
+          type: string
+        message:
+          type: string
+
+    SupportMessageUpdate:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [open, resolved]
         actionTaken:
           type: string
           enum: [none, warning, suspend, ban]

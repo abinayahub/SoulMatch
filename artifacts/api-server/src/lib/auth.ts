@@ -1,6 +1,8 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { Request, Response, NextFunction } from "express";
+import { db, usersTable } from "@workspace/db";
+import { eq } from "drizzle-orm";
 
 export function generateOtp(): string {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -54,18 +56,48 @@ export function authenticate(req: AuthRequest, res: Response, next: NextFunction
   const token = authHeader.slice(7);
   try {
     req.user = verifyAccessToken(token);
+    // console.log("Updating lastActive for user:", req.user.userId);
+    db.update(usersTable)
+      .set({ lastActive: new Date() })
+      .where(eq(usersTable.id, req.user.userId))
+      .execute()
+      .then(() => console.log("Updated lastActive for user", req.user.userId))
+      .catch((err) => console.error("Error updating lastActive:", err));
     next();
-  } catch {
+  } catch (err) {
+    console.error("Auth middleware error:", err);
     res.status(401).json({ error: "Invalid or expired token" });
   }
 }
 
 export function requireRole(...roles: string[]) {
-  return (req: AuthRequest, res: Response, next: NextFunction): void => {
-    if (!req.user || !roles.includes(req.user.role)) {
+  return async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+    if (!req.user) {
       res.status(403).json({ error: "Insufficient permissions" });
       return;
     }
-    next();
+    
+    // Fast path: if token has the role
+    if (roles.includes(req.user.role)) {
+      next();
+      return;
+    }
+
+    // Slow path: check DB if role was updated
+    try {
+      const user = await db.query.usersTable.findFirst({
+        where: eq(usersTable.id, req.user.userId)
+      });
+      
+      if (user && roles.includes(user.role)) {
+        req.user.role = user.role;
+        next();
+        return;
+      }
+    } catch (err) {
+      // Ignore DB errors and fall through to 403
+    }
+    
+    res.status(403).json({ error: "Insufficient permissions" });
   };
 }

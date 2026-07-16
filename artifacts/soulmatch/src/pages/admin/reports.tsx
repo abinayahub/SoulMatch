@@ -66,7 +66,7 @@ export default function AdminReportsPage() {
 
         <div className="space-y-3">
           {isLoading ? (
-            [...Array(5)].map((_, i) => <Skeleton key={i} className="h-24 rounded-2xl bg-white/5" />)
+            [...Array(5)].map((_, i) => <Skeleton key={i} className="h-24 rounded-2xl bg-card/5" />)
           ) : reports.length === 0 ? (
             <div className="text-center py-16 text-muted-foreground">
               <Flag className="w-10 h-10 mx-auto mb-3 opacity-30" /><p>No reports</p>
@@ -81,7 +81,7 @@ export default function AdminReportsPage() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.04 }}
-                  className="glass rounded-2xl p-5"
+                  className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-5"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-center gap-4">
@@ -113,7 +113,7 @@ export default function AdminReportsPage() {
                     {r.status === "pending" && (
                       <div className="flex gap-2 shrink-0">
                         <Button size="sm" onClick={() => handleResolve(r.id, "resolved")} className="bg-green-500/20 text-green-400 border-green-500/30 hover:bg-green-500/30" variant="outline" disabled={resolve.isPending}>Resolve</Button>
-                        <Button size="sm" onClick={() => handleResolve(r.id, "dismissed")} className="border-white/20 bg-white/5" variant="outline" disabled={resolve.isPending}>Dismiss</Button>
+                        <Button size="sm" onClick={() => handleResolve(r.id, "dismissed")} className="border-white/20 bg-card/5" variant="outline" disabled={resolve.isPending}>Dismiss</Button>
                       </div>
                     )}
                   </div>
@@ -125,8 +125,8 @@ export default function AdminReportsPage() {
 
         {totalPages > 1 && (
           <div className="flex justify-center gap-2 mt-6">
-            <Button variant="outline" disabled={page === 1} onClick={() => setPage(p => p - 1)} className="border-white/20 bg-white/5">Previous</Button>
-            <Button variant="outline" disabled={page >= totalPages} onClick={() => setPage(p => p + 1)} className="border-white/20 bg-white/5">Next</Button>
+            <Button variant="outline" disabled={page === 1} onClick={() => setPage(p => p - 1)} className="border-white/20 bg-card/5">Previous</Button>
+            <Button variant="outline" disabled={page >= totalPages} onClick={() => setPage(p => p + 1)} className="border-white/20 bg-card/5">Next</Button>
           </div>
         )}
       </div>

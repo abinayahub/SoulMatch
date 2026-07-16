@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Shield, Upload, CheckCircle2 } from "lucide-react";
+import { Shield, Upload, CheckCircle2, ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -35,6 +35,9 @@ export default function VerificationPage() {
   return (
     <AppLayout>
       <div className="max-w-lg mx-auto px-4 py-8">
+        <Button variant="ghost" onClick={() => window.history.back()} className="mb-6 -ml-4 text-muted-foreground hover:bg-card/5">
+          <ChevronLeft className="w-4 h-4 mr-1" />Back
+        </Button>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
           <h1 className="text-3xl font-bold flex items-center gap-3 mb-1">
             <Shield className="w-7 h-7 text-green-400" />Identity Verification
@@ -43,20 +46,20 @@ export default function VerificationPage() {
         </motion.div>
 
         {submitted ? (
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="glass rounded-2xl p-10 text-center">
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-10 text-center">
             <CheckCircle2 className="w-14 h-14 text-green-400 mx-auto mb-4" />
             <h2 className="text-xl font-bold mb-2">Verification Submitted!</h2>
             <p className="text-muted-foreground text-sm">Our team will review your documents within 24-48 hours. You'll be notified of the result.</p>
           </motion.div>
         ) : (
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass rounded-2xl p-6 space-y-5">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-6 space-y-5">
             <div className="space-y-1.5">
               <Label>Document Type</Label>
               <Select onValueChange={setDocType}>
-                <SelectTrigger className="bg-white/5 border-white/10">
+                <SelectTrigger className="bg-card/5 border-white/10">
                   <SelectValue placeholder="Select document type" />
                 </SelectTrigger>
-                <SelectContent className="glass border-white/10">
+                <SelectContent className="bg-card border border-border shadow-md rounded-2xl border-white/10">
                   <SelectItem value="national_id">National ID</SelectItem>
                   <SelectItem value="passport">Passport</SelectItem>
                   <SelectItem value="driving_license">Driving License</SelectItem>
@@ -81,7 +84,7 @@ export default function VerificationPage() {
               </div>
             </div>
 
-            <Button onClick={handleSubmit} className="w-full gradient-primary border-0 text-white glow-primary" disabled={submitVerif.isPending}>
+            <Button onClick={handleSubmit} className="w-full bg-primary text-primary-foreground shadow-md border-0 text-white shadow-lg shadow-primary/20" disabled={submitVerif.isPending}>
               {submitVerif.isPending ? "Submitting..." : "Submit for Verification"}
             </Button>
           </motion.div>

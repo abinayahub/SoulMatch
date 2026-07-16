@@ -1,0 +1,349 @@
+Created At: 2026-07-15T06:25:59Z
+Completed At: 2026-07-15T06:26:00Z
+File Path: `file:///c:/Users/91638/Desktop/SoulMatch%20App/Soul-Match-AI/artifacts/soulmatch/src/pages/profile-user.tsx`
+Total Lines: 1296
+Total Bytes: 73892
+Showing lines 950 to 1290
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+950:                             <div className="flex justify-between items-center text-xs">
+951:                               <div className="flex items-center gap-2 text-muted-foreground">
+952:                                 <span className={data.hasStories && data.sConfidenceData?.categoriesAnalyzed === data.sConfidenceData?.totalCategories ? "text-green-500" : "text-yellow-500"}>
+953:                                   {data.hasStories && data.sConfidenceData?.categoriesAnalyzed === data.sConfidenceData?.totalCategories ? "✔" : "⏳"}
+954:                                 </span> Story & Values
+955:                               </div>
+956:                               <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${
+957:                                 data.hasStories && data.sConfidenceData?.categoriesAnalyzed === data.sConfidenceData?.totalCategories
+958:                                   ? "text-green-500 bg-green-500/10"
+959:                                   : "text-yellow-500 bg-yellow-500/10"
+960:                               }`}>
+961:                                 {data.sConfidenceData && data.sConfidenceData.categoriesAnalyzed > 0
+962:                                   ? (data.hasStories && data.sConfidenceData.categoriesAnalyzed === data.sConfidenceData.totalCategories
+963:                                     ? "Completed"
+964:                                     : "Limited Shared Data")
+965:                                   : "Pending"}
+966:                               </span>
+967:                             </div>
+968:                           </div>
+969:                         </div>
+970:                       </motion.div>
+971: 
+972:                       {/* 2 Summary Cards */}
+973:                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+974:                         {/* Personality Match */}
+975:                         <motion.div
+976:                           initial={{ opacity: 0, y: 10 }}
+977:                           animate={{ opacity: 1, y: 0 }}
+978:                           transition={{ delay: 0.1 }}
+979:                           className="bg-card border border-border rounded-2xl p-4 flex items-center gap-3 relative overflow-hidden"
+980:                         >
+981:                           <div className="absolute bottom-0 left-0 w-full h-1 bg-pink-500/20">
+982:                             <div className="h-full bg-pink-500" style={{ width: `${data.personalityMatch}%` }}></div>
+983:                           </div>
+984:                           <div className="bg-pink-500/10 p-2.5 rounded-full">
+985:                             <Heart className="w-5 h-5 text-pink-500 fill-pink-500/20" />
+986:                           </div>
+987:                           <div>
+988:                             <div className="text-[11px] text-muted-foreground mb-0.5 flex items-center gap-1.5">
+989:                               Personality Match
+990:                               {data.pConfidence && data.pConfidence !== "High Confidence" && (
+991:                                 <span className={`text-[8px] px-1 py-0.5 rounded border ${
+992:                                   data.pConfidence === "Low Confidence" 
+993:                                     ? "text-red-500 bg-red-500/10 border-red-500/20" 
+994:                                     : "text-yellow-500 bg-yellow-500/10 border-yellow-500/20"
+995:                                 }`}>
+996:                                   {data.pConfidence}
+997:                                 </span>
+998:                               )}
+999:                             </div>
+1000:                             <div className="text-xl font-bold text-foreground leading-tight">{data.personalityMatch}%</div>
+1001:                             <div className="text-[10px] text-muted-foreground">{getMatchQuality(data.personalityMatch)}</div>
+1002:                           </div>
+1003:                         </motion.div>
+1004: 
+1005:                         {/* Values Match */}
+1006:                         <motion.div
+1007:                           initial={{ opacity: 0, y: 10 }}
+1008:                           animate={{ opacity: 1, y: 0 }}
+1009:                           transition={{ delay: 0.15 }}
+1010:                           className="bg-card border border-border rounded-2xl p-4 flex items-center gap-3 relative overflow-hidden"
+1011:                         >
+1012:                           <div className="absolute bottom-0 left-0 w-full h-1 bg-purple-500/20">
+1013:                             <div className="h-full bg-purple-500" style={{ width: `${data.aiStoryMatch}%` }}></div>
+1014:                           </div>
+1015:                           <div className="bg-purple-500/10 p-2.5 rounded-full">
+1016:                             <BookOpen className="w-5 h-5 text-purple-500" />
+1017:                           </div>
+1018:                           <div>
+1019:                             <div className="text-[11px] text-muted-foreground mb-0.5 flex flex-wrap items-center gap-1.5">
+1020:                               Values Match
+1021:                               {data.sConfidenceData && data.sConfidenceData.level !== "High" && (
+1022:                                 <span
+1023:                                   className={`text-[8px] px-1 py-0.5 rounded border ${
+1024:                                     data.sConfidenceData.level === "Low"
+1025:                                       ? "text-red-500 bg-red-500/10 border-red-500/20"
+1026:                                       : "text-yellow-500 bg-yellow-500/10 border-yellow-500/20"
+1027:                                   }`}
+1028:                                   title={`Confidence is based on the number of stories both users have shared that overlap in the same category. Currently based on ${data.sConfidenceData.stories} overlapping ${data.sConfidenceData.stories === 1 ? 'story' : 'stories'}.`}
+1029:                                 >
+1030:                                   {data.sConfidenceData.level} Confidence
+1031:                                   <span className="ml-0.5 opacity-70">· {data.sConfidenceData.stories} shared {data.sConfidenceData.stories === 1 ? 'story' : 'stories'}</span>
+1032:                                 </span>
+1033:                               )}
+1034:                             </div>
+1035:                             <div className="text-xl font-bold text-foreground leading-tight">
+1036:                               {!data.hasStories ? (
+1037:                                 data.sConfidenceData && data.sConfidenceData.categoriesAnalyzed > 0 ? (
+1038:                                   <span className="text-xs text-yellow-500 font-medium">Limited Shared Data</span>
+1039:                                 ) : (
+1040:                                   <span className="text-xs text-yellow-500 font-medium">Pending Analysis</span>
+1041:                                 )
+1042:                               ) : `${data.aiStoryMatch}%`}
+1043:                             </div>
+1044:                             <div className="text-[9px] text-muted-foreground leading-snug mt-0.5">
+1045:                               {!data.hasStories ? (
+1046:                                 data.sConfidenceData && data.sConfidenceData.categoriesAnalyzed > 0 ? (
+1047:                                   <>
+1048:                                     <span>{data.sConfidenceData.categoriesAnalyzed} of {data.sConfidenceData.totalCategories} categories analyzed · {data.sConfidenceData.stories} shared {data.sConfidenceData.stories === 1 ? 'story' : 'stories'}</span>
+1049:                                     <span className="block mt-1 text-muted-foreground italic">
+1050:                                       Only {data.sConfidenceData.stories} shared {data.sConfidenceData.stories === 1 ? 'story category is' : 'story categories are'} currently available for comparison. As both users share more stories across common topics, the Story &amp; Values Match will become more accurate.
+1051:                                     </span>
+1052:                                   </>
+1053:                                 ) : (
+1054:                                   "Complete at least 5 stories to unlock your Values Match."
+1055:                                 )
+1056:                               ) : getMatchQuality(data.aiStoryMatch)}
+1057:                             </div>
+1058:                           </div>
+1059:                         </motion.div>
+1060:                       </div>
+1061: 
+1062:                       {/* Personality Comparison */}
+1063:                       <motion.div
+1064:                         initial={{ opacity: 0, y: 10 }}
+1065:                         animate={{ opacity: 1, y: 0 }}
+1066:                         transition={{ delay: 0.25 }}
+1067:                         className="bg-card border border-border rounded-3xl p-5"
+1068:                       >
+1069:                         <div className="flex items-center gap-2.5 mb-5 pb-3 border-b border-border">
+1070:                           <User className="w-4 h-4 text-pink-500" />
+1071:                           <h3 className="text-base font-bold text-foreground">Personality Comparison</h3>
+1072:                         </div>
+1073: 
+1074:                         <div className="grid grid-cols-12 gap-3 text-[10px] font-semibold text-muted-foreground mb-3 px-1 uppercase">
+1075:                           <div className="col-span-5">Trait</div>
+1076:                           <div className="col-span-2 text-pink-500">You</div>
+1077:                           <div className="col-span-2 text-blue-500">{p.firstName}</div>
+1078:                           <div className="col-span-3 text-right">Similarity</div>
+1079:                         </div>
+1080: 
+1081:                         <div className="space-y-4">
+1082:                           {traitBreakdowns.map((trait: any, i: number) => (
+1083:                             <div key={i} className="grid grid-cols-12 gap-3 items-center px-1">
+1084:                               <div className="col-span-5 flex items-center gap-2.5">
+1085:                                 {getTraitIcon(trait.name)}
+1086:                                 <div>
+1087:                                   <div className="text-xs font-semibold text-foreground">{trait.name}</div>
+1088:                                   <div className="text-[9px] text-muted-foreground">{getTraitSubtext(trait.name)}</div>
+1089:                                 </div>
+1090:                               </div>
+1091:                               <div className="col-span-2 flex flex-col gap-1">
+1092:                                 <span className="text-[10px] font-bold text-foreground">{trait.myScore}%</span>
+1093:                                 <div className="h-1 bg-card/5 rounded-full overflow-hidden w-full max-w-[60px]">
+1094:                                   <div className="h-full bg-pink-500" style={{ width: `${trait.myScore}%` }}></div>
+1095:                                 </div>
+1096:                               </div>
+1097:                               <div className="col-span-2 flex flex-col gap-1">
+1098:                                 <span className="text-[10px] font-bold text-foreground">{trait.theirScore}%</span>
+1099:                                 <div className="h-1 bg-card/5 rounded-full overflow-hidden w-full max-w-[60px]">
+1100:                                   <div className="h-full bg-blue-500" style={{ width: `${trait.theirScore}%` }}></div>
+1101:                                 </div>
+1102:                               </div>
+1103:                               <div className="col-span-3 flex items-center justify-end gap-1.5">
+1104:                                 <span className={`text-xs font-bold ${getMatchColor(trait.similarity)}`}>
+1105:                                   {trait.similarity}%
+1106:                                 </span>
+1107:                                 <Circle className={`w-2.5 h-2.5 ${getMatchColor(trait.similarity)} fill-current`} />
+1108:                               </div>
+1109:                             </div>
+1110:                           ))}
+1111:                         </div>
+1112:                         
+1113:                         <div className="mt-5 pt-3 border-t border-border flex justify-end items-center gap-3 px-1">
+1114:                           <span className="text-xs text-muted-foreground">Personality Match</span>
+1115:                           <span className="text-lg font-bold text-pink-500">{data.personalityMatch}%</span>
+1116:                         </div>
+1117:                       </motion.div>
+1118: 
+1119:                       {/* Life & Values Comparison */}
+1120:                       <motion.div
+1121:                         initial={{ opacity: 0, y: 10 }}
+1122:                         animate={{ opacity: 1, y: 0 }}
+1123:                         transition={{ delay: 0.3 }}
+1124:                         className="bg-card border border-border rounded-3xl p-5"
+1125:                       >
+1126:                         <div className="flex items-center justify-between mb-5 pb-3 border-b border-border">
+1127:                           <div className="flex items-center gap-2.5">
+1128:                             <BookOpen className="w-4 h-4 text-purple-500" />
+1129:                             <h3 className="text-base font-bold text-foreground">Life & Values Comparison</h3>
+1130:                             <Popover>
+1131:                               <PopoverTrigger asChild>
+1132:                                 <HelpCircle className="w-3.5 h-3.5 text-muted-foreground hover:text-muted-foreground cursor-pointer ml-1" />
+1133:                               </PopoverTrigger>
+1134:                               <PopoverContent className="w-72 bg-background border-border text-xs text-muted-foreground p-4">
+1135:                                 <div className="font-bold text-foreground mb-2">How Values Match Works</div>
+1136:                                 <p className="text-[11px] text-muted-foreground mb-3">
+1137:                                   Your Values Match is generated from daily reflections and personal stories.
+1138:                                 </p>
+1139:                                 <div className="font-bold text-foreground mb-1 mt-3">Minimum Data Required</div>
+1140:                                 <p className="text-[11px] text-muted-foreground mb-3">
+1141:                                   To ensure accuracy, <strong className="text-foreground">both you and your partner</strong> must share at least 5 stories in a specific category before it can be fully analyzed.
+1142:                                 </p>
+1143:                                 <div className="text-[10px] text-yellow-500/90 italic border-t border-border pt-2 mt-2">
+1144:                                   Categories remain "Pending" until the 5-story threshold is met by both users.
+1145:                                 </div>
+1146:                               </PopoverContent>
+1147:                             </Popover>
+1148:                           </div>
+1149:                           {data.sConfidenceData && (
+1150:                             <Badge variant="outline" className={`text-[9px] ${
+1151:                               data.sConfidenceData.level === "High" ? "bg-green-500/10 text-green-500 border-green-500/20" :
+1152:                               data.sConfidenceData.level === "Medium" ? "bg-yellow-500/10 text-yellow-500 border-yellow-500/20" :
+1153:                               "bg-red-500/10 text-red-500 border-red-500/20"
+1154:                             }`}>
+1155:                               {data.sConfidenceData.level} Confidence
+1156:                             </Badge>
+1157:                           )}
+1158:                         </div>
+1159:                         
+1160:                         {/* Progress Indicator */}
+1161:                         {data.sConfidenceData && (
+1162:                           <div className="mb-5 bg-background p-3.5 rounded-xl border border-border mt-5">
+1163:                             <div className="flex justify-between items-center mb-2">
+1164:                               <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Values Analysis</span>
+1165:                               <span className="text-[11px] text-purple-400 font-bold">
+1166:                                 {Math.round((data.sConfidenceData.categoriesAnalyzed / data.sConfidenceData.totalCategories) * 100)}%
+1167:                               </span>
+1168:                             </div>
+1169:                             <div className="h-1.5 bg-card/5 rounded-full overflow-hidden w-full mb-2">
+1170:                               <div className="h-full bg-purple-500" style={{ width: `${(data.sConfidenceData.categoriesAnalyzed / data.sConfidenceData.totalCategories) * 100}%` }}></div>
+1171:                             </div>
+1172:                             <div className="text-[9px] text-muted-foreground italic">
+1173:                               {data.sConfidenceData.categoriesAnalyzed} of {data.sConfidenceData.totalCategories} categories analyzed
+1174:                             </div>
+1175:                           </div>
+1176:                         )}
+1177: 
+1178:                         <div className="grid grid-cols-12 gap-3 text-[10px] font-semibold text-muted-foreground mb-3 px-1 uppercase">
+1179:                           <div className="col-span-4">Category</div>
+1180:                           <div className="col-span-2 text-pink-500">You</div>
+1181:                           <div className="col-span-2 text-blue-500">{p.firstName}</div>
+1182:                           <div className="col-span-4 text-right">Similarity</div>
+1183:                         </div>
+1184: 
+1185:                         <div className="space-y-4">
+1186:                           {storyBreakdowns.map((cat: any, i: number) => {
+1187:                             
+1188:                             return (
+1189:                             <div key={i} className="grid grid-cols-12 gap-3 items-center px-1 py-2 border-b border-border last:border-0">
+1190:                               <div className="col-span-4 flex items-center gap-2.5">
+1191:                                 {getStoryIcon(cat.name)}
+1192:                                 <div className="text-xs font-semibold text-foreground leading-tight">{cat.name}</div>
+1193:                               </div>
+1194:                               <div className="col-span-2 text-center text-pink-500 font-bold text-xs">
+1195:                                 {cat.insufficientData ? "--" : `${cat.myScore}%`}
+1196:                               </div>
+1197:                               <div className="col-span-2 text-center text-blue-500 font-bold text-xs">
+1198:                                 {cat.insufficientData ? "--" : `${cat.theirScore}%`}
+1199:                               </div>
+1200:                               <div className="col-span-4 flex flex-col items-end justify-center">
+1201:                                 {cat.insufficientData ? (
+1202:                                   <span className="text-[10px] text-yellow-500/80 italic mt-1">Pending</span>
+1203:                                 ) : (
+1204:                                   <div className="flex items-center gap-1.5">
+1205:                                     <span className={`text-[12px] font-bold ${getMatchColor(cat.similarity)}`}>
+1206:                                       {cat.similarity ?? 0}%
+1207:                                     </span>
+1208:                                   </div>
+1209:                                 )}
+1210:                               </div>
+1211:                             </div>
+1212:                           )})}
+1213:                         </div>
+1214: 
+1215:                         <div className="mt-5 pt-4 border-t border-border">
+1216:                           <div className="flex justify-between items-center px-2">
+1217:                             <div className="flex flex-col">
+1218:                               <span className="text-xs text-muted-foreground mb-1">Values Match</span>
+1219:                               {!data.hasStories ? (
+1220:                                 <span className="text-[10px] text-yellow-500/80">Pending - Need more story data to generate an accurate comparison.</span>
+1221:                               ) : data.sConfidenceData && data.sConfidenceData.categoriesAnalyzed < data.sConfidenceData.totalCategories ? (
+1222:                                 <span className="text-[10px] text-yellow-500/80">Analysis In Progress - {data.sConfidenceData.categoriesAnalyzed} of {data.sConfidenceData.totalCategories} categories analyzed</span>
+1223:                               ) : (
+1224:                                 <span className="text-[10px] text-green-500/80">Analysis Complete</span>
+1225:                               )}
+1226:                             </div>
+1227:                             <div className="text-lg font-bold text-purple-500">
+1228:                               {data.hasStories ? `${data.aiStoryMatch}%` : "--"}
+1229:                             </div>
+1230:                           </div>
+1231:                         </div>
+1232:                       </motion.div>
+1233: 
+1234:                       {/* Focus Areas to Improve */}
+1235:                         <motion.div
+1236:                           initial={{ opacity: 0, y: 10 }}
+1237:                           animate={{ opacity: 1, y: 0 }}
+1238:                           transition={{ delay: 0.38 }}
+1239:                           className="bg-card border border-border rounded-3xl p-5 flex flex-col h-full"
+1240:                         >
+1241:                           <div className="flex items-center gap-2.5 mb-5">
+1242:                             <div className="p-1">
+1243:                               <Star className="w-5 h-5 text-yellow-500" />
+1244:                             </div>
+1245:                             <h3 className="text-sm font-bold text-foreground">Focus Areas to Improve</h3>
+1246:                           </div>
+1247:                           
+1248:                           <div className="space-y-4 mb-5 flex-1">
+1249:                             {focusAreas.map((area: any, i: number) => {
+1250:                               const icon = area.name.includes("Family") ? <Users className="w-3.5 h-3.5 text-purple-500" /> 
+1251:                                 : area.name.includes("Career") ? <Briefcase className="w-3.5 h-3.5 text-yellow-500" />
+1252:                                   : <Target className="w-3.5 h-3.5 text-blue-500" />;
+1253:                               
+1254:                               return (
+1255:                                 <div key={i} className="flex items-center gap-3">
+1256:                                   <div className="bg-background p-1.5 rounded-lg h-7 shrink-0 flex items-center justify-center">
+1257:                                     {icon}
+1258:                                   </div>
+1259:                                   <div className="flex-1">
+1260:                                     <div className="flex justify-between items-center mb-1">
+1261:                                       <div className="font-bold text-xs text-foreground">{area.name}</div>
+1262:                                       <div className="text-xs text-muted-foreground">{area.similarity}%</div>
+1263:                                     </div>
+1264:                                     <div className="h-1 bg-card/5 rounded-full overflow-hidden w-full">
+1265:                                       <div className="h-full bg-pink-500" style={{ width: `${area.similarity}%` }}></div>
+1266:                                     </div>
+1267:                                   </div>
+1268:                                 </div>
+1269:                               );
+1270:                             })}
+1271:                           </div>
+1272: 
+1273:                           <div className="bg-pink-500/5 border border-pink-500/20 rounded-xl p-3 flex gap-2.5 mt-auto">
+1274:                             <Heart className="w-5 h-5 text-pink-500 shrink-0" />
+1275:                             <div>
+1276:                               <div className="text-[10px] text-muted-foreground leading-tight">
+1277:                                 <span className="text-pink-500 font-bold mr-1">Tip:</span> 
+1278:                                 Complete more stories and answer daily questions to unlock deeper insights and improve your match score.
+1279:                               </div>
+1280:                             </div>
+1281:                           </div>
+1282:                         </motion.div>
+1283: 
+1284:                     </div>
+1285:                   );
+1286:                 })()
+1287:               )}
+1288:             </div>
+1289: 
+1290:           </div>
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

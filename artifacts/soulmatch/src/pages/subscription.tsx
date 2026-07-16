@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Crown, Check, Sparkles, Coins, ChevronRight, X } from "lucide-react";
+import { Crown, Check, ChevronRight, X, ChevronLeft, CreditCard, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -64,49 +64,71 @@ export default function SubscriptionPage() {
   }
 
   const tierColors: Record<string, string> = {
-    bronze: "text-orange-400", silver: "text-gray-400",
-    gold: "text-yellow-400", platinum: "text-cyan-400",
+    bronze: "text-orange-400 bg-orange-400/10 border-orange-400/20", 
+    silver: "text-gray-400 bg-gray-400/10 border-gray-400/20",
+    gold: "text-yellow-500 bg-yellow-500/10 border-yellow-500/20", 
+    platinum: "text-cyan-400 bg-cyan-400/10 border-cyan-400/20",
   };
 
   return (
     <AppLayout>
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-          <h1 className="text-3xl font-bold flex items-center gap-3 mb-1">
-            <Crown className="w-7 h-7 text-accent" />Subscription
-          </h1>
-          <p className="text-muted-foreground">Manage your plan and rewards.</p>
-        </motion.div>
+      <div className="min-h-screen bg-background relative pb-28">
+        <div className="max-w-md mx-auto px-5 py-6">
+          
+          <button onClick={() => window.history.back()} className="text-muted-foreground hover:text-foreground flex items-center gap-2 text-sm font-medium mb-6 w-fit transition-colors">
+            <ChevronLeft className="w-4 h-4" /> Back to Settings
+          </button>
+          
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+            <h1 className="text-[28px] font-extrabold flex items-center gap-3 mb-1 text-foreground">
+              <CreditCard className="w-7 h-7 text-primary" />Subscription
+            </h1>
+            <p className="text-muted-foreground font-medium text-[15px]">Manage your plan and rewards.</p>
+          </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Left: Current plan & rewards */}
-          <div className="space-y-4">
+          <div className="space-y-6">
+            
             {/* Current plan */}
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="glass rounded-2xl p-5">
-              <h2 className="font-semibold mb-3">Current Plan</h2>
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-card border border-border shadow-sm rounded-[32px] p-6 relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-6 opacity-5">
+                 <Crown className="w-24 h-24" />
+              </div>
+              <h2 className="text-[13px] font-extrabold text-muted-foreground uppercase tracking-widest mb-4">Current Plan</h2>
               {currentSub ? (
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Crown className="w-5 h-5 text-accent" />
-                    <span className="font-bold text-lg">{(currentSub as any).plan?.name}</span>
-                    <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-xs">{(currentSub as any).status}</Badge>
+                <div className="relative z-10">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Crown className="w-6 h-6 text-accent" />
+                    <span className="font-extrabold text-[22px] text-foreground">{(currentSub as any).plan?.name}</span>
+                    <Badge className="bg-green-500/10 text-green-500 border border-green-500/20 font-bold px-2.5 py-0.5 rounded-full ml-auto">{(currentSub as any).status}</Badge>
                   </div>
-                  <p className="text-xs text-muted-foreground">Renews {(currentSub as any).currentPeriodEnd ? formatDate((currentSub as any).currentPeriodEnd) : "—"}</p>
+                  <div className="flex items-center gap-2 text-[14px] font-bold text-foreground/80 mb-6 bg-foreground/5 p-3 rounded-2xl">
+                     <span className="w-2 h-2 rounded-full bg-green-500" />
+                     Renews {(currentSub as any).currentPeriodEnd ? formatDate((currentSub as any).currentPeriodEnd) : "—"}
+                  </div>
                   {!(currentSub as any).cancelAtPeriodEnd && (
-                    <Button variant="outline" size="sm" onClick={handleCancel} className="w-full mt-3 border-red-500/30 text-red-400 hover:bg-red-500/10" disabled={cancel.isPending}>
+                    <Button variant="outline" onClick={handleCancel} className="w-full h-12 rounded-2xl border-red-500/20 text-red-500 hover:bg-red-500/10 font-bold" disabled={cancel.isPending}>
                       Cancel Subscription
                     </Button>
                   )}
                   {(currentSub as any).cancelAtPeriodEnd && (
-                    <p className="text-xs text-yellow-400 mt-2">Cancels at period end</p>
+                    <div className="flex items-center justify-center p-3 rounded-2xl bg-yellow-500/10 text-yellow-600 font-bold text-[13px]">
+                       Cancels at period end
+                    </div>
                   )}
                 </div>
               ) : (
-                <div>
-                  <p className="text-sm text-muted-foreground mb-3">You're on the free plan.</p>
-                  <div className="space-y-1.5 text-xs text-muted-foreground">
+                <div className="relative z-10">
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className="font-extrabold text-[22px] text-foreground">Free Plan</span>
+                  </div>
+                  <div className="space-y-3 mb-6 bg-foreground/5 p-4 rounded-2xl">
                     {["Limited profile views", "10 interests/day", "No chat access"].map((f) => (
-                      <div key={f} className="flex items-center gap-2"><X className="w-3.5 h-3.5 text-red-400" />{f}</div>
+                      <div key={f} className="flex items-center gap-3 text-[14px] font-medium text-foreground">
+                         <div className="w-5 h-5 rounded-full bg-red-500/10 flex items-center justify-center shrink-0">
+                           <X className="w-3 h-3 text-red-500" />
+                         </div>
+                         {f}
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -115,78 +137,91 @@ export default function SubscriptionPage() {
 
             {/* Rewards */}
             {rewards && (
-              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="glass rounded-2xl p-5">
-                <h2 className="font-semibold mb-3 flex items-center gap-2"><Sparkles className="w-4 h-4 text-accent" />Rewards</h2>
-                <div className="text-3xl font-bold gradient-text mb-1">{(rewards as any).coins ?? 0}</div>
-                <p className="text-xs text-muted-foreground mb-2">SoulCoins</p>
-                <div className={`text-sm font-semibold ${tierColors[(rewards as any).tier ?? "bronze"]}`}>
-                  {((rewards as any).tier ?? "bronze").toUpperCase()} Tier
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="bg-card border border-border shadow-sm rounded-[32px] p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-[13px] font-extrabold text-muted-foreground uppercase tracking-widest">Rewards</h2>
+                  <div className={`px-3 py-1 rounded-full border text-[11px] font-bold uppercase tracking-wider ${tierColors[(rewards as any).tier ?? "bronze"]}`}>
+                    {((rewards as any).tier ?? "bronze")} Tier
+                  </div>
                 </div>
-                <div className="mt-3 text-xs text-muted-foreground space-y-1">
+                <div className="flex items-end gap-2 mb-6">
+                  <Sparkles className="w-8 h-8 text-primary mb-1" />
+                  <span className="text-[40px] font-extrabold text-foreground leading-none">{(rewards as any).coins ?? 0}</span>
+                  <span className="text-[14px] font-bold text-muted-foreground mb-1">SoulCoins</span>
+                </div>
+                
+                <h3 className="text-[12px] font-bold text-foreground mb-3">Recent Activity</h3>
+                <div className="space-y-2">
                   {((rewards as any).recentTransactions ?? []).slice(0, 3).map((t: any) => (
-                    <div key={t.id} className="flex justify-between">
-                      <span className="truncate">{t.description}</span>
-                      <span className={t.type === "earned" ? "text-green-400" : "text-red-400"}>
+                    <div key={t.id} className="flex items-center justify-between p-3 bg-foreground/5 rounded-2xl">
+                      <span className="text-[13px] font-medium text-foreground truncate mr-4">{t.description}</span>
+                      <span className={`text-[14px] font-extrabold shrink-0 ${t.type === "earned" ? "text-green-500" : "text-red-500"}`}>
                         {t.type === "earned" ? "+" : "-"}{t.amount}
                       </span>
                     </div>
                   ))}
+                  {((rewards as any).recentTransactions ?? []).length === 0 && (
+                     <p className="text-[13px] text-muted-foreground italic p-2">No recent activity.</p>
+                  )}
                 </div>
               </motion.div>
             )}
-          </div>
 
-          {/* Plans */}
-          <div className="md:col-span-2">
-            <h2 className="font-semibold mb-4">Available Plans</h2>
-            {loadingPlans ? (
-              <div className="space-y-4">
-                {[...Array(3)].map((_, i) => <Skeleton key={i} className="h-48 rounded-2xl bg-white/5" />)}
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {(plans as any[]).map((plan, i) => (
-                  <motion.div
-                    key={plan.id}
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                    className={`glass rounded-2xl p-5 relative ${plan.isPopular ? "border-primary/40" : ""}`}
-                  >
-                    {plan.isPopular && (
-                      <div className="absolute -top-3 left-5">
-                        <Badge className="gradient-primary border-0 text-white text-xs px-3">Most Popular</Badge>
-                      </div>
-                    )}
-                    <div className="flex items-start justify-between mb-3">
-                      <div>
-                        <h3 className="font-bold text-lg">{plan.name}</h3>
-                        <div className="flex items-baseline gap-1 mt-0.5">
-                          <span className="text-2xl font-bold gradient-text">${plan.price}</span>
-                          <span className="text-muted-foreground text-sm">/{plan.interval}</span>
+            {/* Available Plans */}
+            <div>
+              <h2 className="text-[18px] font-extrabold text-foreground mb-4 pl-1">Available Plans</h2>
+              {loadingPlans ? (
+                <div className="space-y-4">
+                  {[...Array(3)].map((_, i) => <Skeleton key={i} className="h-48 rounded-[32px] bg-foreground/5" />)}
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {(plans as any[]).map((plan, i) => (
+                    <motion.div
+                      key={plan.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 + (i * 0.1) }}
+                      className={`bg-card border shadow-sm rounded-[32px] p-6 relative ${plan.isPopular ? "border-primary/50" : "border-border"}`}
+                    >
+                      {plan.isPopular && (
+                        <div className="absolute -top-3.5 left-6">
+                          <Badge className="bg-primary text-primary-foreground shadow-md border-0 text-white text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full">Most Popular</Badge>
                         </div>
+                      )}
+                      
+                      <div className="mb-5">
+                         <h3 className="font-extrabold text-[20px] text-foreground mb-1">{plan.name}</h3>
+                         <div className="flex items-baseline gap-1">
+                           <span className="text-[28px] font-extrabold text-primary">${plan.price}</span>
+                           <span className="text-muted-foreground font-bold text-[14px]">/{plan.interval}</span>
+                         </div>
                       </div>
+
+                      <div className="space-y-2.5 mb-6">
+                        {plan.features?.map((f: string) => (
+                          <div key={f} className="flex items-start gap-3">
+                            <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                               <Check className="w-3 h-3 text-primary" />
+                            </div>
+                            <span className="text-[13px] font-medium text-foreground leading-snug">{f}</span>
+                          </div>
+                        ))}
+                      </div>
+
                       <Button
                         onClick={() => handleSubscribe(plan.id)}
-                        className={plan.isPopular ? "gradient-primary border-0 text-white" : "bg-white/10 hover:bg-white/15"}
+                        className={`w-full h-12 rounded-2xl font-bold text-[15px] transition-all ${(currentSub as any)?.planId === plan.id ? "bg-green-500/10 text-green-600 hover:bg-green-500/20 border-0" : plan.isPopular ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25 border-0 text-white" : "bg-foreground/5 hover:bg-foreground/10 text-foreground"}`}
                         disabled={checkout.isPending || (currentSub as any)?.planId === plan.id}
-                        size="sm"
                       >
-                        {(currentSub as any)?.planId === plan.id ? "Current" : "Subscribe"}
-                        {(currentSub as any)?.planId !== plan.id && <ChevronRight className="w-3.5 h-3.5 ml-1" />}
+                        {(currentSub as any)?.planId === plan.id ? "Current Plan Active" : "Subscribe"}
                       </Button>
-                    </div>
-                    <ul className="space-y-1.5">
-                      {plan.features?.map((f: string) => (
-                        <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <Check className="w-4 h-4 text-primary shrink-0" />{f}
-                        </li>
-                      ))}
-                    </ul>
-                  </motion.div>
-                ))}
-              </div>
-            )}
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </div>
+            
           </div>
         </div>
       </div>

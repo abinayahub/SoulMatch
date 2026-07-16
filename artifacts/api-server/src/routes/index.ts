@@ -11,6 +11,10 @@ import notificationsRouter from "./notifications";
 import reportsRouter from "./reports";
 import adminRouter from "./admin";
 import analyticsRouter from "./analytics";
+import journalRouter from "./journal";
+import metricsRouter from "./metrics";
+import supportRouter from "./support";
+import reflectionsRouter from "./reflections";
 
 const router: IRouter = Router();
 
@@ -26,5 +30,9 @@ router.use("/notifications", notificationsRouter);
 router.use("/reports", reportsRouter);
 router.use("/admin", adminRouter);
 router.use("/analytics", analyticsRouter);
+router.use("/journal", journalRouter);
+router.use("/metrics", metricsRouter);
+router.use("/support", supportRouter);
+router.use("/reflections", reflectionsRouter);
 
 export default router;

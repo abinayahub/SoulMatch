@@ -24,7 +24,7 @@ const CHART_COLORS = ["hsl(340 80% 55%)", "hsl(260 60% 55%)", "hsl(35 90% 55%)",
 function CustomTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="glass rounded-xl px-3 py-2 text-xs border border-white/10">
+    <div className="bg-card border border-border shadow-md rounded-2xl rounded-xl px-3 py-2 text-xs border border-white/10">
       <p className="text-muted-foreground mb-1">{label}</p>
       {payload.map((p: any) => (
         <p key={p.name} style={{ color: p.color }} className="font-semibold">{p.name}: {p.value}</p>
@@ -57,10 +57,10 @@ export default function AdminAnalyticsPage() {
             <p className="text-muted-foreground">Platform performance metrics.</p>
           </div>
           <Select value={period} onValueChange={setPeriod}>
-            <SelectTrigger className="w-28 bg-white/5 border-white/10">
+            <SelectTrigger className="w-28 bg-card/5 border-white/10">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="glass border-white/10">
+            <SelectContent className="bg-card border border-border shadow-md rounded-2xl border-white/10">
               <SelectItem value="7d">7 days</SelectItem>
               <SelectItem value="30d">30 days</SelectItem>
               <SelectItem value="90d">90 days</SelectItem>
@@ -76,7 +76,7 @@ export default function AdminAnalyticsPage() {
             { label: "Total Matches", value: o?.totalMatches ?? 0, icon: Heart, color: "text-primary" },
             { label: "Premium Users", value: o?.premiumUsers ?? 0, icon: TrendingUp, color: "text-accent" },
           ].map((stat, i) => (
-            <motion.div key={stat.label} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.05 }} className="glass rounded-2xl p-4">
+            <motion.div key={stat.label} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.05 }} className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-4">
               <stat.icon className={`w-5 h-5 ${stat.color} mb-2`} />
               <div className="text-2xl font-bold">{stat.value}</div>
               <div className="text-xs text-muted-foreground">{stat.label}</div>
@@ -86,9 +86,9 @@ export default function AdminAnalyticsPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* User growth */}
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass rounded-2xl p-5">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-5">
             <h2 className="font-semibold mb-4 flex items-center gap-2"><Users className="w-4 h-4 text-blue-400" />User Growth</h2>
-            {loadingU ? <Skeleton className="h-48 rounded-xl bg-white/5" /> : (
+            {loadingU ? <Skeleton className="h-48 rounded-xl bg-card/5" /> : (
               <ResponsiveContainer width="100%" height={180}>
                 <AreaChart data={u?.data ?? []}>
                   <defs>
@@ -97,7 +97,7 @@ export default function AdminAnalyticsPage() {
                       <stop offset="95%" stopColor={CHART_COLORS[0]} stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--card))" />
                   <XAxis dataKey="date" tick={{ fontSize: 10, fill: "hsl(240 5% 55%)" }} tickFormatter={(v) => v.slice(5)} />
                   <YAxis tick={{ fontSize: 10, fill: "hsl(240 5% 55%)" }} />
                   <Tooltip content={<CustomTooltip />} />
@@ -108,9 +108,9 @@ export default function AdminAnalyticsPage() {
           </motion.div>
 
           {/* Revenue */}
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="glass rounded-2xl p-5">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-5">
             <h2 className="font-semibold mb-4 flex items-center gap-2"><DollarSign className="w-4 h-4 text-green-400" />Revenue</h2>
-            {loadingR ? <Skeleton className="h-48 rounded-xl bg-white/5" /> : (
+            {loadingR ? <Skeleton className="h-48 rounded-xl bg-card/5" /> : (
               <ResponsiveContainer width="100%" height={180}>
                 <AreaChart data={r?.data ?? []}>
                   <defs>
@@ -119,7 +119,7 @@ export default function AdminAnalyticsPage() {
                       <stop offset="95%" stopColor={CHART_COLORS[2]} stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--card))" />
                   <XAxis dataKey="date" tick={{ fontSize: 10, fill: "hsl(240 5% 55%)" }} tickFormatter={(v) => v.slice(5)} />
                   <YAxis tick={{ fontSize: 10, fill: "hsl(240 5% 55%)" }} tickFormatter={(v) => `$${v}`} />
                   <Tooltip content={<CustomTooltip />} />
@@ -130,12 +130,12 @@ export default function AdminAnalyticsPage() {
           </motion.div>
 
           {/* Match analytics */}
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="glass rounded-2xl p-5">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-5">
             <h2 className="font-semibold mb-4 flex items-center gap-2"><Heart className="w-4 h-4 text-primary" />Daily Matches</h2>
-            {loadingM ? <Skeleton className="h-48 rounded-xl bg-white/5" /> : (
+            {loadingM ? <Skeleton className="h-48 rounded-xl bg-card/5" /> : (
               <ResponsiveContainer width="100%" height={180}>
                 <BarChart data={m?.dailyMatches ?? []}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--card))" />
                   <XAxis dataKey="date" tick={{ fontSize: 10, fill: "hsl(240 5% 55%)" }} tickFormatter={(v) => v.slice(5)} />
                   <YAxis tick={{ fontSize: 10, fill: "hsl(240 5% 55%)" }} />
                   <Tooltip content={<CustomTooltip />} />
@@ -146,9 +146,9 @@ export default function AdminAnalyticsPage() {
           </motion.div>
 
           {/* Plan breakdown */}
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="glass rounded-2xl p-5">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-5">
             <h2 className="font-semibold mb-4">Revenue by Plan</h2>
-            {loadingR ? <Skeleton className="h-48 rounded-xl bg-white/5" /> : (
+            {loadingR ? <Skeleton className="h-48 rounded-xl bg-card/5" /> : (
               <div className="flex items-center gap-4">
                 <ResponsiveContainer width="50%" height={180}>
                   <PieChart>

@@ -3,7 +3,7 @@ import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 import { usersTable } from "./users";
 
-export const messageTypeEnum = pgEnum("message_type", ["text", "image", "emoji"]);
+export const messageTypeEnum = pgEnum("message_type", ["text", "image", "emoji", "audio"]);
 
 export const conversationsTable = pgTable("conversations", {
   id: serial("id").primaryKey(),

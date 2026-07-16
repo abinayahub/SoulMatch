@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bell, Heart, MessageCircle, Search, Menu, X, LogOut, User, Settings, Crown } from "lucide-react";
+import { Bell, Heart, MessageCircle, Search, Menu, X, LogOut, User, Settings, Crown, BookOpen } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { getInitials } from "@/lib/utils";
@@ -13,17 +13,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { MoreVertical } from "lucide-react";
 
 const navLinks = [
   { href: "/discover", label: "Discover", icon: Search },
-  { href: "/matches", label: "Matches", icon: Heart },
   { href: "/chat", label: "Chat", icon: MessageCircle },
+  { href: "/my-story", label: "Story", icon: BookOpen },
 ];
 
 export function Navbar() {
   const { user, logout, isAdmin } = useAuth();
-  const [location] = useLocation();
+  const [location, navigate] = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const photo = user?.photos?.find((p) => p.isPrimary) ?? user?.photos?.[0];
 
@@ -48,7 +50,7 @@ export function Navbar() {
                 <span className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer ${
                   location === href
                     ? "bg-primary/20 text-primary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                    : "text-muted-foreground hover:text-foreground hover:bg-background/5"
                 }`}>
                   <Icon className="w-4 h-4" />
                   {label}
@@ -58,7 +60,7 @@ export function Navbar() {
             {isAdmin && (
               <Link href="/admin">
                 <span className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer ${
-                  location.startsWith("/admin") ? "bg-accent/20 text-accent" : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                  location.startsWith("/admin") ? "bg-accent/20 text-accent" : "text-muted-foreground hover:text-foreground hover:bg-background/5"
                 }`}>
                   <Crown className="w-4 h-4" />
                   Admin
@@ -76,6 +78,10 @@ export function Navbar() {
               </Button>
             </Link>
 
+            <Button variant="ghost" size="icon" className="w-7 h-7 rounded-full hover:bg-background/10 shrink-0" onClick={() => navigate('/activity')}>
+              <MoreVertical className="w-4 h-4 text-muted-foreground" />
+            </Button>
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center gap-2 rounded-full focus:outline-none">
@@ -92,7 +98,7 @@ export function Navbar() {
                   <p className="text-sm font-semibold">{user?.firstName} {user?.lastName}</p>
                   <p className="text-xs text-muted-foreground">{user?.email}</p>
                 </div>
-                <DropdownMenuSeparator className="bg-white/10" />
+                <DropdownMenuSeparator className="bg-background/10" />
                 <DropdownMenuItem asChild>
                   <Link href="/profile"><span className="flex items-center gap-2 cursor-pointer w-full"><User className="w-4 h-4" />My Profile</span></Link>
                 </DropdownMenuItem>
@@ -100,22 +106,16 @@ export function Navbar() {
                   <Link href="/settings"><span className="flex items-center gap-2 cursor-pointer w-full"><Settings className="w-4 h-4" />Settings</span></Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/subscription"><span className="flex items-center gap-2 cursor-pointer w-full"><Crown className="w-4 h-4 text-accent" />Subscription</span></Link>
+                  <Link href="/subscription"><span className="flex items-center gap-2 cursor-pointer w-full"><Crown className="w-4 h-4 text-yellow-500" />Subscription</span></Link>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator className="bg-white/10" />
+                <DropdownMenuSeparator className="bg-background/10" />
                 <DropdownMenuItem onClick={logout} className="text-destructive focus:text-destructive cursor-pointer">
                   <LogOut className="w-4 h-4 mr-2" />Logout
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <Button
-              variant="ghost" size="icon"
-              className="md:hidden text-muted-foreground"
-              onClick={() => setMobileOpen(!mobileOpen)}
-            >
-              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </Button>
+
           </div>
         </div>
       </div>
@@ -134,7 +134,7 @@ export function Navbar() {
                 <span
                   onClick={() => setMobileOpen(false)}
                   className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all cursor-pointer ${
-                    location === href ? "bg-primary/20 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                    location === href ? "bg-primary/20 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-background/5"
                   }`}
                 >
                   <Icon className="w-4 h-4" />

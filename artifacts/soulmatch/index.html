@@ -1,8 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
+    <script>
+      (function() {
+        var theme = localStorage.getItem('theme');
+        if (theme === 'light') {
+          document.documentElement.classList.add('light');
+          document.documentElement.classList.remove('dark');
+        } else {
+          document.documentElement.classList.add('dark');
+          document.documentElement.classList.remove('light');
+        }
+      })();
+    </script>
+    <script>
+      window.onerror = function(msg, url, lineNo, columnNo, error) {
+        alert('JS Error: ' + msg + '\nLine: ' + lineNo);
+        return false;
+      };
+      window.onunhandledrejection = function(event) {
+        alert('Promise Rejection: ' + (event.reason ? event.reason.message || event.reason : 'Unknown'));
+      };
+    </script>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>SoulMatch AI</title>
     <meta name="description" content="SoulMatch AI — built on Replit. Update this description to reflect the app." />
     <meta name="robots" content="index, follow" />

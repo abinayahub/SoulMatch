@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { SlidersHorizontal, Save } from "lucide-react";
+import { SlidersHorizontal, Save, ChevronLeft } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -68,6 +68,9 @@ export default function PreferencesPage() {
   return (
     <AppLayout>
       <div className="max-w-2xl mx-auto px-4 py-8">
+        <Button variant="ghost" onClick={() => window.history.back()} className="mb-6 -ml-4 text-muted-foreground hover:bg-card/5">
+          <ChevronLeft className="w-4 h-4 mr-1" />Back
+        </Button>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
           <h1 className="text-3xl font-bold flex items-center gap-3 mb-1">
             <SlidersHorizontal className="w-7 h-7 text-primary" />Match Preferences
@@ -76,49 +79,49 @@ export default function PreferencesPage() {
         </motion.div>
 
         <form onSubmit={form.handleSubmit(onSave)} className="space-y-5">
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="glass rounded-2xl p-5">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-5">
             <h2 className="font-semibold mb-4">Age Range</h2>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <Label>Minimum Age</Label>
-                <Input type="number" placeholder="18" className="bg-white/5 border-white/10" {...form.register("minAge")} />
+                <Input type="number" placeholder="18" className="bg-card/5 border-white/10" {...form.register("minAge")} />
               </div>
               <div className="space-y-1.5">
                 <Label>Maximum Age</Label>
-                <Input type="number" placeholder="45" className="bg-white/5 border-white/10" {...form.register("maxAge")} />
+                <Input type="number" placeholder="45" className="bg-card/5 border-white/10" {...form.register("maxAge")} />
               </div>
             </div>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="glass rounded-2xl p-5">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-5">
             <h2 className="font-semibold mb-4">Height Range (cm)</h2>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <Label>Minimum Height</Label>
-                <Input type="number" placeholder="155" className="bg-white/5 border-white/10" {...form.register("minHeight")} />
+                <Input type="number" placeholder="155" className="bg-card/5 border-white/10" {...form.register("minHeight")} />
               </div>
               <div className="space-y-1.5">
                 <Label>Maximum Height</Label>
-                <Input type="number" placeholder="195" className="bg-white/5 border-white/10" {...form.register("maxHeight")} />
+                <Input type="number" placeholder="195" className="bg-card/5 border-white/10" {...form.register("maxHeight")} />
               </div>
             </div>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass rounded-2xl p-5">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-5">
             <h2 className="font-semibold mb-4">Other Preferences</h2>
             <div className="space-y-4">
               <div className="space-y-1.5">
                 <Label>Preferred Religions</Label>
-                <Input placeholder="e.g. Hindu, Muslim, Christian (comma separated)" className="bg-white/5 border-white/10" {...form.register("preferredReligions")} />
+                <Input placeholder="e.g. Hindu, Muslim, Christian (comma separated)" className="bg-card/5 border-white/10" {...form.register("preferredReligions")} />
               </div>
               <div className="space-y-1.5">
                 <Label>Preferred Locations</Label>
-                <Input placeholder="e.g. Mumbai, London, Dubai (comma separated)" className="bg-white/5 border-white/10" {...form.register("preferredLocations")} />
+                <Input placeholder="e.g. Mumbai, London, Dubai (comma separated)" className="bg-card/5 border-white/10" {...form.register("preferredLocations")} />
               </div>
             </div>
           </motion.div>
 
-          <Button type="submit" className="w-full gradient-primary border-0 text-white glow-primary" disabled={update.isPending}>
+          <Button type="submit" className="w-full bg-primary text-primary-foreground shadow-md border-0 text-white shadow-lg shadow-primary/20" disabled={update.isPending}>
             <Save className="w-4 h-4 mr-2" />{update.isPending ? "Saving..." : "Save Preferences"}
           </Button>
         </form>

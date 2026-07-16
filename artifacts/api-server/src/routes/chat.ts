@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { db } from "@workspace/db";
-import { conversationsTable, messagesTable, usersTable } from "@workspace/db";
-import { eq, or, and, lt, desc } from "drizzle-orm";
+import { conversationsTable, messagesTable, usersTable, notificationsTable } from "@workspace/db";
+import { eq, or, and, lt, desc, ne, sql } from "drizzle-orm";
 import { authenticate, type AuthRequest } from "../lib/auth";
 import { buildPublicProfile } from "../lib/helpers";
 
@@ -15,8 +15,8 @@ function isPremium(role: string) {
 router.get("/conversations", authenticate, async (req: AuthRequest, res) => {
   try {
     const user = await db.query.usersTable.findFirst({ where: eq(usersTable.id, req.user!.userId) });
-    if (!user || !isPremium(user.role)) {
-      return res.status(403).json({ error: "Premium subscription required for chat" });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
     }
 
     const conversations = await db.select().from(conversationsTable).where(
@@ -25,11 +25,17 @@ router.get("/conversations", authenticate, async (req: AuthRequest, res) => {
 
     const enriched = await Promise.all(conversations.map(async (c) => {
       const otherId = c.user1Id === req.user!.userId ? c.user2Id : c.user1Id;
-      const otherUser = await buildPublicProfile(otherId);
+      const otherUser = await buildPublicProfile(otherId, req.user!.userId);
       const lastMsgArr = await db.select().from(messagesTable)
         .where(eq(messagesTable.conversationId, c.id)).orderBy(desc(messagesTable.createdAt)).limit(1);
       const lastMsg = lastMsgArr[0];
-      const unreadCount = 0;
+      const unreadResult = await db.select({ count: sql<number>`count(*)` }).from(messagesTable)
+        .where(and(
+          eq(messagesTable.conversationId, c.id),
+          eq(messagesTable.isRead, false),
+          ne(messagesTable.senderId, req.user!.userId)
+        ));
+      const unreadCount = Number(unreadResult[0].count || 0);
 
       return {
         id: c.id,
@@ -80,8 +86,8 @@ router.get("/conversations/:conversationId/messages", authenticate, async (req: 
 router.post("/conversations/:conversationId/messages", authenticate, async (req: AuthRequest, res) => {
   try {
     const user = await db.query.usersTable.findFirst({ where: eq(usersTable.id, req.user!.userId) });
-    if (!user || !isPremium(user.role)) {
-      return res.status(403).json({ error: "Premium subscription required for chat" });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
     }
 
     const convId = parseInt(req.params.conversationId as string);
@@ -114,8 +120,65 @@ router.post("/conversations/:conversationId/read", authenticate, async (req: Aut
   try {
     const convId = parseInt(req.params.conversationId as string);
     await db.update(messagesTable).set({ isRead: true })
-      .where(and(eq(messagesTable.conversationId, convId)));
+      .where(and(
+        eq(messagesTable.conversationId, convId),
+        ne(messagesTable.senderId, req.user!.userId)
+      ));
     return res.json({ message: "Marked as read" });
+  } catch (err) { req.log.error(err); return res.status(500).json({ error: "Internal server error" }); }
+});
+
+// POST /chat/direct
+router.post("/direct", authenticate, async (req: AuthRequest, res) => {
+  try {
+    const { toUserId } = req.body;
+    if (!toUserId) return res.status(400).json({ error: "toUserId required" });
+
+    // Check if conversation already exists
+    const existing = await db.query.conversationsTable.findFirst({
+      where: or(
+        and(eq(conversationsTable.user1Id, req.user!.userId), eq(conversationsTable.user2Id, toUserId)),
+        and(eq(conversationsTable.user1Id, toUserId), eq(conversationsTable.user2Id, req.user!.userId))
+      )
+    });
+
+    if (existing) {
+      return res.json(existing);
+    }
+
+    // Create new conversation
+    const [conv] = await db.insert(conversationsTable).values({
+      user1Id: req.user!.userId,
+      user2Id: toUserId,
+    }).returning();
+
+    return res.status(201).json(conv);
+  } catch (err) { req.log.error(err); return res.status(500).json({ error: "Internal server error" }); }
+});
+
+// POST /chat/conversations/:conversationId/call
+router.post("/conversations/:conversationId/call", authenticate, async (req: AuthRequest, res) => {
+  try {
+    const convId = parseInt(req.params.conversationId as string);
+    const { type } = req.body; // "audio" or "video"
+
+    const conv = await db.query.conversationsTable.findFirst({ where: eq(conversationsTable.id, convId) });
+    if (!conv) return res.status(404).json({ error: "Conversation not found" });
+
+    const receiverId = conv.user1Id === req.user!.userId ? conv.user2Id : conv.user1Id;
+
+    // Insert a call notification for the receiver
+    await db.insert(notificationsTable).values({
+      userId: receiverId,
+      actorId: req.user!.userId,
+      type: "call",
+      title: "Incoming Call",
+      body: `You have an incoming ${type} call.`,
+      actionUrl: `/chat/${convId}?action=answer_${type}`,
+      isRead: false,
+    });
+
+    return res.json({ message: "Call initiated" });
   } catch (err) { req.log.error(err); return res.status(500).json({ error: "Internal server error" }); }
 });
 

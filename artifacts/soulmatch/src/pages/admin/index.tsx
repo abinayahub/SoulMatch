@@ -56,10 +56,10 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: i * 0.04 }}
-              className="glass rounded-2xl p-4"
+              className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-4"
             >
               {isLoading ? (
-                <Skeleton className="h-16 rounded-xl bg-white/5" />
+                <Skeleton className="h-16 rounded-xl bg-card/5" />
               ) : (
                 <>
                   <div className={`w-10 h-10 rounded-xl ${stat.bg} flex items-center justify-center mb-3`}>
@@ -78,7 +78,7 @@ export default function AdminDashboard() {
           {quickLinks.map((link, i) => (
             <motion.div key={link.href} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.08 }}>
               <Link href={link.href}>
-                <div className="glass rounded-2xl p-5 cursor-pointer hover:bg-white/5 transition-colors group flex items-start gap-4">
+                <div className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-5 cursor-pointer hover:bg-card/5 transition-colors group flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
                     <link.icon className="w-6 h-6 text-primary" />
                   </div>

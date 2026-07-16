@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Heart, Check, X, Clock, ChevronRight } from "lucide-react";
+import { Heart, Check, X, Clock, ChevronRight, ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -69,11 +69,11 @@ function InterestCard({ interest, type }: { interest: any; type: string }) {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="glass rounded-2xl p-4 flex items-center gap-4"
+      className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-4 flex items-center gap-4"
     >
       <Avatar className="w-14 h-14 shrink-0 ring-2 ring-white/10 cursor-pointer" onClick={() => navigate(`/profile/${otherUser.id}`)}>
         <AvatarImage src={photo?.url} />
-        <AvatarFallback className="gradient-primary text-white font-semibold">
+        <AvatarFallback className="bg-primary text-primary-foreground shadow-md text-white font-semibold">
           {getInitials(otherUser.firstName ?? "U")}
         </AvatarFallback>
       </Avatar>
@@ -94,21 +94,21 @@ function InterestCard({ interest, type }: { interest: any; type: string }) {
       <div className="flex items-center gap-2 shrink-0">
         {type === "received" && interest.status === "pending" && (
           <>
-            <Button size="sm" onClick={() => handleRespond("accept")} className="gradient-primary border-0 text-white w-9 h-9 p-0" disabled={respond.isPending}>
-              <Check className="w-4 h-4" />
+            <Button size="sm" onClick={() => handleRespond("accept")} className="bg-primary text-primary-foreground shadow-md border-0 text-white px-3" disabled={respond.isPending}>
+              <Check className="w-4 h-4 mr-1.5" /> Accept
             </Button>
-            <Button size="sm" variant="outline" onClick={() => handleRespond("decline")} className="border-white/20 bg-white/5 w-9 h-9 p-0" disabled={respond.isPending}>
-              <X className="w-4 h-4" />
+            <Button size="sm" variant="outline" onClick={() => handleRespond("decline")} className="border-white/20 bg-card/5 px-3" disabled={respond.isPending}>
+              <X className="w-4 h-4 mr-1.5" /> Decline
             </Button>
           </>
         )}
         {type === "sent" && interest.status === "pending" && (
-          <Button size="sm" variant="outline" onClick={handleWithdraw} className="border-white/20 bg-white/5 text-xs" disabled={withdraw.isPending}>
+          <Button size="sm" variant="outline" onClick={handleWithdraw} className="border-white/20 bg-card/5 text-xs" disabled={withdraw.isPending}>
             Withdraw
           </Button>
         )}
         {interest.status === "accepted" && (
-          <Button size="sm" onClick={() => navigate("/chat")} className="gradient-primary border-0 text-white text-xs">
+          <Button size="sm" onClick={() => navigate("/chat")} className="bg-primary text-primary-foreground shadow-md border-0 text-white text-xs">
             Chat <ChevronRight className="w-3 h-3 ml-1" />
           </Button>
         )}
@@ -139,6 +139,9 @@ export default function InterestsPage() {
   return (
     <AppLayout>
       <div className="max-w-3xl mx-auto px-4 py-8">
+        <Button variant="ghost" onClick={() => window.history.back()} className="mb-6 -ml-4 text-muted-foreground hover:bg-card/5">
+          <ChevronLeft className="w-4 h-4 mr-1" />Back
+        </Button>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
           <h1 className="text-3xl font-bold flex items-center gap-3 mb-1">
             <Heart className="w-7 h-7 text-primary" />Interests
@@ -153,7 +156,7 @@ export default function InterestsPage() {
             { label: "Mutual", value: (summary as any)?.mutualCount ?? 0, color: "text-primary" },
             { label: "Sent", value: (summary as any)?.totalSent ?? 0, color: "text-muted-foreground" },
           ].map((s) => (
-            <div key={s.label} className="glass rounded-xl p-3 text-center">
+            <div key={s.label} className="bg-card border border-border shadow-md rounded-2xl rounded-xl p-3 text-center">
               <div className={`text-2xl font-bold ${s.color}`}>{s.value}</div>
               <div className="text-xs text-muted-foreground">{s.label}</div>
             </div>
@@ -161,7 +164,7 @@ export default function InterestsPage() {
         </motion.div>
 
         <Tabs defaultValue="received">
-          <TabsList className="w-full bg-white/5 mb-6">
+          <TabsList className="w-full bg-card/5 mb-6">
             <TabsTrigger value="received" className="flex-1">
               Received {(summary as any)?.pendingReceived > 0 && <Badge className="ml-1.5 bg-primary text-white text-xs px-1.5 py-0 border-0">{(summary as any)?.pendingReceived}</Badge>}
             </TabsTrigger>
@@ -170,7 +173,7 @@ export default function InterestsPage() {
           </TabsList>
 
           <TabsContent value="received">
-            {loadingR ? <Skeleton className="h-24 rounded-2xl bg-white/5" /> :
+            {loadingR ? <Skeleton className="h-24 rounded-2xl bg-card/5" /> :
               (received as any[]).length === 0 ? (
                 <div className="text-center py-16 text-muted-foreground">
                   <Heart className="w-10 h-10 mx-auto mb-3 opacity-30" />
@@ -184,7 +187,7 @@ export default function InterestsPage() {
           </TabsContent>
 
           <TabsContent value="sent">
-            {loadingS ? <Skeleton className="h-24 rounded-2xl bg-white/5" /> :
+            {loadingS ? <Skeleton className="h-24 rounded-2xl bg-card/5" /> :
               (sent as any[]).length === 0 ? (
                 <div className="text-center py-16 text-muted-foreground">
                   <Clock className="w-10 h-10 mx-auto mb-3 opacity-30" />
@@ -198,7 +201,7 @@ export default function InterestsPage() {
           </TabsContent>
 
           <TabsContent value="mutual">
-            {loadingM ? <Skeleton className="h-24 rounded-2xl bg-white/5" /> :
+            {loadingM ? <Skeleton className="h-24 rounded-2xl bg-card/5" /> :
               (mutual as any[]).length === 0 ? (
                 <div className="text-center py-16 text-muted-foreground">
                   <Heart className="w-10 h-10 mx-auto mb-3 opacity-30" />
