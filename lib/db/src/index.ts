@@ -10,16 +10,31 @@ if (!process.env.DATABASE_URL) {
   );
 }
 
-const dbUrl = process.env.DATABASE_URL;
+// Strip sslmode from URL - we handle SSL via Pool config directly
+const dbUrl = process.env.DATABASE_URL.replace(/[?&]sslmode=[^&]*/g, "").replace(/[?&]$/, "");
 
-// Render internal URLs (e.g. dpg-xxx-a/dbname) don't need SSL.
-// External URLs (.render.com or other hosted DBs) require SSL.
-const isInternalRenderUrl = dbUrl.includes("@dpg-") && !dbUrl.includes(".render.com") && !dbUrl.includes("neon.tech") && !dbUrl.includes("supabase");
+// Internal Render URLs: hostname like dpg-xxx-a (no TLD) → no SSL needed
+// External URLs: .render.com / neon.tech / supabase etc → SSL with relaxed cert
+const hostMatch = dbUrl.match(/@([^/:]+)/);
+const host = hostMatch ? hostMatch[1] : "";
+const isExternal = host.includes(".") && host !== "localhost";
+
+console.log(`[DB] Connecting to host="${host}" isExternal=${isExternal}`);
 
 export const pool = new Pool({
   connectionString: dbUrl,
-  ssl: isInternalRenderUrl ? false : { rejectUnauthorized: false },
+  ssl: isExternal ? { rejectUnauthorized: false } : false,
 });
+
+// Log connection result on startup
+pool.connect()
+  .then((client) => {
+    console.log("[DB] Connection successful ✅");
+    client.release();
+  })
+  .catch((err) => {
+    console.error("[DB] Connection FAILED ❌:", err.message);
+  });
 
 export const db = drizzle(pool, { schema });
 
