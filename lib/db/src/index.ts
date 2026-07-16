@@ -10,7 +10,17 @@ if (!process.env.DATABASE_URL) {
   );
 }
 
-export const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const dbUrl = process.env.DATABASE_URL;
+
+// Render internal URLs (e.g. dpg-xxx-a/dbname) don't need SSL.
+// External URLs (.render.com or other hosted DBs) require SSL.
+const isInternalRenderUrl = dbUrl.includes("@dpg-") && !dbUrl.includes(".render.com") && !dbUrl.includes("neon.tech") && !dbUrl.includes("supabase");
+
+export const pool = new Pool({
+  connectionString: dbUrl,
+  ssl: isInternalRenderUrl ? false : { rejectUnauthorized: false },
+});
+
 export const db = drizzle(pool, { schema });
 
 export * from "./schema/index";
