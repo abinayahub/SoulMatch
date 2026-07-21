@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, User, Mail, Lock, Calendar, ChevronRight, ChevronLeft, Check, Eye, EyeOff, Phone } from "lucide-react";
@@ -29,18 +29,47 @@ const STEPS = [
 
 export default function RegisterPage() {
   const [, navigate] = useLocation();
-  const { login } = useAuth();
+  const { user, isAuthenticated, login } = useAuth();
   const { toast } = useToast();
-  const [step, setStep] = useState(0);
+  const submittingRef = useRef(false); // Prevents duplicate submissions
+  const [step, setStep] = useState(() => {
+    const saved = sessionStorage.getItem("register_step");
+    return saved ? parseInt(saved, 10) : 0;
+  });
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  // Explicit state — survives step transitions
-  const [data, setData] = useState<FormData>({
-    firstName: "", lastName: "", dateOfBirth: "", gender: "",
-    email: "", password: "", phone: "",
+  // Auto-redirect if user is already authenticated
+  useEffect(() => {
+    if (isAuthenticated || user) {
+      window.location.href = "/dashboard";
+    }
+  }, [isAuthenticated, user]);
+
+  // Explicit state — survives step transitions and navigations
+  const [data, setData] = useState<FormData>(() => {
+    const saved = sessionStorage.getItem("register_formData");
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        // Use fallback if malformed
+      }
+    }
+    return {
+      firstName: "", lastName: "", dateOfBirth: "", gender: "",
+      email: "", password: "", phone: "",
+    };
   });
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
+
+  useEffect(() => {
+    sessionStorage.setItem("register_step", String(step));
+  }, [step]);
+
+  useEffect(() => {
+    sessionStorage.setItem("register_formData", JSON.stringify(data));
+  }, [data]);
 
   function set(field: keyof FormData, value: string) {
     setData((prev) => ({ ...prev, [field]: value }));
@@ -103,6 +132,9 @@ export default function RegisterPage() {
   }
 
   async function submit() {
+    // Prevent duplicate submissions (double-tap guard)
+    if (submittingRef.current) return;
+
     // Final guard — always validate before sending
     const e0 = validateStep0();
     const e1 = validateStep1();
@@ -112,6 +144,7 @@ export default function RegisterPage() {
       return;
     }
 
+    submittingRef.current = true;
     setLoading(true);
     try {
       const payload = {
@@ -119,7 +152,7 @@ export default function RegisterPage() {
         lastName: data.lastName.trim(),
         email: data.email.trim().toLowerCase(),
         password: data.password,
-        gender: data.gender,
+        gender: data.gender === "prefer_not_to_say" ? "other" : data.gender,
         dateOfBirth: data.dateOfBirth || undefined,
         phone: data.phone.trim() || undefined,
       };
@@ -129,17 +162,45 @@ export default function RegisterPage() {
         { method: "POST", body: JSON.stringify(payload) },
       );
       
-      if (res.requirePhoneVerification && res.phone) {
-        // Redirect to phone verification page with the phone number and mock OTP
-        window.location.href = `/verify-phone?phone=${encodeURIComponent(res.phone)}&mockOtp=${res.mockOtp}`;
-      } else if (res.accessToken && res.refreshToken) {
-        // Log them in immediately if phone verification wasn't required
-        login(res.accessToken, res.refreshToken, res.user);
-        setStep(3);
+      let accessToken = res.accessToken;
+      let refreshToken = res.refreshToken;
+      let userObj = res.user;
+
+      // Fallback: If registration API succeeded but didn't return tokens (e.g. live Render backend), automatically log in
+      if (!accessToken || !refreshToken) {
+        try {
+          const loginRes = await apiRequest<{ accessToken: string; refreshToken: string; user: any }>(
+            "/auth/login",
+            { method: "POST", body: JSON.stringify({ email: payload.email, password: payload.password }) }
+          );
+          accessToken = loginRes.accessToken;
+          refreshToken = loginRes.refreshToken;
+          userObj = loginRes.user;
+        } catch (loginErr) {
+          console.error("Auto-login after registration failed:", loginErr);
+        }
+      }
+
+      if (accessToken && refreshToken) {
+        // Clear registration state
+        sessionStorage.removeItem("register_step");
+        sessionStorage.removeItem("register_formData");
+        // Log in the user (stores tokens in localStorage)
+        login(accessToken, refreshToken, userObj);
+        // Toast notification
+        toast({ title: "Welcome to SoulMatch! 🎉", description: "Your account has been created successfully." });
+        // Hard navigation guarantees redirect and clean app load
+        window.location.href = "/dashboard";
+        return;
       }
     } catch (err: any) {
-      const msg = err.message === "Failed to fetch" ? "Unable to connect to server. Please try again." : (err.message || "Something went wrong");
+      const msg = err.message === "Email already registered"
+        ? "This email is already registered. Please sign in instead."
+        : err.message === "Failed to fetch"
+        ? "Unable to connect to server. Please try again."
+        : (err.message || "Something went wrong");
       toast({ title: "Registration failed", description: msg, variant: "destructive" });
+      submittingRef.current = false; // Release lock on error so user can retry
     } finally {
       setLoading(false);
     }
@@ -147,55 +208,7 @@ export default function RegisterPage() {
 
   const progress = ((step) / (STEPS.length - 1)) * 100;
 
-  if (step === 3) {
-    return (
-      <div className="min-h-screen flex items-center justify-center px-4 py-8 relative" style={{ background: "hsl(var(--background))" }}>
-        {/* Ambient background */}
-        <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
-          <div style={{ position: "absolute", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, hsl(340 82% 65% / 0.15) 0%, transparent 70%)", top: -100, right: -100, filter: "blur(80px)" }} />
-          <div style={{ position: "absolute", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, hsl(280 70% 65% / 0.12) 0%, transparent 70%)", bottom: -80, left: -80, filter: "blur(70px)" }} />
-        </div>
-
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-8 z-10 w-full max-w-sm">
-          {/* Sparkles / Stars Animation */}
-          <div className="relative w-32 h-32 mx-auto mb-8">
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-0 flex items-center justify-center"
-            >
-              
-              
-              
-              
-              
-            </motion.div>
-            <div className="absolute inset-0 flex items-center justify-center z-10">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center" style={{ background: "hsl(var(--primary))", boxShadow: "0 0 30px hsl(340 82% 65% / 0.5)" }}>
-                <Heart className="w-8 h-8 text-white fill-white" />
-              </div>
-            </div>
-          </div>
-
-          <h2 className="text-2xl font-bold text-white mb-2 tracking-wide">Profile Completed<br />Successfully!</h2>
-          
-          <Button 
-            className="w-full mt-10 h-14 text-lg font-bold border-0 text-white rounded-xl shadow-xl transition-all"
-            style={{
-              background: "hsl(338, 70%, 55%)",
-              boxShadow: "0 4px 20px rgba(219,68,120,0.35)",
-            }}
-            onClick={() => {
-              toast({ title: "Welcome to SoulMatch!", description: "Your journey to finding love begins now." });
-              window.location.href = "/dashboard";
-            }}
-          >
-            Start My 30-Day Journey
-          </Button>
-        </motion.div>
-      </div>
-    );
-  }
+  // Step 3 is no longer used — redirect happens automatically in submit()
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-8 relative" style={{ background: "hsl(var(--background))" }}>
@@ -237,7 +250,7 @@ export default function RegisterPage() {
                   className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300"
                   style={{
                     background: i < step ? "hsl(var(--primary))" : i === step ? "rgba(219,68,120,0.15)" : "hsl(var(--card))",
-                    border: i === step ? "2px solid hsl(340 82% 65%)" : "2px solid transparent",
+                    border: i === step ? "2px solid hsl(340 82% 65%)" : "2px solid hsl(var(--border))",
                     color: i <= step ? (i < step ? "white" : "hsl(var(--primary))") : "hsl(var(--muted-foreground))",
                     boxShadow: i < step ? "0 0 12px hsl(340 82% 65% / 0.3)" : "none",
                   }}
@@ -250,7 +263,7 @@ export default function RegisterPage() {
               </div>
             ))}
           </div>
-          <div className="relative h-1 rounded-full mt-1" style={{ background: "hsl(var(--card))" }}>
+          <div className="relative h-1.5 rounded-full mt-2" style={{ background: "hsl(var(--border))" }}>
             <motion.div
               className="absolute inset-y-0 left-0 rounded-full"
               animate={{ width: `${progress}%` }}
@@ -294,7 +307,7 @@ export default function RegisterPage() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <Label className="text-foreground/90 text-sm">I am a <span style={{ color: "hsl(340 82% 65%)" }}>*</span></Label>
+                  <Label className="text-foreground/90 text-sm">Gender <span style={{ color: "hsl(340 82% 65%)" }}>*</span></Label>
                   <Select value={data.gender} onValueChange={(v) => set("gender", v)}>
                     <SelectTrigger className="auth-input h-11 rounded-xl text-sm">
                       <SelectValue placeholder="Select gender" />
@@ -302,7 +315,8 @@ export default function RegisterPage() {
                     <SelectContent style={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))" }}>
                       <SelectItem value="male">Male</SelectItem>
                       <SelectItem value="female">Female</SelectItem>
-                      <SelectItem value="other">Other / Prefer not to say</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                      <SelectItem value="prefer_not_to_say">Prefer not to say</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -456,9 +470,13 @@ export default function RegisterPage() {
 
                 <p className="text-xs text-center" style={{ color: "hsl(215 20% 38%)" }}>
                   By creating an account you agree to our{" "}
-                  <span className="underline cursor-pointer" style={{ color: "hsl(340 82% 60%)" }}>Terms of Service</span>
+                  <Link href="/terms">
+                    <span className="underline cursor-pointer" style={{ color: "hsl(340 82% 60%)" }}>Terms of Service</span>
+                  </Link>
                   {" "}and{" "}
-                  <span className="underline cursor-pointer" style={{ color: "hsl(340 82% 60%)" }}>Privacy Policy</span>
+                  <Link href="/privacy">
+                    <span className="underline cursor-pointer" style={{ color: "hsl(340 82% 60%)" }}>Privacy Policy</span>
+                  </Link>
                 </p>
               </motion.div>
             )}
@@ -503,7 +521,14 @@ export default function RegisterPage() {
           <p className="text-center text-sm mt-4" style={{ color: "hsl(215 20% 45%)" }}>
             Already have an account?{" "}
             <Link href="/login">
-              <span className="font-semibold cursor-pointer hover:underline" style={{ color: "hsl(340 82% 68%)" }}>
+              <span 
+                onClick={() => {
+                  sessionStorage.removeItem("register_step");
+                  sessionStorage.removeItem("register_formData");
+                }}
+                className="font-semibold cursor-pointer hover:underline" 
+                style={{ color: "hsl(340 82% 68%)" }}
+              >
                 Sign in
               </span>
             </Link>

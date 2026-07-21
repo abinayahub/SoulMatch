@@ -5,7 +5,7 @@ import {
   User, CalendarDays, Flame, Gift, ChevronRight, 
   Target, PenTool, Image as ImageIcon, 
   MessageCircle, TrendingUp, 
-  Eye, Heart, ShieldCheck, CheckCircle2, Check, Bell, BarChart3, Edit3, Star, Search
+  Eye, Heart, ShieldCheck, CheckCircle2, Check, Bell, BarChart3, Edit3, Star, Search, Brain, Lock, Lightbulb
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,7 @@ import { useAuth, getAccessToken } from "@/lib/auth-context";
 import { useGetJourneyProgress, useGetPersonalityProfile, useGetMatches, useGetConversations, useGetNotifications } from "@workspace/api-client-react";
 import { DailyReflection, WeeklyMoodPanel } from "@/components/dashboard/DailyReflection";
 import { timeAgo } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 function authHeaders() {
   const token = getAccessToken();
@@ -47,12 +48,12 @@ export default function DashboardPage() {
   const dailyQuote = motivationQuotes[Math.abs(daysSinceEpoch) % motivationQuotes.length];
   const dailyImage = motivationImages[Math.abs(daysSinceEpoch) % motivationImages.length];
 
-  const { data: matchesData } = useGetMatches(
+  const { data: matchesData, isLoading: loadingMatches } = useGetMatches(
     { page: 1, limit: 10 },
     { query: { enabled: true }, request: { headers: authHeaders() } } as any,
   );
 
-  const { data: journeyProgress } = useGetJourneyProgress({ query: { enabled: true }, request: { headers: authHeaders() } } as any);
+  const { data: journeyProgress, isLoading: loadingJourney } = useGetJourneyProgress({ query: { enabled: true }, request: { headers: authHeaders() } } as any);
   
   const { data: weeklySummary, isLoading: loadingSummary } = useQuery({
     queryKey: ["weekly-summary"],
@@ -62,32 +63,89 @@ export default function DashboardPage() {
     }
   });
 
-  const { data: personalityProfile } = useGetPersonalityProfile({
+  const { data: personalityProfile, isLoading: loadingPersonality } = useGetPersonalityProfile({
     query: { enabled: true } as any,
     request: { headers: authHeaders() },
   });
 
-  const { data: conversations = [] } = useGetConversations({
+  const { data: conversations = [], isLoading: loadingConversations } = useGetConversations({
     query: { enabled: true } as any,
     request: { headers: authHeaders() },
   });
 
-  const { data: notificationsData } = useGetNotifications(
+  const { data: notificationsData, isLoading: loadingNotifications } = useGetNotifications(
     { page: 1 },
     { query: { enabled: true }, request: { headers: authHeaders() } } as any,
   );
   
   const recentActivities = (notificationsData as any)?.notifications?.slice(0, 3) || [];
 
-  const { data: history = [] } = useQuery<any[]>({
+  const { data: history = [], isLoading: loadingHistory } = useQuery<any[]>({
     queryKey: ["/api/reflections/history"],
     queryFn: () => apiRequest("/reflections/history", { headers: authHeaders() }),
   });
 
-  const { data: reflectionToday } = useQuery<any>({
+  const { data: reflectionToday, isLoading: loadingReflectionToday } = useQuery<any>({
     queryKey: ["/api/reflections/today"],
     queryFn: () => apiRequest("/reflections/today", { headers: authHeaders() }),
   });
+
+  const isLoading = loadingJourney || loadingPersonality || !user;
+
+  if (isLoading) {
+    return (
+      <AppLayout>
+        <div className="w-full max-w-md mx-auto px-4 py-3 space-y-4 flex flex-col pt-8">
+          {/* Skeleton for Header Premium Hero Card */}
+          <div className="relative w-full rounded-2xl p-4 bg-card border border-border/40 h-28 flex flex-col justify-between">
+            <Skeleton className="h-6 w-2/3 rounded-lg" />
+            <Skeleton className="h-4 w-5/6 rounded-lg" />
+          </div>
+
+          {/* Skeleton for 30-Day Journey Card */}
+          <div className="bg-card border border-border/40 rounded-2xl p-4 space-y-3">
+            <div className="flex justify-between items-center">
+              <Skeleton className="h-4 w-1/3 rounded-lg" />
+              <Skeleton className="h-3 w-12 rounded-lg" />
+            </div>
+            <Skeleton className="h-3 w-1/2 rounded-lg" />
+            <div className="flex items-center gap-3">
+              <Skeleton className="w-14 h-14 rounded-full shrink-0" />
+              <div className="flex gap-2 flex-1 overflow-hidden">
+                {[...Array(5)].map((_, i) => (
+                  <Skeleton key={i} className="w-7 h-7 rounded-full" />
+                ))}
+              </div>
+            </div>
+            <Skeleton className="h-10 w-full rounded-xl" />
+          </div>
+
+          {/* Skeleton for Today's Reflection Card */}
+          <div className="bg-card border border-border/40 rounded-2xl p-4 space-y-3">
+            <Skeleton className="h-3 w-1/4 rounded-lg" />
+            <div className="flex gap-3">
+              <Skeleton className="flex-1 h-12 rounded-xl" />
+              <Skeleton className="w-[30%] h-12 rounded-xl" />
+            </div>
+            <Skeleton className="h-10 w-full rounded-xl" />
+          </div>
+
+          {/* Skeleton for Personality Analysis Card */}
+          <div className="bg-card border border-border/40 rounded-2xl p-4 space-y-3">
+            <Skeleton className="h-3 w-1/3 rounded-lg" />
+            <div className="flex gap-5">
+              <Skeleton className="w-20 h-20 rounded-full shrink-0" />
+              <div className="flex-1 space-y-2">
+                {[...Array(4)].map((_, i) => (
+                  <Skeleton key={i} className="h-3 w-full rounded-lg" />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </AppLayout>
+    );
+  }
 
   const unreadChatCount = conversations.reduce((acc: number, conv: any) => acc + (conv.unreadCount || 0), 0);
   
@@ -106,7 +164,7 @@ export default function DashboardPage() {
   let growthScore = snapshotTraits.find((t: any) => t?.trait === "Growth")?.score || 0;
   let explorationScore = snapshotTraits.find((t: any) => t?.trait === "Exploration")?.score || 0;
 
-  const overallAlignment = Math.round((connectionScore + stabilityScore + growthScore + explorationScore) / 4);
+  const overallAlignment = Math.max(connectionScore, stabilityScore, growthScore, explorationScore);
 
   const topStats = [
     { label: "Profile Completeness", value: `${user?.profileCompleteness || 0}%`, sub: "Complete your profile to attract better matches.", icon: User, bg: "border-[#9B4DFF]/30", text: "text-[#9B4DFF]" },
@@ -142,129 +200,117 @@ export default function DashboardPage() {
           </div>
           
           {/* Text Content (Left) */}
-          <div className="relative z-10 flex-1 pr-2">
-            <h1 className="text-lg font-extrabold flex flex-wrap items-center gap-1 tracking-tight">
+          <div className="relative z-10 flex-1 pr-2 min-w-0">
+            <h1 className="text-base sm:text-lg font-extrabold flex items-center gap-1 tracking-tight whitespace-nowrap overflow-hidden">
               <span className="text-[#1A1A1A] dark:text-[#F3F4F6]">{getGreeting()},</span>
-              <span className="text-[#FF2D88] dark:text-[#FF429A]">{user?.firstName || "Karthi"}! 👋</span>
+              <span className="text-[#FF2D88] dark:text-[#FF429A] truncate">{user?.firstName || "Karthi"}! 👋</span>
             </h1>
             <p className="text-[#6B7280] dark:text-[#9CA3AF] text-[11px] leading-[1.2] mt-1 max-w-[220px] font-medium">
-              You're building meaningful connections every day. Keep going, your perfect match is on the way! 💜
+              Every answer brings you closer to someone who truly understands you. 💜
             </p>
           </div>
 
-          {/* Mascot (Right) */}
-          <div className="relative h-[80px] w-[100px] shrink-0 z-10 flex items-center justify-center -my-2 -mr-2">
-            {/* Mascot Image (Separate Images for Dark/Light Themes) */}
+          {/* Original Mascot (Right) */}
+          <div className="relative h-[90px] w-[115px] shrink-0 z-10 flex items-center justify-center -my-3 -mr-3">
             <motion.div 
               animate={{ y: [0, -3, 0] }} 
               transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-              className="relative z-10 w-full h-full drop-shadow-[0_6px_12px_rgba(236,72,153,0.3)]"
+              className="relative z-10 w-full h-full drop-shadow-[0_6px_16px_rgba(236,72,153,0.3)]"
               style={{
-                WebkitMaskImage: 'radial-gradient(ellipse at center, black 40%, transparent 72%)',
-                maskImage: 'radial-gradient(ellipse at center, black 40%, transparent 72%)'
+                WebkitMaskImage: 'radial-gradient(ellipse at center, black 45%, transparent 75%)',
+                maskImage: 'radial-gradient(ellipse at center, black 45%, transparent 75%)'
               }}
             >
-              {/* Light Theme Image */}
+              {/* Light Theme Mascot */}
               <img 
                 src="/mascot_light.png" 
                 alt="Mascot Light" 
                 className="w-full h-full object-cover dark:hidden"
-                onError={(e) => { e.currentTarget.style.display = 'none'; }} 
               />
-              {/* Dark Theme Image */}
+              {/* Dark Theme Mascot */}
               <img 
                 src="/mascot_dark.png" 
                 alt="Mascot Dark" 
                 className="w-full h-full object-cover hidden dark:block"
-                onError={(e) => { e.currentTarget.style.display = 'none'; }} 
               />
-            </motion.div>
-
-            {/* Floating Hearts overlapping mascot */}
-            <motion.div animate={{ y: [0, -8, 0], opacity: [0.6, 1, 0.6] }} transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut" }} className="absolute -top-2 right-2 text-pink-500 w-4 h-4 z-20">
-              <Heart className="w-full h-full fill-current drop-shadow-md" />
-            </motion.div>
-            <motion.div animate={{ y: [0, -6, 0], opacity: [0.5, 0.9, 0.5] }} transition={{ repeat: Infinity, duration: 2.8, ease: "easeInOut", delay: 1 }} className="absolute bottom-2 -left-3 text-purple-400 w-3 h-3 z-20">
-              <Heart className="w-full h-full fill-current drop-shadow-md" />
-            </motion.div>
-            <motion.div animate={{ y: [0, -10, 0], opacity: [0.4, 0.8, 0.4] }} transition={{ repeat: Infinity, duration: 4, ease: "easeInOut", delay: 0.5 }} className="absolute top-1/2 -right-4 text-pink-300 w-2.5 h-2.5 z-20">
-              <Heart className="w-full h-full fill-current drop-shadow-md" />
             </motion.div>
           </div>
         </motion.div>
 
         {/* 2. 30-Day Journey */}
-        <div className="bg-card border border-border/40 rounded-2xl p-4 shadow-sm relative overflow-hidden">
+        <div className="bg-card border border-border/80 dark:border-white/15 border-black/15 rounded-2xl p-4 shadow-sm relative overflow-hidden">
            <div className="flex justify-between items-center mb-0.5">
              <h3 className="text-sm font-bold text-foreground">
                Your 30-Day Journey
              </h3>
              <Link href="/journey">
-               <span className="text-[11px] text-pink-500 font-semibold hover:underline cursor-pointer">View Journey &gt;</span>
+               <span className="text-[11px] text-pink-500 font-bold hover:underline cursor-pointer">View Journey &gt;</span>
              </Link>
            </div>
-           <p className="text-[10px] text-foreground/60 mb-3">
+           <p className="text-[11px] text-foreground/75 dark:text-gray-300 text-gray-700 font-medium mb-3">
              Answer daily, discover yourself, find your perfect match.
            </p>
            
-           <div className="flex items-center gap-3 mb-3">
-              <div className="relative w-[64px] h-[64px] flex items-center justify-center shrink-0">
+           <div className="flex items-center justify-between gap-1.5 xs:gap-2.5 mb-3 h-14">
+              {/* Left big 0 Days indicator */}
+              <div className="relative w-[52px] h-[52px] xs:w-[60px] xs:h-[60px] flex items-center justify-center shrink-0">
                  <svg className="absolute inset-0 w-full h-full transform -rotate-90">
-                   <circle cx="32" cy="32" r="28" className="stroke-muted/30 fill-none" strokeWidth="4" />
-                   <circle cx="32" cy="32" r="28" className="stroke-pink-500 fill-none" strokeWidth="4" strokeDasharray="176" strokeDashoffset={176 - (progressPercent/100)*176} strokeLinecap="round" />
+                   <circle cx="50%" cy="50%" r="22" className="stroke-white/30 dark:stroke-white/30 stroke-slate-300 fill-none" strokeWidth="4" />
+                   <circle cx="50%" cy="50%" r="22" className="stroke-pink-500 fill-none drop-shadow-[0_0_6px_rgba(236,72,153,0.4)]" strokeWidth="4" strokeDasharray="138" strokeDashoffset={138 - (progressPercent/100)*138} strokeLinecap="round" />
                  </svg>
                  <div className="flex flex-col items-center justify-center">
-                    <span className="text-xl font-bold text-foreground leading-none tracking-tight">
+                    <span className="text-sm xs:text-lg font-black text-foreground leading-none tracking-tight">
                        {Math.floor(((journeyProgress as any)?.answeredQuestions || 0) / 5)}
                     </span>
-                    <span className="text-[8px] font-medium text-foreground/80 leading-tight">Days</span>
+                    <span className="text-[7.5px] xs:text-[8px] font-extrabold text-foreground/90 leading-tight">Days</span>
                  </div>
               </div>
 
-              <div className="flex-1 overflow-x-auto pb-1 scrollbar-hide">
-                 <div className="flex items-start gap-2 min-w-max">
-                    {Array.from({ length: 6 }).map((_, i) => {
-                       const answeredQuestions = (journeyProgress as any)?.answeredQuestions || 0;
-                       const completedDays = Math.floor(answeredQuestions / 5);
-                       // displayDay is the day they are actively working on or just finished
-                       const displayDay = Math.max(1, Math.ceil(answeredQuestions / 5));
-                       
-                       const startDay = Math.max(1, Math.min(completedDays - 1, 24));
-                       const day = startDay + i;
-                       const isCompleted = day <= completedDays;
-                       return (
-                         <div key={day} className="flex flex-col items-center gap-1">
-                            <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold ${isCompleted ? 'bg-pink-500 text-white' : 'bg-foreground/10 text-foreground/60'}`}>
-                              {day}
-                            </div>
-                            {isCompleted && <Check className="w-3 h-3 text-pink-400" />}
-                         </div>
-                       )
-                    })}
-                    
-                    <div className="flex items-center justify-center h-7">
-                       <span className="text-foreground/30 font-bold tracking-widest text-xs mx-1">...</span>
-                    </div>
-                    
-                    <div className="flex flex-col items-center gap-1">
-                       <div className="w-7 h-7 rounded-full border border-pink-500/40 flex items-center justify-center bg-transparent">
-                          <Gift className="w-3.5 h-3.5 text-amber-400 fill-amber-400/20" />
-                       </div>
-                       <span className="text-[8px] text-foreground/60 font-medium">30</span>
-                    </div>
+              {/* Perfectly 100% Laser-Straight Horizontal Track */}
+              <div className="flex-1 flex items-center justify-between min-w-0">
+                 {Array.from({ length: 5 }).map((_, i) => {
+                    const answeredQuestions = (journeyProgress as any)?.answeredQuestions || 0;
+                    const completedDays = Math.floor(answeredQuestions / 5);
+                    const startDay = Math.max(1, Math.min(completedDays - 1, 25));
+                    const day = startDay + i;
+                    const isCompleted = day <= completedDays;
+                    return (
+                      <div 
+                        key={day} 
+                        className={`w-7 h-7 xs:w-8 xs:h-8 rounded-full flex items-center justify-center text-[10px] xs:text-xs font-black transition-all shrink-0 ${
+                          isCompleted 
+                            ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md shadow-pink-500/30 border border-pink-400/50' 
+                            : 'bg-muted/90 border-2 border-slate-600/70 dark:border-slate-500/80 border-slate-400/80 text-foreground font-black shadow-sm'
+                        }`}
+                      >
+                        {isCompleted ? <Check className="w-3.5 h-3.5 text-white stroke-[3]" /> : day}
+                      </div>
+                    );
+                 })}
+                 
+                 <div className="w-5 h-7 xs:h-8 flex items-center justify-center shrink-0">
+                    <span className="text-foreground/70 font-black tracking-widest text-[11px]">...</span>
+                 </div>
+                 
+                 {/* Day 30 Gift Round - Laser-straight circle with badge */}
+                 <div className="relative w-7 h-7 xs:w-8 xs:h-8 rounded-full border-2 border-pink-500/90 bg-pink-500/25 flex items-center justify-center shadow-md shadow-pink-500/20 shrink-0">
+                    <Gift className="w-3.5 h-3.5 xs:w-4 xs:h-4 text-amber-400 fill-amber-400/40" />
+                    <span className="absolute -bottom-1 -right-1 bg-pink-500 text-white text-[7.5px] xs:text-[8px] font-black px-1 rounded-full leading-none py-0.5 border border-background shadow-sm">
+                       30
+                    </span>
                  </div>
               </div>
            </div>
 
            <Link href="/journey" className="block w-full">
-             <div className="w-full bg-pink-500 hover:bg-pink-600 text-white rounded-xl font-bold h-10 text-xs flex items-center justify-center transition-colors">
-               Answer Today's 5 Questions &gt;
-             </div>
+              <div className="w-full bg-pink-500 hover:bg-pink-600 text-white rounded-xl font-bold h-10 text-xs flex items-center justify-center transition-colors shadow-sm">
+                Answer Today's 5 Questions &gt;
+              </div>
            </Link>
         </div>
 
         {/* 3. Today's Reflection Preview Card */}
-        <div className="bg-card border border-border/40 rounded-2xl p-4 shadow-sm">
+        <div className="bg-card border border-border/80 dark:border-white/15 border-black/15 rounded-2xl p-4 shadow-sm">
            <div className="flex justify-between items-center mb-3">
              <h3 className="text-[11px] font-black text-foreground uppercase tracking-widest flex items-center gap-1.5">
                <Heart className="w-3 h-3 text-pink-500 fill-pink-500" /> TODAY'S REFLECTION
@@ -294,8 +340,8 @@ export default function DashboardPage() {
               return (
                  <div className="flex flex-col gap-3">
                     <div className="flex gap-3">
-                       <div className="flex-1 bg-background/50 border border-border/40 rounded-xl p-2.5">
-                          <p className="text-[9px] font-semibold text-foreground/70 mb-1.5">Reflection This Week</p>
+                       <div className="flex-1 bg-muted/40 border border-border/70 dark:border-white/15 border-black/15 rounded-xl p-2.5">
+                          <p className="text-[10px] font-bold text-foreground/80 mb-1.5">Reflection This Week</p>
                           <div className="flex justify-between">
                              {last7.map(({ label, dateStr }, i) => {
                                 const answer = historyMap.get(dateStr);
@@ -306,31 +352,31 @@ export default function DashboardPage() {
                                 return (
                                    <div key={i} className="flex flex-col items-center gap-1">
                                       <div className={`w-5 h-5 rounded-full border flex items-center justify-center text-[10px]
-                                         ${answer ? 'bg-pink-500/15 border-pink-500/30' : (isToday ? 'bg-purple-500/15 border-purple-500/30 border-dashed text-purple-500' : 'bg-foreground/5 border-border')}`}>
+                                         ${answer ? 'bg-pink-500/20 border-pink-500/40' : (isToday ? 'bg-purple-500/20 border-purple-500/50 border-dashed text-purple-400 font-bold' : 'bg-muted/80 border-slate-600/60 dark:border-slate-500/70 border-slate-300')}`}>
                                          {emoji ?? (isToday ? "·" : "")}
                                       </div>
-                                      <span className={`text-[7px] font-semibold ${isToday ? 'text-purple-500' : 'text-foreground/50'}`}>{label}</span>
+                                      <span className={`text-[8px] font-bold ${isToday ? 'text-purple-400' : 'text-foreground/70'}`}>{label}</span>
                                    </div>
                                 );
                              })}
                           </div>
                        </div>
-                       <div className="w-[30%] bg-background/50 border border-border/40 rounded-xl p-2.5 flex flex-col justify-center">
-                          <p className="text-[9px] font-semibold text-foreground/70 mb-1">Weekly</p>
+                       <div className="w-[30%] bg-muted/40 border border-border/70 dark:border-white/15 border-black/15 rounded-xl p-2.5 flex flex-col justify-center">
+                          <p className="text-[10px] font-bold text-foreground/80 mb-1">Weekly</p>
                           <div className="flex items-end justify-between mb-1.5">
-                             <span className="text-sm font-bold text-pink-500">{completedThisWeek} <span className="text-[8px] text-foreground/50">/ 7</span></span>
-                             <div className="w-5 h-5 rounded-md bg-[#9B4DFF]/10 flex items-center justify-center">
-                                <Target className="w-2.5 h-2.5 text-[#9B4DFF]" />
+                             <span className="text-sm font-black text-pink-500">{completedThisWeek} <span className="text-[9px] text-foreground/60 font-bold">/ 7</span></span>
+                             <div className="w-5 h-5 rounded-md bg-[#9B4DFF]/20 flex items-center justify-center">
+                                <Target className="w-3 h-3 text-[#9B4DFF]" />
                              </div>
                           </div>
-                          <div className="w-full h-1 bg-foreground/10 rounded-full mb-1">
+                          <div className="w-full h-1.5 bg-foreground/15 rounded-full mb-1">
                              <div className="h-full bg-pink-500 rounded-full transition-all" style={{ width: `${(completedThisWeek / 7) * 100}%` }}></div>
                           </div>
                        </div>
                     </div>
                     
                     <div className="flex flex-col items-center gap-2">
-                        <p className="text-[11px] font-medium text-foreground/80">
+                        <p className="text-[11.5px] font-semibold text-foreground/90">
                           {isAnswered 
                             ? "You've completed today's reflection." 
                             : hasQuestion || isLoading
@@ -358,49 +404,63 @@ export default function DashboardPage() {
         </div>
 
         {/* 5. Personality Analysis */}
-        <div className="bg-card border border-border/40 shadow-sm rounded-[1.5rem] p-5">
+        <div className="bg-card border border-border/80 dark:border-white/15 border-black/15 shadow-sm rounded-[1.5rem] p-5">
            <div className="flex items-center justify-between mb-4">
              <h3 className="text-[11px] font-black text-foreground uppercase tracking-widest flex items-center gap-1.5">
-               <BarChart3 className="w-3 h-3 text-[#9B4DFF]" /> PERSONALITY ANALYSIS
+               <BarChart3 className="w-3.5 h-3.5 text-[#9B4DFF]" /> PERSONALITY ANALYSIS
              </h3>
              <Link href="/my-story#personality-snapshot">
-               <span className="text-[10px] font-bold text-[#9B4DFF] cursor-pointer hover:underline">View Full Analysis &gt;</span>
+               <span className="text-[11px] font-bold text-[#9B4DFF] cursor-pointer hover:underline">View Full Analysis &gt;</span>
              </Link>
            </div>
            
-           <div className="flex items-center gap-5 mb-4">
-              <div className="relative w-20 h-20 flex items-center justify-center shrink-0">
-                 <svg className="absolute inset-0 w-full h-full transform -rotate-90">
-                   <circle cx="40" cy="40" r="36" className="stroke-muted/30 fill-none" strokeWidth="5" />
-                   <circle cx="40" cy="40" r="36" className="stroke-[#9B4DFF] fill-none" strokeWidth="5" strokeDasharray="226" strokeDashoffset={226 - (overallAlignment / 100) * 226} strokeLinecap="round" />
-                 </svg>
-                 <div className="flex flex-col items-center">
-                    <span className="text-xl font-black text-foreground leading-none">{overallAlignment}<span className="text-xs text-foreground/60">%</span></span>
-                    <span className="text-[7px] font-bold text-foreground/50 mt-1 text-center">OVERALL</span>
-                 </div>
-              </div>
-
-              <div className="flex flex-col gap-2 flex-1 min-w-0">
-                 {[
-                   { icon: Heart, label: "Connection", val: `${connectionScore}%`, color: "text-[#9B4DFF]", bg: "bg-[#9B4DFF]/20" },
-                   { icon: ShieldCheck, label: "Stability", val: `${stabilityScore}%`, color: "text-blue-500", bg: "bg-blue-500/20" },
-                   { icon: TrendingUp, label: "Growth", val: `${growthScore}%`, color: "text-orange-500", bg: "bg-orange-500/20" },
-                   { icon: Target, label: "Exploration", val: `${explorationScore}%`, color: "text-pink-500", bg: "bg-pink-500/20" },
-                 ].map((item, i) => (
-                   <div key={i} className="flex items-center justify-between w-full">
-                      <div className="flex items-center gap-2">
-                        <div className={`w-4 h-4 rounded-md ${item.bg} flex items-center justify-center shrink-0`}>
-                           <item.icon className={`w-2.5 h-2.5 ${item.color}`} />
+            {/* Personality Analysis Circle Card */}
+            {(() => {
+               const analysisProgressPercent = Math.min(100, Math.round((answeredQuestions / 150) * 100));
+               return (
+                  <>
+                     <div className="flex items-center gap-5 mb-4">
+                        <div className="relative w-20 h-20 flex items-center justify-center shrink-0">
+                           <svg className="absolute inset-0 w-full h-full transform -rotate-90">
+                             <circle cx="40" cy="40" r="36" className="stroke-purple-500/25 dark:stroke-purple-500/30 stroke-purple-200 fill-none" strokeWidth="5" />
+                             <circle cx="40" cy="40" r="36" className="stroke-[#9B4DFF] fill-none" strokeWidth="5" strokeDasharray="226" strokeDashoffset={226 - (analysisProgressPercent / 100) * 226} strokeLinecap="round" />
+                           </svg>
+                           <div className="flex flex-col items-center">
+                              <span className="text-xl font-black text-foreground leading-none">{analysisProgressPercent}<span className="text-xs text-foreground/70">%</span></span>
+                              <span className="text-[8px] font-black text-foreground/70 dark:text-gray-300 text-gray-700 mt-1 text-center tracking-wider uppercase">PROGRESS</span>
+                           </div>
                         </div>
-                        <span className="text-[10px] font-medium text-foreground/80">{item.label}</span>
-                      </div>
-                      <span className="text-[11px] font-bold">{item.val}</span>
-                   </div>
-                 ))}
-              </div>
-           </div>
 
+                        <div className="flex flex-col gap-2 flex-1 min-w-0">
+                           {[
+                             { icon: Heart, label: "Connection", val: `${connectionScore}%`, color: "text-[#9B4DFF]", bg: "bg-[#9B4DFF]/20 border border-[#9B4DFF]/30" },
+                             { icon: ShieldCheck, label: "Stability", val: `${stabilityScore}%`, color: "text-blue-500", bg: "bg-blue-500/20 border border-blue-500/30" },
+                             { icon: TrendingUp, label: "Growth", val: `${growthScore}%`, color: "text-orange-500", bg: "bg-orange-500/20 border border-orange-500/30" },
+                             { icon: Target, label: "Exploration", val: `${explorationScore}%`, color: "text-pink-500", bg: "bg-pink-500/20 border border-pink-500/30" },
+                           ].map((item, i) => (
+                             <div key={i} className="flex items-center justify-between w-full">
+                                <div className="flex items-center gap-2">
+                                  <div className={`w-4.5 h-4.5 rounded-md ${item.bg} flex items-center justify-center shrink-0`}>
+                                     <item.icon className={`w-3 h-3 ${item.color}`} />
+                                  </div>
+                                  <span className="text-xs font-semibold text-foreground">{item.label}</span>
+                                </div>
+                                <span className="text-xs font-extrabold text-foreground">{item.val}</span>
+                             </div>
+                           ))}
+                        </div>
+                     </div>
 
+                     {/* Information Banner */}
+                     <div className="p-3.5 bg-purple-500/10 dark:bg-purple-950/30 border border-purple-500/40 dark:border-purple-500/40 rounded-xl flex items-center gap-3 shadow-sm">
+                        <Lightbulb className="w-4 h-4 xs:w-5 xs:h-5 text-amber-400 shrink-0 drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]" />
+                        <p className="text-[10.5px] xs:text-[11.5px] text-foreground/90 font-semibold leading-snug">
+                           Complete daily questions to generate your personality analysis and compatibility scores.
+                        </p>
+                     </div>
+                  </>
+               );
+            })()}
         </div>
 
         {/* 6. Quick Actions */}

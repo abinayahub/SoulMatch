@@ -57,12 +57,23 @@ export default function JourneyPage() {
   const unanswered = (questions as any[]).filter((q: any) => !q.isAnswered);
   const currentQ = unanswered[0];
   
+  // Parse last answered date
+  const lastAnsweredDate = progress?.lastAnsweredAt ? new Date(progress.lastAnsweredAt) : null;
+  const isLastAnsweredValid = lastAnsweredDate && !isNaN(lastAnsweredDate.getTime());
+  
+  const completedDateStr = isLastAnsweredValid 
+    ? lastAnsweredDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) 
+    : '';
+  const completedTimeStr = isLastAnsweredValid 
+    ? lastAnsweredDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) 
+    : '';
+
   // Calculate lock state
   let isLocked = false;
   let unlockDate = null;
   if (progress?.unlockedAt) {
     unlockDate = new Date(progress.unlockedAt);
-    if (unlockDate > now) {
+    if (!isNaN(unlockDate.getTime()) && unlockDate > now) {
       isLocked = true;
     }
   }
@@ -73,10 +84,11 @@ export default function JourneyPage() {
   // Enforce lock if they have no questions remaining today, or if they ran out of questions but haven't finished the 150-question journey
   if ((questionsRemaining !== undefined && questionsRemaining <= 0 && totalAnswered < 150) || (!currentQ && totalAnswered < 150)) {
     isLocked = true;
-    if (!unlockDate || unlockDate <= now) {
-      const tomorrow = new Date();
-      tomorrow.setHours(24, 0, 0, 0);
-      unlockDate = tomorrow;
+    if (!unlockDate || isNaN(unlockDate.getTime()) || unlockDate <= now) {
+      const nextDay = new Date();
+      nextDay.setDate(nextDay.getDate() + 1);
+      nextDay.setHours(0, 0, 0, 0);
+      unlockDate = nextDay;
     }
   }
 
@@ -84,11 +96,19 @@ export default function JourneyPage() {
   const localLockStr = localStorage.getItem('journeyLockedUntil');
   if (localLockStr) {
     const localLockDate = new Date(localLockStr);
-    if (localLockDate > now && totalAnswered < 150) {
+    if (localLockDate && !isNaN(localLockDate.getTime()) && localLockDate > now && totalAnswered < 150) {
       isLocked = true;
       unlockDate = localLockDate;
     }
   }
+
+  const isUnlockDateValid = unlockDate !== null && !isNaN(unlockDate.getTime());
+  const unlockDateStr = (unlockDate && !isNaN(unlockDate.getTime()))
+    ? unlockDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) 
+    : '';
+  const unlockTimeStr = (unlockDate && !isNaN(unlockDate.getTime()))
+    ? unlockDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) 
+    : '';
 
   function getAnswer() {
     if (!currentQ) return "";
@@ -111,9 +131,10 @@ export default function JourneyPage() {
         onSuccess: () => {
           // If this was the last question for the day (e.g. 5th, 10th, etc.)
           if ((totalAnswered + 1) % 5 === 0 && (totalAnswered + 1) < 150) {
-            const tomorrow = new Date();
-            tomorrow.setHours(24, 0, 0, 0);
-            localStorage.setItem('journeyLockedUntil', tomorrow.toISOString());
+            const nextDay = new Date();
+            nextDay.setDate(nextDay.getDate() + 1);
+            nextDay.setHours(0, 0, 0, 0);
+            localStorage.setItem('journeyLockedUntil', nextDay.toISOString());
           }
           
           queryClient.invalidateQueries({ queryKey: getGetJourneyProgressQueryKey() });
@@ -143,7 +164,7 @@ export default function JourneyPage() {
   if (mandatoryCompletion.percentage < 100) {
     return (
       <div className="min-h-screen bg-background text-foreground flex flex-col">
-        <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/40 px-4 h-14 flex items-center">
+        <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/40 px-4 h-[calc(3.5rem+env(safe-area-inset-top,0px))] pt-[env(safe-area-inset-top,0px)] flex items-center">
           <button onClick={() => window.history.back()} className="w-10 h-10 flex items-center justify-start">
             <ChevronLeft className="w-6 h-6" />
           </button>
@@ -174,7 +195,7 @@ export default function JourneyPage() {
   return (
     <div className="min-h-screen bg-background text-foreground pb-32">
       {/* 1. Top App Bar */}
-      <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/40 px-4 h-14 flex items-center justify-between">
+      <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/40 px-4 h-[calc(3.5rem+env(safe-area-inset-top,0px))] pt-[env(safe-area-inset-top,0px)] flex items-center justify-between">
         <button onClick={() => window.history.back()} className="w-10 h-10 flex items-center justify-start text-foreground/80 hover:text-foreground">
           <ChevronLeft className="w-6 h-6" />
         </button>
@@ -186,24 +207,14 @@ export default function JourneyPage() {
         {/* 2. Top Header Area */}
         <div className="mb-6 flex flex-col gap-4">
           
-          {currentDay === 1 && (
-            <div className="text-left w-full mb-2">
-              <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-black mb-2">
-                Welcome back, {user?.firstName?.toUpperCase() || "KARTHI"}
-              </p>
-              <h1 className="text-3xl font-black mb-3 tracking-tight">Your 30-Day Journey</h1>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                5 deep questions unlocked a day across 5 key areas: Personality, Lifestyle, Family Values, Career Goals, and Communication. Honest answers help us build a more complete profile of who you really are.
-              </p>
-            </div>
-          )}
+
 
           <div className="bg-card border border-border/40 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] rounded-[2rem] pt-5 pb-5 px-4 flex justify-between items-center w-full self-stretch relative overflow-hidden">
             <div className="flex flex-col items-center flex-1 border-r border-border/40">
               <div className="flex items-center gap-1.5 text-muted-foreground text-[10px] font-bold uppercase tracking-wider mb-1">
                 <CalendarDays className="w-3 h-3" /> Day
               </div>
-              <div className="text-xl font-black">{Math.min(Math.max(1, Math.ceil(totalAnswered / 5)), 30)}/30</div>
+              <div className="text-xl font-black">{isLocked ? Math.min(30, Math.max(1, currentDay - 1)) : Math.min(30, currentDay)}/30</div>
             </div>
             
             <div className="flex flex-col items-center flex-1 border-r border-border/40">
@@ -251,11 +262,17 @@ export default function JourneyPage() {
                 Day {Math.max(1, currentDay - 1)} Completed!
               </h2>
               
-              <p className="text-foreground/80 text-[15px] leading-relaxed mb-10 max-w-sm">
-                Amazing work! You've successfully finished today's questions. 
-                Your journey continues on <br/>
-                <span className="text-foreground font-black inline-block mt-2 text-lg">
-                  {unlockDate?.toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' })}
+              <p className="text-foreground/80 text-[15px] leading-relaxed mb-10 max-w-sm flex flex-col gap-5 text-center">
+                <span>Amazing work! You've successfully finished today's questions.</span>
+                <span className="flex flex-col gap-0.5">
+                  <span className="text-muted-foreground text-[10px] font-bold uppercase tracking-wider">Completed On</span>
+                  <span className="text-foreground font-black text-lg">{completedDateStr}</span>
+                  <span className="text-muted-foreground text-sm">{completedTimeStr}</span>
+                </span>
+                <span className="flex flex-col gap-0.5">
+                  <span className="text-[#9B4DFF] text-[10px] font-bold uppercase tracking-wider">Next Journey Unlocks</span>
+                  <span className="text-foreground font-black text-lg">{unlockDateStr}</span>
+                  <span className="text-muted-foreground text-sm">{unlockTimeStr}</span>
                 </span>
               </p>
               

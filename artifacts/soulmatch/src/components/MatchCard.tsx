@@ -23,6 +23,7 @@ interface Profile {
   journeyProgress?: number;
   commonInterestsCount?: number;
   valueMatchScore?: number;
+  interestSentByViewer?: boolean;
 }
 
 interface MatchCardProps {
@@ -225,15 +226,27 @@ export function MatchCard({
           <p className="text-xs text-muted-foreground line-clamp-2 mb-3 italic">"{aiInsight}"</p>
         )}
 
-        <Button
-          size="sm"
-          className="w-full bg-primary text-primary-foreground shadow-md border-0 text-white shadow-lg shadow-primary/20"
-          onClick={(e) => { e.stopPropagation(); onSendInterest?.(profile.id); }}
-          disabled={loading}
-        >
-          <Heart className="w-3.5 h-3.5 mr-1.5" />
-          Send Interest
-        </Button>
+        {profile.interestSentByViewer ? (
+          <Button
+            size="sm"
+            variant="outline"
+            className="w-full border-border text-muted-foreground bg-foreground/5 cursor-not-allowed"
+            disabled
+          >
+            <CheckCircle2 className="w-3.5 h-3.5 mr-1.5" />
+            Sent
+          </Button>
+        ) : (
+          <Button
+            size="sm"
+            className="w-full bg-primary text-primary-foreground shadow-md border-0 text-white shadow-lg shadow-primary/20"
+            onClick={(e) => { e.stopPropagation(); onSendInterest?.(profile.id); }}
+            disabled={loading}
+          >
+            <Heart className="w-3.5 h-3.5 mr-1.5" />
+            Send Interest
+          </Button>
+        )}
       </div>
     </motion.div>
   );

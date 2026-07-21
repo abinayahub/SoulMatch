@@ -78,15 +78,6 @@ const fetchMyJournals = async () => {
   return res.json();
 };
 
-const fetchMetrics = async () => {
-  const token = getAccessToken();
-  const res = await fetch(`${API_URL}/api/metrics/today`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  if (!res.ok) throw new Error("Failed to fetch metrics");
-  return res.json();
-};
-
 const fetchFeed = async () => {
   const token = getAccessToken();
   const res = await fetch(`${API_URL}/api/journal/feed`, {
@@ -234,11 +225,7 @@ export default function MyStory() {
     queryKey: ["journalFeed"],
     queryFn: fetchFeed,
   });
-  const { data: metricsData } = useQuery({
-    queryKey: ["systemMetrics"],
-    queryFn: fetchMetrics,
-    refetchInterval: 5000,
-  });
+
 
   // Handlers
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {

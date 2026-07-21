@@ -16,8 +16,9 @@ import RegisterPage from "@/pages/register";
 import CompleteProfilePage from "@/pages/complete-profile";
 import ForgotPasswordPage from "@/pages/forgot-password";
 import ResetPasswordPage from "@/pages/reset-password";
-import VerifyPhonePage from "@/pages/verify-phone";
 import PricingPage from "@/pages/pricing";
+import TermsPage from "@/pages/terms";
+import PrivacyPage from "@/pages/privacy";
 import DashboardPage from "@/pages/dashboard";
 import DiscoverPage from "@/pages/discover";
 import MatchesPage from "@/pages/matches";
@@ -52,7 +53,8 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: 1,
-      staleTime: 30_000,
+      staleTime: 120_000,
+      refetchOnWindowFocus: false,
     },
   },
 });
@@ -67,8 +69,9 @@ function Router() {
       <Route path="/complete-profile" component={CompleteProfilePage} />
       <Route path="/forgot-password" component={ForgotPasswordPage} />
       <Route path="/reset-password" component={ResetPasswordPage} />
-      <Route path="/verify-phone" component={VerifyPhonePage} />
       <Route path="/pricing" component={PricingPage} />
+      <Route path="/terms" component={TermsPage} />
+      <Route path="/privacy" component={PrivacyPage} />
 
       {/* Authenticated */}
       <Route path="/dashboard">
@@ -193,16 +196,17 @@ function ThemeManager() {
   const { user } = useAuth();
   
   useEffect(() => {
-    // If user is logged in, use their specific preference, otherwise default to dark (black)
-    const savedTheme = user ? localStorage.getItem(`theme_${user.id}`) : null;
-    const isLight = savedTheme === 'light';
+    const savedTheme = user ? (localStorage.getItem(`theme_${user.id}`) || localStorage.getItem('theme')) : localStorage.getItem('theme');
+    const activeTheme = savedTheme || 'dark';
     
-    if (isLight) {
+    document.documentElement.classList.remove('light', 'dark', 'purple');
+    
+    if (activeTheme === 'light') {
       document.documentElement.classList.add('light');
-      document.documentElement.classList.remove('dark');
+    } else if (activeTheme === 'purple') {
+      document.documentElement.classList.add('dark', 'purple');
     } else {
       document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
     }
   }, [user]);
 

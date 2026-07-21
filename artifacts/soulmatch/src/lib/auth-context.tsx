@@ -41,17 +41,69 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const token = localStorage.getItem(ACCESS_TOKEN_KEY);
-    if (token) {
-      setAccessToken(token);
-      fetch(`${API_URL}/api/users/me`, { headers: { Authorization: `Bearer ${token}` } })
-        .then((r) => (r.ok ? r.json() : null))
-        .then((data) => { if (data) setUser(data); })
-        .catch(() => {})
-        .finally(() => setIsLoading(false));
-    } else {
+    const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
+
+    if (!token && !refreshToken) {
       setIsLoading(false);
+      return;
     }
+
+    const tryLoadUser = async () => {
+      // First, attempt to load the user with the current access token
+      if (token) {
+        try {
+          const r = await fetch(`${API_URL}/api/users/me`, {
+            headers: { Authorization: `Bearer ${token}`, "Bypass-Tunnel-Reminder": "true" },
+          });
+          if (r.ok) {
+            const data = await r.json();
+            setAccessToken(token);
+            setUser(data);
+            setIsLoading(false);
+            return;
+          }
+        } catch {
+          // Network error — don't clear session, user may be offline
+          setAccessToken(token);
+          setIsLoading(false);
+          return;
+        }
+      }
+
+      // Access token invalid/expired — attempt refresh
+      if (refreshToken) {
+        try {
+          const r = await fetch(`${API_URL}/api/auth/refresh`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Bypass-Tunnel-Reminder": "true" },
+            body: JSON.stringify({ refreshToken }),
+          });
+          if (r.ok) {
+            const data = await r.json();
+            localStorage.setItem(ACCESS_TOKEN_KEY, data.accessToken);
+            localStorage.setItem(REFRESH_TOKEN_KEY, data.refreshToken);
+            setAccessToken(data.accessToken);
+            setUser(data.user);
+            setIsLoading(false);
+            return;
+          }
+        } catch {
+          // Network error during refresh — keep existing state
+          if (token) setAccessToken(token);
+          setIsLoading(false);
+          return;
+        }
+      }
+
+      // Both tokens invalid — clear session
+      localStorage.removeItem(ACCESS_TOKEN_KEY);
+      localStorage.removeItem(REFRESH_TOKEN_KEY);
+      setIsLoading(false);
+    };
+
+    tryLoadUser();
   }, []);
+
 
   const login = useCallback((token: string, refresh: string, userData: AuthUser) => {
     localStorage.setItem(ACCESS_TOKEN_KEY, token);

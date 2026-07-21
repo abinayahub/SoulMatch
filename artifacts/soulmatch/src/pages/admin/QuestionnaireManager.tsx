@@ -105,7 +105,7 @@ export default function QuestionnaireManager() {
 
   const saveMutation = useMutation({
     mutationFn: async (data: any) => {
-      const url = editingQuestion ? `/api/admin/questions/${editingQuestion.id}` : `/api/admin/questions`;
+      const url = editingQuestion ? `${API_URL}/api/admin/questions/${editingQuestion.id}` : `${API_URL}/api/admin/questions`;
       const method = editingQuestion ? 'PUT' : 'POST';
       const res = await fetch(url, {
         method,

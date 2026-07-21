@@ -70,6 +70,7 @@ export function ProfessionalDetailsForm({ p, onSave, onCancel, hasPrevious, isPe
                 <SelectItem value="healthcare">Healthcare</SelectItem>
                 <SelectItem value="education">Education</SelectItem>
                 <SelectItem value="arts">Arts & Design</SelectItem>
+                <SelectItem value="other">Other</SelectItem>
               </SelectContent>
             </Select>
           </div>

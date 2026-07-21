@@ -7,6 +7,7 @@ import { useAuth } from "@/lib/auth-context";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
 import { AppLayout } from "@/components/layout/AppLayout";
+const Layout = AppLayout as any;
 
 export default function CheckoutCompatibilityPage() {
   const [, setLocation] = useLocation();
@@ -50,7 +51,7 @@ export default function CheckoutCompatibilityPage() {
   };
 
   return (
-    <AppLayout showBanner={false}>
+    <Layout showBanner={false}>
       <div className="pb-24 pt-4 px-4 max-w-lg mx-auto min-h-screen">
         <Button 
           variant="ghost" 
@@ -205,6 +206,6 @@ export default function CheckoutCompatibilityPage() {
           )}
         </AnimatePresence>
       </div>
-    </AppLayout>
+    </Layout>
   );
 }

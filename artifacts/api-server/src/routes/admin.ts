@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { db } from "@workspace/db";
-import { usersTable, reportsTable, verificationsTable, subscriptionsTable, journeyQuestionsTable, interestsTable, dailyJournalsTable, supportMessages } from "@workspace/db";
+import { usersTable, reportsTable, verificationsTable, subscriptionsTable, journeyQuestionsTable, interestsTable, dailyJournalsTable, supportMessages, adminLogsTable, platformSettingsTable, profileViewsTable, dailyPollAnswersTable } from "@workspace/db";
 import { eq, ilike, or, desc, count, and } from "drizzle-orm";
 import { authenticate, requireRole, type AuthRequest } from "../lib/auth";
 
@@ -156,6 +156,12 @@ router.post("/users/:userId/action", ...isAdmin, async (req: AuthRequest, res) =
         updateData.status = "banned";
         break;
       case "delete":
+        await db.delete(supportMessages).where(eq(supportMessages.userId, userId)).catch(() => {});
+        await db.delete(adminLogsTable).where(eq(adminLogsTable.adminId, userId)).catch(() => {});
+        await db.update(platformSettingsTable).set({ updatedBy: null }).where(eq(platformSettingsTable.updatedBy, userId)).catch(() => {});
+        await db.delete(profileViewsTable).where(or(eq(profileViewsTable.viewerId, userId), eq(profileViewsTable.targetUserId, userId))).catch(() => {});
+        await db.delete(dailyPollAnswersTable).where(eq(dailyPollAnswersTable.userId, userId)).catch(() => {});
+        
         await db.delete(usersTable).where(eq(usersTable.id, userId));
         return res.json({ message: "User deleted successfully" });
       default:
@@ -164,7 +170,10 @@ router.post("/users/:userId/action", ...isAdmin, async (req: AuthRequest, res) =
 
     await db.update(usersTable).set(updateData).where(eq(usersTable.id, userId));
     return res.json({ message: `Action ${action} performed successfully` });
-  } catch (err) { req.log.error(err); return res.status(500).json({ error: "Internal server error" }); }
+  } catch (err: any) { 
+    req.log.error(err); 
+    return res.status(500).json({ error: String(err.stack || err) }); 
+  }
 });
 
 // PATCH /admin/users/:userId

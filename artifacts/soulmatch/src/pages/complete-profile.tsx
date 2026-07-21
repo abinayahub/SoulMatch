@@ -49,9 +49,13 @@ export default function CompleteProfilePage() {
 
     setLoading(true);
     try {
+      const payload = {
+        ...data,
+        gender: data.gender === "prefer_not_to_say" ? "other" : data.gender,
+      };
       const updatedUser = await apiRequest("/users/me", {
         method: "PATCH",
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
       updateUser(updatedUser as any);
       toast({ title: "Profile Completed", description: "Welcome to SoulMatch!" });
@@ -104,7 +108,8 @@ export default function CompleteProfilePage() {
                 <SelectContent style={{ background: "hsl(222 47% 9%)", border: "1px solid hsl(var(--border))" }}>
                   <SelectItem value="male">Male</SelectItem>
                   <SelectItem value="female">Female</SelectItem>
-                  <SelectItem value="other">Other / Prefer not to say</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                  <SelectItem value="prefer_not_to_say">Prefer not to say</SelectItem>
                 </SelectContent>
               </Select>
             </div>

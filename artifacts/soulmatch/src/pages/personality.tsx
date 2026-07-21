@@ -122,7 +122,7 @@ export default function PersonalityPage() {
       <div className="min-h-screen bg-background relative pb-28">
         
         {/* Sticky Mobile Header */}
-        <nav className="sticky top-0 z-50 bg-background/90 backdrop-blur-md pt-4 pb-3">
+        <nav className="sticky top-[calc(4rem+env(safe-area-inset-top,0px))] z-50 bg-background/90 backdrop-blur-md pt-4 pb-3">
           <div className="px-5 max-w-md mx-auto flex items-center justify-between">
             <div>
               <h1 className="text-[28px] font-extrabold text-foreground tracking-tight">Personality</h1>

@@ -716,7 +716,7 @@ export default function ChatConversationPage() {
                       <input 
                         type="file" 
                         accept="audio/*"
-                        capture="microphone" 
+                        capture={"microphone" as any} 
                         className="hidden" 
                         ref={audioInputRef} 
                         onChange={handleAudioUpload} 

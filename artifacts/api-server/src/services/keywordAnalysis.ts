@@ -146,23 +146,63 @@ export function calculateUnifiedScores(
 }
 
 export function convertUnifiedToLegacyTraits(unifiedScores: Record<string, number>): any[] {
-  const connection = Math.round(((unifiedScores["Family Values"] || 0) + (unifiedScores["Relationship Commitment"] || 0) + (unifiedScores["Social Engagement"] || 0) + (unifiedScores["Kindness & Empathy"] || 0)) / 4);
-  const stability = Math.round(((unifiedScores["Emotional Wellbeing"] || 0) + (unifiedScores["Communication Style"] || 0)) / 2);
-  const growth = Math.round(((unifiedScores["Personal Growth"] || 0) + (unifiedScores["Career Focus"] || 0)) / 2);
-  const exploration = Math.round(((unifiedScores["Adventure & Travel"] || 0) + (unifiedScores["Health & Lifestyle"] || 0)) / 2);
+  const connectionPts = unifiedScores["Connection"] ?? (
+    (unifiedScores["Family Values"] || 0) + 
+    (unifiedScores["Relationship Commitment"] || 0) + 
+    (unifiedScores["Social Engagement"] || 0) + 
+    (unifiedScores["Kindness & Empathy"] || 0)
+  );
+
+  const growthPts = unifiedScores["Growth"] ?? (
+    (unifiedScores["Personal Growth"] || 0) + 
+    (unifiedScores["Career Focus"] || 0)
+  );
+
+  const stabilityPts = unifiedScores["Stability"] ?? (
+    (unifiedScores["Emotional Wellbeing"] || 0) + 
+    (unifiedScores["Communication Style"] || 0)
+  );
+
+  const explorationPts = unifiedScores["Exploration"] ?? (
+    (unifiedScores["Adventure & Travel"] || 0) + 
+    (unifiedScores["Health & Lifestyle"] || 0)
+  );
+
+  const totalPts = connectionPts + growthPts + stabilityPts + explorationPts;
+
+  let connection = 0;
+  let growth = 0;
+  let stability = 0;
+  let exploration = 0;
+
+  if (totalPts > 0) {
+    connection = Math.round((connectionPts / totalPts) * 100);
+    growth = Math.round((growthPts / totalPts) * 100);
+    stability = Math.round((stabilityPts / totalPts) * 100);
+    exploration = Math.round((explorationPts / totalPts) * 100);
+
+    const currentSum = connection + growth + stability + exploration;
+    if (currentSum !== 100 && currentSum > 0) {
+      const diff = 100 - currentSum;
+      if (connection >= growth && connection >= stability && connection >= exploration) connection += diff;
+      else if (growth >= stability && growth >= exploration) growth += diff;
+      else if (stability >= exploration) stability += diff;
+      else exploration += diff;
+    }
+  }
 
   return [
     { trait: "Connection", score: connection },
     { trait: "Stability", score: stability },
     { trait: "Growth", score: growth },
     { trait: "Exploration", score: exploration },
-    { trait: "Family Orientation", score: unifiedScores["Family Values"] || 0 },
-    { trait: "Career Focus", score: unifiedScores["Career Focus"] || 0 },
-    { trait: "Communication Style", score: unifiedScores["Communication Style"] || 0 },
-    { trait: "Emotional Maturity", score: unifiedScores["Emotional Wellbeing"] || 0 },
-    { trait: "Relationship Commitment", score: unifiedScores["Relationship Commitment"] || 0 },
-    { trait: "Adventure Seeking", score: unifiedScores["Adventure & Travel"] || 0 },
-    { trait: "Social Engagement", score: unifiedScores["Social Engagement"] || 0 },
+    { trait: "Family Orientation", score: connection },
+    { trait: "Career Focus", score: growth },
+    { trait: "Communication Style", score: stability },
+    { trait: "Emotional Maturity", score: stability },
+    { trait: "Relationship Commitment", score: connection },
+    { trait: "Adventure Seeking", score: exploration },
+    { trait: "Social Engagement", score: connection },
   ];
 }
 

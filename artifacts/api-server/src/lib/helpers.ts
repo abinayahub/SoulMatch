@@ -281,7 +281,8 @@ export async function buildUserProfile(user: any) {
     age: calculateAge(user.dateOfBirth),
     photos: photos.map((p: any) => ({ id: p.id, url: p.url, isPrimary: p.isPrimary, publicId: p.publicId })),
     profileCompleteness: calculateProfileCompleteness(user, photos),
-    journalCount: Number(journalCountResult?.count || 0)
+    journalCount: Number(journalCountResult?.count || 0),
+    isPremium: user.role === "premium" || user.role === "admin" || user.role === "superadmin"
   };
 }
 

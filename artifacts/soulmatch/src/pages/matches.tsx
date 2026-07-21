@@ -10,6 +10,7 @@ import { useGetMatches, useSendInterest, useGetMe } from "@workspace/api-client-
 import { getAccessToken, useAuth } from "@/lib/auth-context";
 import { useLocation } from "wouter";
 import { getMandatoryCompletion } from "@/lib/profile-utils";
+import { useQueryClient } from "@tanstack/react-query";
 
 function authHeaders() {
   const token = getAccessToken();
@@ -23,6 +24,8 @@ export default function MatchesPage() {
   const { toast } = useToast();
   const [, navigate] = useLocation();
   const { user } = useAuth();
+  const queryClient = useQueryClient();
+  const [localSentInterests, setLocalSentInterests] = useState<number[]>([]);
   
   const [activeFilter, setActiveFilter] = useState("High Compatibility");
 
@@ -52,11 +55,20 @@ export default function MatchesPage() {
   const sendInterest = useSendInterest({ request: { headers: authHeaders() } });
 
   function handleSendInterest(userId: number) {
+    setLocalSentInterests(prev => [...prev, userId]);
     sendInterest.mutate(
       { data: { toUserId: userId } },
       {
-        onSuccess: () => toast({ title: "Interest sent!" }),
-        onError: (err: any) => toast({ title: "Error", description: err.message, variant: "destructive" }),
+        onSuccess: () => {
+          toast({ title: "Interest sent!" });
+          queryClient.invalidateQueries({ queryKey: ["/api/matches"] });
+          queryClient.invalidateQueries({ queryKey: ["/api/interests"] });
+          queryClient.invalidateQueries({ queryKey: ["/api/interests/summary"] });
+        },
+        onError: (err: any) => {
+          setLocalSentInterests(prev => prev.filter(id => id !== userId));
+          toast({ title: "Error", description: err.message, variant: "destructive" });
+        },
       },
     );
   }
@@ -92,7 +104,7 @@ export default function MatchesPage() {
       <div className="min-h-screen bg-background relative pb-28">
         
         {/* Sticky Mobile Header */}
-        <nav className="sticky top-0 z-50 bg-background/90 backdrop-blur-md pt-4 pb-3">
+        <nav className="sticky top-[calc(4rem+env(safe-area-inset-top,0px))] z-50 bg-background/90 backdrop-blur-md pt-4 pb-3">
           <div className="px-5 max-w-md mx-auto">
             <div className="flex items-center justify-between">
               <div>
@@ -141,10 +153,14 @@ export default function MatchesPage() {
               {displayMatches.map((matchItem: any, i: number) => {
                 const profile = matchItem.profile;
                 if (!profile) return null;
+                const updatedProfile = {
+                  ...profile,
+                  interestSentByViewer: profile.interestSentByViewer || localSentInterests.includes(profile.id)
+                };
                 return (
                   <motion.div key={matchItem.id || i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
                     <MatchCard
-                      profile={profile}
+                      profile={updatedProfile}
                       onSendInterest={handleSendInterest}
                       onClick={(id) => navigate(`/profile/${id}`)}
                     />

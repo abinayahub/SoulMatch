@@ -24,7 +24,7 @@ export function AppLayout({ children }: AppLayoutProps) {
       <div className="orb orb-2" />
       <div className="orb orb-3" />
       <Navbar />
-      <main className="pt-16 flex-1 relative z-10">
+      <main className="pt-[calc(4rem+env(safe-area-inset-top,0px))] flex-1 relative z-10">
         {children}
       </main>
       <BottomNav />

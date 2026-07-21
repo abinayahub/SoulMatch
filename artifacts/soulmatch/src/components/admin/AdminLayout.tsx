@@ -40,9 +40,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
       
-      <div className="flex-1 flex overflow-hidden pt-16">
+      <div className="flex-1 flex overflow-hidden pt-[calc(4rem+env(safe-area-inset-top,0px))]">
         {/* Sidebar */}
-        <aside className="w-64 border-r border-white/10 bg-background/50 backdrop-blur-md hidden md:flex flex-col h-[calc(100vh-4rem)] sticky top-16 overflow-y-auto">
+        <aside className="w-64 border-r border-white/10 bg-background/50 backdrop-blur-md hidden md:flex flex-col h-[calc(100vh-4rem-env(safe-area-inset-top,0px))] sticky top-[calc(4rem+env(safe-area-inset-top,0px))] overflow-y-auto">
           <div className="p-6">
             <h2 className="text-sm font-semibold text-primary uppercase tracking-wider mb-4">
               Admin Console
@@ -51,16 +51,14 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               {adminModules.map((module) => {
                 const isActive = location === module.path || (location.startsWith(module.path) && module.path !== "/admin");
                 return (
-                  <Link key={module.path} href={module.path}>
-                    <a className={cn(
-                      "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sm font-medium",
-                      isActive 
-                        ? "bg-primary/10 text-primary" 
-                        : "text-muted-foreground hover:bg-white/5 hover:text-white"
-                    )}>
-                      <module.icon className="w-4 h-4 shrink-0" />
-                      {module.name}
-                    </a>
+                  <Link key={module.path} href={module.path} className={cn(
+                    "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sm font-medium",
+                    isActive 
+                      ? "bg-primary/10 text-primary" 
+                      : "text-muted-foreground hover:bg-white/5 hover:text-white"
+                  )}>
+                    <module.icon className="w-4 h-4 shrink-0" />
+                    {module.name}
                   </Link>
                 );
               })}
@@ -69,16 +67,14 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               <h2 className="text-xs font-semibold text-destructive uppercase tracking-wider mb-2 px-3">
                 Super Admin
               </h2>
-              <Link href="/admin/super">
-                <a className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sm font-medium",
-                  location.startsWith("/admin/super")
-                    ? "bg-destructive/10 text-destructive" 
-                    : "text-muted-foreground hover:bg-white/5 hover:text-white"
-                )}>
-                  <Key className="w-4 h-4 shrink-0" />
-                  System Controls
-                </a>
+              <Link href="/admin/super" className={cn(
+                "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sm font-medium",
+                location.startsWith("/admin/super")
+                  ? "bg-destructive/10 text-destructive" 
+                  : "text-muted-foreground hover:bg-white/5 hover:text-white"
+              )}>
+                <Key className="w-4 h-4 shrink-0" />
+                System Controls
               </Link>
             </nav>
           </div>

@@ -358,6 +358,11 @@ export async function customFetch<T = unknown>(
     }
   }
 
+  // Attach client's timezone offset if not already provided
+  if (!headers.has("x-timezone-offset")) {
+    headers.set("x-timezone-offset", String(new Date().getTimezoneOffset()));
+  }
+
   const requestInfo = { method, url: resolveUrl(input) };
 
   const response = await fetch(input, { ...init, method, headers });

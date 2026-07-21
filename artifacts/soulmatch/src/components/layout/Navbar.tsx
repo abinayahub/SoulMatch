@@ -27,11 +27,18 @@ export function Navbar() {
   const { user, logout, isAdmin } = useAuth();
   const [location, navigate] = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const photo = user?.photos?.find((p) => p.isPrimary) ?? user?.photos?.[0];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 h-16">
-      <div className="glass-strong h-full border-b border-white/5">
+    <nav className="fixed top-0 left-0 right-0 z-50 h-[calc(4rem+env(safe-area-inset-top,0px))] pt-[env(safe-area-inset-top,0px)] bg-background/80 backdrop-blur-md">
+      {dropdownOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 backdrop-blur-[1px] z-40 transition-opacity duration-200"
+          onClick={() => setDropdownOpen(false)}
+        />
+      )}
+      <div className="glass-strong h-full border-b border-white/5 relative z-50">
         <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
           {/* Logo */}
           <Link href="/dashboard">
@@ -82,7 +89,7 @@ export function Navbar() {
               <MoreVertical className="w-4 h-4 text-muted-foreground" />
             </Button>
 
-            <DropdownMenu>
+            <DropdownMenu onOpenChange={setDropdownOpen}>
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center gap-2 rounded-full focus:outline-none">
                   <Avatar className="w-8 h-8 ring-2 ring-primary/30">
@@ -93,7 +100,11 @@ export function Navbar() {
                   </Avatar>
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 glass border-white/10">
+              <DropdownMenuContent 
+                align="end" 
+                sideOffset={8}
+                className="w-56 bg-card/98 dark:bg-[#121214]/98 light:bg-white/98 backdrop-blur-xl border border-white/10 dark:border-white/10 light:border-black/5 shadow-2xl rounded-2xl p-2 z-50"
+              >
                 <div className="px-3 py-2">
                   <p className="text-sm font-semibold">{user?.firstName} {user?.lastName}</p>
                   <p className="text-xs text-muted-foreground">{user?.email}</p>

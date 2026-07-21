@@ -61,7 +61,10 @@ export default function UserManagement() {
         },
         body: JSON.stringify({ action })
       });
-      if (!res.ok) throw new Error("Failed to perform action");
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || "Failed to perform action");
+      }
       return res.json();
     },
     onSuccess: () => {

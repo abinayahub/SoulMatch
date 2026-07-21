@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Heart, Lock, ShieldCheck, Shield, HeartHandshake, CheckCircle2, TrendingUp, CalendarDays, Award, AlertCircle, Crown, Info, MessageCircle, SlidersHorizontal, MapPin, UserPlus, Clock, Target, RefreshCw, Brain, Gift, Flame, User, BadgeCheck, CheckSquare, Compass, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -26,7 +26,9 @@ export default function DiscoverPage() {
   const { toast } = useToast();
   const [, navigate] = useLocation();
   const { user } = useAuth();
+  const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
+  const [localSentInterests, setLocalSentInterests] = useState<number[]>([]);
 
   const handleInviteClick = () => {
     const shareData = {
@@ -183,11 +185,20 @@ export default function DiscoverPage() {
   const sendInterest = useSendInterest({ request: { headers: authHeaders() } });
 
   function handleSendInterest(userId: number) {
+    setLocalSentInterests(prev => [...prev, userId]);
     sendInterest.mutate(
       { data: { toUserId: userId, message: undefined } },
       {
-        onSuccess: () => toast({ title: "Interest sent!" }),
-        onError: (err: any) => toast({ title: "Error", description: err.message, variant: "destructive" }),
+        onSuccess: () => {
+          toast({ title: "Interest sent!" });
+          queryClient.invalidateQueries({ queryKey: ["/api/matches"] });
+          queryClient.invalidateQueries({ queryKey: ["/api/interests"] });
+          queryClient.invalidateQueries({ queryKey: ["/api/interests/summary"] });
+        },
+        onError: (err: any) => {
+          setLocalSentInterests(prev => prev.filter(id => id !== userId));
+          toast({ title: "Error", description: err.message, variant: "destructive" });
+        },
       },
     );
   }
@@ -337,7 +348,7 @@ export default function DiscoverPage() {
                             <Button variant="outline" size="sm" className="w-full text-[10px] h-7 border-green-500/30 text-green-400 hover:bg-green-500/10 px-1" onClick={() => navigate(`/chat?userId=${profile.id}`)}>
                               <MessageCircle className="w-3 h-3 mr-1" /> Chat
                             </Button>
-                          ) : profile.interestSentByViewer ? (
+                          ) : (profile.interestSentByViewer || localSentInterests.includes(profile.id)) ? (
                             <Button variant="outline" disabled size="sm" className="w-full text-[10px] h-7 border-border text-muted-foreground bg-foreground/5 px-1">
                               <CheckCircle2 className="w-3 h-3 mr-1" /> Sent
                             </Button>

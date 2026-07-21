@@ -105,17 +105,17 @@
   --elevate-1: rgba(255,255,255, .04);
   --elevate-2: rgba(255,255,255, .09);
 
-  --background: 0 0% 0%;
+  --background: 240 10% 6%;
   --foreground: 0 0% 95%;
-  --border: 240 10% 20%;
+  --border: 240 10% 28%;
   
-  --card: 0 0% 4%;
+  --card: 240 10% 10%;
   --card-foreground: 0 0% 95%;
-  --card-border: 240 10% 22%;
+  --card-border: 240 10% 28%;
   
   --sidebar: 240 10% 10%;
   --sidebar-foreground: 0 0% 95%;
-  --sidebar-border: 240 10% 20%;
+  --sidebar-border: 240 10% 28%;
   --sidebar-primary: 346 80% 55%;
   --sidebar-primary-foreground: 0 0% 100%;
   --sidebar-accent: 240 10% 16%;
@@ -124,7 +124,7 @@
 
   --popover: 240 10% 12%;
   --popover-foreground: 0 0% 95%;
-  --popover-border: 240 10% 22%;
+  --popover-border: 240 10% 28%;
 
   --primary: 346 80% 55%;
   --primary-foreground: 0 0% 100%;
@@ -133,7 +133,7 @@
   --secondary-foreground: 0 0% 95%;
 
   --muted: 240 10% 16%;
-  --muted-foreground: 240 5% 65%;
+  --muted-foreground: 240 6% 75%;
 
   --accent: 240 10% 16%;
   --accent-foreground: 0 0% 95%;
@@ -141,7 +141,7 @@
   --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 0 0% 98%;
 
-  --input: 240 10% 20%;
+  --input: 240 10% 28%;
   --ring: 346 80% 55%;
   --chart-1: 346 80% 55%;
   --chart-2: 240 10% 20%;
@@ -438,7 +438,7 @@
   color: hsl(var(--foreground)) !important;
 }
 .auth-input::placeholder {
-  color: hsl(215 20% 42%) !important;
+  color: hsl(215 20% 60%) !important;
 }
 .auth-input:focus {
   border-color: hsl(340 82% 65% / 0.6) !important;
@@ -492,3 +492,41 @@
 
 .hide-scrollbar::-webkit-scrollbar { display: none; }
 .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Purple Theme Override */
+.purple {
+  --background: 270 30% 6%;
+  --foreground: 0 0% 95%;
+  --border: 270 20% 28%;
+  
+  --card: 270 25% 10%;
+  --card-foreground: 0 0% 95%;
+  --card-border: 270 20% 28%;
+  
+  --sidebar: 270 25% 10%;
+  --sidebar-foreground: 0 0% 95%;
+  --sidebar-border: 270 20% 28%;
+  --sidebar-primary: 270 85% 65%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 270 20% 16%;
+  --sidebar-accent-foreground: 0 0% 95%;
+  --sidebar-ring: 270 85% 65%;
+ 
+  --popover: 270 25% 12%;
+  --popover-foreground: 0 0% 95%;
+  --popover-border: 270 20% 28%;
+ 
+  --primary: 270 85% 65%;
+  --primary-foreground: 0 0% 100%;
+ 
+  --secondary: 270 20% 16%;
+  --secondary-foreground: 0 0% 95%;
+ 
+  --muted: 270 20% 16%;
+  --muted-foreground: 270 10% 75%;
+ 
+  --accent: 270 20% 16%;
+  --accent-foreground: 0 0% 95%;
+ 
+  --input: 270 20% 28%;
+}

@@ -107,7 +107,7 @@ export default function UserProfilePage({ userId }: Props) {
     score >= 80 ? 'text-green-500' : score >= 60 ? 'text-yellow-500' : 'text-orange-500';
 
   const getStoryIcon = (name: string) => {
-    const map: Record<string, JSX.Element> = {
+    const map: Record<string, React.ReactNode> = {
       "Family Values": <Home className="w-4 h-4 text-muted-foreground" />,
       "Career Focus": <Briefcase className="w-4 h-4 text-muted-foreground" />,
       "Personal Growth": <Target className="w-4 h-4 text-muted-foreground" />,
@@ -151,8 +151,9 @@ export default function UserProfilePage({ userId }: Props) {
   }
 
   function handleRespond(status: "accepted" | "rejected") {
+    const action = status === "accepted" ? "accept" : "decline";
     respondInterest.mutate(
-      { data: { interestId: parseInt(userId), status } },
+      { interestId: parseInt(userId), data: { action } },
       {
         onSuccess: () => { toast({ title: `Interest ${status}` }); },
         onError: (err: any) => toast({ title: "Error", description: err?.message, variant: "destructive" }),

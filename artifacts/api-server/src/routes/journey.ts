@@ -13,7 +13,7 @@ function getJourneyLockStatus(
   lastAnswer: any,
   timezoneOffset: number // in minutes
 ): { isLocked: boolean; unlockedAt: string | null } {
-  if (answeredCount === 0 || answeredCount % 5 !== 0 || !lastAnswer) {
+  if (answeredCount === 0 || answeredCount % 5 !== 0 || !lastAnswer || !lastAnswer.createdAt) {
     return { isLocked: false, unlockedAt: null };
   }
   if (answeredCount >= 150) {
@@ -21,21 +21,29 @@ function getJourneyLockStatus(
   }
 
   const now = new Date();
-  // Adjust dates by the user's timezone offset so calendar math works relative to local time
-  const userLocalTime = now.getTime() - (timezoneOffset * 60 * 1000);
-  const userDate = new Date(userLocalTime);
-  
-  const lastAnswerLocalTime = new Date(lastAnswer.createdAt).getTime() - (timezoneOffset * 60 * 1000);
-  const lastAnswerDate = new Date(lastAnswerLocalTime);
+  const lastAnswerDate = new Date(lastAnswer.createdAt);
 
-  const isSameDay = 
-    userDate.getUTCDate() === lastAnswerDate.getUTCDate() &&
-    userDate.getUTCMonth() === lastAnswerDate.getUTCMonth() &&
-    userDate.getUTCFullYear() === lastAnswerDate.getUTCFullYear();
+  if (isNaN(lastAnswerDate.getTime())) {
+    return { isLocked: false, unlockedAt: null };
+  }
 
-  if (isSameDay) {
-    // Lock until local midnight of tomorrow
-    const tomorrowLocal = new Date(userDate);
+  // Convert a UTC Date to its local YYYY-MM-DD string representation based on client offset
+  const getLocalDateString = (d: Date) => {
+    const localTimeMs = d.getTime() - (timezoneOffset * 60 * 1000);
+    const localDate = new Date(localTimeMs);
+    const year = localDate.getUTCFullYear();
+    const month = String(localDate.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(localDate.getUTCDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const todayStr = getLocalDateString(now);
+  const completedDayStr = getLocalDateString(lastAnswerDate);
+
+  if (todayStr === completedDayStr) {
+    // Calculate local midnight of tomorrow
+    const localTimeMs = now.getTime() - (timezoneOffset * 60 * 1000);
+    const tomorrowLocal = new Date(localTimeMs);
     tomorrowLocal.setUTCDate(tomorrowLocal.getUTCDate() + 1);
     tomorrowLocal.setUTCHours(0, 0, 0, 0);
 
@@ -192,6 +200,25 @@ router.post("/answers", authenticate, async (req: AuthRequest, res) => {
     const lockStatus = getJourneyLockStatus(answers.length, lastAnswer, timezoneOffset);
     if (lockStatus.isLocked) {
       return res.status(403).json({ error: "Next day's questions are locked until midnight." });
+    }
+
+    // Sequence validation: Ensure the question belongs to the first incomplete day
+    const answeredIds = new Set(answers.map((a) => a.questionId));
+    const allActiveQuestions = await db.select().from(journeyQuestionsTable).where(eq(journeyQuestionsTable.isActive, true)).orderBy(journeyQuestionsTable.id);
+    let currentDay = 1;
+    for (let d = 1; d <= 30; d++) {
+      currentDay = d;
+      const dayQs = allActiveQuestions.filter(q => q.day === d);
+      if (dayQs.length === 0) continue;
+      const allAnswered = dayQs.every(q => answeredIds.has(q.id));
+      if (!allAnswered) {
+        break;
+      }
+    }
+
+    const question = allActiveQuestions.find(q => q.id === questionId);
+    if (!question || question.day !== currentDay) {
+      return res.status(400).json({ error: "Questions must be answered in sequence. You cannot skip days." });
     }
 
     const existing = await db.query.journeyAnswersTable.findFirst({

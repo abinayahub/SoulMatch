@@ -1,14 +1,27 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
-import { Heart, Shield, Brain, ArrowRight } from "lucide-react";
+import { Heart, Shield, Brain, ArrowRight, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
 
 export default function LandingPage() {
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('theme') || 'dark';
+  });
+
+  const toggleTheme = () => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+    localStorage.setItem('theme', next);
+    document.documentElement.classList.remove('light', 'dark', 'purple');
+    document.documentElement.classList.add(next);
+  };
+
   return (
     <div className="min-h-screen bg-background relative overflow-x-hidden font-sans pb-12">
       {/* Mobile Navbar */}
-      <nav className="sticky top-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
+      <nav className="sticky top-0 z-50 bg-background/90 backdrop-blur-md border-b border-border pt-[env(safe-area-inset-top,0px)] h-[calc(4rem+env(safe-area-inset-top,0px))]">
         <div className="px-5 h-16 flex items-center justify-between max-w-md mx-auto">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center shadow-md shadow-primary/20">
@@ -16,11 +29,49 @@ export default function LandingPage() {
             </div>
             <span className="text-[17px] font-extrabold text-primary tracking-tight">SoulMatch</span>
           </div>
-          <Link href="/login">
-            <Button variant="outline" size="sm" className="font-semibold text-primary border-primary/30 bg-card rounded-xl shadow-sm h-8 px-4 text-xs">
-              Login
-            </Button>
-          </Link>
+          <div className="flex items-center gap-3">
+            {/* Theme Toggle Icon */}
+            <motion.button
+              onClick={toggleTheme}
+              whileTap={{ scale: 0.88 }}
+              whileHover={{ scale: 1.08 }}
+              aria-label="Toggle theme"
+              className="relative w-9 h-9 rounded-2xl flex items-center justify-center border border-border/40 bg-card/60 backdrop-blur-sm shadow-sm overflow-hidden"
+              style={{ boxShadow: theme === 'dark' ? '0 0 12px rgba(219,68,120,0.25)' : '0 0 12px rgba(255,180,0,0.2)' }}
+            >
+              <AnimatePresence mode="wait" initial={false}>
+                {theme === 'dark' ? (
+                  <motion.span
+                    key="moon"
+                    initial={{ rotate: -30, opacity: 0, scale: 0.7 }}
+                    animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                    exit={{ rotate: 30, opacity: 0, scale: 0.7 }}
+                    transition={{ duration: 0.22 }}
+                    className="absolute flex items-center justify-center"
+                  >
+                    <Moon className="w-4 h-4" style={{ color: 'hsl(340 82% 65%)' }} />
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    key="sun"
+                    initial={{ rotate: 30, opacity: 0, scale: 0.7 }}
+                    animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                    exit={{ rotate: -30, opacity: 0, scale: 0.7 }}
+                    transition={{ duration: 0.22 }}
+                    className="absolute flex items-center justify-center"
+                  >
+                    <Sun className="w-4 h-4" style={{ color: 'hsl(42 95% 55%)' }} />
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </motion.button>
+
+            <Link href="/login">
+              <Button variant="outline" size="sm" className="font-semibold text-primary border-primary/30 bg-card rounded-xl shadow-sm h-8 px-4 text-xs">
+                Login
+              </Button>
+            </Link>
+          </div>
         </div>
       </nav>
 

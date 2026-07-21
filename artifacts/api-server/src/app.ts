@@ -25,7 +25,21 @@ app.use(
     },
   }),
 );
-app.use(cors());
+app.use(
+  cors({
+    origin: true, // Reflect the request origin — allows any origin including Android WebView
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Bypass-Tunnel-Reminder",
+      "x-timezone-offset",
+      "x-request-id",
+    ],
+    exposedHeaders: ["Authorization"],
+  }),
+);
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: false, limit: "50mb" }));
 

@@ -32,7 +32,7 @@ export default function ReflectionPage() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col text-foreground font-sans w-full max-w-md mx-auto relative overflow-hidden pb-safe">
-      <div className="flex items-center justify-between px-4 py-4 shrink-0 z-10 sticky top-0 bg-background/80 backdrop-blur-md">
+      <div className="flex items-center justify-between px-4 pt-[calc(1rem+env(safe-area-inset-top,0px))] pb-4 shrink-0 z-10 sticky top-0 bg-background/80 backdrop-blur-md h-[calc(4rem+env(safe-area-inset-top,0px))]">
         <button onClick={() => navigate("/dashboard")} className="p-2 -ml-2 rounded-full hover:bg-card/5 active:scale-95 transition-all">
           <ArrowLeft className="w-6 h-6" />
         </button>

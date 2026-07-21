@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { AppLayout } from "@/components/layout/AppLayout";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAuth } from "@/lib/auth-context";
 import { useToast } from "@/hooks/use-toast";
 import { Link, useLocation } from "wouter";
@@ -28,20 +29,20 @@ export default function SettingsPage() {
   const [profileVisible, setProfileVisible] = useState(true);
   const [notifications, setNotifications] = useState(true);
   const [emailNotifs, setEmailNotifs] = useState(true);
-  const [isLightMode, setIsLightMode] = useState(() => {
-    return user ? localStorage.getItem(`theme_${user.id}`) === 'light' : false;
+  const [theme, setTheme] = useState(() => {
+    return user ? (localStorage.getItem(`theme_${user.id}`) || localStorage.getItem('theme') || 'dark') : (localStorage.getItem('theme') || 'dark');
   });
 
-
   useEffect(() => {
-    if (isLightMode) {
+    document.documentElement.classList.remove('light', 'dark', 'purple');
+    if (theme === 'light') {
       document.documentElement.classList.add('light');
-      document.documentElement.classList.remove('dark');
+    } else if (theme === 'purple') {
+      document.documentElement.classList.add('dark', 'purple');
     } else {
       document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
     }
-  }, [isLightMode]);
+  }, [theme]);
 
   const { data: blocked = [] } = useGetBlockedUsers({
     query: { enabled: true } as any,
@@ -86,14 +87,25 @@ export default function SettingsPage() {
       icon: Settings,
       items: [
         {
-          label: "Light Mode",
-          description: "Toggle light theme on or off",
-          control: <Switch checked={isLightMode} onCheckedChange={(val) => {
-            setIsLightMode(val);
-            if (user) {
-              localStorage.setItem(`theme_${user.id}`, val ? 'light' : 'dark');
-            }
-          }} />,
+          label: "Theme",
+          description: "Select your preferred theme",
+          control: (
+            <Select value={theme} onValueChange={(val) => {
+              setTheme(val);
+              localStorage.setItem('theme', val);
+              if (user) {
+                localStorage.setItem(`theme_${user.id}`, val);
+              }
+            }}>
+              <SelectTrigger className="w-28 h-9 border border-border/40 bg-transparent rounded-xl text-xs">
+                <SelectValue placeholder="Theme" />
+              </SelectTrigger>
+              <SelectContent style={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))" }}>
+                <SelectItem value="dark">Dark</SelectItem>
+                <SelectItem value="light">Light</SelectItem>
+              </SelectContent>
+            </Select>
+          ),
         },
       ],
     },

@@ -7,7 +7,12 @@ export async function generateFullUserProfile(userId: number) {
   const answers = await db.select().from(journeyAnswersTable).where(eq(journeyAnswersTable.userId, userId));
   const questions = await db.select().from(journeyQuestionsTable);
 
-  const qScores: Record<string, number> = {};
+  const qScores: Record<string, number> = {
+    "Connection": 0,
+    "Growth": 0,
+    "Stability": 0,
+    "Exploration": 0
+  };
 
   for (const answer of answers) {
     const question = questions.find(q => q.id === answer.questionId);
@@ -16,54 +21,30 @@ export async function generateFullUserProfile(userId: number) {
       const optionIndex = question.options.findIndex((opt: string) => opt === answerStr || opt.startsWith(answerStr.charAt(0)));
       
       if (optionIndex !== -1) {
-        let optionLetter = 'A';
-        if (optionIndex === 1) optionLetter = 'B';
-        if (optionIndex === 2) optionLetter = 'C';
-        if (optionIndex === 3) optionLetter = 'D';
+        const optionLetter = ['A', 'B', 'C', 'D'][optionIndex] || 'A';
 
-        const category = question.category;
-        const pointsToAdd: Record<string, number> = {};
-
-        // Unified Master Category Mapping
-        if (category === "Personality" || category === "Lifestyle") {
-          if (optionLetter === 'A') { pointsToAdd["Family Values"] = 2; pointsToAdd["Social Engagement"] = 2; pointsToAdd["Kindness & Empathy"] = 1; }
-          else if (optionLetter === 'B') { pointsToAdd["Career Focus"] = 3; pointsToAdd["Personal Growth"] = 2; }
-          else if (optionLetter === 'C') { pointsToAdd["Emotional Wellbeing"] = 3; pointsToAdd["Relationship Commitment"] = 2; }
-          else if (optionLetter === 'D') { pointsToAdd["Adventure & Travel"] = 3; pointsToAdd["Health & Lifestyle"] = 1; }
-        } else if (category === "Family Values") {
-          if (optionLetter === 'A') { pointsToAdd["Family Values"] = 3; pointsToAdd["Kindness & Empathy"] = 2; }
-          else if (optionLetter === 'B') { pointsToAdd["Personal Growth"] = 3; pointsToAdd["Communication Style"] = 1; }
-          else if (optionLetter === 'C') { pointsToAdd["Relationship Commitment"] = 3; pointsToAdd["Family Values"] = 1; }
-          else if (optionLetter === 'D') { pointsToAdd["Health & Lifestyle"] = 2; pointsToAdd["Adventure & Travel"] = 1; }
-        } else if (category === "Career Goals" || category === "Career") {
-          if (optionLetter === 'A') { pointsToAdd["Social Engagement"] = 2; pointsToAdd["Kindness & Empathy"] = 2; }
-          else if (optionLetter === 'B') { pointsToAdd["Career Focus"] = 4; pointsToAdd["Personal Growth"] = 1; }
-          else if (optionLetter === 'C') { pointsToAdd["Emotional Wellbeing"] = 2; pointsToAdd["Relationship Commitment"] = 1; }
-          else if (optionLetter === 'D') { pointsToAdd["Personal Growth"] = 3; pointsToAdd["Adventure & Travel"] = 1; }
-        } else if (category === "Communication Style" || category === "Communication") {
-          if (optionLetter === 'A') { pointsToAdd["Communication Style"] = 3; pointsToAdd["Kindness & Empathy"] = 2; }
-          else if (optionLetter === 'B') { pointsToAdd["Communication Style"] = 2; pointsToAdd["Health & Lifestyle"] = 2; }
-          else if (optionLetter === 'C') { pointsToAdd["Emotional Wellbeing"] = 3; pointsToAdd["Communication Style"] = 1; }
-          else if (optionLetter === 'D') { pointsToAdd["Personal Growth"] = 2; pointsToAdd["Social Engagement"] = 1; }
-        } else if (category === "Relationship Goals" || category === "Relationship") {
-          if (optionLetter === 'A') { pointsToAdd["Relationship Commitment"] = 3; pointsToAdd["Emotional Wellbeing"] = 2; }
-          else if (optionLetter === 'B') { pointsToAdd["Personal Growth"] = 3; pointsToAdd["Career Focus"] = 1; }
-          else if (optionLetter === 'C') { pointsToAdd["Relationship Commitment"] = 4; pointsToAdd["Family Values"] = 1; }
-          else if (optionLetter === 'D') { pointsToAdd["Adventure & Travel"] = 3; pointsToAdd["Social Engagement"] = 1; }
-        } else {
-          // Fallback
-          if (optionLetter === 'A') { pointsToAdd["Social Engagement"] = 2; }
-          else if (optionLetter === 'B') { pointsToAdd["Personal Growth"] = 2; }
-          else if (optionLetter === 'C') { pointsToAdd["Emotional Wellbeing"] = 2; }
-          else if (optionLetter === 'D') { pointsToAdd["Adventure & Travel"] = 2; }
-        }
-
-        for (const [cat, pts] of Object.entries(pointsToAdd)) {
-          qScores[cat] = (qScores[cat] || 0) + pts;
-        }
+        if (optionLetter === 'A') qScores["Connection"] += 10;
+        else if (optionLetter === 'B') qScores["Growth"] += 10;
+        else if (optionLetter === 'C') qScores["Stability"] += 10;
+        else if (optionLetter === 'D') qScores["Exploration"] += 10;
       }
     }
   }
+
+  // Populate sub-categories for backward compatibility
+  qScores["Family Values"] = qScores["Connection"];
+  qScores["Social Engagement"] = qScores["Connection"];
+  qScores["Kindness & Empathy"] = qScores["Connection"];
+  qScores["Relationship Commitment"] = qScores["Connection"];
+
+  qScores["Career Focus"] = qScores["Growth"];
+  qScores["Personal Growth"] = qScores["Growth"];
+
+  qScores["Emotional Wellbeing"] = qScores["Stability"];
+  qScores["Communication Style"] = qScores["Stability"];
+
+  qScores["Adventure & Travel"] = qScores["Exploration"];
+  qScores["Health & Lifestyle"] = qScores["Exploration"];
 
   // 2. Fetch all journals for story analysis
   const journals = await db.select().from(dailyJournalsTable).where(eq(dailyJournalsTable.userId, userId));
@@ -79,7 +60,43 @@ export async function generateFullUserProfile(userId: number) {
   const unifiedScores = calculateUnifiedScores(qScores, sScores);
   const summary = generateProfileInsights(unifiedScores);
   const legacyTraits = convertUnifiedToLegacyTraits(unifiedScores);
-  
+
+  const connectionTrait = legacyTraits.find((t: any) => t.trait === "Connection")?.score || 0;
+  const stabilityTrait = legacyTraits.find((t: any) => t.trait === "Stability")?.score || 0;
+  const growthTrait = legacyTraits.find((t: any) => t.trait === "Growth")?.score || 0;
+  const explorationTrait = legacyTraits.find((t: any) => t.trait === "Exploration")?.score || 0;
+  const overallScore = Math.max(connectionTrait, stabilityTrait, growthTrait, explorationTrait);
+
+  console.log(`\n========================================`);
+  console.log(`=== PERSONALITY CALCULATION DEBUG (User ${userId}) ===`);
+  for (let i = 0; i < answers.length; i++) {
+    const answer = answers[i];
+    const question = questions.find(q => q.id === answer.questionId);
+    if (question && question.options) {
+      const answerStr = String(answer.answer);
+      const optionIndex = question.options.findIndex((opt: string) => opt === answerStr || opt.startsWith(answerStr.charAt(0)));
+      if (optionIndex !== -1) {
+        const optionLetter = ['A', 'B', 'C', 'D'][optionIndex] || 'A';
+        const traitName = optionLetter === 'A' ? 'Connection' : optionLetter === 'B' ? 'Growth' : optionLetter === 'C' ? 'Stability' : 'Exploration';
+        console.log(`Question ${i + 1} → Option ${optionLetter} → ${traitName} +10`);
+      }
+    }
+  }
+
+  console.log(`\nRaw Trait Scores:`);
+  console.log(`Connection = ${qScores["Connection"]}`);
+  console.log(`Growth = ${qScores["Growth"]}`);
+  console.log(`Stability = ${qScores["Stability"]}`);
+  console.log(`Exploration = ${qScores["Exploration"]}`);
+
+  console.log(`\nFinal Percentages:`);
+  console.log(`Connection = ${connectionTrait}%`);
+  console.log(`Growth = ${growthTrait}%`);
+  console.log(`Stability = ${stabilityTrait}%`);
+  console.log(`Exploration = ${explorationTrait}%`);
+  console.log(`Overall = ${overallScore}%`);
+  console.log(`========================================\n`);
+
   let dominantType = "Balanced";
   let maxScore = -1;
   for (const cat of UNIFIED_CATEGORIES) {
@@ -90,15 +107,10 @@ export async function generateFullUserProfile(userId: number) {
   }
 
   // 4. INJECT Legacy Traits directly into qScores so the engine reads them correctly!
-  const connectionTrait = legacyTraits.find((t: any) => t.trait === "Connection");
-  const stabilityTrait = legacyTraits.find((t: any) => t.trait === "Stability");
-  const growthTrait = legacyTraits.find((t: any) => t.trait === "Growth");
-  const explorationTrait = legacyTraits.find((t: any) => t.trait === "Exploration");
-
-  if (connectionTrait) qScores["Connection"] = connectionTrait.score;
-  if (stabilityTrait) qScores["Stability"] = stabilityTrait.score;
-  if (growthTrait) qScores["Growth"] = growthTrait.score;
-  if (explorationTrait) qScores["Exploration"] = explorationTrait.score;
+  if (connectionTrait !== undefined) qScores["Connection"] = connectionTrait;
+  if (stabilityTrait !== undefined) qScores["Stability"] = stabilityTrait;
+  if (growthTrait !== undefined) qScores["Growth"] = growthTrait;
+  if (explorationTrait !== undefined) qScores["Exploration"] = explorationTrait;
 
   // 5. Save to DB
   let profile = await db.query.personalityProfilesTable.findFirst({

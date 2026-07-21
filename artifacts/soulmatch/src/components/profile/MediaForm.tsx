@@ -21,6 +21,9 @@ export function MediaForm({ p, onSave, onCancel, hasPrevious, isPending }: any) 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
 
+  const [uploadingIndex, setUploadingIndex] = useState<number | null>(null);
+  const [isUploadingVideo, setIsUploadingVideo] = useState(false);
+
   const handleDeletePhoto = (photoId: number, e: React.MouseEvent) => {
     e.stopPropagation();
     deletePhoto.mutate(
@@ -39,17 +42,36 @@ export function MediaForm({ p, onSave, onCancel, hasPrevious, isPending }: any) 
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (file.size > 15 * 1024 * 1024) {
+      toast({ title: "Video too large", description: "Please select a short video under 15MB.", variant: "destructive" });
+      return;
+    }
+
+    setIsUploadingVideo(true);
     const reader = new FileReader();
     reader.onloadend = () => {
       const base64String = reader.result as string;
       onSave({ videoIntroUrl: base64String }, false);
+      setIsUploadingVideo(false);
+      toast({ title: "Video uploaded successfully" });
+    };
+    reader.onerror = () => {
+      setIsUploadingVideo(false);
+      toast({ title: "Failed to read video file", variant: "destructive" });
     };
     reader.readAsDataURL(file);
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>, targetIndex?: number) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast({ title: "Image too large", description: "Please select an image under 10MB.", variant: "destructive" });
+      return;
+    }
+
+    if (targetIndex !== undefined) setUploadingIndex(targetIndex);
 
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -66,9 +88,11 @@ export function MediaForm({ p, onSave, onCancel, hasPrevious, isPending }: any) 
           onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: getGetMeQueryKey() });
             toast({ title: "Photo uploaded successfully" });
+            setUploadingIndex(null);
           },
           onError: (err: any) => {
             toast({ title: "Failed to upload photo", description: err.message, variant: "destructive" });
+            setUploadingIndex(null);
           }
         }
       );
@@ -90,32 +114,48 @@ export function MediaForm({ p, onSave, onCancel, hasPrevious, isPending }: any) 
             type="file" 
             accept="image/*" 
             ref={fileInputRef} 
-            onChange={handleFileUpload} 
+            onChange={(e) => handleFileUpload(e, uploadingIndex ?? undefined)} 
             className="hidden" 
           />
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {[0, 1, 2, 3, 4, 5].map((index) => {
               const photo = p?.photos?.[index];
+              const isThisUploading = uploadPhoto.isPending && uploadingIndex === index;
               return (
                 <div 
                   key={index} 
                   className="aspect-[3/4] rounded-2xl bg-background border border-border flex items-center justify-center relative overflow-hidden group cursor-pointer hover:bg-white/10 transition-colors" 
-                  onClick={() => !photo && fileInputRef.current?.click()}
+                  onClick={() => {
+                    if (!photo && !uploadPhoto.isPending) {
+                      setUploadingIndex(index);
+                      fileInputRef.current?.click();
+                    }
+                  }}
                 >
                   {photo ? (
                     <>
                       <img src={photo.url} alt={`Gallery ${index}`} className="w-full h-full object-cover" />
-                      <div 
-                        className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
-                        onClick={(e) => handleDeletePhoto(photo.id, e)}
+                      {/* Top-Right Delete Cross Icon (Always visible for touch & desktop) */}
+                      <button 
+                        type="button"
+                        aria-label="Delete photo"
+                        className="absolute top-2 right-2 p-1.5 bg-black/75 hover:bg-red-600 rounded-full text-white transition-colors z-20 shadow-md flex items-center justify-center cursor-pointer border border-white/20"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (window.confirm("Are you sure you want to delete this photo?")) {
+                            handleDeletePhoto(photo.id, e);
+                          }
+                        }}
                       >
-                        <X className="w-8 h-8 text-white border-0" />
-                      </div>
+                        <X className="w-4 h-4 text-white" />
+                      </button>
                     </>
                   ) : (
-                    <div className="text-center">
+                    <div className="text-center p-2">
                       <Upload className="w-6 h-6 mx-auto mb-2 text-muted-foreground" />
-                      <span className="text-xs text-muted-foreground">{uploadPhoto.isPending ? "Uploading..." : "Upload"}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {isThisUploading ? "Uploading..." : "Upload"}
+                      </span>
                     </div>
                   )}
                 </div>
@@ -129,16 +169,21 @@ export function MediaForm({ p, onSave, onCancel, hasPrevious, isPending }: any) 
           
           <input 
             type="file" 
-            accept="video/*" 
+            accept="video/mp4,video/webm,video/ogg,video/quicktime,video/*" 
             ref={videoInputRef} 
             onChange={handleVideoUpload} 
             className="hidden" 
           />
           <div 
             className="w-full h-48 rounded-2xl bg-background border border-border border-dashed flex items-center justify-center cursor-pointer hover:bg-white/10 transition-colors relative overflow-hidden group"
-            onClick={() => videoInputRef.current?.click()}
+            onClick={() => !isUploadingVideo && videoInputRef.current?.click()}
           >
-            {p?.videoIntroUrl ? (
+            {isUploadingVideo ? (
+              <div className="text-center">
+                <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+                <p className="text-sm font-medium">Uploading video...</p>
+              </div>
+            ) : p?.videoIntroUrl ? (
               <>
                 <video src={p.videoIntroUrl} className="absolute inset-0 w-full h-full object-cover opacity-50" />
                 <div className="relative z-10 flex flex-col items-center pointer-events-none">
@@ -146,12 +191,17 @@ export function MediaForm({ p, onSave, onCancel, hasPrevious, isPending }: any) 
                   <p className="font-medium text-sm text-green-400">Video Uploaded</p>
                   <p className="text-xs text-green-400/70">Click to replace</p>
                 </div>
+                {/* Delete button for Video Intro */}
                 <button 
                   type="button"
-                  className="absolute top-3 right-3 p-2 bg-black/50 hover:bg-black/70 rounded-full text-white transition-colors z-20 shadow-lg"
+                  aria-label="Delete video"
+                  className="absolute top-3 right-3 p-2 bg-black/75 hover:bg-red-600 rounded-full text-white transition-colors z-20 shadow-lg border border-white/20"
                   onClick={(e) => {
                     e.stopPropagation();
-                    onSave({ videoIntroUrl: null }, false);
+                    if (window.confirm("Are you sure you want to delete your video intro?")) {
+                      onSave({ videoIntroUrl: null }, false);
+                      toast({ title: "Video intro deleted" });
+                    }
                   }}
                 >
                   <X className="w-5 h-5" />
@@ -161,7 +211,7 @@ export function MediaForm({ p, onSave, onCancel, hasPrevious, isPending }: any) 
               <div className="text-center max-w-sm px-4">
                 <PlayCircle className="w-8 h-8 mx-auto mb-3 text-muted-foreground" />
                 <p className="text-sm font-medium mb-1">Record or upload a short intro</p>
-                <p className="text-xs text-muted-foreground">Up to 30 seconds. This helps matches hear your voice and see your personality.</p>
+                <p className="text-xs text-muted-foreground">Up to 30 seconds (max 15MB). This helps matches hear your voice and see your personality.</p>
               </div>
             )}
           </div>
