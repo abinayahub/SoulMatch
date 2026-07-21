@@ -16,17 +16,17 @@ if (Number.isNaN(port) || port <= 0) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);
 }
 
-seedJourneyQuestions(false)
-  .catch((err) => {
-    logger.warn({ err }, "Warning: Journey questions seed skipped due to error");
-  })
-  .finally(() => {
-    app.listen(port, "0.0.0.0", (err) => {
-      if (err) {
-        logger.error({ err }, "Error listening on port");
-        process.exit(1);
-      }
+// 1. Immediately bind app.listen so Render health check passes instantly!
+app.listen(port, "0.0.0.0", (err) => {
+  if (err) {
+    logger.error({ err }, "Error listening on port");
+    process.exit(1);
+  }
 
-      logger.info({ port }, "Server listening on 0.0.0.0");
-    });
+  logger.info({ port }, `Server listening on 0.0.0.0:${port}`);
+
+  // 2. Run background seeding asynchronously after port is bound
+  seedJourneyQuestions(false).catch((seedErr) => {
+    logger.warn({ seedErr }, "Non-fatal background seed warning");
   });
+});

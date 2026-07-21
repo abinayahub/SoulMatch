@@ -10,24 +10,9 @@ export async function seedJourneyQuestions(force = false) {
       return;
     }
 
-    console.log('[SEED] Seeding journey questions safely...');
-
-    for (const q of (questions as any[])) {
-      const qExisting = await db.select().from(journeyQuestionsTable).where(eq(journeyQuestionsTable.id, q.id)).limit(1);
-      if (qExisting.length === 0) {
-        await db.insert(journeyQuestionsTable).values(q);
-      } else {
-        await db.update(journeyQuestionsTable).set({
-          day: q.day,
-          category: q.category,
-          question: q.question,
-          options: q.options,
-          questionType: q.questionType,
-          isActive: q.isActive ?? true
-        }).where(eq(journeyQuestionsTable.id, q.id));
-      }
-    }
-    console.log(`[SEED] Upserted ${questions.length} questions successfully!`);
+    console.log('[SEED] Seeding journey questions in bulk...');
+    await db.insert(journeyQuestionsTable).values(questions as any).onConflictDoNothing();
+    console.log(`[SEED] Bulk seeded ${questions.length} questions successfully!`);
   } catch (err) {
     console.error('[SEED] Warning: Non-fatal error during journey questions seed:', err);
   }
