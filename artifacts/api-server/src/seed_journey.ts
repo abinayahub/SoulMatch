@@ -1,27 +1,35 @@
 import { db, journeyQuestionsTable } from '@workspace/db';
+import { eq } from 'drizzle-orm';
 import questions from './parsed_questions.json';
 
 export async function seedJourneyQuestions(force = false) {
   try {
-    if (!force) {
-      const existing = await db.select().from(journeyQuestionsTable).limit(1);
-      if (existing.length > 0) {
-        console.log('[SEED] Journey questions already exist. Skipping seed.');
-        return;
-      }
+    const existing = await db.select().from(journeyQuestionsTable).limit(1);
+    if (existing.length > 0 && !force) {
+      console.log('[SEED] Journey questions already exist. Skipping seed.');
+      return;
     }
 
-    console.log('[SEED] Seeding journey questions...');
-    
-    // Delete existing questions if forcing or if empty
-    await db.delete(journeyQuestionsTable);
-    console.log('[SEED] Cleared existing questions.');
+    console.log('[SEED] Seeding journey questions safely...');
 
-    // Insert new questions
-    await db.insert(journeyQuestionsTable).values(questions as any);
-    console.log(`[SEED] Inserted ${questions.length} new questions successfully!`);
+    for (const q of (questions as any[])) {
+      const qExisting = await db.select().from(journeyQuestionsTable).where(eq(journeyQuestionsTable.id, q.id)).limit(1);
+      if (qExisting.length === 0) {
+        await db.insert(journeyQuestionsTable).values(q);
+      } else {
+        await db.update(journeyQuestionsTable).set({
+          day: q.day,
+          category: q.category,
+          question: q.question,
+          options: q.options,
+          questionType: q.questionType,
+          isActive: q.isActive ?? true
+        }).where(eq(journeyQuestionsTable.id, q.id));
+      }
+    }
+    console.log(`[SEED] Upserted ${questions.length} questions successfully!`);
   } catch (err) {
-    console.error('[SEED] Error seeding questions:', err);
+    console.error('[SEED] Warning: Non-fatal error during journey questions seed:', err);
   }
 }
 

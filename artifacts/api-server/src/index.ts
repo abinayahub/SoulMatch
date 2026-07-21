@@ -17,7 +17,10 @@ if (Number.isNaN(port) || port <= 0) {
 }
 
 seedJourneyQuestions(false)
-  .then(() => {
+  .catch((err) => {
+    logger.warn({ err }, "Warning: Journey questions seed skipped due to error");
+  })
+  .finally(() => {
     app.listen(port, "0.0.0.0", (err) => {
       if (err) {
         logger.error({ err }, "Error listening on port");
@@ -26,8 +29,4 @@ seedJourneyQuestions(false)
 
       logger.info({ port }, "Server listening on 0.0.0.0");
     });
-  })
-  .catch((err) => {
-    logger.error({ err }, "Server initialization failed");
-    process.exit(1);
   });
