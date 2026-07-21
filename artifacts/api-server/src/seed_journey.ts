@@ -1,5 +1,4 @@
 import { db, journeyQuestionsTable } from '@workspace/db';
-import { eq } from 'drizzle-orm';
 import questions from './parsed_questions.json';
 
 export async function seedJourneyQuestions(force = false) {
@@ -16,10 +15,4 @@ export async function seedJourneyQuestions(force = false) {
   } catch (err) {
     console.error('[SEED] Warning: Non-fatal error during journey questions seed:', err);
   }
-}
-
-// Support running directly as script
-const isMain = import.meta.url === `file://${process.argv[1]}` || process.argv[1]?.endsWith('seed_journey.ts') || process.argv[1]?.endsWith('seed_journey.mjs');
-if (isMain) {
-  seedJourneyQuestions(true).then(() => process.exit(0)).catch(() => process.exit(1));
 }
