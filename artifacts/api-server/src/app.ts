@@ -43,6 +43,14 @@ app.use(
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: false, limit: "50mb" }));
 
+// Render & Load Balancer Health Check Endpoints
+app.get(["/", "/health", "/api/health"], (_req, res) => {
+  res.status(200).json({ status: "ok", service: "soulmatch-api" });
+});
+app.head(["/", "/health", "/api/health"], (_req, res) => {
+  res.status(200).end();
+});
+
 app.use("/api", router);
 
 export default app;
