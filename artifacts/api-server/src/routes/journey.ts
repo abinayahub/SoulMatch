@@ -153,6 +153,7 @@ router.get("/progress", authenticate, async (req: AuthRequest, res) => {
     // Enforce timezone-aware calendar lockout based on client offset
     const tzOffsetHeader = req.headers['x-timezone-offset'];
     const timezoneOffset = tzOffsetHeader ? parseInt(tzOffsetHeader as string, 10) : 0;
+    const isTestMode = req.headers['x-test-mode'] === 'true';
     const lockStatus = getJourneyLockStatus(answeredQuestions, lastAnswer, timezoneOffset);
     const unlockedAt = lockStatus.unlockedAt;
 
