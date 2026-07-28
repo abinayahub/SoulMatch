@@ -74,9 +74,9 @@ export function MatchCard({
           {/* Top Info */}
           <div className="flex justify-between items-start mb-auto">
             {score > 0 && (
-              <div className="bg-pink-500/20 border border-pink-500/30 rounded-lg px-2 py-1 shadow-[0_0_15px_rgba(236,72,153,0.3)]">
-                <span className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-pink-200 block leading-none">{score}%</span>
-                <span className="text-[10px] text-pink-300 font-medium">Match Potential</span>
+              <div className="bg-[#F6A8B7]/20 border border-[#F6A8B7]/30 rounded-lg px-2 py-1 shadow-[0_0_15px_rgba(236,72,153,0.3)]">
+                <span className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#F6A8B7] to-[#FAC985] block leading-none">{score}%</span>
+                <span className="text-[10px] text-[#F5B75C] font-medium">Match Potential</span>
               </div>
             )}
             
@@ -93,7 +93,7 @@ export function MatchCard({
           {/* Traits List */}
           <div className="space-y-3 mb-6">
             <div className="flex items-center gap-3 bg-white/5 rounded-lg p-2 border border-white/5">
-              <Heart className="w-4 h-4 text-pink-400" fill="currentColor" />
+              <Heart className="w-4 h-4 text-[#F6A8B7]" fill="currentColor" />
               <span className="text-sm text-slate-200 font-medium">Compatibility Potential</span>
             </div>
             <div className="flex items-center gap-3 bg-white/5 rounded-lg p-2 border border-white/5">
@@ -184,13 +184,13 @@ export function MatchCard({
       <div className="p-4">
         <div className="flex flex-wrap gap-1.5 mb-3">
           {profile.occupation && (
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+            <div className="flex items-center gap-1 text-xs text-[#707070]">
               <Briefcase className="w-3 h-3" />
               <span>{profile.occupation}</span>
             </div>
           )}
           {profile.education && (
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+            <div className="flex items-center gap-1 text-xs text-[#707070]">
               <GraduationCap className="w-3 h-3" />
               <span className="truncate max-w-[120px]">{profile.education}</span>
             </div>
@@ -199,9 +199,9 @@ export function MatchCard({
 
         <div className="flex flex-wrap items-center gap-2 mb-3">
           {profile.valueMatchScore !== undefined && (
-            <div className="flex items-center gap-1 bg-pink-500/10 border border-pink-500/20 px-2 py-0.5 rounded-full">
-              <Star className="w-3 h-3 text-pink-500" fill="currentColor" />
-              <span className="text-xs text-pink-500 font-medium">{profile.valueMatchScore}% Value Match</span>
+            <div className="flex items-center gap-1 bg-[#F6A8B7]/10 border border-[#F6A8B7]/20 px-2 py-0.5 rounded-full">
+              <Star className="w-3 h-3 text-[#F6A8B7]" fill="currentColor" />
+              <span className="text-xs text-[#F6A8B7] font-medium">{profile.valueMatchScore}% Value Match</span>
             </div>
           )}
           {profile.commonInterestsCount !== undefined && profile.commonInterestsCount > 0 && (
@@ -223,14 +223,14 @@ export function MatchCard({
         )}
 
         {aiInsight && (
-          <p className="text-xs text-muted-foreground line-clamp-2 mb-3 italic">"{aiInsight}"</p>
+          <p className="text-xs text-[#707070] line-clamp-2 mb-3 italic">"{aiInsight}"</p>
         )}
 
         {profile.interestSentByViewer ? (
           <Button
             size="sm"
             variant="outline"
-            className="w-full border-border text-muted-foreground bg-foreground/5 cursor-not-allowed"
+            className="w-full border-border text-[#707070] bg-foreground/5 cursor-not-allowed"
             disabled
           >
             <CheckCircle2 className="w-3.5 h-3.5 mr-1.5" />

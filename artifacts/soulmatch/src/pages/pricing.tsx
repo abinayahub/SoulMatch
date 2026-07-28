@@ -38,19 +38,20 @@ export default function PricingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background relative pb-20">
+    <div className="w-full min-h-screen relative flex flex-col font-sans relative pb-20" style={{ background: 'linear-gradient(135deg, #F8F3F7 0%, #FAF1ED 100%)' }}>
+      <div className="absolute inset-0 opacity-40 pointer-events-none" style={{ background: 'radial-gradient(circle at 0% 0%, #F4F1FF 0%, transparent 50%), radial-gradient(circle at 100% 100%, #FFFDFC 0%, transparent 50%)' }} />
       <div className="max-w-md mx-auto px-5 py-6 relative z-10">
         
         {/* Mobile Header */}
         <div className="flex items-center justify-between mb-8">
-          <button onClick={() => window.history.back()} className="w-10 h-10 rounded-full bg-foreground/5 flex items-center justify-center text-foreground hover:bg-foreground/10 transition-colors">
+          <button onClick={() => window.history.back()} className="w-10 h-10 rounded-full bg-foreground/5 flex items-center justify-center text-[#252525] hover:bg-foreground/10 transition-colors">
             <ChevronLeft className="w-5 h-5" />
           </button>
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground shadow-md flex items-center justify-center">
                <Heart className="w-4 h-4 text-white" />
             </div>
-            <span className="font-extrabold text-foreground tracking-tight text-lg">SoulMatch</span>
+            <span className="font-extrabold text-[#252525] tracking-tight text-lg">SoulMatch</span>
           </div>
           <div className="w-10 h-10" /> {/* Spacer for centering */}
         </div>
@@ -59,8 +60,8 @@ export default function PricingPage() {
           <div className="w-16 h-16 rounded-full bg-accent/10 mx-auto flex items-center justify-center mb-4">
              <Crown className="w-8 h-8 text-accent" />
           </div>
-          <h1 className="text-[28px] font-extrabold mb-3 leading-tight text-foreground">Upgrade to <span className="text-primary">Premium</span></h1>
-          <p className="text-muted-foreground text-[15px] max-w-[280px] mx-auto font-medium">Invest in finding the one. Cancel anytime.</p>
+          <h1 className="text-[28px] font-extrabold mb-3 leading-tight text-[#252525]">Upgrade to <span className="text-primary">Premium</span></h1>
+          <p className="text-[#707070] text-[15px] max-w-[280px] mx-auto font-medium">Invest in finding the one. Cancel anytime.</p>
         </motion.div>
 
         {isLoading ? (
@@ -82,10 +83,10 @@ export default function PricingPage() {
                     <Badge className="bg-primary text-primary-foreground shadow-md border-0 text-white px-4 py-1 font-bold text-[11px] uppercase tracking-wider rounded-full">Most Popular</Badge>
                   </div>
                 )}
-                <h3 className="font-extrabold text-[22px] mb-2 text-foreground text-center">{plan.name}</h3>
+                <h3 className="font-extrabold text-[22px] mb-2 text-[#252525] text-center">{plan.name}</h3>
                 <div className="mb-6 text-center">
                   <span className="text-[40px] font-extrabold text-primary tracking-tight">${plan.price}</span>
-                  <span className="text-muted-foreground font-bold ml-1 text-[15px]">/{plan.interval}</span>
+                  <span className="text-[#707070] font-bold ml-1 text-[15px]">/{plan.interval}</span>
                 </div>
                 <div className="space-y-3.5 mb-8">
                   {plan.features?.map((f: string) => (
@@ -93,7 +94,7 @@ export default function PricingPage() {
                       <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
                          <Check className="w-3.5 h-3.5 text-primary" />
                       </div>
-                      <span className="text-[14px] font-medium text-foreground leading-snug">{f}</span>
+                      <span className="text-[14px] font-medium text-[#252525] leading-snug">{f}</span>
                     </div>
                   ))}
                 </div>
@@ -101,14 +102,14 @@ export default function PricingPage() {
                   <Button 
                     onClick={() => handleSubscribe(plan.id)}
                     disabled={checkout.isPending || user?.isPremium}
-                    className={`w-full h-14 rounded-2xl font-bold text-[16px] transition-all ${plan.isPopular ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25 border-0 text-white" : "bg-foreground/5 hover:bg-foreground/10 text-foreground"}`}
+                    className={`w-full h-14 rounded-2xl font-bold text-[16px] transition-all ${plan.isPopular ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25 border-0 text-white" : "bg-foreground/5 hover:bg-foreground/10 text-[#252525]"}`}
                   >
                     {user?.isPremium ? "Already Subscribed" : "Subscribe Now"} {(!user?.isPremium) && <ArrowRight className="w-5 h-5 ml-2" />}
                   </Button>
                 ) : (
                   <Button 
                     onClick={() => navigate('/register')}
-                    className={`w-full h-14 rounded-2xl font-bold text-[16px] transition-all ${plan.isPopular ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25 border-0 text-white" : "bg-foreground/5 hover:bg-foreground/10 text-foreground"}`}
+                    className={`w-full h-14 rounded-2xl font-bold text-[16px] transition-all ${plan.isPopular ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25 border-0 text-white" : "bg-foreground/5 hover:bg-foreground/10 text-[#252525]"}`}
                   >
                     Get Started <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { db } from "@workspace/db";
 import { usersTable, photosTable, blockedUsersTable, personalityProfilesTable, interestsTable, compatibilityScoresTable, dailyJournalsTable } from "@workspace/db";
-import { ne, eq, not, inArray, and, or } from "drizzle-orm";
+import { ne, eq, not, inArray, and, or, gt } from "drizzle-orm";
 import { authenticate, type AuthRequest } from "../lib/auth";
 import { buildPublicProfile, calculateAge, calculateAndStoreCompatibility, parseInterests } from "../lib/helpers";
 import { extractStoryInterests } from "../services/keywordAnalysis";
@@ -71,7 +71,10 @@ router.get("/", authenticate, async (req: AuthRequest, res) => {
 
     const oppositeGender = currentUser.gender === "male" ? "female" : currentUser.gender === "female" ? "male" : null;
 
-    const whereConditions: any[] = [ne(usersTable.id, req.user!.userId)];
+    const whereConditions: any[] = [
+      ne(usersTable.id, req.user!.userId),
+      gt(usersTable.createdAt, new Date(Date.now() - 7 * 24 * 60 * 60 * 1000))
+    ];
     if (oppositeGender) {
       whereConditions.push(eq(usersTable.gender, oppositeGender));
     }

@@ -19,10 +19,10 @@ function authHeaders() {
 }
 
 const roleColors: Record<string, string> = {
-  user: "bg-card/10 text-muted-foreground",
+  user: "bg-card/10 text-[#707070]",
   premium: "bg-accent/20 text-accent border-accent/30",
   admin: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  superadmin: "bg-purple-500/20 text-purple-400 border-purple-500/30",
+  superadmin: "bg-[#F6A8B7]/20 text-[#F6A8B7] border-[#F6A8B7]/30",
 };
 const statusColors: Record<string, string> = {
   active: "bg-green-500/20 text-green-400 border-green-500/30",
@@ -51,13 +51,13 @@ export default function AdminUsersPage() {
             <h1 className="text-3xl font-bold flex items-center gap-3 mb-1">
               <Users className="w-7 h-7 text-primary" />User Management
             </h1>
-            <p className="text-muted-foreground">{(data as any)?.total ?? 0} total users</p>
+            <p className="text-[#707070]">{(data as any)?.total ?? 0} total users</p>
           </div>
         </motion.div>
 
         {/* Search */}
         <div className="relative mb-6 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Search className="absolute z-10 left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#707070]" />
           <Input
             placeholder="Search by name or email..."
             value={search}
@@ -73,7 +73,7 @@ export default function AdminUsersPage() {
               {[...Array(8)].map((_, i) => <Skeleton key={i} className="h-14 rounded-xl bg-card/5" />)}
             </div>
           ) : users.length === 0 ? (
-            <div className="text-center py-16 text-muted-foreground">
+            <div className="text-center py-16 text-[#707070]">
               <Users className="w-10 h-10 mx-auto mb-3 opacity-30" />
               <p>No users found</p>
             </div>
@@ -82,12 +82,12 @@ export default function AdminUsersPage() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-white/10">
-                    <th className="text-left text-xs text-muted-foreground font-medium px-4 py-3">User</th>
-                    <th className="text-left text-xs text-muted-foreground font-medium px-4 py-3">Role</th>
-                    <th className="text-left text-xs text-muted-foreground font-medium px-4 py-3">Status</th>
-                    <th className="text-left text-xs text-muted-foreground font-medium px-4 py-3">Verification</th>
-                    <th className="text-left text-xs text-muted-foreground font-medium px-4 py-3">Journey</th>
-                    <th className="text-left text-xs text-muted-foreground font-medium px-4 py-3">Joined</th>
+                    <th className="text-left text-xs text-[#707070] font-medium px-4 py-3">User</th>
+                    <th className="text-left text-xs text-[#707070] font-medium px-4 py-3">Role</th>
+                    <th className="text-left text-xs text-[#707070] font-medium px-4 py-3">Status</th>
+                    <th className="text-left text-xs text-[#707070] font-medium px-4 py-3">Verification</th>
+                    <th className="text-left text-xs text-[#707070] font-medium px-4 py-3">Journey</th>
+                    <th className="text-left text-xs text-[#707070] font-medium px-4 py-3">Joined</th>
                     <th className="px-4 py-3" />
                   </tr>
                 </thead>
@@ -110,7 +110,7 @@ export default function AdminUsersPage() {
                           </Avatar>
                           <div>
                             <p className="text-sm font-medium">{u.firstName} {u.lastName}</p>
-                            <p className="text-xs text-muted-foreground">{u.email}</p>
+                            <p className="text-xs text-[#707070]">{u.email}</p>
                           </div>
                         </div>
                       </td>
@@ -121,16 +121,16 @@ export default function AdminUsersPage() {
                         <Badge className={`text-xs border ${statusColors[u.status] ?? ""}`}>{u.status}</Badge>
                       </td>
                       <td className="px-4 py-3">
-                        <span className="text-xs text-muted-foreground capitalize">{u.verificationStatus}</span>
+                        <span className="text-xs text-[#707070] capitalize">{u.verificationStatus}</span>
                       </td>
                       <td className="px-4 py-3">
-                        <span className="text-xs text-muted-foreground">{u.journeyProgress}/30</span>
+                        <span className="text-xs text-[#707070]">{u.journeyProgress}/30</span>
                       </td>
                       <td className="px-4 py-3">
-                        <span className="text-xs text-muted-foreground">{formatDate(u.createdAt)}</span>
+                        <span className="text-xs text-[#707070]">{formatDate(u.createdAt)}</span>
                       </td>
                       <td className="px-4 py-3">
-                        <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                        <ChevronRight className="w-4 h-4 text-[#707070]" />
                       </td>
                     </motion.tr>
                   ))}
@@ -144,7 +144,7 @@ export default function AdminUsersPage() {
         {totalPages > 1 && (
           <div className="flex justify-center gap-2 mt-6">
             <Button variant="outline" disabled={page === 1} onClick={() => setPage(p => p - 1)} className="border-white/20 bg-card/5">Previous</Button>
-            <span className="flex items-center text-sm text-muted-foreground px-4">Page {page} of {totalPages}</span>
+            <span className="flex items-center text-sm text-[#707070] px-4">Page {page} of {totalPages}</span>
             <Button variant="outline" disabled={page >= totalPages} onClick={() => setPage(p => p + 1)} className="border-white/20 bg-card/5">Next</Button>
           </div>
         )}

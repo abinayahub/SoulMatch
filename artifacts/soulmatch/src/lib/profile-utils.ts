@@ -7,7 +7,8 @@ export const MANDATORY_FIELDS = [
   { key: "bio", label: "About You", section: "personal" },
   { key: "education", label: "Education", section: "professional" },
   { key: "occupation", label: "Profession", section: "professional" },
-  { key: "country", label: "Location", section: "location" }
+  { key: "country", label: "Location", section: "location" },
+  { key: "isSelfieVerified", label: "Selfie Verification", section: "verification" }
 ];
 
 export function getMandatoryCompletion(p: any) {

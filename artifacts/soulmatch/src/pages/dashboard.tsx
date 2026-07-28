@@ -5,15 +5,13 @@ import {
   User, CalendarDays, Flame, Gift, ChevronRight, 
   Target, PenTool, Image as ImageIcon, 
   MessageCircle, TrendingUp, 
-  Eye, Heart, ShieldCheck, CheckCircle2, Check, Bell, BarChart3, Edit3, Star, Search, Brain, Lock, Lightbulb
+  Eye, Heart, ShieldCheck, Check, Bell, BarChart3, Brain, Lightbulb, Search, Sparkles, Pencil
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { useAuth, getAccessToken } from "@/lib/auth-context";
 import { useGetJourneyProgress, useGetPersonalityProfile, useGetMatches, useGetConversations, useGetNotifications } from "@workspace/api-client-react";
-import { DailyReflection, WeeklyMoodPanel } from "@/components/dashboard/DailyReflection";
-import { timeAgo } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 
 function authHeaders() {
@@ -25,14 +23,12 @@ function authHeaders() {
   } as Record<string, string>;
 }
 
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/api";
-import { motivationQuotes, motivationImages } from "@/lib/dailyMotivationData";
 
 export default function DashboardPage() {
   const { user } = useAuth();
   const [, navigate] = useLocation();
-  const queryClient = useQueryClient();
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -42,12 +38,6 @@ export default function DashboardPage() {
     return "Good Night";
   };
 
-  const today = new Date();
-  const startOfEpoch = new Date('2024-01-01').getTime();
-  const daysSinceEpoch = Math.floor((today.getTime() - today.getTimezoneOffset() * 60000 - startOfEpoch) / (1000 * 60 * 60 * 24));
-  const dailyQuote = motivationQuotes[Math.abs(daysSinceEpoch) % motivationQuotes.length];
-  const dailyImage = motivationImages[Math.abs(daysSinceEpoch) % motivationImages.length];
-
   const { data: matchesData, isLoading: loadingMatches } = useGetMatches(
     { page: 1, limit: 10 },
     { query: { enabled: true }, request: { headers: authHeaders() } } as any,
@@ -55,14 +45,6 @@ export default function DashboardPage() {
 
   const { data: journeyProgress, isLoading: loadingJourney } = useGetJourneyProgress({ query: { enabled: true }, request: { headers: authHeaders() } } as any);
   
-  const { data: weeklySummary, isLoading: loadingSummary } = useQuery({
-    queryKey: ["weekly-summary"],
-    queryFn: async () => {
-      const res = await apiRequest("/metrics/weekly-summary");
-      return res as any;
-    }
-  });
-
   const { data: personalityProfile, isLoading: loadingPersonality } = useGetPersonalityProfile({
     query: { enabled: true } as any,
     request: { headers: authHeaders() },
@@ -78,8 +60,6 @@ export default function DashboardPage() {
     { query: { enabled: true }, request: { headers: authHeaders() } } as any,
   );
   
-  const recentActivities = (notificationsData as any)?.notifications?.slice(0, 3) || [];
-
   const { data: history = [], isLoading: loadingHistory } = useQuery<any[]>({
     queryKey: ["/api/reflections/history"],
     queryFn: () => apiRequest("/reflections/history", { headers: authHeaders() }),
@@ -95,50 +75,52 @@ export default function DashboardPage() {
   if (isLoading) {
     return (
       <AppLayout>
-        <div className="w-full max-w-md mx-auto px-4 py-3 space-y-4 flex flex-col pt-8">
-          {/* Skeleton for Header Premium Hero Card */}
-          <div className="relative w-full rounded-2xl p-4 bg-card border border-border/40 h-28 flex flex-col justify-between">
-            <Skeleton className="h-6 w-2/3 rounded-lg" />
-            <Skeleton className="h-4 w-5/6 rounded-lg" />
-          </div>
-
-          {/* Skeleton for 30-Day Journey Card */}
-          <div className="bg-card border border-border/40 rounded-2xl p-4 space-y-3">
-            <div className="flex justify-between items-center">
-              <Skeleton className="h-4 w-1/3 rounded-lg" />
-              <Skeleton className="h-3 w-12 rounded-lg" />
+        <div className="w-full min-h-screen soulmatch-dashboard-bg">
+          <div className="w-full max-w-md mx-auto px-4 py-6 space-y-5 flex flex-col pt-8">
+            {/* Skeleton for Header Premium Hero Card */}
+            <div className="relative w-full rounded-[28px] p-5 bg-white/40 border border-white/30 h-28 flex flex-col justify-between">
+              <Skeleton className="h-6 w-2/3 rounded-lg" />
+              <Skeleton className="h-4 w-5/6 rounded-lg" />
             </div>
-            <Skeleton className="h-3 w-1/2 rounded-lg" />
-            <div className="flex items-center gap-3">
-              <Skeleton className="w-14 h-14 rounded-full shrink-0" />
-              <div className="flex gap-2 flex-1 overflow-hidden">
-                {[...Array(5)].map((_, i) => (
-                  <Skeleton key={i} className="w-7 h-7 rounded-full" />
-                ))}
+
+            {/* Skeleton for 30-Day Journey Card */}
+            <div className="bg-white/40 border border-white/30 rounded-[28px] p-5 space-y-3">
+              <div className="flex justify-between items-center">
+                <Skeleton className="h-4 w-1/3 rounded-lg" />
+                <Skeleton className="h-3 w-12 rounded-lg" />
               </div>
+              <Skeleton className="h-3 w-1/2 rounded-lg" />
+              <div className="flex items-center gap-3">
+                <Skeleton className="w-14 h-14 rounded-full shrink-0" />
+                <div className="flex gap-2 flex-1 overflow-hidden">
+                  {[...Array(5)].map((_, i) => (
+                    <Skeleton key={i} className="w-7 h-7 rounded-full" />
+                  ))}
+                </div>
+              </div>
+              <Skeleton className="h-[56px] w-full rounded-full" />
             </div>
-            <Skeleton className="h-10 w-full rounded-xl" />
-          </div>
 
-          {/* Skeleton for Today's Reflection Card */}
-          <div className="bg-card border border-border/40 rounded-2xl p-4 space-y-3">
-            <Skeleton className="h-3 w-1/4 rounded-lg" />
-            <div className="flex gap-3">
-              <Skeleton className="flex-1 h-12 rounded-xl" />
-              <Skeleton className="w-[30%] h-12 rounded-xl" />
+            {/* Skeleton for Today's Reflection Card */}
+            <div className="bg-white/40 border border-white/30 rounded-[28px] p-5 space-y-3">
+              <Skeleton className="h-3 w-1/4 rounded-lg" />
+              <div className="flex gap-3">
+                <Skeleton className="flex-1 h-12 rounded-xl" />
+                <Skeleton className="w-[30%] h-12 rounded-xl" />
+              </div>
+              <Skeleton className="h-[56px] w-full rounded-full" />
             </div>
-            <Skeleton className="h-10 w-full rounded-xl" />
-          </div>
 
-          {/* Skeleton for Personality Analysis Card */}
-          <div className="bg-card border border-border/40 rounded-2xl p-4 space-y-3">
-            <Skeleton className="h-3 w-1/3 rounded-lg" />
-            <div className="flex gap-5">
-              <Skeleton className="w-20 h-20 rounded-full shrink-0" />
-              <div className="flex-1 space-y-2">
-                {[...Array(4)].map((_, i) => (
-                  <Skeleton key={i} className="h-3 w-full rounded-lg" />
-                ))}
+            {/* Skeleton for Personality Analysis Card */}
+            <div className="bg-white/40 border border-white/30 rounded-[28px] p-5 space-y-3">
+              <Skeleton className="h-3 w-1/3 rounded-lg" />
+              <div className="flex gap-5">
+                <Skeleton className="w-20 h-20 rounded-full shrink-0" />
+                <div className="flex-1 space-y-2">
+                  {[...Array(4)].map((_, i) => (
+                    <Skeleton key={i} className="h-3 w-full rounded-lg" />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -148,436 +130,468 @@ export default function DashboardPage() {
   }
 
   const unreadChatCount = conversations.reduce((acc: number, conv: any) => acc + (conv.unreadCount || 0), 0);
-  
-  const currentDay = (journeyProgress as any)?.currentDay || 1;
   const answeredQuestions = (journeyProgress as any)?.answeredQuestions || 0;
+  const analysisProgressPercent = Math.min(100, Math.round((answeredQuestions / 150) * 100));
   const displayDay = Math.max(1, Math.ceil(answeredQuestions / 5));
   const streak = Math.min((journeyProgress as any)?.streak || 0, displayDay);
   const progressPercent = (journeyProgress as any)?.completionPercentage || 0;
-  const questionsRemainingToday = (journeyProgress as any)?.questionsRemainingToday ?? 5;
-  const answeredToday = Math.max(0, 5 - questionsRemainingToday);
 
-  const rawTraits = (personalityProfile as any)?.traits;
-  const snapshotTraits = Array.isArray(rawTraits) ? rawTraits : [];
-  let connectionScore = snapshotTraits.find((t: any) => t?.trait === "Connection")?.score || 0;
-  let stabilityScore = snapshotTraits.find((t: any) => t?.trait === "Stability")?.score || 0;
-  let growthScore = snapshotTraits.find((t: any) => t?.trait === "Growth")?.score || 0;
-  let explorationScore = snapshotTraits.find((t: any) => t?.trait === "Exploration")?.score || 0;
+  const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const dToday = new Date();
+  const last7: { label: string; dateStr: string }[] = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(dToday);
+    d.setDate(dToday.getDate() - (6 - i));
+    const dateStr = d.toISOString().split("T")[0];
+    const label = days[d.getDay() === 0 ? 6 : d.getDay() - 1];
+    return { label, dateStr };
+  });
 
-  const overallAlignment = Math.max(connectionScore, stabilityScore, growthScore, explorationScore);
+  const historyMap = new Map<string, string>();
+  history.forEach((h: any) => historyMap.set(h.date, h.answer));
+  
+  const completedThisWeek = last7.filter((d) => historyMap.has(d.dateStr)).length;
+  
+  const isAnswered = reflectionToday?.answered === true;
 
-  const topStats = [
-    { label: "Profile Completeness", value: `${user?.profileCompleteness || 0}%`, sub: "Complete your profile to attract better matches.", icon: User, bg: "border-[#9B4DFF]/30", text: "text-[#9B4DFF]" },
-    { label: "Question Journey", value: `${Math.min(Math.max(1, Math.ceil(((journeyProgress as any)?.answeredQuestions || 0) / 5)), 30)} / 30`, sub: "Answer daily questions to understand yourself better.", icon: CalendarDays, bg: "border-blue-500/30", text: "text-blue-500" },
-    { label: "Current Streak", value: `${streak} Days`, sub: "Keep your streak alive! Consistency matters.", icon: Flame, bg: "border-orange-500/30", text: "text-orange-500" },
-    { label: "Reward Progress", value: "40%", sub: "Complete your journey to unlock rewards.", icon: Gift, bg: "border-pink-500/30", text: "text-pink-500" },
-  ];
+  const questionsRemaining = (journeyProgress as any)?.questionsRemainingToday;
+  const journeyCompletedToday = questionsRemaining !== undefined ? questionsRemaining === 0 : false;
+  
+  let activeStep = 1;
+  if (!journeyCompletedToday) {
+    activeStep = 1;
+  } else if (!isAnswered) {
+    activeStep = 2;
+  } else {
+    activeStep = 3;
+  }
+
+  const getCardClass = (step: number) => {
+    return activeStep === step 
+      ? "premium-glass-card-highlighted px-[24px] py-[22px] relative overflow-hidden flex flex-col gap-3 shrink-0 h-auto" 
+      : "premium-glass-card px-[24px] py-[22px] relative overflow-hidden flex flex-col gap-3 shrink-0 h-auto opacity-95";
+  };
+
+  const getButtonStyle = (step: number) => {
+    if (activeStep === step) {
+      return "primary-action-button text-[#242424]";
+    } else if (step === 2) {
+      return "bg-white/70 hover:bg-white/90 border border-white/60 text-[#444444] shadow-sm";
+    } else if (step === 3) {
+      return "bg-transparent hover:bg-white/40 border border-white/60 text-[#777777]";
+    } else {
+      return "bg-white/60 hover:bg-white/80 border border-white/50 text-[#555555]";
+    }
+  };
 
   return (
     <AppLayout>
-      <div className="w-full max-w-md mx-auto px-4 py-3 space-y-3 flex flex-col">
-        
-        {/* 1. Top Header Premium Hero Card */}
-        <motion.div 
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="relative w-full rounded-2xl overflow-hidden mb-2
-                     bg-gradient-to-r from-[#FFF5F8] via-[#FCE4EC] to-[#F9BBD0] 
-                     dark:from-[#0B0815] dark:via-[#1A0822] dark:to-[#360A2E] 
-                     shadow-[0_4px_20px_rgb(0,0,0,0.04)] dark:shadow-[0_4px_20px_rgb(0,0,0,0.2)] 
-                     border border-white/80 dark:border-white/5 flex items-center px-4 py-3"
-        >
-          {/* Decorative glowing backgrounds */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-[#FF429A]/10 dark:bg-[#FF429A]/20 blur-[20px] rounded-full pointer-events-none -mr-10 -mt-10" />
-          <div className="absolute bottom-0 right-10 w-20 h-20 bg-[#9B4DFF]/10 dark:bg-[#9B4DFF]/20 blur-[15px] rounded-full pointer-events-none -mb-5" />
+      <div 
+        className="w-full min-h-screen"
+        style={{ background: 'linear-gradient(135deg, #FAF2EF 0%, #F5F0FB 50%, #FFFDFB 75%, #F7F7FA 100%)' }}
+      >
+        <div className="w-full max-w-md mx-auto px-[14px] pt-[14px] pb-[16px] space-y-4 flex flex-col">
+          <style>{`
+            .premium-glass-card {
+              background: rgba(255, 255, 255, 0.48) !important;
+              backdrop-filter: blur(26px) !important;
+              -webkit-backdrop-filter: blur(26px) !important;
+              border: 1px solid rgba(255, 255, 255, 0.35) !important;
+              box-shadow: 0 12px 35px rgba(80, 80, 80, 0.08) !important;
+              border-radius: 24px !important;
+            }
+            .hero-journey-card {
+              background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 240, 245, 0.4)) !important;
+              backdrop-filter: blur(26px) !important;
+              -webkit-backdrop-filter: blur(26px) !important;
+              border: 1.5px solid rgba(246, 168, 183, 0.85) !important;
+              box-shadow: 0 10px 30px rgba(246, 168, 183, 0.1) !important;
+              border-radius: 28px !important;
+            }
+            .hero-journey-button {
+              background: linear-gradient(135deg, #FFB8B0, #FFC9BF, #F8C3C6) !important;
+              color: #242424 !important;
+              box-shadow: 0 4px 12px rgba(246, 168, 183, 0.15) !important;
+              border: 1px solid rgba(255, 255, 255, 0.6) !important;
+              transition: all 0.3s ease;
+            }
+            .hero-journey-button:hover {
+              box-shadow: 0 6px 16px rgba(246, 168, 183, 0.25) !important;
+              transform: translateY(-1px);
+            }
+            .hero-journey-button:active {
+              transform: translateY(1px);
+              box-shadow: 0 2px 8px rgba(246, 168, 183, 0.1) !important;
+            }
+            .premium-glass-card-highlighted {
+              background: rgba(255, 255, 255, 0.65) !important;
+              backdrop-filter: blur(26px) !important;
+              -webkit-backdrop-filter: blur(26px) !important;
+              border: 1px solid rgba(255, 255, 255, 0.65) !important;
+              box-shadow: 0 16px 40px rgba(246, 168, 183, 0.15) !important;
+              border-radius: 24px !important;
+            }
+            .premium-pastel-button {
+              background: linear-gradient(135deg, #F9C7C7, #F8D8D0, #F6E3EA) !important;
+              color: #2A2A2A !important;
+              box-shadow: 0 4px 12px rgba(246, 168, 183, 0.15) !important;
+              border: 1px solid rgba(255, 255, 255, 0.4) !important;
+            }
+            .primary-action-button {
+              background: linear-gradient(135deg, #FFB8B0, #FFC9BF, #F8C3C6) !important;
+              color: #242424 !important;
+              box-shadow: 0 6px 16px rgba(246, 168, 183, 0.25) !important;
+              border: 1px solid rgba(255, 255, 255, 0.6) !important;
+              transition: all 0.3s ease;
+            }
+            .primary-action-button:hover {
+              box-shadow: 0 8px 20px rgba(246, 168, 183, 0.35) !important;
+              transform: translateY(-1px);
+            }
+            .primary-action-button:active {
+              transform: translateY(1px);
+              box-shadow: 0 2px 8px rgba(246, 168, 183, 0.2) !important;
+            }
+            .premium-pastel-button:hover {
+              opacity: 0.95;
+            }
+            .no-scrollbar::-webkit-scrollbar {
+               display: none;
+            }
+            .no-scrollbar {
+               -ms-overflow-style: none;
+               scrollbar-width: none;
+            }
+          `}</style>
           
-          {/* Bottom Wave decoration */}
-          <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-0 opacity-40 dark:opacity-20 pointer-events-none">
-            <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="w-full h-[25px] text-[#FF429A]/30 dark:text-[#FF429A]/40 fill-current">
-              <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.11,130.83,121.22,200.7,109.14Z"></path>
-            </svg>
-          </div>
-          
-          {/* Text Content (Left) */}
-          <div className="relative z-10 flex-1 pr-2 min-w-0">
-            <h1 className="text-base sm:text-lg font-extrabold flex items-center gap-1 tracking-tight whitespace-nowrap overflow-hidden">
-              <span className="text-[#1A1A1A] dark:text-[#F3F4F6]">{getGreeting()},</span>
-              <span className="text-[#FF2D88] dark:text-[#FF429A] truncate">{user?.firstName || "Karthi"}! 👋</span>
-            </h1>
-            <p className="text-[#6B7280] dark:text-[#9CA3AF] text-[11px] leading-[1.2] mt-1 max-w-[220px] font-medium">
-              Every answer brings you closer to someone who truly understands you. 💜
-            </p>
-          </div>
+          {/* 1. Top Header Premium Hero Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="relative w-full h-auto overflow-hidden premium-glass-card rounded-[28px] flex items-center pl-[20px] pr-[14px] py-[16px] shrink-0"
+          >
+            {/* Soft misty gradient backdrop waves to merge mascot seamlessly */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#FAF2EF]/30 via-[#F5F0FB]/20 to-[#FFFDFB]/15 pointer-events-none" />
+            <div className="absolute right-0 top-0 w-[42%] h-full pointer-events-none overflow-hidden rounded-r-[28px]">
+              {/* Soft Peach Wave Glow */}
+              <div className="absolute right-[-15px] bottom-[-25px] w-[130px] h-[90px] rounded-full bg-gradient-to-tr from-[#F8D8D0] to-[#F6A8B7] opacity-70 blur-xl pointer-events-none" />
+              {/* Soft Lavender Wave Glow */}
+              <div className="absolute right-[-25px] top-[-15px] w-[110px] h-[90px] rounded-full bg-gradient-to-br from-[#EADCF8] to-[#F6A8B7] opacity-60 blur-xl pointer-events-none" />
+              {/* White spotlight blend directly behind the mascot */}
+              <div className="absolute right-6 top-[15px] w-[70px] h-[70px] rounded-full bg-white/80 blur-lg pointer-events-none" />
+            </div>
+            
+            {/* Text Content — full width with right padding reserved for mascot */}
+            <div className="relative z-10 w-full flex flex-col justify-center pr-[90px]">
+              <h1 className="text-[19px] font-black text-[#252525] whitespace-nowrap leading-none mb-1 overflow-hidden" style={{ textOverflow: 'ellipsis' }}>
+                {getGreeting()}, <span className="text-[#F6A8B7] font-black">{user?.firstName || "Mani"} !</span>
+              </h1>
+              <p className="text-[#777777] text-[13.5px] font-medium tracking-tight mt-0.5" style={{ lineHeight: '1.45' }}>
+                Every answer brings you closer to<br />someone who truly understands you.
+              </p>
+            </div>
 
-          {/* Original Mascot (Right) */}
-          <div className="relative h-[90px] w-[115px] shrink-0 z-10 flex items-center justify-center -my-3 -mr-3">
-            <motion.div 
-              animate={{ y: [0, -3, 0] }} 
-              transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-              className="relative z-10 w-full h-full drop-shadow-[0_6px_16px_rgba(236,72,153,0.3)]"
-              style={{
-                WebkitMaskImage: 'radial-gradient(ellipse at center, black 45%, transparent 75%)',
-                maskImage: 'radial-gradient(ellipse at center, black 45%, transparent 75%)'
-              }}
-            >
-              {/* Light Theme Mascot */}
-              <img 
-                src="/mascot_light.png" 
-                alt="Mascot Light" 
-                className="w-full h-full object-cover dark:hidden"
-              />
-              {/* Dark Theme Mascot */}
-              <img 
-                src="/mascot_dark.png" 
-                alt="Mascot Dark" 
-                className="w-full h-full object-cover hidden dark:block"
-              />
-            </motion.div>
-          </div>
-        </motion.div>
+            {/* Mascot — absolutely anchored to the right, not in text flex flow */}
+            <div className="absolute right-0 top-0 bottom-0 w-[105px] z-10 flex items-center justify-end pr-2">
+              {/* Pink radial aura matching mascot's own soft pink background */}
+              <div className="absolute inset-0 rounded-full bg-[#FADADD] opacity-90 blur-md pointer-events-none scale-[0.85]" />
+              <div className="absolute inset-0 rounded-full bg-[#FAD0D8]/70 opacity-80 blur-2xl pointer-events-none scale-[1.1]" />
+              <motion.div 
+                animate={{ y: [0, -2.5, 0] }} 
+                transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+                className="relative z-10 w-full h-[80px] flex items-center justify-end"
+              >
+                <img 
+                  src="/mascot_light.png" 
+                  alt="Mascot Light" 
+                  className="h-full w-auto object-contain scale-[1.35] origin-center"
+                />
+              </motion.div>
+            </div>
+          </motion.div>
 
-        {/* 2. 30-Day Journey */}
-        <div className="bg-card border border-border/80 dark:border-white/15 border-black/15 rounded-2xl p-4 shadow-sm relative overflow-hidden">
-           <div className="flex justify-between items-center mb-0.5">
-             <h3 className="text-sm font-bold text-foreground">
-               Your 30-Day Journey
-             </h3>
-             <Link href="/journey">
-               <span className="text-[11px] text-pink-500 font-bold hover:underline cursor-pointer">View Journey &gt;</span>
-             </Link>
-           </div>
-           <p className="text-[11px] text-foreground/75 dark:text-gray-300 text-gray-700 font-medium mb-3">
-             Answer daily, discover yourself, find your perfect match.
-           </p>
-           
-           <div className="flex items-center justify-between gap-1.5 xs:gap-2.5 mb-3 h-14">
-              {/* Left big 0 Days indicator */}
-              <div className="relative w-[52px] h-[52px] xs:w-[60px] xs:h-[60px] flex items-center justify-center shrink-0">
-                 <svg className="absolute inset-0 w-full h-full transform -rotate-90">
-                   <circle cx="50%" cy="50%" r="22" className="stroke-white/30 dark:stroke-white/30 stroke-slate-300 fill-none" strokeWidth="4" />
-                   <circle cx="50%" cy="50%" r="22" className="stroke-pink-500 fill-none drop-shadow-[0_0_6px_rgba(236,72,153,0.4)]" strokeWidth="4" strokeDasharray="138" strokeDashoffset={138 - (progressPercent/100)*138} strokeLinecap="round" />
-                 </svg>
-                 <div className="flex flex-col items-center justify-center">
-                    <span className="text-sm xs:text-lg font-black text-foreground leading-none tracking-tight">
-                       {Math.floor(((journeyProgress as any)?.answeredQuestions || 0) / 5)}
-                    </span>
-                    <span className="text-[7.5px] xs:text-[8px] font-extrabold text-foreground/90 leading-tight">Days</span>
-                 </div>
-              </div>
-
-              {/* Perfectly 100% Laser-Straight Horizontal Track */}
-              <div className="flex-1 flex items-center justify-between min-w-0">
-                 {Array.from({ length: 5 }).map((_, i) => {
-                    const answeredQuestions = (journeyProgress as any)?.answeredQuestions || 0;
-                    const completedDays = Math.floor(answeredQuestions / 5);
-                    const startDay = Math.max(1, Math.min(completedDays - 1, 25));
-                    const day = startDay + i;
-                    const isCompleted = day <= completedDays;
-                    return (
-                      <div 
-                        key={day} 
-                        className={`w-7 h-7 xs:w-8 xs:h-8 rounded-full flex items-center justify-center text-[10px] xs:text-xs font-black transition-all shrink-0 ${
-                          isCompleted 
-                            ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md shadow-pink-500/30 border border-pink-400/50' 
-                            : 'bg-muted/90 border-2 border-slate-600/70 dark:border-slate-500/80 border-slate-400/80 text-foreground font-black shadow-sm'
-                        }`}
-                      >
-                        {isCompleted ? <Check className="w-3.5 h-3.5 text-white stroke-[3]" /> : day}
-                      </div>
-                    );
-                 })}
-                 
-                 <div className="w-5 h-7 xs:h-8 flex items-center justify-center shrink-0">
-                    <span className="text-foreground/70 font-black tracking-widest text-[11px]">...</span>
-                 </div>
-                 
-                 {/* Day 30 Gift Round - Laser-straight circle with badge */}
-                 <div className="relative w-7 h-7 xs:w-8 xs:h-8 rounded-full border-2 border-pink-500/90 bg-pink-500/25 flex items-center justify-center shadow-md shadow-pink-500/20 shrink-0">
-                    <Gift className="w-3.5 h-3.5 xs:w-4 xs:h-4 text-amber-400 fill-amber-400/40" />
-                    <span className="absolute -bottom-1 -right-1 bg-pink-500 text-white text-[7.5px] xs:text-[8px] font-black px-1 rounded-full leading-none py-0.5 border border-background shadow-sm">
-                       30
-                    </span>
-                 </div>
-              </div>
-           </div>
-
-           <Link href="/journey" className="block w-full">
-              <div className="w-full bg-pink-500 hover:bg-pink-600 text-white rounded-xl font-bold h-10 text-xs flex items-center justify-center transition-colors shadow-sm">
-                Answer Today's 5 Questions &gt;
-              </div>
-           </Link>
-        </div>
-
-        {/* 3. Today's Reflection Preview Card */}
-        <div className="bg-card border border-border/80 dark:border-white/15 border-black/15 rounded-2xl p-4 shadow-sm">
-           <div className="flex justify-between items-center mb-3">
-             <h3 className="text-[11px] font-black text-foreground uppercase tracking-widest flex items-center gap-1.5">
-               <Heart className="w-3 h-3 text-pink-500 fill-pink-500" /> TODAY'S REFLECTION
-             </h3>
-           </div>
-           
-           {(() => {
-              const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-              const dToday = new Date();
-              const last7: { label: string; dateStr: string }[] = Array.from({ length: 7 }, (_, i) => {
-                const d = new Date(dToday);
-                d.setDate(dToday.getDate() - (6 - i));
-                const dateStr = d.toISOString().split("T")[0];
-                const label = days[d.getDay() === 0 ? 6 : d.getDay() - 1];
-                return { label, dateStr };
-              });
-
-              const historyMap = new Map<string, string>();
-              history.forEach((h: any) => historyMap.set(h.date, h.answer));
-              
-              const completedThisWeek = last7.filter((d) => historyMap.has(d.dateStr)).length;
-              
-              const isAnswered = reflectionToday?.answered === true;
-              const hasQuestion = reflectionToday?.answered === false && !!reflectionToday?.question;
-              const isLoading = !reflectionToday;
-
-              return (
-                 <div className="flex flex-col gap-3">
-                    <div className="flex gap-3">
-                       <div className="flex-1 bg-muted/40 border border-border/70 dark:border-white/15 border-black/15 rounded-xl p-2.5">
-                          <p className="text-[10px] font-bold text-foreground/80 mb-1.5">Reflection This Week</p>
-                          <div className="flex justify-between">
-                             {last7.map(({ label, dateStr }, i) => {
-                                const answer = historyMap.get(dateStr);
-                                const isToday = dateStr === dToday.toISOString().split("T")[0];
-                                const match = answer?.match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F)/u);
-                                const emoji = match ? match[0] : null;
-
-                                return (
-                                   <div key={i} className="flex flex-col items-center gap-1">
-                                      <div className={`w-5 h-5 rounded-full border flex items-center justify-center text-[10px]
-                                         ${answer ? 'bg-pink-500/20 border-pink-500/40' : (isToday ? 'bg-purple-500/20 border-purple-500/50 border-dashed text-purple-400 font-bold' : 'bg-muted/80 border-slate-600/60 dark:border-slate-500/70 border-slate-300')}`}>
-                                         {emoji ?? (isToday ? "·" : "")}
-                                      </div>
-                                      <span className={`text-[8px] font-bold ${isToday ? 'text-purple-400' : 'text-foreground/70'}`}>{label}</span>
-                                   </div>
-                                );
-                             })}
-                          </div>
-                       </div>
-                       <div className="w-[30%] bg-muted/40 border border-border/70 dark:border-white/15 border-black/15 rounded-xl p-2.5 flex flex-col justify-center">
-                          <p className="text-[10px] font-bold text-foreground/80 mb-1">Weekly</p>
-                          <div className="flex items-end justify-between mb-1.5">
-                             <span className="text-sm font-black text-pink-500">{completedThisWeek} <span className="text-[9px] text-foreground/60 font-bold">/ 7</span></span>
-                             <div className="w-5 h-5 rounded-md bg-[#9B4DFF]/20 flex items-center justify-center">
-                                <Target className="w-3 h-3 text-[#9B4DFF]" />
-                             </div>
-                          </div>
-                          <div className="w-full h-1.5 bg-foreground/15 rounded-full mb-1">
-                             <div className="h-full bg-pink-500 rounded-full transition-all" style={{ width: `${(completedThisWeek / 7) * 100}%` }}></div>
-                          </div>
-                       </div>
-                    </div>
-                    
-                    <div className="flex flex-col items-center gap-2">
-                        <p className="text-[11.5px] font-semibold text-foreground/90">
-                          {isAnswered 
-                            ? "You've completed today's reflection." 
-                            : hasQuestion || isLoading
-                              ? "Today's Reflection is ready." 
-                              : "No reflection available right now."}
-                        </p>
-                        
-                        {isAnswered ? (
-                          <Link href="/reflection" className="block w-full">
-                            <div className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:opacity-90 text-white rounded-xl font-bold h-10 text-xs shadow-[0_2px_8px_rgba(236,72,153,0.3)] flex items-center justify-center">
-                              View Reflection
-                            </div>
-                          </Link>
-                        ) : hasQuestion || isLoading ? (
-                          <Link href="/reflection" className="block w-full">
-                            <div className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:opacity-90 text-white rounded-xl font-bold h-10 text-xs shadow-[0_2px_8px_rgba(236,72,153,0.3)] flex items-center justify-center">
-                              Answer Reflection
-                            </div>
-                          </Link>
-                        ) : null}
-                    </div>
-                 </div>
-              );
-           })()}
-        </div>
-
-        {/* 5. Personality Analysis */}
-        <div className="bg-card border border-border/80 dark:border-white/15 border-black/15 shadow-sm rounded-[1.5rem] p-5">
-           <div className="flex items-center justify-between mb-4">
-             <h3 className="text-[11px] font-black text-foreground uppercase tracking-widest flex items-center gap-1.5">
-               <BarChart3 className="w-3.5 h-3.5 text-[#9B4DFF]" /> PERSONALITY ANALYSIS
-             </h3>
-             <Link href="/my-story#personality-snapshot">
-               <span className="text-[11px] font-bold text-[#9B4DFF] cursor-pointer hover:underline">View Full Analysis &gt;</span>
-             </Link>
-           </div>
-           
-            {/* Personality Analysis Circle Card */}
-            {(() => {
-               const analysisProgressPercent = Math.min(100, Math.round((answeredQuestions / 150) * 100));
-               return (
-                  <>
-                     <div className="flex items-center gap-5 mb-4">
-                        <div className="relative w-20 h-20 flex items-center justify-center shrink-0">
-                           <svg className="absolute inset-0 w-full h-full transform -rotate-90">
-                             <circle cx="40" cy="40" r="36" className="stroke-purple-500/25 dark:stroke-purple-500/30 stroke-purple-200 fill-none" strokeWidth="5" />
-                             <circle cx="40" cy="40" r="36" className="stroke-[#9B4DFF] fill-none" strokeWidth="5" strokeDasharray="226" strokeDashoffset={226 - (analysisProgressPercent / 100) * 226} strokeLinecap="round" />
-                           </svg>
-                           <div className="flex flex-col items-center">
-                              <span className="text-xl font-black text-foreground leading-none">{analysisProgressPercent}<span className="text-xs text-foreground/70">%</span></span>
-                              <span className="text-[8px] font-black text-foreground/70 dark:text-gray-300 text-gray-700 mt-1 text-center tracking-wider uppercase">PROGRESS</span>
-                           </div>
-                        </div>
-
-                        <div className="flex flex-col gap-2 flex-1 min-w-0">
-                           {[
-                             { icon: Heart, label: "Connection", val: `${connectionScore}%`, color: "text-[#9B4DFF]", bg: "bg-[#9B4DFF]/20 border border-[#9B4DFF]/30" },
-                             { icon: ShieldCheck, label: "Stability", val: `${stabilityScore}%`, color: "text-blue-500", bg: "bg-blue-500/20 border border-blue-500/30" },
-                             { icon: TrendingUp, label: "Growth", val: `${growthScore}%`, color: "text-orange-500", bg: "bg-orange-500/20 border border-orange-500/30" },
-                             { icon: Target, label: "Exploration", val: `${explorationScore}%`, color: "text-pink-500", bg: "bg-pink-500/20 border border-pink-500/30" },
-                           ].map((item, i) => (
-                             <div key={i} className="flex items-center justify-between w-full">
-                                <div className="flex items-center gap-2">
-                                  <div className={`w-4.5 h-4.5 rounded-md ${item.bg} flex items-center justify-center shrink-0`}>
-                                     <item.icon className={`w-3 h-3 ${item.color}`} />
-                                  </div>
-                                  <span className="text-xs font-semibold text-foreground">{item.label}</span>
-                                </div>
-                                <span className="text-xs font-extrabold text-foreground">{item.val}</span>
-                             </div>
-                           ))}
-                        </div>
-                     </div>
-
-                     {/* Information Banner */}
-                     <div className="p-3.5 bg-purple-500/10 dark:bg-purple-950/30 border border-purple-500/40 dark:border-purple-500/40 rounded-xl flex items-center gap-3 shadow-sm">
-                        <Lightbulb className="w-4 h-4 xs:w-5 xs:h-5 text-amber-400 shrink-0 drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]" />
-                        <p className="text-[10.5px] xs:text-[11.5px] text-foreground/90 font-semibold leading-snug">
-                           Complete daily questions to generate your personality analysis and compatibility scores.
-                        </p>
-                     </div>
-                  </>
-               );
-            })()}
-        </div>
-
-        {/* 6. Quick Actions */}
-        <div className="space-y-3">
-           <h3 className="text-[11px] font-black text-foreground uppercase tracking-widest">QUICK ACTIONS</h3>
-           <div className="flex justify-between items-center w-full gap-1">
-              {[
-                { icon: Search, label: "Discover", color: "text-pink-500", bg: "bg-pink-500/10", path: "/discover" },
-                { icon: Heart, label: "Matches", color: "text-rose-500", bg: "bg-rose-500/10", path: "/matches" },
-                { icon: MessageCircle, label: "Chat", color: "text-green-500", bg: "bg-green-500/10", badge: unreadChatCount > 0 ? unreadChatCount.toString() : undefined, path: "/chat" },
-                { icon: BarChart3, label: "Story", color: "text-orange-500", bg: "bg-orange-500/10", path: "/my-story#personality-snapshot" },
-                { icon: Eye, label: "Profile", color: "text-blue-500", bg: "bg-blue-500/10", path: "/profile" },
-              ].map((act, i) => (
-                <div key={i} onClick={() => navigate(act.path)} className="flex items-center justify-center gap-1 p-1.5 px-2 rounded-full bg-card border border-border/40 hover:border-border transition-all cursor-pointer shadow-sm flex-1 min-w-0 relative">
-                   <div className={`w-4 h-4 shrink-0 rounded-full ${act.bg} flex items-center justify-center`}>
-                      <act.icon className={`w-2.5 h-2.5 ${act.color}`} />
-                   </div>
-                   <span className="text-[8px] font-bold text-foreground/80 truncate">{act.label}</span>
-                   {act.badge && <span className="absolute -top-1 -right-1 w-3 h-3 bg-pink-500 rounded-full flex items-center justify-center text-[7px] font-bold text-white shadow-sm">{act.badge}</span>}
+          {/* 2. 30-Day Journey */}
+          <div className="hero-journey-card px-[24px] pt-[20px] pb-[20px] relative overflow-hidden flex flex-col shrink-0 h-auto">
+             <div className="mb-4">
+                <div className="flex justify-between items-baseline mb-1">
+                  <h3 className="text-[20px] font-extrabold text-[#1F1F1F] tracking-tight">
+                    Your 30-Day Journey
+                  </h3>
                 </div>
-              ))}
-           </div>
-        </div>
+                <p className="text-[14px] font-semibold text-[#444444] mb-0">
+                  Answer today's questions to unlock better matches.
+                </p>
+             </div>
+             
+             <div className="flex items-center justify-between gap-3 h-[68px] mb-5">
+                {/* Left big 0 Days indicator */}
+                <div className="relative w-[68px] h-[68px] flex items-center justify-center shrink-0">
+                   <svg className="absolute inset-0 w-full h-full transform -rotate-90">
+                      <circle cx="50%" cy="50%" r="30" className="stroke-[#FCD7DE] fill-[#FFF0F5]/50" strokeWidth="5" />
+                      <circle cx="50%" cy="50%" r="30" className="stroke-[#FF8DA1] fill-none" strokeWidth="5" strokeDasharray="188.5" strokeDashoffset={188.5 - (progressPercent/100)*188.5} strokeLinecap="round" />
+                   </svg>
+                   <div className="absolute inset-0 flex flex-col items-center justify-center mt-[1px]">
+                     <span className="text-[22px] font-black text-[#FF6B8B] leading-none tracking-tighter">{Math.floor(((journeyProgress as any)?.answeredQuestions || 0) / 5)}</span>
+                     <span className="text-[9px] font-extrabold text-[#FF8DA1] uppercase tracking-widest leading-none mt-[2px]">Day</span>
+                   </div>
+                </div>
 
-        {/* 7. Top Matches */}
-        <div className="space-y-3">
-           <div className="flex items-center justify-between">
-             <h3 className="text-[11px] font-black text-foreground uppercase tracking-widest">TOP MATCHES</h3>
-             <Link href="/matches">
-               <span className="text-[10px] font-bold text-pink-500 uppercase tracking-wider hover:underline cursor-pointer">View All</span>
-             </Link>
-           </div>
-           
-           {(() => {
-              const answeredQuestions = (journeyProgress as any)?.answeredQuestions || 0;
-              
-              if (answeredQuestions < 5) {
-                 return (
-                    <div className="bg-card border border-border/40 rounded-[1.5rem] p-6 text-center shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] flex flex-col items-center justify-center">
-                       <div className="w-14 h-14 bg-pink-500/10 rounded-full flex items-center justify-center mb-4">
-                          <Heart className="w-7 h-7 text-pink-500" />
-                       </div>
-                       <h4 className="text-sm font-bold text-foreground mb-2">Unlock Your Matches</h4>
-                       <p className="text-xs text-muted-foreground mb-5 max-w-[200px] mx-auto leading-relaxed">
-                          Complete your first 5 questions (Day 1) to reveal your top compatible matches.
-                       </p>
-                       <Link href="/journey">
-                         <Button className="h-10 text-xs bg-gradient-to-r from-pink-500 to-[#9B4DFF] hover:opacity-90 rounded-full px-8 font-bold text-white shadow-lg">
-                            Start Journey
-                         </Button>
-                       </Link>
-                    </div>
-                 );
-              }
+                <div className="flex-1 flex items-center justify-start gap-[6px] min-w-0 pl-1 pr-1 overflow-hidden">
+                   {Array.from({ length: 5 }).map((_, i) => {
+                      const completedDays = Math.floor(answeredQuestions / 5);
+                      const startDay = Math.max(1, Math.min(completedDays - 1, 25));
+                      const day = startDay + i;
+                      const isCompleted = day <= completedDays;
 
-              const getScore = (m: any) => Number(m.compatibilityScore || m.profile?.valueMatchScore || m.profile?.compatibilityScore || 0);
-              const validMatches = (matchesData?.matches || [])
-                  .filter((m: any) => getScore(m) > 10)
-                  .sort((a: any, b: any) => getScore(b) - getScore(a))
-                  .slice(0, 3);
+                      return (
+                        <div 
+                          key={day} 
+                          className={`w-[28px] h-[28px] rounded-full flex items-center justify-center text-[11px] font-black transition-all shrink-0 ${
+                            isCompleted 
+                              ? 'bg-[#FBD9D3] text-[#222222] shadow-[0_2px_8px_rgba(251,217,211,0.5)]' 
+                              : 'bg-white text-[#222222] shadow-[0_2px_10px_rgba(0,0,0,0.04)]'
+                          }`}
+                        >
+                          {isCompleted ? <Check className="w-4 h-4 text-[#222222] stroke-[2.5]" strokeWidth={2.5} /> : day}
+                        </div>
+                      );
+                   })}
+                   
+                   <div className="w-4 h-8 flex items-center justify-center shrink-0">
+                      <span className="text-[#FF8DA1] opacity-70 font-black tracking-widest text-[14px] -mt-1">...</span>
+                   </div>
+                   
+                   {/* Day 30 Gift Round */}
+                   <div className="relative w-8 h-8 rounded-full border-[1.5px] border-[#FFD6E0] bg-[#FFF0F5] flex items-center justify-center shadow-sm shrink-0">
+                      <Gift className="w-[18px] h-[18px] text-[#FF8DA1]" strokeWidth={1.5} />
+                      <span className="absolute -bottom-1 -right-1 bg-[#FF8DA1] text-white text-[8px] font-black px-1.5 rounded-full leading-none py-[2px] border-[1.5px] border-white shadow-sm">
+                        30
+                      </span>
+                   </div>
+                </div>
+             </div>
 
-              if (validMatches.length === 0) {
-                 return (
-                    <div className="bg-card border border-border/40 rounded-[1.5rem] p-6 text-center shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] flex flex-col items-center justify-center">
-                       <div className="w-14 h-14 bg-muted/50 rounded-full flex items-center justify-center mb-4">
-                          <Search className="w-6 h-6 text-muted-foreground" />
-                       </div>
-                       <h4 className="text-sm font-bold text-foreground mb-2">Finding Matches...</h4>
-                       <p className="text-xs text-muted-foreground mb-0 max-w-[200px] mx-auto leading-relaxed">
-                          Check back later or answer more questions to improve your profile accuracy.
-                       </p>
-                    </div>
-                 );
-              }
+             <div className="w-full">
+                <Link href="/journey" className="block w-full">
+                  <Button className="w-full h-[52px] text-[15px] font-extrabold rounded-full flex items-center justify-between px-5 hero-journey-button tracking-wide">
+                    <MessageCircle className="w-[20px] h-[20px] text-[#242424] shrink-0" strokeWidth={2.5} />
+                    <span className="flex-1 text-center text-[#242424]">Answer Today's 5 Questions</span>
+                    <ChevronRight className="w-5 h-5 text-[#242424] shrink-0" strokeWidth={2.5} />
+                  </Button>
+                </Link>
+             </div>
+          </div>
 
-              return (
-                 <div className="grid grid-cols-3 gap-2 w-full">
-                    {validMatches.map((matchItem: any, i: number) => {
-                       const match = matchItem.profile;
-                       const photo = match.photos?.find((p: any) => p.isPrimary) ?? match.photos?.[0];
-                       const displayName = match.displayName ?? match.firstName;
-                       
-                       return (
-                         <div key={i} className="w-full aspect-[4/5] rounded-xl bg-card border border-border/40 relative overflow-hidden active:scale-[0.98] transition-transform shadow-[0_4px_12px_rgb(0,0,0,0.05)] cursor-pointer group" onClick={() => navigate(`/profile/${match.id}`)}>
-                            {photo ? (
-                              <img src={photo.url} className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-500" alt={displayName} />
-                            ) : (
-                              <div className="absolute inset-0 w-full h-full bg-slate-200 dark:bg-primary/20" />
-                            )}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none" />
-                            
-                            {matchItem.isNew && (
-                              <div className="absolute top-1.5 left-1.5 bg-pink-500 text-white text-[7px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider shadow-md">NEW</div>
-                            )}
-                            
-                            <div className="absolute bottom-1.5 left-1.5 right-1.5 flex flex-col pointer-events-none">
-                               <h4 className="text-[10px] font-bold text-white mb-0.5 leading-tight truncate drop-shadow-sm">
-                                 {displayName}{match.age ? `, ${match.age}` : ""}
-                               </h4>
-                               {(match.city || match.country) && (
-                                 <span className="text-[7px] text-white/80 font-medium mb-1 line-clamp-1 drop-shadow-sm">
-                                   {[match.city, match.country].filter(Boolean).join(", ")}
-                                 </span>
-                               )}
-                               <div className="flex items-center gap-1 text-white text-[7px] font-black bg-white/20 backdrop-blur-md px-1.5 py-0.5 rounded border border-white/20 w-fit shadow-sm">
-                                  {getScore(matchItem)}%
-                               </div>
-                            </div>
+          {/* 3. Today's Reflection Preview Card */}
+          <div className={getCardClass(2)}>
+             {/* Upper row: Icon + Text on left, circular progress on right */}
+             <div className="flex items-center justify-between gap-2.5">
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                   <div className="w-[52px] h-[52px] rounded-full bg-[#F6A8B7]/10 flex items-center justify-center shrink-0">
+                      <Heart className="w-[24px] h-[24px] text-[#F6A8B7]" strokeWidth={1.5} />
+                   </div>
+                   <div className="min-w-0 flex-1">
+                      <h3 className="text-[17px] font-extrabold text-[#252525] leading-tight whitespace-nowrap tracking-tight">Today's Reflection</h3>
+                      <p className="text-[12px] text-[#444444] font-semibold mt-0.5 leading-[1.3]">
+                         {isAnswered ? "You've completed today's reflection." : "Complete today's reflection to maintain your weekly streak."}
+                      </p>
+                   </div>
+                </div>
+                
+                {/* Circular Progress */}
+                <div className="relative w-[76px] h-[76px] flex items-center justify-center shrink-0">
+                   <svg className="absolute inset-0 w-full h-full transform -rotate-90">
+                      <defs>
+                         <linearGradient id="coral-gradient-reflection" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#F6A8B7" />
+                            <stop offset="100%" stopColor="#F8C3C6" />
+                         </linearGradient>
+                      </defs>
+                      <circle cx="38" cy="38" r="32" className="stroke-[#F6A8B7]/15 fill-none" strokeWidth="6" />
+                      <circle cx="38" cy="38" r="32" stroke="url(#coral-gradient-reflection)" className="fill-none transition-all duration-500 ease-out" strokeWidth="6" strokeDasharray="201" strokeDashoffset={201 - (completedThisWeek / 7) * 201} strokeLinecap="round" />
+                   </svg>
+                   <div className="absolute inset-0 flex flex-col items-center justify-center mt-0.5">
+                      <span className="text-[20px] font-extrabold text-[#252525] leading-none">{completedThisWeek}/7</span>
+                      <span className="text-[10.5px] font-bold text-[#777777] mt-[3px] text-center leading-none">This Week</span>
+                   </div>
+                </div>
+             </div>
+
+             {/* Lower row: Full-width button */}
+             <div className="w-full mt-6">
+               <Link href="/reflection" className="block w-full">
+                  <Button className="h-[56px] w-full rounded-full bg-white border border-[#F6A8B7]/40 hover:bg-[#F6A8B7]/5 shadow-[0_2px_12px_rgba(246,168,183,0.1)] flex items-center justify-between px-6 transition-all relative">
+                     <Pencil className="w-[18px] h-[18px] text-[#F6A8B7]" strokeWidth={2.5} />
+                     <span className="text-[16px] font-extrabold text-[#252525] absolute left-1/2 -translate-x-1/2">{isAnswered ? "View Reflection" : "Complete Reflection"}</span>
+                     <ChevronRight className="w-[20px] h-[20px] text-[#252525]" strokeWidth={3} />
+                  </Button>
+               </Link>
+             </div>
+          </div>
+
+          {/* 5. Personality Journey */}
+          <div className={getCardClass(3)}>
+             {/* Upper row: Icon + Text on left, circular progress on right */}
+             <div className="flex items-center justify-between gap-2.5">
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                   <div className="w-[52px] h-[52px] rounded-full bg-[#F6A8B7]/10 flex items-center justify-center shrink-0">
+                      <Brain className="w-[24px] h-[24px] text-[#F6A8B7]" strokeWidth={2} />
+                   </div>
+                   <div className="min-w-0 flex-1">
+                      <h3 className="text-[17px] font-extrabold text-[#252525] leading-tight whitespace-nowrap tracking-tight">Personality Journey</h3>
+                      <p className="text-[12px] text-[#444444] font-semibold mt-0.5 leading-[1.3]">
+                         Your personality profile is growing with every question.
+                      </p>
+                   </div>
+                </div>
+                
+                {/* Circular Progress */}
+                <div className="relative w-[76px] h-[76px] flex items-center justify-center shrink-0">
+                   <svg className="absolute inset-0 w-full h-full transform -rotate-90">
+                      <defs>
+                         <linearGradient id="coral-gradient-personality" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#F6A8B7" />
+                            <stop offset="100%" stopColor="#F8C3C6" />
+                         </linearGradient>
+                      </defs>
+                      <circle cx="38" cy="38" r="32" className="stroke-[#F6A8B7]/15 fill-none" strokeWidth="6" />
+                      <circle cx="38" cy="38" r="32" stroke="url(#coral-gradient-personality)" className="fill-none transition-all duration-500 ease-out" strokeWidth="6" strokeDasharray="201" strokeDashoffset={201 - (analysisProgressPercent / 100) * 201} strokeLinecap="round" />
+                   </svg>
+                   <div className="absolute inset-0 flex flex-col items-center justify-center mt-0.5">
+                      <span className="text-[20px] font-extrabold text-[#252525] leading-none">{analysisProgressPercent}%</span>
+                      <span className="text-[10.5px] font-bold text-[#777777] mt-[3px] text-center leading-none">Progress</span>
+                   </div>
+                </div>
+             </div>
+
+             {/* Lower row: Full-width button link */}
+             <div 
+                onClick={() => navigate("/personality")}
+                className="w-full pt-6 mt-6 border-t border-[#F5F5F5] flex items-center justify-between cursor-pointer group px-2"
+             >
+                <div className="flex items-center gap-3">
+                   <BarChart3 className="w-[18px] h-[18px] text-[#F6A8B7]" strokeWidth={2.5} />
+                   <span className="text-[16px] font-extrabold text-[#252525] group-hover:text-[#F6A8B7] transition-colors">View Full Analysis</span>
+                </div>
+                <ChevronRight className="w-[20px] h-[20px] text-[#252525]" strokeWidth={2.5} />
+             </div>
+          </div>
+
+          {/* 6. Quick Actions */}
+          <div className="space-y-2">
+             <h3 className="text-[18px] font-bold text-[#252525] mb-2">Quick Actions</h3>
+             <div className="flex overflow-x-auto no-scrollbar scroll-smooth gap-2.5 w-full pb-1 px-0.5">
+                {[
+                  { icon: Search, label: "Discover", color: "text-[#F6A8B7]", bg: "bg-[#F6A8B7]/10", path: "/discover" },
+                  { icon: Heart, label: "Matches", color: "text-[#F6A8B7]", bg: "bg-[#F6A8B7]/10", path: "/matches" },
+                  { icon: MessageCircle, label: "Chat", color: "text-[#F6A8B7]", bg: "bg-[#F6A8B7]/10", badge: unreadChatCount > 0 ? unreadChatCount.toString() : undefined, path: "/chat" },
+                  { icon: BarChart3, label: "Story", color: "text-[#F6A8B7]", bg: "bg-[#F6A8B7]/10", path: "/my-story#personality-snapshot" },
+                  { icon: Eye, label: "Profile", color: "text-[#F6A8B7]", bg: "bg-[#F6A8B7]/10", path: "/profile" },
+                ].map((act, i) => (
+                  <div key={i} onClick={() => navigate(act.path)} className="flex items-center justify-center gap-1.5 w-[102px] h-[38px] shrink-0 rounded-full bg-white/45 border border-white/35 hover:border-white/50 transition-all cursor-pointer shadow-sm relative select-none">
+                     <div className={`w-[24px] h-[24px] shrink-0 rounded-full ${act.bg} flex items-center justify-center`}>
+                        <act.icon className={`w-[15px] h-[15px] ${act.color}`} strokeWidth={1.5} />
+                     </div>
+                     <span className="text-[13px] font-medium text-[#777777] leading-none">{act.label}</span>
+                     {act.badge && <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 w-full text-[#252525] rounded-full border border-white/40 transition-all rounded-full flex items-center justify-center text-[10px] font-bold  shadow-sm" style={{ background: 'linear-gradient(135deg, #F8C7C8, #F8D9D2, #F7E8EE)', boxShadow: '0 4px 12px rgba(246, 168, 183, 0.15)' }}>{act.badge}</span>}
+                  </div>
+                ))}
+             </div>
+          </div>
+
+          {/* 7. Top Matches */}
+          <div className="space-y-2">
+             <div className="flex items-center justify-between mb-2">
+               <h3 className="text-[18px] font-bold text-[#252525]">Top Matches</h3>
+               <Link href="/matches">
+                 <span className="text-[13px] font-bold text-[#F6A8B7] hover:underline cursor-pointer">View All</span>
+               </Link>
+             </div>
+             
+             {(() => {
+                const answeredQuestions = (journeyProgress as any)?.answeredQuestions || 0;
+                
+                if (answeredQuestions < 5) {
+                   return (
+                      <div className="premium-glass-card p-4 text-center flex flex-col items-center justify-center h-[180px]">
+                         <div className="w-12 h-12 bg-[#F6A8B7]/10 rounded-full flex items-center justify-center mb-2">
+                            <Heart className="w-6 h-6 text-[#F6A8B7] fill-[#F6A8B7]/5" strokeWidth={1.5} />
                          </div>
-                       );
-                    })}
-                 </div>
-              );
-           })()}
+                         <h4 className="text-[15px] font-bold text-[#252525] mb-1">Unlock Your Matches</h4>
+                         <p className="text-[13px] text-[#777777] mb-3 max-w-[240px] mx-auto leading-normal">
+                            Complete your first 5 questions (Day 1) to reveal matches.
+                         </p>
+                         <Link href="/journey" className="block w-full">
+                           <Button className="w-full h-[48px] text-[15px] font-bold premium-pastel-button rounded-full">
+                              Start Journey
+                           </Button>
+                         </Link>
+                      </div>
+                   );
+                }
+
+                const getScore = (m: any) => Number(m.compatibilityScore || m.profile?.valueMatchScore || m.profile?.compatibilityScore || 0);
+                const validMatches = (matchesData?.matches || [])
+                    .filter((m: any) => getScore(m) > 10)
+                    .sort((a: any, b: any) => getScore(b) - getScore(a))
+                    .slice(0, 3);
+
+                if (validMatches.length === 0) {
+                   return (
+                      <div className="premium-glass-card p-4 text-center flex flex-col items-center justify-center h-[180px]">
+                         <div className="w-12 h-12 bg-white/30 border border-white/20 rounded-full flex items-center justify-center mb-2 shadow-sm">
+                            <Heart className="w-6 h-6 text-[#F6A8B7] fill-[#F6A8B7]/20" strokeWidth={1.5} />
+                         </div>
+                         <h4 className="text-[15px] font-bold text-[#252525] mb-1">Finding Matches...</h4>
+                         <p className="text-[13px] text-[#777777] mb-0 max-w-[240px] mx-auto leading-normal">
+                            Check back later or answer more questions to improve your profile accuracy.
+                         </p>
+                      </div>
+                   );
+                }
+
+                return (
+                   <div className="grid grid-cols-3 gap-2.5 w-full h-[180px]">
+                      {validMatches.map((matchItem: any, i: number) => {
+                         const match = matchItem.profile;
+                         const photo = match.photos?.find((p: any) => p.isPrimary) ?? match.photos?.[0];
+                         const displayName = match.displayName ?? match.firstName;
+                         
+                         return (
+                           <div key={i} className="w-full h-[180px] rounded-xl bg-white/45 border border-white/35 relative overflow-hidden active:scale-[0.98] transition-transform shadow-sm cursor-pointer group" onClick={() => navigate(`/profile/${match.id}`)}>
+                              {photo ? (
+                                <img src={photo.url} className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-500" alt={displayName} />
+                              ) : (
+                                <div className="absolute inset-0 w-full h-full bg-slate-200" />
+                              )}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent pointer-events-none" />
+                              
+                              {matchItem.isNew && (
+                                <div className="absolute top-1.5 left-1.5 w-full text-[#252525] rounded-full border border-white/40 transition-all  text-[7px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider shadow-md" style={{ background: 'linear-gradient(135deg, #F8C7C8, #F8D9D2, #F7E8EE)', boxShadow: '0 4px 12px rgba(246, 168, 183, 0.15)' }}>NEW</div>
+                              )}
+                              
+                              <div className="absolute bottom-2 left-2 right-2 flex flex-col pointer-events-none">
+                                 <h4 className="text-[12px] font-bold text-white mb-0.5 leading-tight truncate drop-shadow-sm">
+                                   {displayName}{match.age ? `, ${match.age}` : ""}
+                                 </h4>
+                                 {(match.city || match.country) && (
+                                   <span className="text-[9px] text-white/80 font-medium mb-1 line-clamp-1 drop-shadow-sm">
+                                     {[match.city, match.country].filter(Boolean).join(", ")}
+                                   </span>
+                                 )}
+                                 <div className="flex items-center gap-1 text-[#252525] text-[9px] font-black bg-[#F6A8B7]/95 backdrop-blur-md px-1.5 py-0.5 rounded border border-white/20 w-fit shadow-sm">
+                                    {getScore(matchItem)}%
+                                 </div>
+                              </div>
+                           </div>
+                         );
+                      })}
+                   </div>
+                );
+             })()}
+          </div>
+
         </div>
-
-
       </div>
     </AppLayout>
   );

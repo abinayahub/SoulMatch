@@ -86,9 +86,9 @@ function InterestCard({ interest, type }: { interest: any; type: string }) {
           </h3>
           <Badge className={`text-xs border ${statusColors[interest.status] ?? ""} shrink-0`}>{interest.status}</Badge>
         </div>
-        {otherUser.city && <p className="text-xs text-muted-foreground">{otherUser.city}</p>}
-        {interest.message && <p className="text-sm text-muted-foreground mt-1 italic truncate">"{interest.message}"</p>}
-        <p className="text-xs text-muted-foreground mt-1">{timeAgo(interest.createdAt)}</p>
+        {otherUser.city && <p className="text-xs text-[#707070]">{otherUser.city}</p>}
+        {interest.message && <p className="text-sm text-[#707070] mt-1 italic truncate">"{interest.message}"</p>}
+        <p className="text-xs text-[#707070] mt-1">{timeAgo(interest.createdAt)}</p>
       </div>
 
       <div className="flex items-center gap-2 shrink-0">
@@ -139,14 +139,14 @@ export default function InterestsPage() {
   return (
     <AppLayout>
       <div className="max-w-3xl mx-auto px-4 py-8">
-        <Button variant="ghost" onClick={() => window.history.back()} className="mb-6 -ml-4 text-muted-foreground hover:bg-card/5">
+        <Button variant="ghost" onClick={() => window.history.back()} className="mb-6 -ml-4 text-[#707070] hover:bg-card/5">
           <ChevronLeft className="w-4 h-4 mr-1" />Back
         </Button>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
           <h1 className="text-3xl font-bold flex items-center gap-3 mb-1">
             <Heart className="w-7 h-7 text-primary" />Interests
           </h1>
-          <p className="text-muted-foreground">Manage your connections and mutual matches.</p>
+          <p className="text-[#707070]">Manage your connections and mutual matches.</p>
         </motion.div>
 
         {/* Summary */}
@@ -154,11 +154,11 @@ export default function InterestsPage() {
           {[
             { label: "Pending", value: (summary as any)?.pendingReceived ?? 0, color: "text-yellow-400" },
             { label: "Mutual", value: (summary as any)?.mutualCount ?? 0, color: "text-primary" },
-            { label: "Sent", value: (summary as any)?.totalSent ?? 0, color: "text-muted-foreground" },
+            { label: "Sent", value: (summary as any)?.totalSent ?? 0, color: "text-[#707070]" },
           ].map((s) => (
             <div key={s.label} className="bg-card border border-border shadow-md rounded-2xl rounded-xl p-3 text-center">
               <div className={`text-2xl font-bold ${s.color}`}>{s.value}</div>
-              <div className="text-xs text-muted-foreground">{s.label}</div>
+              <div className="text-xs text-[#707070]">{s.label}</div>
             </div>
           ))}
         </motion.div>
@@ -175,7 +175,7 @@ export default function InterestsPage() {
           <TabsContent value="received">
             {loadingR ? <Skeleton className="h-24 rounded-2xl bg-card/5" /> :
               (received as any[]).length === 0 ? (
-                <div className="text-center py-16 text-muted-foreground">
+                <div className="text-center py-16 text-[#707070]">
                   <Heart className="w-10 h-10 mx-auto mb-3 opacity-30" />
                   <p>No interests received yet</p>
                 </div>
@@ -189,7 +189,7 @@ export default function InterestsPage() {
           <TabsContent value="sent">
             {loadingS ? <Skeleton className="h-24 rounded-2xl bg-card/5" /> :
               (sent as any[]).length === 0 ? (
-                <div className="text-center py-16 text-muted-foreground">
+                <div className="text-center py-16 text-[#707070]">
                   <Clock className="w-10 h-10 mx-auto mb-3 opacity-30" />
                   <p>You haven't sent any interests yet</p>
                 </div>
@@ -203,7 +203,7 @@ export default function InterestsPage() {
           <TabsContent value="mutual">
             {loadingM ? <Skeleton className="h-24 rounded-2xl bg-card/5" /> :
               (mutual as any[]).length === 0 ? (
-                <div className="text-center py-16 text-muted-foreground">
+                <div className="text-center py-16 text-[#707070]">
                   <Heart className="w-10 h-10 mx-auto mb-3 opacity-30" />
                   <p>No mutual matches yet — keep discovering!</p>
                 </div>

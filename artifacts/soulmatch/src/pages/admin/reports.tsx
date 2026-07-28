@@ -61,14 +61,14 @@ export default function AdminReportsPage() {
           <h1 className="text-3xl font-bold flex items-center gap-3 mb-1">
             <Flag className="w-7 h-7 text-red-400" />Reports Queue
           </h1>
-          <p className="text-muted-foreground">Review and resolve user reports.</p>
+          <p className="text-[#707070]">Review and resolve user reports.</p>
         </motion.div>
 
         <div className="space-y-3">
           {isLoading ? (
             [...Array(5)].map((_, i) => <Skeleton key={i} className="h-24 rounded-2xl bg-card/5" />)
           ) : reports.length === 0 ? (
-            <div className="text-center py-16 text-muted-foreground">
+            <div className="text-center py-16 text-[#707070]">
               <Flag className="w-10 h-10 mx-auto mb-3 opacity-30" /><p>No reports</p>
             </div>
           ) : (
@@ -90,7 +90,7 @@ export default function AdminReportsPage() {
                           <AvatarImage src={reporterPhoto?.url} />
                           <AvatarFallback className="text-xs">{getInitials(r.reporter?.firstName ?? "U")}</AvatarFallback>
                         </Avatar>
-                        <span className="text-xs text-muted-foreground">reported</span>
+                        <span className="text-xs text-[#707070]">reported</span>
                         <Avatar className="w-9 h-9">
                           <AvatarImage src={reportedPhoto?.url} />
                           <AvatarFallback className="text-xs">{getInitials(r.reported?.firstName ?? "U")}</AvatarFallback>
@@ -99,15 +99,15 @@ export default function AdminReportsPage() {
                       <div>
                         <div className="flex items-center gap-2 mb-0.5">
                           <span className="font-semibold text-sm">{r.reporter?.firstName}</span>
-                          <span className="text-muted-foreground text-xs">reported</span>
+                          <span className="text-[#707070] text-xs">reported</span>
                           <span className="font-semibold text-sm">{r.reported?.firstName}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <Badge className="text-xs bg-red-500/20 text-red-400 border-red-500/30">{r.reason?.replace(/_/g, " ")}</Badge>
                           <Badge className={`text-xs border ${statusColors[r.status] ?? ""}`}>{r.status}</Badge>
-                          <span className="text-xs text-muted-foreground">{formatDate(r.createdAt)}</span>
+                          <span className="text-xs text-[#707070]">{formatDate(r.createdAt)}</span>
                         </div>
-                        {r.description && <p className="text-xs text-muted-foreground mt-1 max-w-md">{r.description}</p>}
+                        {r.description && <p className="text-xs text-[#707070] mt-1 max-w-md">{r.description}</p>}
                       </div>
                     </div>
                     {r.status === "pending" && (

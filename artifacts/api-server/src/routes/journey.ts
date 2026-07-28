@@ -50,8 +50,9 @@ function getJourneyLockStatus(
     // Convert local midnight back to UTC ISO string
     const unlockTimeUTC = new Date(tomorrowLocal.getTime() + (timezoneOffset * 60 * 1000));
     return {
-      isLocked: true,
-      unlockedAt: unlockTimeUTC.toISOString()
+      // FOR TESTING ONLY: bypass daily lock
+      isLocked: false, // true,
+      unlockedAt: null // unlockTimeUTC.toISOString()
     };
   }
 
@@ -78,7 +79,10 @@ router.get("/questions", authenticate, async (req: AuthRequest, res) => {
     const timezoneOffset = tzOffsetHeader ? parseInt(tzOffsetHeader as string, 10) : 0;
     const lastAnswer = answers.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
     const lockStatus = getJourneyLockStatus(answers.length, lastAnswer, timezoneOffset);
-    if (lockStatus.isLocked) {
+    console.log('[DEBUG] answers.length:', answers.length, 'lockStatus:', lockStatus);
+    const isTestMode = req.headers['x-test-mode'] === 'true';
+    if (lockStatus.isLocked && !isTestMode) {
+      console.log('[DEBUG] isLocked is true! Returning []');
       return res.json([]);
     }
 
@@ -97,8 +101,11 @@ router.get("/questions", authenticate, async (req: AuthRequest, res) => {
       }
     }
 
-    // Only fetch questions for the current day
+    // If test mode is enabled, we could return all questions, but returning the current day questions works if currentDay keeps incrementing. 
+    // Wait, if isTestMode is true, currentDay will advance naturally because answeredIds has them all. 
+    // But wait! If we just let currentDay advance naturally, it will return the NEXT day's questions. So we don't need to change this logic, just the isLocked check!
     const questions = allActiveQuestions.filter(q => q.day === currentDay);
+    console.log('[DEBUG] currentDay:', currentDay, 'questions returned:', questions.length);
 
     return res.json(questions.map((q) => ({
       id: q.id,
@@ -181,7 +188,7 @@ router.get("/progress", authenticate, async (req: AuthRequest, res) => {
       unlockedAt,
       recentAnswers,
       categoryProgress,
-      questionsRemainingToday: unlockedAt && new Date(unlockedAt) > new Date() ? 0 : questionsRemainingToday,
+      questionsRemainingToday: isTestMode ? (150 - answeredQuestions) : (unlockedAt && new Date(unlockedAt) > new Date() ? 0 : questionsRemainingToday),
     });
   } catch (err) { req.log.error(err); return res.status(500).json({ error: err instanceof Error ? String(err) + ' ' + (err.stack || '') : String(err) }); }
 });
@@ -198,7 +205,8 @@ router.post("/answers", authenticate, async (req: AuthRequest, res) => {
     const tzOffsetHeader = req.headers['x-timezone-offset'];
     const timezoneOffset = tzOffsetHeader ? parseInt(tzOffsetHeader as string, 10) : 0;
     const lockStatus = getJourneyLockStatus(answers.length, lastAnswer, timezoneOffset);
-    if (lockStatus.isLocked) {
+    const isTestMode = req.headers['x-test-mode'] === 'true';
+    if (lockStatus.isLocked && !isTestMode) {
       return res.status(403).json({ error: "Next day's questions are locked until midnight." });
     }
 

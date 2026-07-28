@@ -7,12 +7,14 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/lib/auth-context";
 import { PrivateRoute, AdminRoute } from "@/components/PrivateRoute";
+import { PublicRoute } from "@/components/PublicRoute";
 import { getAccessToken } from "@/lib/auth-context";
 
 import NotFound from "@/pages/not-found";
 import LandingPage from "@/pages/landing";
 import LoginPage from "@/pages/login";
 import RegisterPage from "@/pages/register";
+import RegistrationSuccessPage from "@/pages/registration-success";
 import CompleteProfilePage from "@/pages/complete-profile";
 import ForgotPasswordPage from "@/pages/forgot-password";
 import ResetPasswordPage from "@/pages/reset-password";
@@ -63,9 +65,18 @@ function Router() {
   return (
     <Switch>
       {/* Public */}
-      <Route path="/" component={LandingPage} />
-      <Route path="/login" component={LoginPage} />
-      <Route path="/register" component={RegisterPage} />
+      <Route path="/">
+        <PublicRoute component={LandingPage} />
+      </Route>
+      <Route path="/login">
+        <PublicRoute component={LoginPage} />
+      </Route>
+      <Route path="/register">
+        <PublicRoute component={RegisterPage} />
+      </Route>
+      <Route path="/registration-success">
+        <PrivateRoute component={RegistrationSuccessPage} />
+      </Route>
       <Route path="/complete-profile" component={CompleteProfilePage} />
       <Route path="/forgot-password" component={ForgotPasswordPage} />
       <Route path="/reset-password" component={ResetPasswordPage} />

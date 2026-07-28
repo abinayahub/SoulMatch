@@ -99,7 +99,7 @@ export default function UserManagement() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
           <div>
             <h1 className="text-3xl font-bold">User Management</h1>
-            <p className="text-muted-foreground mt-1">Manage users, verify profiles and monitor user activity.</p>
+            <p className="text-[#707070] mt-1">Manage users, verify profiles and monitor user activity.</p>
           </div>
           <Button onClick={() => handleSoon('Export Users')} className="bg-[#13131A] border border-white/10 hover:bg-card/5 text-white h-10">
             <Download className="w-4 h-4 mr-2" /> Export Users
@@ -108,17 +108,17 @@ export default function UserManagement() {
 
         {/* Top Stats Cards */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
-          <StatCard icon={<Users className="w-5 h-5 text-purple-400" />} bg="bg-purple-500/10" title="Total Users" data={stats?.totalUsers} />
+          <StatCard icon={<Users className="w-5 h-5 text-[#F6A8B7]" />} bg="bg-[#F6A8B7]/10" title="Total Users" data={stats?.totalUsers} />
           <StatCard icon={<TrendingUp className="w-5 h-5 text-green-400" />} bg="bg-green-500/10" title="Active Users" data={stats?.activeUsers} />
-          <StatCard icon={<Crown className="w-5 h-5 text-pink-400" />} bg="bg-pink-500/10" title="Premium Users" data={stats?.premiumUsers} />
+          <StatCard icon={<Crown className="w-5 h-5 text-[#F6A8B7]" />} bg="bg-[#F6A8B7]/10" title="Premium Users" data={stats?.premiumUsers} />
           <StatCard icon={<ShieldCheck className="w-5 h-5 text-blue-400" />} bg="bg-blue-500/10" title="Verified Users" data={stats?.verifiedUsers} />
-          <StatCard icon={<Hourglass className="w-5 h-5 text-orange-400" />} bg="bg-orange-500/10" title="Pending Verification" data={stats?.pendingVerification} />
+          <StatCard icon={<Hourglass className="w-5 h-5 text-[#F6A8B7]" />} bg="bg-[#F6A8B7]/10" title="Pending Verification" data={stats?.pendingVerification} />
         </div>
 
         {/* Filters */}
         <div className="bg-card border border-border shadow-md rounded-2xl rounded-2xl border border-white/10 p-4 mb-6 flex flex-wrap items-center gap-4">
           <div className="relative flex-1 min-w-[200px]">
-            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#707070]" />
             <Input 
               placeholder="Search by name, email or phone..." 
               className="pl-10 bg-[#1A1A24] border-white/5 w-full"
@@ -134,7 +134,7 @@ export default function UserManagement() {
           <FilterSelect label="30-Day Progress" />
           <FilterSelect label="Profile Insights" />
           <Button variant="ghost" className="text-white/60 hover:text-white" onClick={() => handleSoon('Reset Filters')}>Reset</Button>
-          <Button className="bg-purple-600 hover:bg-purple-700 text-white" onClick={() => handleSoon('Apply Filters')}>
+          <Button className="w-full text-white gradient-coral-pill rounded-full border border-white/40 transition-all hover:bg-purple-700 "  onClick={() => handleSoon('Apply Filters')}>
             Apply Filters
           </Button>
         </div>
@@ -159,9 +159,9 @@ export default function UserManagement() {
             </TableHeader>
             <TableBody>
               {usersLoading ? (
-                <TableRow><TableCell colSpan={11} className="text-center py-8 text-muted-foreground animate-pulse">Loading users...</TableCell></TableRow>
+                <TableRow><TableCell colSpan={11} className="text-center py-8 text-[#707070] animate-pulse">Loading users...</TableCell></TableRow>
               ) : usersData?.users.length === 0 ? (
-                <TableRow><TableCell colSpan={11} className="text-center py-8 text-muted-foreground">No users found.</TableCell></TableRow>
+                <TableRow><TableCell colSpan={11} className="text-center py-8 text-[#707070]">No users found.</TableCell></TableRow>
               ) : (
                 usersData?.users.map((u: any) => (
                   <TableRow 
@@ -177,22 +177,22 @@ export default function UserManagement() {
                         </Avatar>
                         <div>
                           <p className="font-medium text-sm text-white">{u.firstName} {u.lastName}</p>
-                          <p className="text-xs text-muted-foreground">{u.email}</p>
+                          <p className="text-xs text-[#707070]">{u.email}</p>
                         </div>
                       </div>
                     </TableCell>
                     <TableCell className="text-sm">{u.age || '-'}</TableCell>
                     <TableCell className="text-sm">
-                      <span className={u.gender === 'female' ? 'text-pink-400' : u.gender === 'male' ? 'text-blue-400' : 'text-purple-400'}>
+                      <span className={u.gender === 'female' ? 'text-[#F6A8B7]' : u.gender === 'male' ? 'text-blue-400' : 'text-[#F6A8B7]'}>
                         {u.gender ? u.gender.charAt(0).toUpperCase() + u.gender.slice(1) : '-'}
                       </span>
                     </TableCell>
                     <TableCell className="text-sm">{u.location !== 'Unknown' ? u.location.split(',')[0] : '-'}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2 w-24">
-                        <div className="text-xs text-muted-foreground">{Math.floor((u.journeyProgress / 150) * 30)}/30</div>
+                        <div className="text-xs text-[#707070]">{Math.floor((u.journeyProgress / 150) * 30)}/30</div>
                         <div className="h-1.5 flex-1 rounded-full bg-card/10 overflow-hidden">
-                          <div className="h-full bg-pink-500" style={{ width: `${Math.min(100, (u.journeyProgress / 150) * 100)}%` }} />
+                          <div className="h-full bg-[#F6A8B7]" style={{ width: `${Math.min(100, (u.journeyProgress / 150) * 100)}%` }} />
                         </div>
                       </div>
                     </TableCell>
@@ -211,24 +211,24 @@ export default function UserManagement() {
                       {u.isPremium ? (
                         <span className="flex items-center text-sm text-yellow-400"><Crown className="w-3 h-3 mr-1"/> Yes</span>
                       ) : (
-                        <span className="flex items-center text-sm text-muted-foreground">- No</span>
+                        <span className="flex items-center text-sm text-[#707070]">- No</span>
                       )}
                     </TableCell>
                     <TableCell>
                       {u.verificationStatus === "verified" ? (
                         <span className="flex items-center text-sm text-green-400"><ShieldCheck className="w-3 h-3 mr-1"/> Verified</span>
                       ) : (
-                        <span className="flex items-center text-sm text-orange-400"><Hourglass className="w-3 h-3 mr-1"/> Pending</span>
+                        <span className="flex items-center text-sm text-[#F6A8B7]"><Hourglass className="w-3 h-3 mr-1"/> Pending</span>
                       )}
                     </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
+                    <TableCell className="text-sm text-[#707070]">
                       {format(new Date(u.createdAt), "dd MMM yyyy")}
                     </TableCell>
                     <TableCell className="text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" size="icon" className="hover:bg-card/10 h-8 w-8" onClick={(e) => e.stopPropagation()}>
-                            <MoreVertical className="w-4 h-4 text-muted-foreground" />
+                            <MoreVertical className="w-4 h-4 text-[#707070]" />
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-48 bg-[#1A1A24] border border-white/10">
@@ -251,11 +251,11 @@ export default function UserManagement() {
           </Table>
 
           {usersData?.totalPages > 1 && (
-            <div className="p-4 border-t border-white/10 flex items-center justify-between text-sm text-muted-foreground bg-[#13131A]">
+            <div className="p-4 border-t border-white/10 flex items-center justify-between text-sm text-[#707070] bg-[#13131A]">
               <div>Showing {((page - 1) * 10) + 1} to {Math.min(page * 10, usersData.total)} of {usersData.total} users</div>
               <div className="flex items-center gap-2">
                 <Button variant="ghost" size="sm" className="h-8" disabled={page === 1} onClick={() => setPage(p => p - 1)}>&lt;</Button>
-                <span className="w-8 text-center flex items-center justify-center bg-purple-600/20 text-purple-400 rounded h-8">{page}</span>
+                <span className="w-8 text-center flex items-center justify-center bg-[#F6A8B7]/20 text-[#F6A8B7] rounded h-8">{page}</span>
                 <span className="px-2">...</span>
                 <span className="w-8 text-center">{usersData.totalPages}</span>
                 <Button variant="ghost" size="sm" className="h-8" disabled={page === usersData.totalPages} onClick={() => setPage(p => p + 1)}>&gt;</Button>
@@ -276,7 +276,7 @@ export default function UserManagement() {
           <div className="p-6 border-b border-white/10 relative">
             <div className="flex justify-between items-start mb-6">
               <h2 className="text-xl font-bold">User Details</h2>
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-white" onClick={() => setSelectedUser(null)}>
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-[#707070] hover:text-white" onClick={() => setSelectedUser(null)}>
                 <X className="w-5 h-5" />
               </Button>
             </div>
@@ -293,13 +293,13 @@ export default function UserManagement() {
                     <span className="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span> {selectedUser.status}
                   </Badge>
                 </div>
-                <div className="text-sm text-muted-foreground mt-1 flex items-center gap-2">
+                <div className="text-sm text-[#707070] mt-1 flex items-center gap-2">
                   <div className="truncate w-[200px]">{selectedUser.email}</div>
                 </div>
-                <div className="text-sm text-muted-foreground mt-1">
+                <div className="text-sm text-[#707070] mt-1">
                   {selectedUser.phone || '+91 98765 43210'}
                 </div>
-                <div className="text-sm text-muted-foreground mt-1">
+                <div className="text-sm text-[#707070] mt-1">
                   {selectedUser.location}
                 </div>
               </div>
@@ -309,11 +309,11 @@ export default function UserManagement() {
           <Tabs defaultValue="overview" className="flex-1 flex flex-col">
             <div className="px-6 pt-4 border-b border-white/10">
               <TabsList className="bg-transparent h-auto p-0 flex gap-6 w-full justify-start overflow-x-auto no-scrollbar">
-                <TabsTrigger value="overview" className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-pink-500 data-[state=active]:border-b-2 data-[state=active]:border-pink-500 rounded-none px-0 pb-3 text-muted-foreground">Overview</TabsTrigger>
-                <TabsTrigger value="verification" className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-pink-500 data-[state=active]:border-b-2 data-[state=active]:border-pink-500 rounded-none px-0 pb-3 text-muted-foreground">Verification</TabsTrigger>
-                <TabsTrigger value="activity" className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-pink-500 data-[state=active]:border-b-2 data-[state=active]:border-pink-500 rounded-none px-0 pb-3 text-muted-foreground">Activity</TabsTrigger>
-                <TabsTrigger value="safety" className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-pink-500 data-[state=active]:border-b-2 data-[state=active]:border-pink-500 rounded-none px-0 pb-3 text-muted-foreground">Safety</TabsTrigger>
-                <TabsTrigger value="notes" className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-pink-500 data-[state=active]:border-b-2 data-[state=active]:border-pink-500 rounded-none px-0 pb-3 text-muted-foreground">Notes</TabsTrigger>
+                <TabsTrigger value="overview" className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-[#F6A8B7] data-[state=active]:border-b-2 data-[state=active]:border-[#F6A8B7] rounded-none px-0 pb-3 text-[#707070]">Overview</TabsTrigger>
+                <TabsTrigger value="verification" className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-[#F6A8B7] data-[state=active]:border-b-2 data-[state=active]:border-[#F6A8B7] rounded-none px-0 pb-3 text-[#707070]">Verification</TabsTrigger>
+                <TabsTrigger value="activity" className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-[#F6A8B7] data-[state=active]:border-b-2 data-[state=active]:border-[#F6A8B7] rounded-none px-0 pb-3 text-[#707070]">Activity</TabsTrigger>
+                <TabsTrigger value="safety" className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-[#F6A8B7] data-[state=active]:border-b-2 data-[state=active]:border-[#F6A8B7] rounded-none px-0 pb-3 text-[#707070]">Safety</TabsTrigger>
+                <TabsTrigger value="notes" className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-[#F6A8B7] data-[state=active]:border-b-2 data-[state=active]:border-[#F6A8B7] rounded-none px-0 pb-3 text-[#707070]">Notes</TabsTrigger>
               </TabsList>
             </div>
 
@@ -323,23 +323,23 @@ export default function UserManagement() {
                 {/* Visual Stats Row */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-card border border-border shadow-md rounded-2xl bg-[#13131A] p-4 rounded-xl border border-white/5">
-                    <div className="text-xs text-muted-foreground mb-4">Profile Completion</div>
+                    <div className="text-xs text-[#707070] mb-4">Profile Completion</div>
                     <div className="flex justify-center">
-                      <CircularProgress value={92} size={80} strokeWidth={6} color="stroke-pink-500" showText className="text-2xl" />
+                      <CircularProgress value={92} size={80} strokeWidth={6} color="stroke-[#F6A8B7]" showText className="text-2xl" />
                     </div>
                   </div>
                   <div className="bg-card border border-border shadow-md rounded-2xl bg-[#13131A] p-4 rounded-xl border border-white/5 flex flex-col justify-between">
                     <div>
-                      <div className="text-xs text-muted-foreground mb-2">30-Day Journey</div>
+                      <div className="text-xs text-[#707070] mb-2">30-Day Journey</div>
                       <div className="flex items-center gap-2 text-sm">
                         <CalendarIcon /> Day {Math.floor((selectedUser.journeyProgress / 150) * 30) || 28} / 30
                       </div>
                       <div className="mt-3 h-1.5 w-full rounded-full bg-card/10 overflow-hidden">
-                        <div className="h-full bg-pink-500" style={{ width: `${Math.min(100, (selectedUser.journeyProgress / 150) * 100) || 92}%` }} />
+                        <div className="h-full bg-[#F6A8B7]" style={{ width: `${Math.min(100, (selectedUser.journeyProgress / 150) * 100) || 92}%` }} />
                       </div>
                     </div>
                     <div className="mt-4">
-                      <div className="text-xs text-muted-foreground mb-2">Insight Confidence</div>
+                      <div className="text-xs text-[#707070] mb-2">Insight Confidence</div>
                       <div className="flex items-center justify-between text-xs text-green-400 font-medium mb-1">
                         <span>87%</span>
                         <CheckCircle2 className="w-3 h-3" />
@@ -355,13 +355,13 @@ export default function UserManagement() {
                 <div className="bg-card border border-border shadow-md rounded-2xl bg-[#13131A] p-5 rounded-xl border border-white/5">
                   <div className="flex justify-between items-center mb-4">
                     <h4 className="text-sm font-medium">Personality Traits</h4>
-                    <span className="text-[10px] text-purple-400 cursor-pointer hover:underline" onClick={() => handleSoon('Full Profile Insights')}>View Full Analysis</span>
+                    <span className="text-[10px] text-[#F6A8B7] cursor-pointer hover:underline" onClick={() => handleSoon('Full Profile Insights')}>View Full Analysis</span>
                   </div>
                   <div className="space-y-4">
-                    <TraitBar label="Connection Oriented" percent={35} color="bg-pink-500" />
+                    <TraitBar label="Connection Oriented" percent={35} color="bg-[#F6A8B7]" />
                     <TraitBar label="Growth Oriented" percent={20} color="bg-blue-500" />
                     <TraitBar label="Stability Oriented" percent={30} color="bg-green-500" />
-                    <TraitBar label="Exploration Oriented" percent={15} color="bg-purple-500" />
+                    <TraitBar label="Exploration Oriented" percent={15} color="bg-[#F6A8B7]" />
                   </div>
                 </div>
 
@@ -370,19 +370,19 @@ export default function UserManagement() {
                   <h4 className="text-sm font-medium mb-4">Basic Information</h4>
                   <div className="grid grid-cols-3 gap-y-4 text-xs">
                     <div>
-                      <div className="text-muted-foreground mb-1">Age</div>
+                      <div className="text-[#707070] mb-1">Age</div>
                       <div>{selectedUser.age || '-'}</div>
                     </div>
                     <div>
-                      <div className="text-muted-foreground mb-1">Gender</div>
+                      <div className="text-[#707070] mb-1">Gender</div>
                       <div className="capitalize">{selectedUser.gender || '-'}</div>
                     </div>
                     <div>
-                      <div className="text-muted-foreground mb-1">Joined On</div>
+                      <div className="text-[#707070] mb-1">Joined On</div>
                       <div>{format(new Date(selectedUser.createdAt), "dd MMM yyyy")}</div>
                     </div>
                     <div className="col-span-3">
-                      <div className="text-muted-foreground mb-1">Last Login</div>
+                      <div className="text-[#707070] mb-1">Last Login</div>
                       <div>{selectedUser.lastActive ? format(new Date(selectedUser.lastActive), "dd MMM yyyy, hh:mm a") : 'Today, 09:45 AM'}</div>
                     </div>
                   </div>
@@ -396,7 +396,7 @@ export default function UserManagement() {
                     <ActionBtn icon={<Edit />} label="Edit User" onClick={() => handleSoon('Edit User')} />
                     <ActionBtn icon={<ShieldCheck className="text-green-400" />} label="Verify User" onClick={() => handleAction(selectedUser.id, 'verify')} />
                     <ActionBtn icon={<Crown className="text-yellow-400" />} label="Grant Premium" onClick={() => handleAction(selectedUser.id, 'grant_premium')} />
-                    <ActionBtn icon={<Ban className="text-orange-400" />} label="Suspend User" onClick={() => handleAction(selectedUser.id, 'suspend')} />
+                    <ActionBtn icon={<Ban className="text-[#F6A8B7]" />} label="Suspend User" onClick={() => handleAction(selectedUser.id, 'suspend')} />
                     <ActionBtn icon={<X className="text-red-400" />} label="Ban User" onClick={() => handleAction(selectedUser.id, 'ban')} />
                     <ActionBtn icon={<MessageSquare className="text-blue-400" />} label="Send Message" onClick={() => handleSoon('Send Message')} />
                     <ActionBtn icon={<Trash2 className="text-red-500" />} label="Delete User" onClick={() => handleAction(selectedUser.id, 'delete')} />
@@ -404,10 +404,10 @@ export default function UserManagement() {
                 </div>
 
               </TabsContent>
-              <TabsContent value="verification" className="m-0 text-sm text-muted-foreground text-center py-10">Verification details coming soon.</TabsContent>
-              <TabsContent value="activity" className="m-0 text-sm text-muted-foreground text-center py-10">Activity logs coming soon.</TabsContent>
-              <TabsContent value="safety" className="m-0 text-sm text-muted-foreground text-center py-10">Safety reports coming soon.</TabsContent>
-              <TabsContent value="notes" className="m-0 text-sm text-muted-foreground text-center py-10">Admin notes coming soon.</TabsContent>
+              <TabsContent value="verification" className="m-0 text-sm text-[#707070] text-center py-10">Verification details coming soon.</TabsContent>
+              <TabsContent value="activity" className="m-0 text-sm text-[#707070] text-center py-10">Activity logs coming soon.</TabsContent>
+              <TabsContent value="safety" className="m-0 text-sm text-[#707070] text-center py-10">Safety reports coming soon.</TabsContent>
+              <TabsContent value="notes" className="m-0 text-sm text-[#707070] text-center py-10">Admin notes coming soon.</TabsContent>
             </div>
           </Tabs>
         </div>
@@ -426,7 +426,7 @@ function StatCard({ icon, bg, title, data }: any) {
         <div className={`p-2 rounded-lg ${bg}`}>{icon}</div>
       </div>
       <div>
-        <div className="text-xs text-muted-foreground">{title}</div>
+        <div className="text-xs text-[#707070]">{title}</div>
         <div className="text-2xl font-bold text-white mt-0.5">{data?.value ? data.value.toLocaleString() : '...'}</div>
         <div className={`text-[10px] mt-2 ${data?.trend?.includes('+') ? 'text-green-400' : 'text-red-400'}`}>
           {data?.trend || '...'}
@@ -439,7 +439,7 @@ function StatCard({ icon, bg, title, data }: any) {
 function FilterSelect({ label }: { label: string }) {
   return (
     <div className="flex-shrink-0">
-      <div className="text-[10px] text-muted-foreground mb-1 ml-1">{label}</div>
+      <div className="text-[10px] text-[#707070] mb-1 ml-1">{label}</div>
       <Select defaultValue="all">
         <SelectTrigger className="w-[120px] h-8 bg-transparent border-white/10 text-xs">
           <SelectValue />
@@ -470,7 +470,7 @@ function CircularProgress({ value, size = 32, strokeWidth = 3, color = "stroke-g
 
 function CalendarIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#707070]">
       <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
       <line x1="16" y1="2" x2="16" y2="6"></line>
       <line x1="8" y1="2" x2="8" y2="6"></line>
@@ -483,7 +483,7 @@ function TraitBar({ label, percent, color }: any) {
   return (
     <div>
       <div className="flex justify-between text-[10px] mb-1.5">
-        <span className="text-muted-foreground">{label}</span>
+        <span className="text-[#707070]">{label}</span>
         <span className="text-white">{percent}%</span>
       </div>
       <div className="h-1 w-full bg-card/10 rounded-full overflow-hidden">
@@ -499,8 +499,8 @@ function ActionBtn({ icon, label, onClick }: any) {
       onClick={onClick}
       className="bg-card border border-border shadow-md rounded-2xl bg-[#1A1A24] hover:bg-card/5 border border-white/5 rounded-lg flex flex-col items-center justify-center p-3 gap-2 cursor-pointer transition-colors"
     >
-      <div className="w-5 h-5 flex items-center justify-center text-muted-foreground">{icon}</div>
-      <span className="text-[9px] text-center text-muted-foreground leading-tight">{label}</span>
+      <div className="w-5 h-5 flex items-center justify-center text-[#707070]">{icon}</div>
+      <span className="text-[9px] text-center text-[#707070] leading-tight">{label}</span>
     </div>
   );
 }

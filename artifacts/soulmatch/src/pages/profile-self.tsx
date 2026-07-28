@@ -112,52 +112,55 @@ export default function ProfilePage() {
     <AppLayout>
       <AnimatePresence>
         {showSuccessOverlay && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background/80 backdrop-blur-md">
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-card border border-border rounded-[32px] p-8 text-center max-w-sm w-full shadow-2xl">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-transparent/80 backdrop-blur-md">
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="rounded-[32px] p-8 text-center max-w-sm w-full shadow-2xl border border-white/40" style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(28px)', WebkitBackdropFilter: 'blur(28px)' }}>
               <div className="relative w-32 h-32 mx-auto mb-8">
                 <motion.div animate={{ rotate: 360 }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }} className="absolute inset-0 flex items-center justify-center" />
                 <div className="absolute inset-0 flex items-center justify-center z-10">
-                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-primary shadow-[0_0_30px_rgba(236,72,153,0.5)]">
-                    <Heart className="w-8 h-8 text-white fill-white" />
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(246,168,183,0.5)]" style={{ background: 'linear-gradient(135deg, #F8C7C8, #F8D9D2, #F7E8EE)' }}>
+                    <Heart className="w-8 h-8 text-[#252525] fill-[#252525]" />
                   </div>
                 </div>
               </div>
-              <h2 className="text-2xl font-extrabold text-foreground mb-2">Profile Completed!</h2>
-              <p className="text-muted-foreground text-sm mb-8 leading-relaxed">You have unlocked priority matching and detailed compatibility insights.</p>
-              <Button className="w-full h-14 font-bold bg-primary text-white rounded-2xl shadow-lg" onClick={() => { setShowSuccessOverlay(false); navigate('/dashboard'); }}>
+              <h2 className="text-2xl font-extrabold text-[#252525] mb-2">Profile Completed!</h2>
+              <p className="text-[#707070] text-sm mb-8 leading-relaxed">You have unlocked priority matching and detailed compatibility insights.</p>
+              <button className="w-full h-14 font-bold text-white gradient-coral-pill rounded-full shadow-lg transition-transform active:scale-[0.98] border border-white/40"  onClick={() => { setShowSuccessOverlay(false); navigate('/dashboard'); }}>
                 Go to Dashboard
-              </Button>
+              </button>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <div className="min-h-screen bg-background relative pb-28">
-        <div className="max-w-md mx-auto px-5 py-6">
+      <div className="min-h-screen relative" style={{ background: 'linear-gradient(135deg, #FFF5F5 0%, #FFF0ED 50%, #FDF0F0 100%)' }}>
+        <div className="max-w-xl mx-auto px-4 py-4 md:py-8">
 
-          <div className="mb-8">
-            <div className="flex justify-between items-end mb-2">
-              <span className="text-[13px] font-extrabold tracking-wider text-muted-foreground uppercase">
+          <div className="mb-6 text-center">
+            <h1 className="text-[24px] sm:text-[28px] font-black text-[#4A3B3B] mb-2 tracking-tight">Complete Profile</h1>
+            <div className="flex justify-center items-center gap-4 mb-3">
+              <span className="text-[13px] font-extrabold tracking-[0.2em] text-[#8A7A7A] uppercase">
                 Step {currentStepNum} of {SECTIONS.length}
               </span>
-              <span className="text-[13px] font-extrabold text-primary">{wizardProgress}% Complete</span>
+              <div className="h-1.5 w-1.5 rounded-full bg-[#FF9A9A]"></div>
+              <span className="text-[13px] font-extrabold text-[#FF7A7A]">{mandatoryCompletion.percentage}%</span>
             </div>
-            <div className="h-2.5 w-full bg-muted rounded-full overflow-hidden">
+            
+            <div className="h-2 w-full max-w-sm mx-auto rounded-full overflow-hidden border border-white/40 shadow-inner" style={{ background: 'rgba(255,255,255,0.6)' }}>
               <motion.div 
-                className="h-full bg-primary" 
+                className="h-full gradient-coral-pill" 
                 initial={{ width: 0 }} 
-                animate={{ width: `${wizardProgress}%` }} 
-                transition={{ duration: 0.5 }}
+                animate={{ width: `${mandatoryCompletion.percentage}%` }} 
+                transition={{ duration: 0.5, ease: "easeOut" }}
               />
             </div>
           </div>
 
           <div className="relative">
             {isLoading ? (
-              <Skeleton className="h-[600px] rounded-[32px] bg-foreground/5" />
+              <Skeleton className="h-[600px] rounded-[32px] bg-white/40" />
             ) : (
               <AnimatePresence mode="wait">
-                <motion.div key={activeSection} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}>
+                <motion.div key={activeSection} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3, ease: "easeInOut" }}>
                   <ActiveComponent p={p} onSave={onSaveSection} onCancel={handlePrevious} hasPrevious={SECTIONS.findIndex(s => s.id === activeSection) > 0} isPending={updateMe.isPending} />
                 </motion.div>
               </AnimatePresence>

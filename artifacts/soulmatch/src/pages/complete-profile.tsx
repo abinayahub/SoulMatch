@@ -68,44 +68,37 @@ export default function CompleteProfilePage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-8 relative" style={{ background: "hsl(var(--background))" }}>
-      {/* Ambient background */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
-        <div style={{ position: "absolute", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, hsl(340 82% 65% / 0.15) 0%, transparent 70%)", top: -100, right: -100, filter: "blur(80px)" }} />
-        <div style={{ position: "absolute", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, hsl(280 70% 65% / 0.12) 0%, transparent 70%)", bottom: -80, left: -80, filter: "blur(70px)" }} />
-      </div>
-
+    <div className="min-h-screen flex items-center justify-center px-4 py-4 relative soulmatch-mesh-bg">
       <motion.div
-        initial={{ opacity: 0, y: 24 }}
+        initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="w-full max-w-md relative"
-        style={{ zIndex: 1 }}
+        className="w-full max-w-md relative mt-4 z-10"
       >
         {/* Logo */}
-        <div className="text-center mb-6">
-          <div className="inline-flex items-center gap-2 justify-center mb-4">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "hsl(var(--primary))", boxShadow: "0 0 20px hsl(340 82% 65% / 0.3)" }}>
-              <Heart className="w-5 h-5 text-white" />
+        <div className="text-center mb-5 flex flex-col items-center">
+          <div className="inline-flex items-center gap-2 justify-center mb-3">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center gradient-coral-button shadow-sm border border-white/45 backdrop-blur-md">
+              <Heart className="w-5 h-5 text-white fill-white/20" />
             </div>
-            <span className="text-xl font-bold" style={{ background: "linear-gradient(135deg, hsl(340 82% 70%), hsl(280 70% 72%))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+            <span className="text-xl font-black bg-clip-text text-transparent bg-gradient-to-r from-[#FF8F8F] to-[#FFB39A]">
               SoulMatch
             </span>
           </div>
-          <h1 className="text-2xl font-bold text-white">Complete Profile</h1>
-          <p className="text-sm mt-1" style={{ color: "hsl(215 20% 50%)" }}>Just a few more details to get started</p>
+          <h1 className="text-3xl font-bold text-[#222222] tracking-tight">Complete Profile</h1>
+          <p className="text-xs mt-1 text-[#6F6F6F]">Just a few more details to get started</p>
         </div>
 
         {/* Card */}
-        <div className="rounded-2xl p-6" style={{ background: "hsl(var(--card))", backdropFilter: "blur(20px)", border: "1px solid hsl(var(--card))" }}>
-          <form onSubmit={submit} className="space-y-4">
-            <div className="space-y-1.5">
-              <Label className="text-white/70 text-sm">I am a <span style={{ color: "hsl(340 82% 65%)" }}>*</span></Label>
+        <div className="premium-glass-card p-7 sm:p-8">
+          <form onSubmit={submit} className="space-y-5">
+            <div className="space-y-2">
+              <Label className="text-[#222222] font-semibold ml-1">I am a <span className="text-[#FF8F8F]">*</span></Label>
               <Select value={data.gender} onValueChange={(v) => set("gender", v)}>
-                <SelectTrigger className="auth-input h-11 rounded-xl text-sm">
+                <SelectTrigger className="glass-input px-5 flex items-center justify-between text-[#222222]">
                   <SelectValue placeholder="Select gender" />
                 </SelectTrigger>
-                <SelectContent style={{ background: "hsl(222 47% 9%)", border: "1px solid hsl(var(--border))" }}>
+                <SelectContent style={{ background: "rgba(255,255,255,0.95)", border: "1px solid rgba(255,255,255,0.45)", borderRadius: "18px" }}>
                   <SelectItem value="male">Male</SelectItem>
                   <SelectItem value="female">Female</SelectItem>
                   <SelectItem value="other">Other</SelectItem>
@@ -114,25 +107,25 @@ export default function CompleteProfilePage() {
               </Select>
             </div>
 
-            <div className="space-y-1.5">
-              <Label className="text-white/70 text-sm">Date of Birth <span style={{ color: "hsl(340 82% 65%)" }}>*</span></Label>
+            <div className="space-y-2">
+              <Label className="text-[#222222] font-semibold ml-1">Date of Birth <span className="text-[#FF8F8F]">*</span></Label>
               <div className="relative">
-                <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style={{ color: "hsl(215 20% 42%)" }} />
+                <Calendar className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#707070] pointer-events-none" />
                 <Input
                   type="date"
                   value={data.dateOfBirth}
                   onChange={(e) => set("dateOfBirth", e.target.value)}
-                  className="auth-input pl-10 h-11 rounded-xl text-sm [&::-webkit-calendar-picker-indicator]:opacity-100 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:invert"
+                  className="glass-input pl-12 pr-5 [&::-webkit-calendar-picker-indicator]:opacity-100 [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                   max={new Date(Date.now() - 18 * 365.25 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]}
                   required
                 />
               </div>
             </div>
 
-            <div className="space-y-1.5">
-              <Label className="text-white/70 text-sm">Phone number <span style={{ color: "hsl(340 82% 65%)" }}>*</span></Label>
+            <div className="space-y-2">
+              <Label className="text-[#222222] font-semibold ml-1">Phone number <span className="text-[#FF8F8F]">*</span></Label>
               <div className="relative">
-                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "hsl(215 20% 42%)" }} />
+                <Phone className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#707070] pointer-events-none" />
                 <Input
                   type="tel"
                   placeholder="e.g. 9876543210"
@@ -141,7 +134,7 @@ export default function CompleteProfilePage() {
                     const val = e.target.value.replace(/\D/g, '').slice(0, 10);
                     set("phone", val);
                   }}
-                  className="auth-input pl-10 h-11 rounded-xl text-sm"
+                  className="glass-input pl-12"
                   autoComplete="tel"
                 />
               </div>
@@ -150,19 +143,17 @@ export default function CompleteProfilePage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-11 rounded-xl font-semibold text-white border-0 mt-6"
-              style={{
-                background: "hsl(var(--primary))",
-                boxShadow: "0 4px 20px rgba(219,68,120,0.35)",
-              }}
+              className="w-full h-[56px] rounded-full font-bold text-base text-white border-0 mt-4 active:scale-[0.98] transition-all gradient-coral-button hover:opacity-95 shadow-md glow-coral-button"
             >
               {loading ? (
                 <span className="flex items-center gap-2">
-                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  Saving…
+                  <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Saving profile…
                 </span>
               ) : (
-                <span className="flex items-center gap-2">Finish Setup <ArrowRight className="w-4 h-4" /></span>
+                <span className="flex items-center gap-1.5">
+                  Complete Profile <ArrowRight className="w-5 h-5" />
+                </span>
               )}
             </Button>
           </form>

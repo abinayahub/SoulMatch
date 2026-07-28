@@ -25,7 +25,7 @@ function CustomTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
   return (
     <div className="bg-card border border-border shadow-md rounded-2xl rounded-xl px-3 py-2 text-xs border border-white/10">
-      <p className="text-muted-foreground mb-1">{label}</p>
+      <p className="text-[#707070] mb-1">{label}</p>
       {payload.map((p: any) => (
         <p key={p.name} style={{ color: p.color }} className="font-semibold">{p.name}: {p.value}</p>
       ))}
@@ -54,7 +54,7 @@ export default function AdminAnalyticsPage() {
             <h1 className="text-3xl font-bold flex items-center gap-3 mb-1">
               <TrendingUp className="w-7 h-7 text-primary" />Analytics
             </h1>
-            <p className="text-muted-foreground">Platform performance metrics.</p>
+            <p className="text-[#707070]">Platform performance metrics.</p>
           </div>
           <Select value={period} onValueChange={setPeriod}>
             <SelectTrigger className="w-28 bg-card/5 border-white/10">
@@ -79,7 +79,7 @@ export default function AdminAnalyticsPage() {
             <motion.div key={stat.label} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.05 }} className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-4">
               <stat.icon className={`w-5 h-5 ${stat.color} mb-2`} />
               <div className="text-2xl font-bold">{stat.value}</div>
-              <div className="text-xs text-muted-foreground">{stat.label}</div>
+              <div className="text-xs text-[#707070]">{stat.label}</div>
             </motion.div>
           ))}
         </div>
@@ -164,7 +164,7 @@ export default function AdminAnalyticsPage() {
                   {(r?.planBreakdown ?? []).map((p: any, i: number) => (
                     <div key={p.planId} className="flex items-center gap-2 text-xs">
                       <div className="w-3 h-3 rounded-full shrink-0" style={{ background: CHART_COLORS[i % CHART_COLORS.length] }} />
-                      <span className="text-muted-foreground">{p.planName}</span>
+                      <span className="text-[#707070]">{p.planName}</span>
                       <span className="font-semibold ml-auto">${p.revenue?.toFixed(0)}</span>
                     </div>
                   ))}

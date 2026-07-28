@@ -77,14 +77,15 @@ export default function MatchesPage() {
   if (mandatoryCompletion.percentage < 100) {
     return (
       <AppLayout>
-        <div className="min-h-screen bg-background relative flex flex-col items-center justify-center p-5 pb-24">
+        <div className="w-full min-h-screen relative flex flex-col font-sans relative flex flex-col items-center justify-center p-5" style={{ background: 'linear-gradient(135deg, #F8F3F7 0%, #FAF1ED 100%)' }}>
+      <div className="absolute inset-0 opacity-40 pointer-events-none" style={{ background: 'radial-gradient(circle at 0% 0%, #F4F1FF 0%, transparent 50%), radial-gradient(circle at 100% 100%, #FFFDFC 0%, transparent 50%)' }} />
           <div className="w-full max-w-md bg-card border border-border shadow-md rounded-[32px] p-8 text-center relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary to-purple-500" />
+            <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary to-[#F6A8B7]" />
             <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
               <Lock className="w-10 h-10 text-primary" />
             </div>
-            <h2 className="text-2xl font-extrabold text-foreground mb-4">Complete your profile to unlock matches</h2>
-            <p className="text-[15px] text-muted-foreground mb-8 leading-relaxed">
+            <h2 className="text-2xl font-extrabold text-[#252525] mb-4">Complete your profile to unlock matches</h2>
+            <p className="text-[15px] text-[#707070] mb-8 leading-relaxed">
               You need to complete all mandatory fields in your profile before you can access the Matches section and connect with potential partners.
             </p>
             <Button 
@@ -101,17 +102,18 @@ export default function MatchesPage() {
 
   return (
     <AppLayout>
-      <div className="min-h-screen bg-background relative pb-28">
+      <div className="w-full min-h-screen relative flex flex-col font-sans relative" style={{ background: 'linear-gradient(135deg, #F8F3F7 0%, #FAF1ED 100%)' }}>
+      <div className="absolute inset-0 opacity-40 pointer-events-none" style={{ background: 'radial-gradient(circle at 0% 0%, #F4F1FF 0%, transparent 50%), radial-gradient(circle at 100% 100%, #FFFDFC 0%, transparent 50%)' }} />
         
         {/* Sticky Mobile Header */}
-        <nav className="sticky top-[calc(4rem+env(safe-area-inset-top,0px))] z-50 bg-background/90 backdrop-blur-md pt-4 pb-3">
+        <nav className="sticky top-[calc(4rem+env(safe-area-inset-top,0px))] z-50 bg-transparent/90 backdrop-blur-md pt-4 pb-3">
           <div className="px-5 max-w-md mx-auto">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-[28px] font-extrabold text-foreground tracking-tight flex items-center gap-2">
+                <h1 className="text-[28px] font-extrabold text-[#252525] tracking-tight flex items-center gap-2">
                   Matches <span className="bg-primary/10 text-primary text-xs px-2 py-0.5 rounded-full font-bold ml-1">{displayMatches.length}</span>
                 </h1>
-                <p className="text-[13px] text-muted-foreground font-medium mt-0.5">Find people who align with your soul.</p>
+                <p className="text-[13px] text-[#707070] font-medium mt-0.5">Find people who align with your soul.</p>
               </div>
             </div>
           </div>
@@ -130,14 +132,14 @@ export default function MatchesPage() {
               <div className="w-32 h-32 mb-8 relative">
                 <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl" />
                 <div className="relative w-full h-full bg-card border border-border shadow-xl rounded-[32px] rotate-12 flex items-center justify-center">
-                   <div className="w-16 h-16 bg-gradient-to-tr from-purple-500 to-primary rounded-full absolute -top-4 -left-4 animate-bounce" style={{ animationDuration: '3s' }} />
+                   <div className="w-16 h-16 bg-gradient-to-tr from-[#F6A8B7] to-primary rounded-full absolute -top-4 -left-4 animate-bounce" style={{ animationDuration: '3s' }} />
                    <Heart className="w-12 h-12 text-primary fill-primary/20 absolute bottom-4 right-4" />
                    <Search className="w-10 h-10 text-foreground/40 absolute top-6 left-6" />
                 </div>
               </div>
               
-              <h2 className="text-[24px] font-extrabold text-foreground mb-3">No Matches Yet</h2>
-              <p className="text-[15px] text-muted-foreground mb-10 max-w-[280px] mx-auto leading-relaxed">
+              <h2 className="text-[24px] font-extrabold text-[#252525] mb-3">No Matches Yet</h2>
+              <p className="text-[15px] text-[#707070] mb-10 max-w-[280px] mx-auto leading-relaxed">
                 Complete more daily questions to receive better matches. The right person is worth the wait.
               </p>
               

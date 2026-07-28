@@ -104,22 +104,22 @@ export default function UserProfilePage({ userId }: Props) {
   const getMatchQuality = (score: number) =>
     score >= 80 ? 'Excellent Match' : score >= 60 ? 'Good Match' : 'Fair Match';
   const getMatchColor = (score: number) =>
-    score >= 80 ? 'text-green-500' : score >= 60 ? 'text-yellow-500' : 'text-orange-500';
+    score >= 80 ? 'text-green-500' : score >= 60 ? 'text-yellow-500' : 'text-[#F6A8B7]';
 
   const getStoryIcon = (name: string) => {
     const map: Record<string, React.ReactNode> = {
-      "Family Values": <Home className="w-4 h-4 text-muted-foreground" />,
-      "Career Focus": <Briefcase className="w-4 h-4 text-muted-foreground" />,
-      "Personal Growth": <Target className="w-4 h-4 text-muted-foreground" />,
-      "Health & Lifestyle": <HeartPulse className="w-4 h-4 text-muted-foreground" />,
-      "Social Engagement": <Globe className="w-4 h-4 text-muted-foreground" />,
-      "Adventure & Travel": <Map className="w-4 h-4 text-muted-foreground" />,
-      "Emotional Wellbeing": <Lightbulb className="w-4 h-4 text-muted-foreground" />,
-      "Relationship Commitment": <Heart className="w-4 h-4 text-muted-foreground" />,
-      "Communication Style": <MessageCircle className="w-4 h-4 text-muted-foreground" />,
-      "Kindness & Empathy": <Star className="w-4 h-4 text-muted-foreground" />,
+      "Family Values": <Home className="w-4 h-4 text-[#707070]" />,
+      "Career Focus": <Briefcase className="w-4 h-4 text-[#707070]" />,
+      "Personal Growth": <Target className="w-4 h-4 text-[#707070]" />,
+      "Health & Lifestyle": <HeartPulse className="w-4 h-4 text-[#707070]" />,
+      "Social Engagement": <Globe className="w-4 h-4 text-[#707070]" />,
+      "Adventure & Travel": <Map className="w-4 h-4 text-[#707070]" />,
+      "Emotional Wellbeing": <Lightbulb className="w-4 h-4 text-[#707070]" />,
+      "Relationship Commitment": <Heart className="w-4 h-4 text-[#707070]" />,
+      "Communication Style": <MessageCircle className="w-4 h-4 text-[#707070]" />,
+      "Kindness & Empathy": <Star className="w-4 h-4 text-[#707070]" />,
     };
-    return map[name] ?? <BookOpen className="w-4 h-4 text-muted-foreground" />;
+    return map[name] ?? <BookOpen className="w-4 h-4 text-[#707070]" />;
   };
 
   const getInterestIcon = (name: string) => {
@@ -228,8 +228,8 @@ export default function UserProfilePage({ userId }: Props) {
     .filter(Boolean)
     .slice(0, 3) as { label: string; emoji: string }[];
 
-  const interestBarColor = interestPct >= 60 ? "bg-green-500" : interestPct >= 30 ? "bg-yellow-500" : "bg-orange-500";
-  const interestMatchColor = interestPct >= 60 ? "text-green-400" : interestPct >= 30 ? "text-yellow-400" : "text-orange-400";
+  const interestBarColor = interestPct >= 60 ? "bg-green-500" : interestPct >= 30 ? "bg-yellow-500" : "bg-[#F6A8B7]";
+  const interestMatchColor = interestPct >= 60 ? "text-green-400" : interestPct >= 30 ? "text-yellow-400" : "text-[#F6A8B7]";
 
   // Confidence progress
   const confAnalyzed = sConfidence?.categoriesAnalyzed ?? 0;
@@ -248,7 +248,7 @@ export default function UserProfilePage({ userId }: Props) {
             <Skeleton className="h-20 rounded-3xl bg-card" />
           </div>
         ) : !p ? (
-          <div className="text-center py-20 text-muted-foreground">Profile not found</div>
+          <div className="text-center py-20 text-[#707070]">Profile not found</div>
         ) : (
           <div className="space-y-4">
 
@@ -259,19 +259,19 @@ export default function UserProfilePage({ userId }: Props) {
               className="bg-card border border-border rounded-3xl overflow-hidden"
             >
               {/* Photo Banner */}
-              <div className="relative h-52 bg-gradient-to-br from-pink-500/20 via-purple-500/10 to-blue-500/20">
+              <div className="relative h-52 bg-gradient-to-br from-[#F6A8B7]/20 via-[#F6A8B7]/10 to-blue-500/20">
                 {photo?.url ? (
                   <img src={photo.url} alt={p.firstName ?? ''} className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
-                    <span className="text-6xl font-extrabold text-muted-foreground/30">
+                    <span className="text-6xl font-extrabold text-[#707070]/30">
                       {getInitials(p.firstName ?? '?')}
                     </span>
                   </div>
                 )}
                 {!!p.compatibilityScore && (
                   <div className="absolute top-3 right-3">
-                    <div className="bg-pink-500 text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow-lg">
+                    <div className="w-full text-[#252525] rounded-full border border-white/40 transition-all  text-[11px] font-bold px-2.5 py-1 rounded-full shadow-lg" style={{ background: 'linear-gradient(135deg, #F8C7C8, #F8D9D2, #F7E8EE)', boxShadow: '0 4px 12px rgba(246, 168, 183, 0.15)' }}>
                       {p.compatibilityScore}% match
                     </div>
                   </div>
@@ -283,11 +283,11 @@ export default function UserProfilePage({ userId }: Props) {
               <div className="px-4 pb-4 pt-2">
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <h1 className="text-xl font-extrabold text-foreground leading-tight">
+                    <h1 className="text-xl font-extrabold text-[#252525] leading-tight">
                       {p.firstName ?? ''}{p.age ? `, ${p.age}` : ''}
                     </h1>
                     {(p.city || p.country) && (
-                      <div className="flex items-center gap-1 text-muted-foreground text-xs mt-0.5">
+                      <div className="flex items-center gap-1 text-[#707070] text-xs mt-0.5">
                         <MapPin className="w-3 h-3" />
                         {[p.city, p.country].filter(Boolean).join(', ')}
                       </div>
@@ -296,7 +296,7 @@ export default function UserProfilePage({ userId }: Props) {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="border border-border bg-background hover:bg-muted text-muted-foreground w-9 h-9 p-0 rounded-xl shrink-0"
+                    className="border border-border bg-transparent hover:bg-muted text-[#707070] w-9 h-9 p-0 rounded-xl shrink-0"
                     onClick={handleReport}
                   >
                     <Flag className="w-3.5 h-3.5" />
@@ -305,28 +305,28 @@ export default function UserProfilePage({ userId }: Props) {
 
                 {/* Pills */}
                 <div className="flex gap-2 mb-4 flex-wrap">
-                  <div className="flex items-center gap-1.5 bg-background border border-border rounded-full px-2.5 py-1 text-[11px] font-medium text-muted-foreground">
-                    <Flame className="w-3 h-3 text-purple-400" /> {p.journeyProgress ?? 0} Steps
+                  <div className="flex items-center gap-1.5 bg-transparent border border-border rounded-full px-2.5 py-1 text-[11px] font-medium text-[#707070]">
+                    <Flame className="w-3 h-3 text-[#F6A8B7]" /> {p.journeyProgress ?? 0} Steps
                   </div>
-                  <div className="flex items-center gap-1.5 bg-background border border-border rounded-full px-2.5 py-1 text-[11px] font-medium text-muted-foreground">
-                    <BookOpen className="w-3 h-3 text-orange-400" /> {p.storyCount ?? 0} Stories
+                  <div className="flex items-center gap-1.5 bg-transparent border border-border rounded-full px-2.5 py-1 text-[11px] font-medium text-[#707070]">
+                    <BookOpen className="w-3 h-3 text-[#F6A8B7]" /> {p.storyCount ?? 0} Stories
                   </div>
                   <div className="flex items-center gap-1.5 bg-green-500/10 border border-green-500/20 rounded-full px-2.5 py-1 text-[11px] font-medium text-green-400">
                     <Shield className="w-3 h-3" /> Verified
                   </div>
                   {personalityMatch > 80 && (
-                    <div className="flex items-center gap-1.5 bg-pink-500/10 border border-pink-500/20 rounded-full px-2.5 py-1 text-[11px] font-medium text-pink-400">
+                    <div className="flex items-center gap-1.5 bg-[#F6A8B7]/10 border border-[#F6A8B7]/20 rounded-full px-2.5 py-1 text-[11px] font-medium text-[#F6A8B7]">
                       <Heart className="w-3 h-3" /> High Match
                     </div>
                   )}
                 </div>
 
                 {!!p.bio && (
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">{p.bio}</p>
+                  <p className="text-sm text-[#707070] leading-relaxed mb-4">{p.bio}</p>
                 )}
 
                 {(p.occupation || p.education) && (
-                  <div className="flex flex-wrap gap-3 mb-4 text-xs text-muted-foreground">
+                  <div className="flex flex-wrap gap-3 mb-4 text-xs text-[#707070]">
                     {p.occupation && <span className="flex items-center gap-1.5"><Briefcase className="w-3.5 h-3.5" />{p.occupation}</span>}
                     {p.education && <span className="flex items-center gap-1.5"><GraduationCap className="w-3.5 h-3.5" />{p.education}</span>}
                   </div>
@@ -354,7 +354,7 @@ export default function UserProfilePage({ userId }: Props) {
                     </>
                   ) : p.isMutualMatch ? (
                     <Button
-                      className="flex-1 bg-gradient-to-r from-pink-500 to-pink-600 text-white border-0 font-bold rounded-xl h-11"
+                      className="flex-1 gradient-coral-pill text-white border-0 font-bold rounded-xl h-11 transition-transform active:scale-[0.98]"
                       onClick={handleChat}
                       disabled={chatLoading}
                     >
@@ -362,7 +362,7 @@ export default function UserProfilePage({ userId }: Props) {
                     </Button>
                   ) : (
                     <Button
-                      className={`flex-1 h-11 font-bold rounded-xl ${isInterestSent ? 'bg-green-500/15 text-green-400 border border-green-500/30' : 'bg-gradient-to-r from-pink-500 to-pink-600 text-white border-0'}`}
+                      className={`flex-1 h-11 font-bold rounded-xl ${isInterestSent ? 'bg-green-500/15 text-green-400 border border-green-500/30' : 'bg-gradient-to-r from-[#F8C7C8] via-[#F8D9D2] to-[#F7E8EE] text-white border-0'}`}
                       onClick={handleSendInterest}
                       disabled={isInterestSent || sendInterest.isPending}
                     >
@@ -380,10 +380,10 @@ export default function UserProfilePage({ userId }: Props) {
                 className="bg-card border border-border rounded-3xl p-5">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-full bg-orange-500/10 flex items-center justify-center">
-                      <Star className="w-3.5 h-3.5 text-orange-500" />
+                    <div className="w-7 h-7 rounded-full bg-[#F6A8B7]/10 flex items-center justify-center">
+                      <Star className="w-3.5 h-3.5 text-[#F6A8B7]" />
                     </div>
-                    <h2 className="font-bold text-foreground text-sm">Shared Interests</h2>
+                    <h2 className="font-bold text-[#252525] text-sm">Shared Interests</h2>
                   </div>
                   {hasInterestData && (
                     <span className={`text-base font-extrabold ${interestMatchColor}`}>{interestPct}%</span>
@@ -391,7 +391,7 @@ export default function UserProfilePage({ userId }: Props) {
                 </div>
 
                 {!hasInterestData ? (
-                  <p className="text-center py-4 text-xs text-muted-foreground italic">
+                  <p className="text-center py-4 text-xs text-[#707070] italic">
                     Keep sharing stories to uncover common interests.
                   </p>
                 ) : (
@@ -400,7 +400,7 @@ export default function UserProfilePage({ userId }: Props) {
                       <div className="h-1.5 bg-border/50 rounded-full overflow-hidden">
                         <div className={`h-full ${interestBarColor} rounded-full`} style={{ width: `${interestPct}%` }} />
                       </div>
-                      <div className="flex justify-between text-[10px] text-muted-foreground mt-1">
+                      <div className="flex justify-between text-[10px] text-[#707070] mt-1">
                         <span>{sharedInts.length} shared</span>
                         <span>Mine: {myTotal} · Theirs: {theirTotal}</span>
                       </div>
@@ -408,7 +408,7 @@ export default function UserProfilePage({ userId }: Props) {
 
                     {sharedInts.length > 0 && (
                       <div className="mb-4">
-                        <div className="text-[10px] text-muted-foreground font-bold uppercase mb-2 flex items-center gap-1.5">
+                        <div className="text-[10px] text-[#707070] font-bold uppercase mb-2 flex items-center gap-1.5">
                           <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" /> In Common
                         </div>
                         <div className="flex flex-wrap gap-1.5">
@@ -427,23 +427,23 @@ export default function UserProfilePage({ userId }: Props) {
                     {(myUnique.length > 0 || theirUnique.length > 0) && (
                       <div className="grid grid-cols-2 gap-3 mb-4">
                         <div>
-                          <div className="text-[10px] text-muted-foreground font-bold mb-2 flex items-center gap-1">
-                            <span className="w-1.5 h-1.5 rounded-full bg-pink-500 inline-block" /> Yours only
+                          <div className="text-[10px] text-[#707070] font-bold mb-2 flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#F6A8B7] inline-block" /> Yours only
                           </div>
                           <div className="flex flex-wrap gap-1">
                             {myUnique.slice(0, 3).map((item, i) => {
                               const Icon = getInterestIcon(item);
                               return (
-                                <span key={i} className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-pink-500/10 border border-pink-500/20 text-[10px] text-pink-400 font-medium">
+                                <span key={i} className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#F6A8B7]/10 border border-[#F6A8B7]/20 text-[10px] text-[#F6A8B7] font-medium">
                                   <Icon className="w-2.5 h-2.5" />{item}
                                 </span>
                               );
                             })}
-                            {myUnique.length > 3 && <span className="text-[9px] text-muted-foreground self-center">+{myUnique.length - 3}</span>}
+                            {myUnique.length > 3 && <span className="text-[9px] text-[#707070] self-center">+{myUnique.length - 3}</span>}
                           </div>
                         </div>
                         <div>
-                          <div className="text-[10px] text-muted-foreground font-bold mb-2 flex items-center gap-1">
+                          <div className="text-[10px] text-[#707070] font-bold mb-2 flex items-center gap-1">
                             <span className="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block" /> Theirs only
                           </div>
                           <div className="flex flex-wrap gap-1">
@@ -455,7 +455,7 @@ export default function UserProfilePage({ userId }: Props) {
                                 </span>
                               );
                             })}
-                            {theirUnique.length > 3 && <span className="text-[9px] text-muted-foreground self-center">+{theirUnique.length - 3}</span>}
+                            {theirUnique.length > 3 && <span className="text-[9px] text-[#707070] self-center">+{theirUnique.length - 3}</span>}
                           </div>
                         </div>
                       </div>
@@ -463,10 +463,10 @@ export default function UserProfilePage({ userId }: Props) {
 
                     {suggestedActivities.length > 0 && (
                       <div className="pt-3 border-t border-border">
-                        <div className="text-[10px] text-muted-foreground font-bold uppercase mb-2">Suggested Together</div>
+                        <div className="text-[10px] text-[#707070] font-bold uppercase mb-2">Suggested Together</div>
                         <div className="flex flex-wrap gap-2">
                           {suggestedActivities.map((act, i) => (
-                            <span key={i} className="px-2.5 py-1 rounded-full bg-background border border-border text-[11px] text-muted-foreground font-medium">
+                            <span key={i} className="px-2.5 py-1 rounded-full bg-transparent border border-border text-[11px] text-[#707070] font-medium">
                               {act.emoji} {act.label}
                             </span>
                           ))}
@@ -486,22 +486,22 @@ export default function UserProfilePage({ userId }: Props) {
                   <div className="w-7 h-7 rounded-full bg-yellow-500/10 flex items-center justify-center">
                     <Lightbulb className="w-3.5 h-3.5 text-yellow-500" />
                   </div>
-                  <h3 className="font-bold text-foreground text-sm">Strengthen This Match</h3>
+                  <h3 className="font-bold text-[#252525] text-sm">Strengthen This Match</h3>
                 </div>
                 <div className="space-y-3">
                   {[
-                    { icon: <Users className="w-3.5 h-3.5 text-orange-500" />, title: "Discuss family values", desc: "Shared expectations build a deeper foundation." },
-                    { icon: <Briefcase className="w-3.5 h-3.5 text-purple-500" />, title: "Share career goals", desc: "Knowing your ambitions helps you support each other." },
+                    { icon: <Users className="w-3.5 h-3.5 text-[#F6A8B7]" />, title: "Discuss family values", desc: "Shared expectations build a deeper foundation." },
+                    { icon: <Briefcase className="w-3.5 h-3.5 text-[#F6A8B7]" />, title: "Share career goals", desc: "Knowing your ambitions helps you support each other." },
                     { icon: <Home className="w-3.5 h-3.5 text-blue-500" />, title: "Talk about your routine", desc: "Similar lifestyles lead to better harmony." },
-                    { icon: <MessageCircle className="w-3.5 h-3.5 text-pink-400" />, title: "Keep the conversation going", desc: "The more you talk, the stronger the bond." },
+                    { icon: <MessageCircle className="w-3.5 h-3.5 text-[#F6A8B7]" />, title: "Keep the conversation going", desc: "The more you talk, the stronger the bond." },
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-3">
-                      <div className="w-7 h-7 rounded-lg bg-background border border-border flex items-center justify-center shrink-0 mt-0.5">
+                      <div className="w-7 h-7 rounded-lg bg-transparent border border-border flex items-center justify-center shrink-0 mt-0.5">
                         {item.icon}
                       </div>
                       <div>
-                        <div className="text-xs font-semibold text-foreground">{item.title}</div>
-                        <div className="text-[11px] text-muted-foreground">{item.desc}</div>
+                        <div className="text-xs font-semibold text-[#252525]">{item.title}</div>
+                        <div className="text-[11px] text-[#707070]">{item.desc}</div>
                       </div>
                     </div>
                   ))}
@@ -511,16 +511,16 @@ export default function UserProfilePage({ userId }: Props) {
 
             {/* ── Profile Comparison Header ── */}
             <div className="flex items-center justify-between px-1">
-              <h2 className="text-lg font-extrabold text-foreground">Profile Comparison</h2>
+              <h2 className="text-lg font-extrabold text-[#252525]">Profile Comparison</h2>
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-7 px-2 text-[10px] border-border text-muted-foreground rounded-full shrink-0">
+                  <Button variant="outline" size="sm" className="h-7 px-2 text-[10px] border-border text-[#707070] rounded-full shrink-0">
                     How it works? <HelpCircle className="w-3 h-3 ml-1" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-72 p-4 bg-card border-border shadow-xl">
                   <h4 className="font-bold text-sm mb-2">How Match Works</h4>
-                  <ul className="text-xs text-muted-foreground space-y-1 list-disc pl-4">
+                  <ul className="text-xs text-[#707070] space-y-1 list-disc pl-4">
                     <li>Stories & Daily Reflections</li>
                     <li>Personality Journey answers</li>
                     <li>Lifestyle & Relationship Preferences</li>
@@ -538,31 +538,31 @@ export default function UserProfilePage({ userId }: Props) {
                 <div className="flex items-center justify-between gap-2 sm:gap-4 mb-5 flex-nowrap w-full overflow-hidden">
                   {/* You */}
                   <div className="flex flex-col items-center shrink-0">
-                    <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-full border-2 border-pink-500 bg-pink-500/10 flex items-center justify-center">
-                      <span className="text-xs font-bold text-pink-500">You</span>
+                    <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-full border-2 border-[#F6A8B7] bg-[#F6A8B7]/10 flex items-center justify-center">
+                      <span className="text-xs font-bold text-[#F6A8B7]">You</span>
                     </div>
-                    <span className="text-[10px] sm:text-xs font-semibold text-foreground mt-1">You</span>
+                    <span className="text-[10px] sm:text-xs font-semibold text-[#252525] mt-1">You</span>
                   </div>
 
                   {/* Connecting line left */}
-                  <div className="flex-1 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 min-w-[8px] opacity-40 shrink" />
+                  <div className="flex-1 h-[2px] bg-gradient-to-r from-[#F8C7C8] via-[#F8D9D2] to-[#F7E8EE] min-w-[8px] opacity-40 shrink" />
 
                   {/* Score Ring */}
                   <div className="flex flex-col items-center shrink-0">
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-[3px] border-l-pink-500 border-t-pink-500 border-r-blue-500 border-b-blue-500 flex flex-col items-center justify-center bg-card shadow-sm">
-                      <Heart className="w-3 h-3 text-pink-500/80 mb-0.5" />
-                      <div className="text-xl sm:text-2xl font-extrabold text-foreground leading-none">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-[3px] border-l-[#F6A8B7] border-t-[#F6A8B7] border-r-blue-500 border-b-blue-500 flex flex-col items-center justify-center bg-card shadow-sm">
+                      <Heart className="w-3 h-3 text-[#F6A8B7]/80 mb-0.5" />
+                      <div className="text-xl sm:text-2xl font-extrabold text-[#252525] leading-none">
                         {compatScore}%
                       </div>
-                      <div className="text-[7px] sm:text-[8px] uppercase tracking-wider text-muted-foreground">Match</div>
+                      <div className="text-[7px] sm:text-[8px] uppercase tracking-wider text-[#707070]">Match</div>
                     </div>
-                    <span className="mt-1.5 bg-background border border-border text-yellow-500 text-[9px] sm:text-[10px] font-medium px-2 py-0.5 rounded-full shrink-0">
+                    <span className="mt-1.5 bg-transparent border border-border text-yellow-500 text-[9px] sm:text-[10px] font-medium px-2 py-0.5 rounded-full shrink-0">
                       {!hasStories ? 'Pending' : getMatchQuality(compatScore)}
                     </span>
                   </div>
 
                   {/* Connecting line right */}
-                  <div className="flex-1 h-[2px] bg-gradient-to-r from-purple-500 to-blue-500 min-w-[8px] opacity-40 shrink" />
+                  <div className="flex-1 h-[2px] bg-gradient-to-r from-[#F6A8B7] to-blue-500 min-w-[8px] opacity-40 shrink" />
 
                   {/* Them */}
                   <div className="flex flex-col items-center shrink-0">
@@ -575,22 +575,22 @@ export default function UserProfilePage({ userId }: Props) {
                         </div>
                       )}
                     </div>
-                    <span className="text-[10px] sm:text-xs font-semibold text-foreground truncate max-w-[50px] sm:max-w-[60px] mt-1">{p.firstName ?? ''}</span>
+                    <span className="text-[10px] sm:text-xs font-semibold text-[#252525] truncate max-w-[50px] sm:max-w-[60px] mt-1">{p.firstName ?? ''}</span>
                   </div>
                 </div>
 
                 {/* Status */}
-                <div className="bg-background border border-border rounded-xl p-3">
-                  <div className="text-[10px] text-muted-foreground uppercase font-bold mb-2">Analysis Status</div>
+                <div className="bg-transparent border border-border rounded-xl p-3">
+                  <div className="text-[10px] text-[#707070] uppercase font-bold mb-2">Analysis Status</div>
                   <div className="space-y-1.5">
                     <div className="flex justify-between items-center text-xs">
-                      <span className="flex items-center gap-1.5 text-muted-foreground">
+                      <span className="flex items-center gap-1.5 text-[#707070]">
                         <span className="text-green-500">✔</span> Personality
                       </span>
                       <span className="text-[10px] text-green-500 font-semibold bg-green-500/10 px-2 py-0.5 rounded-full">Done</span>
                     </div>
                     <div className="flex justify-between items-center text-xs">
-                      <span className="flex items-center gap-1.5 text-muted-foreground">
+                      <span className="flex items-center gap-1.5 text-[#707070]">
                         <span className={valuesComplete ? 'text-green-500' : 'text-yellow-500'}>
                           {valuesComplete ? '✔' : '⏳'}
                         </span> Story & Values
@@ -610,19 +610,19 @@ export default function UserProfilePage({ userId }: Props) {
               {/* Personality Match */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-pink-500/10 flex items-center justify-center shrink-0">
-                    <Heart className="w-4 h-4 text-pink-500" />
+                  <div className="w-8 h-8 rounded-full bg-[#F6A8B7]/10 flex items-center justify-center shrink-0">
+                    <Heart className="w-4 h-4 text-[#F6A8B7]" />
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-foreground">Personality Match</div>
-                    <div className="text-[10px] text-muted-foreground">{getMatchQuality(personalityMatch)}</div>
+                    <div className="text-xs font-bold text-[#252525]">Personality Match</div>
+                    <div className="text-[10px] text-[#707070]">{getMatchQuality(personalityMatch)}</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-16 bg-border/40 h-1 rounded-full overflow-hidden hidden xs:block">
-                    <div className="h-full bg-pink-500 rounded-full" style={{ width: `${personalityMatch}%` }} />
+                    <div className="h-full bg-[#F6A8B7] rounded-full" style={{ width: `${personalityMatch}%` }} />
                   </div>
-                  <span className="text-sm font-extrabold text-pink-500">{personalityMatch}%</span>
+                  <span className="text-sm font-extrabold text-[#F6A8B7]">{personalityMatch}%</span>
                 </div>
               </div>
 
@@ -631,12 +631,12 @@ export default function UserProfilePage({ userId }: Props) {
               {/* Values Match */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-purple-500/10 flex items-center justify-center shrink-0">
-                    <BookOpen className="w-4 h-4 text-purple-500" />
+                  <div className="w-8 h-8 rounded-full bg-[#F6A8B7]/10 flex items-center justify-center shrink-0">
+                    <BookOpen className="w-4 h-4 text-[#F6A8B7]" />
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-foreground">Values Match</div>
-                    <div className="text-[10px] text-muted-foreground">
+                    <div className="text-xs font-bold text-[#252525]">Values Match</div>
+                    <div className="text-[10px] text-[#707070]">
                       {!hasStories ? 'Needs more stories' : getMatchQuality(aiStoryMatch)}
                     </div>
                   </div>
@@ -644,10 +644,10 @@ export default function UserProfilePage({ userId }: Props) {
                 <div className="flex items-center gap-2">
                   {hasStories && (
                     <div className="w-16 bg-border/40 h-1 rounded-full overflow-hidden hidden xs:block">
-                      <div className="h-full bg-purple-500 rounded-full" style={{ width: `${aiStoryMatch}%` }} />
+                      <div className="h-full bg-[#F6A8B7] rounded-full" style={{ width: `${aiStoryMatch}%` }} />
                     </div>
                   )}
-                  <span className="text-sm font-extrabold text-purple-500">
+                  <span className="text-sm font-extrabold text-[#F6A8B7]">
                     {!hasStories
                       ? <span className="text-xs text-yellow-500 font-semibold">{confAnalyzed > 0 ? 'Limited' : 'Pending'}</span>
                       : `${aiStoryMatch}%`}
@@ -664,15 +664,15 @@ export default function UserProfilePage({ userId }: Props) {
                   <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
                     className="bg-card border border-border rounded-3xl p-5">
                     <div className="flex items-center gap-2 mb-4 pb-3 border-b border-border">
-                      <div className="w-7 h-7 rounded-full bg-pink-500/10 flex items-center justify-center">
-                        <User className="w-3.5 h-3.5 text-pink-500" />
+                      <div className="w-7 h-7 rounded-full bg-[#F6A8B7]/10 flex items-center justify-center">
+                        <User className="w-3.5 h-3.5 text-[#F6A8B7]" />
                       </div>
-                      <h3 className="font-bold text-foreground text-sm">Personality Comparison</h3>
-                      <span className="ml-auto text-base font-extrabold text-pink-500">{personalityMatch}%</span>
+                      <h3 className="font-bold text-[#252525] text-sm">Personality Comparison</h3>
+                      <span className="ml-auto text-base font-extrabold text-[#F6A8B7]">{personalityMatch}%</span>
                     </div>
-                    <div className="grid grid-cols-12 gap-2 text-[9px] font-bold text-muted-foreground uppercase mb-3 px-1">
+                    <div className="grid grid-cols-12 gap-2 text-[9px] font-bold text-[#707070] uppercase mb-3 px-1">
                       <div className="col-span-5">Trait</div>
-                      <div className="col-span-2 text-pink-500">You</div>
+                      <div className="col-span-2 text-[#F6A8B7]">You</div>
                       <div className="col-span-2 text-blue-500">{p.firstName ?? ''}</div>
                       <div className="col-span-3 text-right">Match</div>
                     </div>
@@ -680,17 +680,17 @@ export default function UserProfilePage({ userId }: Props) {
                       {traitBreakdowns.map((trait: any, i: number) => (
                         <div key={i} className="grid grid-cols-12 gap-2 items-center px-1">
                           <div className="col-span-5 flex items-center gap-2">
-                            <Heart className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-                            <span className="text-[11px] font-semibold text-foreground truncate">{trait.name ?? ''}</span>
+                            <Heart className="w-3.5 h-3.5 text-[#707070] shrink-0" />
+                            <span className="text-[11px] font-semibold text-[#252525] truncate">{trait.name ?? ''}</span>
                           </div>
                           <div className="col-span-2">
-                            <div className="text-[11px] font-bold text-foreground">{trait.myScore ?? 0}%</div>
+                            <div className="text-[11px] font-bold text-[#252525]">{trait.myScore ?? 0}%</div>
                             <div className="h-1 bg-border rounded-full mt-0.5">
-                              <div className="h-full bg-pink-500 rounded-full" style={{ width: `${trait.myScore ?? 0}%` }} />
+                              <div className="h-full bg-[#F6A8B7] rounded-full" style={{ width: `${trait.myScore ?? 0}%` }} />
                             </div>
                           </div>
                           <div className="col-span-2">
-                            <div className="text-[11px] font-bold text-foreground">{trait.theirScore ?? 0}%</div>
+                            <div className="text-[11px] font-bold text-[#252525]">{trait.theirScore ?? 0}%</div>
                             <div className="h-1 bg-border rounded-full mt-0.5">
                               <div className="h-full bg-blue-500 rounded-full" style={{ width: `${trait.theirScore ?? 0}%` }} />
                             </div>
@@ -710,10 +710,10 @@ export default function UserProfilePage({ userId }: Props) {
                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
                   className="bg-card border border-border rounded-3xl p-5">
                   <div className="flex items-center gap-2 mb-4 pb-3 border-b border-border">
-                    <div className="w-7 h-7 rounded-full bg-purple-500/10 flex items-center justify-center">
-                      <BookOpen className="w-3.5 h-3.5 text-purple-500" />
+                    <div className="w-7 h-7 rounded-full bg-[#F6A8B7]/10 flex items-center justify-center">
+                      <BookOpen className="w-3.5 h-3.5 text-[#F6A8B7]" />
                     </div>
-                    <h3 className="font-bold text-foreground text-sm">Life & Values</h3>
+                    <h3 className="font-bold text-[#252525] text-sm">Life & Values</h3>
                     {sConfidence && (
                       <Badge variant="outline" className={`ml-auto text-[9px] ${
                         sConfidence.level === 'High' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
@@ -724,21 +724,21 @@ export default function UserProfilePage({ userId }: Props) {
                   </div>
 
                   {sConfidence && (
-                    <div className="mb-4 bg-background p-3 rounded-xl border border-border">
+                    <div className="mb-4 bg-transparent p-3 rounded-xl border border-border">
                       <div className="flex justify-between items-center mb-1.5">
-                        <span className="text-[10px] text-muted-foreground font-bold uppercase">Progress</span>
-                        <span className="text-[11px] text-purple-400 font-bold">{confPct}%</span>
+                        <span className="text-[10px] text-[#707070] font-bold uppercase">Progress</span>
+                        <span className="text-[11px] text-[#F6A8B7] font-bold">{confPct}%</span>
                       </div>
                       <div className="h-1.5 bg-border rounded-full overflow-hidden">
-                        <div className="h-full bg-purple-500 rounded-full" style={{ width: `${confPct}%` }} />
+                        <div className="h-full bg-[#F6A8B7] rounded-full" style={{ width: `${confPct}%` }} />
                       </div>
-                      <div className="text-[9px] text-muted-foreground mt-1">{confAnalyzed} of {confTotal} categories</div>
+                      <div className="text-[9px] text-[#707070] mt-1">{confAnalyzed} of {confTotal} categories</div>
                     </div>
                   )}
 
-                  <div className="grid grid-cols-12 gap-2 text-[9px] font-bold text-muted-foreground uppercase mb-3 px-1">
+                  <div className="grid grid-cols-12 gap-2 text-[9px] font-bold text-[#707070] uppercase mb-3 px-1">
                     <div className="col-span-4">Category</div>
-                    <div className="col-span-2 text-pink-500">You</div>
+                    <div className="col-span-2 text-[#F6A8B7]">You</div>
                     <div className="col-span-2 text-blue-500">{p.firstName ?? ''}</div>
                     <div className="col-span-4 text-right">Similarity</div>
                   </div>
@@ -748,9 +748,9 @@ export default function UserProfilePage({ userId }: Props) {
                       <div key={i} className="grid grid-cols-12 gap-2 items-center px-1 py-2.5 border-b border-border/50 last:border-0">
                         <div className="col-span-4 flex items-center gap-2">
                           {getStoryIcon(cat.name ?? '')}
-                          <span className="text-[11px] font-semibold text-foreground leading-tight">{cat.name ?? ''}</span>
+                          <span className="text-[11px] font-semibold text-[#252525] leading-tight">{cat.name ?? ''}</span>
                         </div>
-                        <div className="col-span-2 text-pink-500 font-bold text-xs text-center">
+                        <div className="col-span-2 text-[#F6A8B7] font-bold text-xs text-center">
                           {cat.insufficientData ? '–' : `${cat.myScore ?? 0}%`}
                         </div>
                         <div className="col-span-2 text-blue-500 font-bold text-xs text-center">
@@ -767,7 +767,7 @@ export default function UserProfilePage({ userId }: Props) {
 
                   <div className="mt-4 pt-3 border-t border-border flex justify-between items-center">
                     <div>
-                      <div className="text-xs text-muted-foreground">Values Match</div>
+                      <div className="text-xs text-[#707070]">Values Match</div>
                       <div className="text-[10px] mt-0.5">
                         {!hasStories
                           ? <span className="text-yellow-500/80">Pending</span>
@@ -776,7 +776,7 @@ export default function UserProfilePage({ userId }: Props) {
                             : <span className="text-green-500/80">Complete</span>}
                       </div>
                     </div>
-                    <span className="text-lg font-extrabold text-purple-500">
+                    <span className="text-lg font-extrabold text-[#F6A8B7]">
                       {hasStories ? `${aiStoryMatch}%` : '–'}
                     </span>
                   </div>
@@ -790,35 +790,35 @@ export default function UserProfilePage({ userId }: Props) {
                       <div className="w-7 h-7 rounded-full bg-yellow-500/10 flex items-center justify-center">
                         <Star className="w-3.5 h-3.5 text-yellow-500" />
                       </div>
-                      <h3 className="font-bold text-foreground text-sm">Focus Areas</h3>
+                      <h3 className="font-bold text-[#252525] text-sm">Focus Areas</h3>
                     </div>
                     <div className="space-y-3">
                       {focusAreas.map((area: any, i: number) => {
                         const icon = (area.name ?? '').includes('Family')
-                          ? <Users className="w-3.5 h-3.5 text-purple-500" />
+                          ? <Users className="w-3.5 h-3.5 text-[#F6A8B7]" />
                           : (area.name ?? '').includes('Career')
                             ? <Briefcase className="w-3.5 h-3.5 text-yellow-500" />
                             : <Target className="w-3.5 h-3.5 text-blue-500" />;
                         return (
                           <div key={i} className="flex items-center gap-3">
-                            <div className="w-7 h-7 rounded-lg bg-background border border-border flex items-center justify-center shrink-0">{icon}</div>
+                            <div className="w-7 h-7 rounded-lg bg-transparent border border-border flex items-center justify-center shrink-0">{icon}</div>
                             <div className="flex-1">
                               <div className="flex justify-between items-center mb-1">
-                                <span className="text-xs font-semibold text-foreground">{area.name ?? ''}</span>
-                                <span className="text-xs text-muted-foreground">{area.similarity ?? 0}%</span>
+                                <span className="text-xs font-semibold text-[#252525]">{area.name ?? ''}</span>
+                                <span className="text-xs text-[#707070]">{area.similarity ?? 0}%</span>
                               </div>
                               <div className="h-1 bg-border rounded-full overflow-hidden">
-                                <div className="h-full bg-pink-500 rounded-full" style={{ width: `${area.similarity ?? 0}%` }} />
+                                <div className="h-full bg-[#F6A8B7] rounded-full" style={{ width: `${area.similarity ?? 0}%` }} />
                               </div>
                             </div>
                           </div>
                         );
                       })}
                     </div>
-                    <div className="mt-4 bg-pink-500/5 border border-pink-500/20 rounded-xl p-3 flex gap-2">
-                      <Heart className="w-4 h-4 text-pink-500 shrink-0 mt-0.5" />
-                      <p className="text-[11px] text-muted-foreground leading-relaxed">
-                        <span className="text-pink-500 font-bold">Tip: </span>
+                    <div className="mt-4 bg-[#F6A8B7]/5 border border-[#F6A8B7]/20 rounded-xl p-3 flex gap-2">
+                      <Heart className="w-4 h-4 text-[#F6A8B7] shrink-0 mt-0.5" />
+                      <p className="text-[11px] text-[#707070] leading-relaxed">
+                        <span className="text-[#F6A8B7] font-bold">Tip: </span>
                         Complete more stories and daily questions to unlock deeper insights.
                       </p>
                     </div>
@@ -829,10 +829,10 @@ export default function UserProfilePage({ userId }: Props) {
               /* Lock Screen */
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                 className="bg-card border border-border rounded-3xl p-6">
-                <div className="flex items-center gap-2 text-orange-500 font-bold mb-3">
+                <div className="flex items-center gap-2 text-[#F6A8B7] font-bold mb-3">
                   <Lock className="w-5 h-5" /> Unlock Full Compatibility
                 </div>
-                <p className="text-sm text-foreground font-semibold mb-4">Get complete access to detailed insights</p>
+                <p className="text-sm text-[#252525] font-semibold mb-4">Get complete access to detailed insights</p>
                 <ul className="space-y-2.5 mb-6">
                   {[
                     'Detailed personality & values comparison',
@@ -842,8 +842,8 @@ export default function UserProfilePage({ userId }: Props) {
                     'Conversation starters & topic suggestions',
                     'Deeper compatibility breakdown',
                   ].map((feature, idx) => (
-                    <li key={idx} className="flex items-center gap-2.5 text-xs text-muted-foreground font-medium">
-                      <div className="w-4 h-4 rounded-full bg-pink-500 shrink-0 flex items-center justify-center">
+                    <li key={idx} className="flex items-center gap-2.5 text-xs text-[#707070] font-medium">
+                      <div className="w-4 h-4 rounded-full bg-[#F6A8B7] shrink-0 flex items-center justify-center">
                         <Check className="w-2.5 h-2.5 text-white stroke-[3]" />
                       </div>
                       {feature}
@@ -851,12 +851,12 @@ export default function UserProfilePage({ userId }: Props) {
                   ))}
                 </ul>
                 <Button
-                  className="w-full h-12 bg-pink-500 hover:bg-pink-600 text-white rounded-xl font-bold"
+                  className="w-full h-12 w-full text-[#252525] rounded-full border border-white/40 transition-all hover:bg-[#F6A8B7]  rounded-xl font-bold" style={{ background: 'linear-gradient(135deg, #F8C7C8, #F8D9D2, #F7E8EE)', boxShadow: '0 4px 12px rgba(246, 168, 183, 0.15)' }}
                   onClick={() => navigate('/checkout/compatibility')}
                 >
-                  Unlock Now <span className="ml-2 bg-white text-pink-500 px-2 py-0.5 rounded text-[10px]">₹99</span>
+                  Unlock Now <span className="ml-2 bg-white text-[#F6A8B7] px-2 py-0.5 rounded text-[10px]">₹99</span>
                 </Button>
-                <div className="text-[10px] text-center text-muted-foreground mt-3">One-time payment • Secure & Private</div>
+                <div className="text-[10px] text-center text-[#707070] mt-3">One-time payment • Secure & Private</div>
               </motion.div>
             )}
 

@@ -27,7 +27,7 @@ export default function SuperAdmin() {
             <Key className="w-8 h-8 text-red-500" />
             Super Admin Controls
           </h1>
-          <p className="text-muted-foreground mt-1">
+          <p className="text-[#707070] mt-1">
             System-level configurations and critical operations. Restricted to highest clearance.
           </p>
         </div>
@@ -48,15 +48,15 @@ export default function SuperAdmin() {
           </div>
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <span className="text-muted-foreground text-sm">API Server</span>
+              <span className="text-[#707070] text-sm">API Server</span>
               <span className="text-green-400 text-sm flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-green-500"></span> Online</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-muted-foreground text-sm">Database</span>
+              <span className="text-[#707070] text-sm">Database</span>
               <span className="text-green-400 text-sm flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-green-500"></span> Connected</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-muted-foreground text-sm">Compatibility Engine</span>
+              <span className="text-[#707070] text-sm">Compatibility Engine</span>
               <span className="text-yellow-400 text-sm flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-yellow-500"></span> Degraded</span>
             </div>
             <div className="pt-4 border-t border-white/10">
@@ -70,8 +70,8 @@ export default function SuperAdmin() {
         {/* Global Settings */}
         <div className="bg-card border border-border shadow-md rounded-2xl rounded-2xl border border-white/10 p-6">
           <div className="flex items-center gap-3 mb-6">
-            <div className="p-3 bg-purple-500/10 rounded-xl">
-              <Globe className="w-6 h-6 text-purple-400" />
+            <div className="p-3 bg-[#F6A8B7]/10 rounded-xl">
+              <Globe className="w-6 h-6 text-[#F6A8B7]" />
             </div>
             <h2 className="text-lg font-bold">Global Configuration</h2>
           </div>
@@ -79,7 +79,7 @@ export default function SuperAdmin() {
             <div className="flex justify-between items-center bg-[#13131A] p-3 rounded-lg border border-white/5">
               <div>
                 <div className="font-medium text-sm">Maintenance Mode</div>
-                <div className="text-xs text-muted-foreground">Disable app access for users</div>
+                <div className="text-xs text-[#707070]">Disable app access for users</div>
               </div>
               <Button 
                 variant={maintenanceMode ? "destructive" : "secondary"} 
@@ -94,15 +94,15 @@ export default function SuperAdmin() {
             </div>
             <div className="bg-[#13131A] p-3 rounded-lg border border-white/5 space-y-2">
               <div className="font-medium text-sm">System Announcement</div>
-              <Input placeholder="Enter global broadcast message..." className="bg-background/20 text-sm" />
-              <Button size="sm" className="w-full bg-purple-600 hover:bg-purple-700 mt-2" onClick={() => handleAction('Broadcast Message')}>Send to All Users</Button>
+              <Input placeholder="Enter global broadcast message..." className="bg-transparent/20 text-sm" />
+              <Button size="sm" className="w-full bg-[#F6A8B7] hover:bg-purple-700 mt-2" onClick={() => handleAction('Broadcast Message')}>Send to All Users</Button>
             </div>
           </div>
         </div>
 
         {/* Danger Zone */}
         <div className="bg-card border border-border shadow-md rounded-2xl rounded-2xl border border-red-500/30 p-6 relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-600 to-orange-500"></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-600 to-[#F6A8B7]"></div>
           <div className="flex items-center gap-3 mb-6">
             <div className="p-3 bg-red-500/10 rounded-xl">
               <ShieldAlert className="w-6 h-6 text-red-500" />

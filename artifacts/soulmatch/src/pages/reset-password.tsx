@@ -76,7 +76,8 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4 relative">
+    <div className="w-full min-h-screen relative flex flex-col font-sans flex items-center justify-center px-4 relative" style={{ background: 'linear-gradient(135deg, #F8F3F7 0%, #FAF1ED 100%)' }}>
+      <div className="absolute inset-0 opacity-40 pointer-events-none" style={{ background: 'radial-gradient(circle at 0% 0%, #F4F1FF 0%, transparent 50%), radial-gradient(circle at 100% 100%, #FFFDFC 0%, transparent 50%)' }} />
       <div className="orb orb-1" />
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md relative z-10">
         <div className="text-center mb-8">
@@ -84,14 +85,14 @@ export default function ResetPasswordPage() {
             <Heart className="w-5 h-5 text-white" />
           </div>
           <h1 className="text-2xl font-bold">Set New Password</h1>
-          <p className="text-muted-foreground mt-1 text-sm">Create a strong new password for your account</p>
+          <p className="text-[#707070] mt-1 text-sm">Create a strong new password for your account</p>
         </div>
         <div className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-6">
           <form onSubmit={onSubmit} className="space-y-4">
             <div className="space-y-1.5">
               <Label>New Password</Label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Lock className="absolute z-10 left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#707070]" />
                 <Input 
                   type={showPassword ? "text" : "password"} 
                   placeholder="Strong password" 
@@ -105,7 +106,7 @@ export default function ResetPasswordPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-white transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#707070] hover:text-white transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -134,7 +135,7 @@ export default function ResetPasswordPage() {
             <div className="space-y-1.5">
               <Label>Confirm Password</Label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Lock className="absolute z-10 left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#707070]" />
                 <Input 
                   type={showConfirmPassword ? "text" : "password"} 
                   placeholder="Confirm password" 
@@ -148,7 +149,7 @@ export default function ResetPasswordPage() {
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-white transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#707070] hover:text-white transition-colors"
                 >
                   {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>

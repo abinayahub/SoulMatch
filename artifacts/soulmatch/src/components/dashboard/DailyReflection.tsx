@@ -3,9 +3,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/api";
 import { getAccessToken } from "@/lib/auth-context";
+import { useLocation } from "wouter";
 import {
   Flame, Clock, CheckCircle2, Sparkles, Lock,
-  ChevronRight, Star, TrendingUp, Calendar, Zap, Heart, BookHeart
+  ChevronRight, Star, TrendingUp, Calendar, Zap, Heart, Target, ArrowRight, PenLine
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -140,24 +141,12 @@ export function WeeklyMoodPanel() {
 
   const completedThisWeek = last7.filter((d) => historyMap.has(d.dateStr)).length;
 
-  let currentStreak = 0;
-  for (let i = 0; i < 30; i++) {
-    const d = new Date(today);
-    d.setDate(today.getDate() - i);
-    const dateStr = d.toISOString().split("T")[0];
-    if (historyMap.has(dateStr)) {
-      currentStreak++;
-    } else if (i > 0) {
-      break; 
-    }
-  }
-
   return (
     <div className="w-full h-full flex flex-col justify-between p-5 gap-4">
       {/* Title */}
       <div className="flex items-center gap-2 mb-4">
-        <Calendar className="w-4 h-4 text-pink-500" />
-        <span className="text-sm font-bold text-foreground tracking-tight">Reflection This Week</span>
+        <Calendar className="w-4 h-4 text-[#F6A8B7]" />
+        <span className="text-sm font-bold text-[#252525] tracking-tight">Reflection This Week</span>
       </div>
 
       {/* Day dots */}
@@ -171,15 +160,15 @@ export function WeeklyMoodPanel() {
               <div
                 className={`w-10 h-10 rounded-full flex items-center justify-center text-lg transition-all
                   ${answer
-                    ? "bg-pink-500/15 border border-pink-500/30 shadow-[0_0_8px_rgba(236,72,153,0.2)]"
+                    ? "bg-[#F6A8B7]/15 border border-[#F6A8B7]/30 shadow-[0_0_8px_rgba(236,72,153,0.2)]"
                     : isToday
-                    ? "bg-purple-500/15 border-[1.5px] border-purple-500/30 border-dashed text-purple-500"
-                    : "bg-foreground/5 border border-border text-muted-foreground"
+                    ? "bg-[#F6A8B7]/15 border-[1.5px] border-[#F6A8B7]/30 border-dashed text-[#F6A8B7]"
+                    : "bg-foreground/5 border border-border text-[#707070]"
                   }`}
               >
                 {emoji ?? (isToday ? "·" : "")}
               </div>
-              <span className={`text-[10px] font-bold ${isToday ? "text-purple-500" : "text-muted-foreground"}`}>
+              <span className={`text-[10px] font-bold ${isToday ? "text-[#F6A8B7]" : "text-[#707070]"}`}>
                 {label}
               </span>
             </div>
@@ -191,17 +180,17 @@ export function WeeklyMoodPanel() {
       <div className="flex-1 flex flex-col justify-center py-2">
         {/* Great Job Block */}
         <div className="bg-foreground/5 border border-border/50 rounded-2xl p-4 flex items-center justify-between relative overflow-hidden shadow-sm">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none" />
+          <div className="absolute top-0 right-0 w-32 h-32 bg-[#F6A8B7]/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none" />
           <div className="relative z-10 flex-1 pr-2">
-            <h4 className="text-sm font-bold text-foreground mb-1 flex items-center gap-1.5">
-              Great job! <Sparkles className="w-3.5 h-3.5 text-purple-500" />
+            <h4 className="text-sm font-bold text-[#252525] mb-1 flex items-center gap-1.5">
+              Great job! <Sparkles className="w-3.5 h-3.5 text-[#F6A8B7]" />
             </h4>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              You reflected <span className="text-pink-500 font-semibold">{completedThisWeek} days</span> this week. Keep it up to build a stronger connection with yourself.
+            <p className="text-xs text-[#707070] leading-relaxed">
+              You reflected <span className="text-[#F6A8B7] font-semibold">{completedThisWeek} days</span> this week. Keep it up to build a stronger connection with yourself.
             </p>
           </div>
-          <div className="relative z-10 flex-shrink-0 w-16 h-16 bg-gradient-to-br from-purple-500/20 to-indigo-500/20 rounded-xl flex items-center justify-center shadow-sm border border-purple-500/20 transform rotate-[-5deg]">
-            <BookHeart className="w-8 h-8 text-purple-500 drop-shadow-sm" />
+          <div className="relative z-10 flex-shrink-0 w-16 h-16 bg-gradient-to-br from-[#F6A8B7]/20 to-indigo-500/20 rounded-xl flex items-center justify-center shadow-sm border border-[#F6A8B7]/20 transform rotate-[-5deg]">
+            <span className="text-2xl">📖</span>
           </div>
         </div>
       </div>
@@ -209,18 +198,18 @@ export function WeeklyMoodPanel() {
       {/* Completion bar */}
       <div className="mt-auto">
         <div className="flex items-center justify-between mb-1.5">
-          <span className="text-xs text-muted-foreground">Weekly Progress</span>
-          <span className="text-xs font-bold text-pink-500">{completedThisWeek}/7</span>
+          <span className="text-xs text-[#707070]">Weekly Progress</span>
+          <span className="text-xs font-bold text-[#F6A8B7]">{completedThisWeek}/7</span>
         </div>
         <div className="h-1.5 rounded-full bg-foreground/10 overflow-hidden">
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${(completedThisWeek / 7) * 100}%` }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="h-full rounded-full bg-gradient-to-r from-pink-500 to-purple-500"
+            className="h-full rounded-full bg-gradient-to-r from-[#F8C7C8] via-[#F8D9D2] to-[#F7E8EE]"
           />
         </div>
-        <p className="text-[10px] text-muted-foreground mt-2 text-center">
+        <p className="text-[10px] text-[#707070] mt-2 text-center">
           {completedThisWeek === 7
             ? "🎉 Perfect week!"
             : completedThisWeek >= 5
@@ -235,6 +224,7 @@ export function WeeklyMoodPanel() {
 // ─── Main Component ───────────────────────────────────────────────────────────
 export function DailyReflection() {
   const queryClient = useQueryClient();
+  const [, navigate] = useLocation();
   const [selected, setSelected] = useState<{ emoji: string; label: string } | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [showSavedFlash, setShowSavedFlash] = useState(false);
@@ -252,7 +242,13 @@ export function DailyReflection() {
     enabled: data?.answered === true || submitted,
   });
 
+  const { data: history = [] } = useQuery<HistoryItem[]>({
+    queryKey: ["/api/reflections/history"],
+    queryFn: () => apiRequest<HistoryItem[]>("/reflections/history", { headers: authHeaders() }),
+  });
+
   const submitMutation = useMutation({
+    mutationKey: ["submit-reflection"],
     mutationFn: (body: { questionId: number; answer: string }) =>
       apiRequest("/reflections/today", {
         method: "POST",
@@ -277,11 +273,32 @@ export function DailyReflection() {
   const todayQuote = DAILY_QUOTES[getDailyIndex(DAILY_QUOTES)];
   const tomorrowTheme = TOMORROW_THEMES[getDailyIndex(TOMORROW_THEMES)];
 
+  const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const today = new Date();
+  const last7: { label: string; dateStr: string }[] = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(today);
+    d.setDate(today.getDate() - (6 - i));
+    const dateStr = d.toISOString().split("T")[0];
+    const label = days[d.getDay() === 0 ? 6 : d.getDay() - 1];
+    return { label, dateStr };
+  });
+
+  const historyMap = new Map<string, string>();
+  history.forEach((h) => historyMap.set(h.date, h.answer));
+
+  // Extract emoji from answer string (answer is stored as "emoji label")
+  const getEmoji = (answer: string) => {
+    const match = answer.match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F)/u);
+    return match ? match[0] : null;
+  };
+
+  const completedThisWeek = last7.filter((d) => historyMap.has(d.dateStr)).length;
+
   // ─── Loading ───────────────────────────────────────────────────────────────
   if (isLoading) {
     return (
       <div className="flex-1 flex items-center justify-center py-16">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500" />
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#F6A8B7]" />
       </div>
     );
   }
@@ -300,9 +317,9 @@ export function DailyReflection() {
           initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: [0.5, 1.2, 1], opacity: 1 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="w-20 h-20 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center shadow-[0_0_40px_rgba(236,72,153,0.5)]"
+          className="w-20 h-20 rounded-full bg-gradient-to-br from-[#F6A8B7] to-[#F8C7C8] flex items-center justify-center shadow-[0_0_40px_rgba(236,72,153,0.5)]"
         >
-          <CheckCircle2 className="w-10 h-10 text-foreground" />
+          <CheckCircle2 className="w-10 h-10 text-[#252525]" />
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 8 }}
@@ -310,10 +327,10 @@ export function DailyReflection() {
           transition={{ delay: 0.4 }}
           className="text-center"
         >
-          <p className="text-xl font-bold text-foreground flex items-center gap-2 justify-center">
+          <p className="text-xl font-bold text-[#252525] flex items-center gap-2 justify-center">
             Reflection Saved
           </p>
-          <p className="text-sm text-muted-foreground mt-1">Great job checking in today!</p>
+          <p className="text-sm text-[#707070] mt-1">Great job checking in today!</p>
         </motion.div>
         {/* Particle sparks */}
         {[...Array(6)].map((_, i) => (
@@ -327,7 +344,7 @@ export function DailyReflection() {
               scale: 0,
             }}
             transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
-            className="absolute w-2 h-2 rounded-full bg-pink-400"
+            className="absolute w-2 h-2 rounded-full bg-[#F6A8B7]"
             style={{ top: "50%", left: "50%" }}
           />
         ))}
@@ -365,157 +382,173 @@ export function DailyReflection() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, ease: "easeOut" }}
-        className="flex-1 flex flex-col w-full gap-4"
+        className="flex-1 flex flex-col w-full gap-4 pb-4"
       >
-        {/* ── Header Row ── */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-          <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-green-400 bg-green-400/10 border border-green-400/20 px-3 py-1.5 rounded-full w-fit">
-            <CheckCircle2 className="w-4 h-4" />
-            Today's Reflection Complete
-          </span>
-          {/* Today's Thought */}
-          <span className="text-[11px] text-muted-foreground italic max-w-[260px] text-right hidden sm:block">
-            "{todayQuote}"
-          </span>
+        {/* Title and Subtitle */}
+        <div className="text-center mb-1">
+           <h1 className="text-xl font-black flex items-center justify-center gap-1.5 text-[#252525]">
+              Reflection <Heart className="w-5 h-5 text-[#F6A8B7] fill-[#F6A8B7]" />
+           </h1>
+           <p className="text-[10.5px] text-[#707070] mt-1 font-medium">A few minutes today, a better you tomorrow ✨</p>
         </div>
 
-        {/* ── Row 1: Your Answer + Streak ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-          {/* Your Answer card */}
-          <div className="relative bg-card border border-border shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-3xl p-5 overflow-hidden group hover:shadow-[0_8px_30px_-4px_rgba(236,72,153,0.1)] hover:border-pink-500/30 transition-all duration-300">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-pink-500/10 to-transparent rounded-bl-full" />
-            <span className="text-[12px] text-muted-foreground font-bold tracking-wide uppercase mb-4 block">Your Answer</span>
-            <div className="flex items-center gap-3 mb-3">
-              {answerEmoji && (
-                <span className="text-3xl drop-shadow-sm leading-none">{answerEmoji}</span>
-              )}
-              <span className="text-2xl font-extrabold text-foreground tracking-tight leading-tight">{answerLabel}</span>
-            </div>
-            <p className="text-xs text-muted-foreground leading-relaxed font-medium">
-              {moodMessage}
-            </p>
-          </div>
 
-          {/* Streak card */}
-          <div className="relative bg-card border border-border shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-3xl p-5 overflow-hidden group hover:shadow-[0_8px_30px_-4px_rgba(249,115,22,0.1)] hover:border-orange-500/30 transition-all duration-300">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-orange-500/10 to-transparent rounded-bl-full" />
-            <div className="flex items-center gap-2.5 mb-4">
-              <div className="bg-orange-500/10 text-orange-500 p-1.5 rounded-md">
-                <Flame className="w-4 h-4 fill-orange-500" />
-              </div>
-              <span className="text-[12px] text-muted-foreground font-bold tracking-wide uppercase">Reflection Streak</span>
-            </div>
-            <div className="flex items-baseline gap-1.5 mb-4 mt-1">
-              <span className="text-4xl font-extrabold text-foreground tracking-tight leading-none">{streak}</span>
-              <span className="text-sm font-semibold text-muted-foreground">Day{streak !== 1 ? "s" : ""}</span>
-            </div>
-            {/* Milestone progress */}
-            <div className="space-y-2 mt-auto">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground">
-                  <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500 drop-shadow-sm" />
-                  <span>Next badge at {nextMilestone} days</span>
-                </div>
-                <span className="text-[11px] font-bold text-orange-500">{streak % 5}/{5}</span>
-              </div>
-              <div className="h-1.5 rounded-full bg-foreground/10 overflow-hidden shadow-inner">
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: `${milestoneProgress}%` }}
-                  transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
-                  className="h-full rounded-full bg-gradient-to-r from-orange-400 to-yellow-400"
-                />
-              </div>
-            </div>
-          </div>
+        {/* 2. Success Message */}
+        <div className="bg-[#E8F5E9] border border-[#C8E6C9] rounded-[20px] p-3 flex items-center gap-3 relative overflow-hidden">
+           <div className="w-8 h-8 rounded-full bg-[#4CAF50]/15 flex items-center justify-center shrink-0">
+              <CheckCircle2 className="w-4.5 h-4.5 text-[#4CAF50]" />
+           </div>
+           <div className="flex-1">
+              <h4 className="text-[11px] font-black text-[#2E7D32] tracking-wide uppercase">Today's Reflection Complete</h4>
+              <p className="text-[10px] text-[#4CAF50] font-medium mt-0.5">Great job keeping your streak alive.</p>
+           </div>
         </div>
 
-        {/* ── Row 2: Countdown + Tomorrow's Theme ── */}
-        <div className="relative bg-card border border-border shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-3xl p-5 overflow-hidden group hover:shadow-[0_8px_30px_-4px_rgba(168,85,247,0.1)] hover:border-purple-500/30 transition-all duration-300 mt-1">
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          <div className="flex flex-col sm:flex-row sm:items-center gap-6 relative z-10">
-            {/* Countdown section */}
-            <div className="flex items-center gap-4 flex-1">
-              <div className="w-12 h-12 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center shrink-0 shadow-sm">
-                <Clock className="w-5 h-5 text-purple-500" />
+        {/* 3. Your Answer Card */}
+        <div className="premium-glass-card border border-white/35 rounded-[24px] relative overflow-hidden p-4">
+           <div className="flex justify-between items-center mb-3">
+               <span className="text-[10px] font-black text-[#707070] uppercase tracking-widest flex items-center gap-1.5"><PenLine className="w-3.5 h-3.5" /> Your Answer</span>
+           </div>
+           <div className="flex items-center gap-3 mb-2">
+              <div className="w-12 h-12 rounded-2xl bg-white/40 border border-white/50 flex items-center justify-center text-2xl shadow-sm shrink-0">
+                  {answerEmoji}
               </div>
               <div>
-                <p className="text-[12px] font-bold text-muted-foreground uppercase tracking-wide mb-1">Next Reflection</p>
-                <p className="text-[19px] font-extrabold text-purple-500 tracking-tight tabular-nums">
-                  {nextTime ? <CountdownToMidnight targetDate={nextTime} /> : "—"}
-                </p>
+                 <span className="text-[18px] font-black text-[#252525] tracking-tight leading-tight block">{answerLabel}</span>
+                 <p className="text-[10px] text-[#707070] leading-snug mt-1 max-w-[90%]">
+                    {moodMessage}
+                 </p>
               </div>
-            </div>
-            {/* Divider */}
-            <div className="hidden sm:block w-px h-12 bg-border shrink-0" />
-            {/* Tomorrow's Theme */}
-            <div className="flex items-center gap-4 flex-1">
-              <div className="w-12 h-12 rounded-2xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center shrink-0 text-2xl leading-none shadow-sm">
-                {tomorrowTheme.emoji}
-              </div>
-              <div>
-                <p className="text-[12px] font-bold text-muted-foreground uppercase tracking-wide mb-1">Tomorrow's Theme</p>
-                <p className="text-[17px] font-extrabold text-foreground tracking-tight">{tomorrowTheme.label}</p>
-              </div>
-            </div>
-          </div>
+           </div>
         </div>
 
-        {/* ── Row 3: Weekly Summary pills ── */}
-        <div className="grid grid-cols-3 gap-2">
-          {[
-            {
-              icon: <TrendingUp className="w-3.5 h-3.5 text-pink-400" />,
-              label: "Total",
-              value: `${totalReflections} Days`,
-            },
-            {
-              icon: <Flame className="w-3.5 h-3.5 text-orange-400 fill-orange-400" />,
-              label: "Streak",
-              value: `${streak} Days`,
-            },
-            {
-              icon: <span className="text-sm leading-none">{mostMoodEmoji}</span>,
-              label: "Top Mood",
-              value: mostMoodLabel || "—",
-            },
-          ].map((pill, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 + i * 0.08 }}
-              className="bg-card border border-border shadow-[0_2px_10px_rgba(0,0,0,0.02)] rounded-2xl px-4 py-3 flex flex-col items-center gap-1.5 hover:shadow-md hover:border-foreground/20 transition-all duration-200"
-            >
-              <div className="flex items-center gap-1.5">{pill.icon}
-                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">{pill.label}</span>
-              </div>
-              <span className="text-[15px] font-extrabold text-foreground truncate max-w-full text-center tracking-tight">{pill.value}</span>
-            </motion.div>
-          ))}
+        {/* 4. Reflection Streak Card */}
+        <div className="premium-glass-card border border-white/35 rounded-[24px] relative overflow-hidden p-4">
+            <div className="flex justify-between items-center mb-2">
+                <span className="text-[10px] font-black text-[#707070] uppercase tracking-widest flex items-center gap-1.5">
+                   <Flame className="w-3.5 h-3.5 text-[#F6A8B7] fill-[#F6A8B7]" /> Reflection Streak
+                </span>
+                <span className="text-[10px] font-bold text-[#F6A8B7]">{streak % 5}/{5}</span>
+            </div>
+            
+            <div className="flex items-end gap-1.5 mb-3">
+               <span className="text-[28px] font-black text-[#252525] leading-none tracking-tight">{streak}</span>
+               <span className="text-[11px] font-bold text-[#707070] mb-1">Days</span>
+            </div>
+
+            <div className="w-full h-2 bg-foreground/5 rounded-full overflow-hidden mb-1.5">
+               <div className="h-full bg-gradient-to-r from-[#F6A8B7] to-[#F8D9D2] rounded-full transition-all" style={{ width: `${milestoneProgress}%` }}></div>
+            </div>
+            <span className="text-[9px] font-bold text-[#707070] flex items-center gap-1 mt-2">
+               <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" /> Next milestone at {nextMilestone} days
+            </span>
         </div>
 
-        {/* ── Today's Thought (mobile — full-width) ── */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.35 }}
-          className="sm:hidden text-center text-[11px] text-muted-foreground italic px-2"
-        >
-          "{todayQuote}"
-        </motion.div>
+        {/* 5. Next Reflection & Theme (Merged) */}
+        <div className="premium-glass-card border border-white/35 rounded-[24px] relative overflow-hidden p-4 flex justify-between items-center">
+            <div className="flex items-center gap-3">
+               <div className="w-10 h-10 rounded-full bg-[#F6A8B7]/15 flex items-center justify-center shrink-0">
+                  <Clock className="w-5 h-5 text-[#F6A8B7]" />
+               </div>
+               <div>
+                  <span className="text-[9px] font-black text-[#707070] uppercase tracking-widest block mb-0.5">Next Check-in</span>
+                  <span className="text-[15px] font-black text-[#252525] tracking-tight tabular-nums">
+                     {nextTime ? <CountdownToMidnight targetDate={nextTime} /> : "—"}
+                  </span>
+               </div>
+            </div>
+            <div className="h-8 w-px bg-white/40"></div>
+            <div className="flex items-center gap-2">
+               <div className="text-xl leading-none">{tomorrowTheme.emoji}</div>
+               <div>
+                  <span className="text-[8px] font-black text-[#707070] uppercase tracking-widest block mb-0.5">Tomorrow</span>
+                  <span className="text-[11px] font-bold text-[#252525]">{tomorrowTheme.label}</span>
+               </div>
+            </div>
+        </div>
+
+        {/* 6. Statistics Chips */}
+        <div className="grid grid-cols-3 gap-2.5">
+           {[
+             {
+               icon: <TrendingUp className="w-3.5 h-3.5 text-[#F6A8B7]" />,
+               label: "Total",
+               value: `${totalReflections}d`,
+             },
+             {
+               icon: <Flame className="w-3.5 h-3.5 text-[#F6A8B7] fill-[#F6A8B7]" />,
+               label: "Streak",
+               value: `${streak}d`,
+             },
+             {
+               icon: <span className="text-sm leading-none">{mostMoodEmoji}</span>,
+               label: "Top",
+               value: mostMoodLabel || "—",
+             },
+           ].map((pill, i) => (
+             <div
+               key={i}
+               className="bg-white/40 border border-white/50 backdrop-blur-md rounded-[16px] p-2 flex flex-col items-center justify-center gap-1 shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
+             >
+               <div className="flex items-center gap-1 mb-0.5">
+                  {pill.icon}
+                  <span className="text-[8.5px] font-black text-[#707070] uppercase tracking-wider">{pill.label}</span>
+               </div>
+               <span className="text-[11px] font-bold text-[#252525] truncate max-w-[80px] text-center tracking-tight leading-none">{pill.value}</span>
+             </div>
+           ))}
+        </div>
+
+        {/* 1. Weekly Section (Merged) */}
+        <div className="premium-glass-card border border-white/35 rounded-[24px] relative overflow-hidden p-4 flex flex-col gap-3">
+            <div className="flex justify-between items-center">
+               <span className="text-[10px] font-black text-[#707070] uppercase tracking-widest">Weekly Progress</span>
+               <div className="flex items-center gap-1">
+                   <span className="text-[11px] font-bold text-[#F6A8B7]">{completedThisWeek}/7</span>
+                   <span className="text-[10px] text-[#707070] font-medium">Completed</span>
+               </div>
+            </div>
+            
+            <div className="flex justify-between">
+               {last7.map(({ label, dateStr }, i) => {
+                  const answer = historyMap.get(dateStr);
+                  const emoji = answer ? getEmoji(answer) : null;
+                  const isToday = dateStr === today.toISOString().split("T")[0];
+                  return (
+                     <div key={i} className="flex flex-col items-center gap-1">
+                        <div className={`w-7 h-7 rounded-full border flex items-center justify-center text-[12px] transition-all
+                           ${answer 
+                             ? "bg-[#F6A8B7]/20 border-[#F6A8B7]/40 shadow-[0_0_8px_rgba(236,72,153,0.15)]" 
+                             : isToday 
+                               ? "bg-[#F6A8B7]/20 border-[#F6A8B7]/50 border-dashed text-[#F6A8B7] font-bold" 
+                               : "bg-muted/80 border-slate-600/60 dark:border-slate-500/70 border-slate-300"}`}>
+                           {emoji ?? (isToday ? "·" : "")}
+                        </div>
+                        <span className={`text-[8px] font-bold ${isToday ? "text-[#F6A8B7]" : "text-[#252525]/70"}`}>{label}</span>
+                     </div>
+                  );
+               })}
+            </div>
+        </div>
+
+        {/* Bottom CTA Button */}
+        <div className="mt-2 w-full pt-2 sticky bottom-0 bg-background/85 backdrop-blur-md pb-safe">
+           <Button onClick={() => navigate("/my-story")} className="hover:opacity-90 active:scale-95 w-full text-white gradient-coral-pill rounded-[20px] h-[48px] border border-white/40 flex items-center justify-center gap-2 font-bold text-[15px] shrink-0 transition-all shadow-[0_4px_15px_rgba(246,168,183,0.3)]" >
+              <PenLine className="w-4.5 h-4.5 mr-1" /> Write Story
+           </Button>
+        </div>
       </motion.div>
     );
   }
 
-  // ─── Question State (UNCHANGED) ───────────────────────────────────────────
+  // ─── Question State ────────────────────────────────────────────────────────
   const questionData = data as Extract<TodayData, { answered: false }>;
   const question = questionData?.question;
 
   if (!question) {
     return (
-      <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm">
+      <div className="flex-1 flex items-center justify-center text-[#707070] text-sm">
         No reflection available today
       </div>
     );
@@ -527,15 +560,25 @@ export function DailyReflection() {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
-      className="flex-1 flex flex-col w-full justify-between"
+      className="flex-1 flex flex-col w-full gap-4 pb-6"
     >
+      {/* Title and Subtitle */}
+      <div className="text-center mb-1">
+         <h1 className="text-xl font-black flex items-center justify-center gap-1.5 text-[#252525]">
+            Reflection <Heart className="w-5 h-5 text-[#F6A8B7] fill-[#F6A8B7]" />
+         </h1>
+         <p className="text-[10.5px] text-[#707070] mt-0.5 font-medium">A few minutes today, a better you tomorrow ✨</p>
+      </div>
+
+
+
       {/* Question text */}
-      <h2 className="text-[19px] font-bold text-foreground mb-6 leading-snug text-center">
+      <h2 className="text-[20px] font-bold text-[#252525] mt-4 mb-5 text-center" style={{ lineHeight: "1.45" }}>
         {question.question}
       </h2>
 
       {/* Options grid */}
-      <div className="grid grid-cols-2 gap-3 mb-8">
+      <div className="grid grid-cols-2 gap-3 mb-6">
         <AnimatePresence>
           {question.options.map((opt, i) => {
             const isSelected = selected?.label === opt.label;
@@ -546,14 +589,18 @@ export function DailyReflection() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
                 onClick={() => setSelected(opt)}
-                className={`flex flex-col items-center justify-center h-[100px] rounded-2xl bg-card border transition-all cursor-pointer
-                  ${isSelected
-                    ? "border-pink-500 shadow-[0_0_15px_rgba(236,72,153,0.15)] bg-pink-500/5"
-                    : "border-border hover:border-foreground/20 hover:bg-white/5"
-                  }`}
+                className="flex flex-col items-center justify-center h-[90px] rounded-[20px] border transition-all cursor-pointer"
+                style={{ 
+                  background: isSelected ? 'rgba(246,168,183,0.12)' : 'rgba(255,255,255,0.48)', 
+                  backdropFilter: 'blur(28px)', 
+                  WebkitBackdropFilter: 'blur(28px)', 
+                  borderColor: isSelected ? '#F6A8B7' : 'rgba(255,255,255,0.35)', 
+                  boxShadow: isSelected ? '0 0 15px rgba(246,168,183,0.3)' : '0 8px 30px rgba(0,0,0,0.06)',
+                  transform: isSelected ? 'scale(0.97)' : 'scale(1)'
+                }}
               >
-                <span className="text-2xl lg:text-3xl mb-1">{opt.emoji}</span>
-                <span className={`text-[10px] lg:text-xs font-semibold ${isSelected ? "text-pink-400" : "text-muted-foreground"}`}>
+                <span className="text-2xl mb-1">{opt.emoji}</span>
+                <span className={`text-[10px] lg:text-xs font-semibold ${isSelected ? "text-[#F6A8B7]" : "text-[#707070]"}`}>
                   {opt.label}
                 </span>
               </motion.div>
@@ -563,7 +610,7 @@ export function DailyReflection() {
       </div>
 
       {/* Footer row */}
-      <div className="flex flex-col items-center gap-4 mt-auto w-full">
+      <div className="flex flex-col items-center gap-3 mt-auto w-full">
         <Button
           disabled={!selected || submitMutation.isPending}
           onClick={() => {
@@ -572,12 +619,12 @@ export function DailyReflection() {
             }
           }}
           className={`${
-            !selected ? "opacity-50 cursor-not-allowed" : "hover:opacity-90"
-          } bg-pink-500 w-full text-white rounded-xl h-[48px] shadow-[0_4px_15px_rgba(236,72,153,0.3)] flex items-center justify-center gap-2 font-bold text-base shrink-0`}
+            !selected ? "opacity-50 cursor-not-allowed" : "hover:opacity-90 active:scale-95"
+          } w-full text-white rounded-full h-[48px] border border-white/40 flex items-center justify-center gap-2 font-bold text-[16px] shrink-0 transition-all gradient-coral-pill`}
         >
           {submitMutation.isPending ? "Saving..." : "Submit Answer"}
         </Button>
-        <div className="flex items-center gap-2 text-muted-foreground text-[11px] lg:text-xs">
+        <div className="flex items-center gap-2 text-[#707070] text-[10px]">
           <Lock className="w-3.5 h-3.5 shrink-0" />
           <span>Your response is private and secure</span>
         </div>

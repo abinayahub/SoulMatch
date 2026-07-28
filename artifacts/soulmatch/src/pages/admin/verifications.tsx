@@ -51,14 +51,14 @@ export default function AdminVerificationsPage() {
           <h1 className="text-3xl font-bold flex items-center gap-3 mb-1">
             <Shield className="w-7 h-7 text-yellow-400" />Verification Queue
           </h1>
-          <p className="text-muted-foreground">Review and process identity verification requests.</p>
+          <p className="text-[#707070]">Review and process identity verification requests.</p>
         </motion.div>
 
         <div className="space-y-4">
           {isLoading ? (
             [...Array(4)].map((_, i) => <Skeleton key={i} className="h-36 rounded-2xl bg-card/5" />)
           ) : (verifications as any[]).length === 0 ? (
-            <div className="text-center py-16 text-muted-foreground">
+            <div className="text-center py-16 text-[#707070]">
               <Shield className="w-10 h-10 mx-auto mb-3 opacity-30" />
               <p>No pending verifications</p>
             </div>
@@ -85,8 +85,8 @@ export default function AdminVerificationsPage() {
                         <h3 className="font-semibold">{v.user?.firstName}</h3>
                         <Badge className="text-xs bg-yellow-500/20 text-yellow-400 border-yellow-500/30">{v.status}</Badge>
                       </div>
-                      <p className="text-sm text-muted-foreground">Document: <span className="text-foreground">{v.documentType?.replace(/_/g, " ")}</span></p>
-                      <p className="text-xs text-muted-foreground mt-0.5">Submitted {formatDate(v.createdAt)}</p>
+                      <p className="text-sm text-[#707070]">Document: <span className="text-[#252525]">{v.documentType?.replace(/_/g, " ")}</span></p>
+                      <p className="text-xs text-[#707070] mt-0.5">Submitted {formatDate(v.createdAt)}</p>
                       <div className="mt-3 flex gap-2">
                         <a href={v.documentUrl} target="_blank" rel="noopener noreferrer">
                           <Button size="sm" variant="outline" className="border-white/20 bg-card/5 text-xs">View Document</Button>

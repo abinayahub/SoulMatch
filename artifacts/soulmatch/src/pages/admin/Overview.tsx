@@ -43,11 +43,11 @@ export default function AdminOverview() {
   };
 
   if (isLoading) {
-    return <div className="text-muted-foreground animate-pulse flex h-[80vh] items-center justify-center text-xl">Loading dashboard...</div>;
+    return <div className="text-[#707070] animate-pulse flex h-[80vh] items-center justify-center text-xl">Loading dashboard...</div>;
   }
 
   if (!data || !data.topMetrics) {
-    return <div className="text-muted-foreground animate-pulse flex h-[80vh] items-center justify-center text-xl">Updating data structure...</div>;
+    return <div className="text-[#707070] animate-pulse flex h-[80vh] items-center justify-center text-xl">Updating data structure...</div>;
   }
 
   return (
@@ -56,15 +56,15 @@ export default function AdminOverview() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold">Overview</h1>
-          <p className="text-muted-foreground mt-1">Welcome back, Admin! Here's what's happening with SoulMatch.</p>
+          <p className="text-[#707070] mt-1">Welcome back, Admin! Here's what's happening with SoulMatch.</p>
         </div>
         <div className="flex items-center gap-3">
-          <Button onClick={() => handleSoon('Date filtering')} variant="outline" className="bg-[#1A1A24] border-white/10 text-muted-foreground h-10 px-4 hover:text-white">
+          <Button onClick={() => handleSoon('Date filtering')} variant="outline" className="bg-[#1A1A24] border-white/10 text-[#707070] h-10 px-4 hover:text-white">
             <Calendar className="w-4 h-4 mr-2" />
             Last 30 Days
             <Calendar className="w-4 h-4 ml-2 opacity-50" />
           </Button>
-          <Button onClick={() => handleSoon('Report Export')} className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 h-10">
+          <Button onClick={() => handleSoon('Report Export')} className="bg-gradient-to-r from-[#F8C7C8] via-[#F8D9D2] to-[#F7E8EE] hover:from-purple-700 hover:to-pink-700 h-10">
             <Download className="w-4 h-4 mr-2" />
             Export Report
           </Button>
@@ -75,7 +75,7 @@ export default function AdminOverview() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
         <MetricCard icon={<Users className="text-[#8B5CF6]" />} title="Total Users" value={data.topMetrics.totalUsers.value.toLocaleString()} trend={data.topMetrics.totalUsers.trend} trendColor="text-green-400" />
         <MetricCard icon={<Crown className="text-[#F59E0B]" />} title="Premium Users" value={data.topMetrics.premiumUsers.value.toLocaleString()} trend={data.topMetrics.premiumUsers.trend} trendColor="text-green-400" />
-        <MetricCard icon={<Heart className="text-[#EC4899]" />} title="Matches Generated" value={data.topMetrics.matchesGenerated.value.toLocaleString()} trend={data.topMetrics.matchesGenerated.trend} trendColor="text-pink-400" />
+        <MetricCard icon={<Heart className="text-[#EC4899]" />} title="Matches Generated" value={data.topMetrics.matchesGenerated.value.toLocaleString()} trend={data.topMetrics.matchesGenerated.trend} trendColor="text-[#F6A8B7]" />
         <MetricCard icon={<Lightbulb className="text-[#3B82F6]" />} title="Insights Completed" value={data.topMetrics.aiAnalysisCompleted.value.toLocaleString()} trend={data.topMetrics.aiAnalysisCompleted.trend} trendColor="text-green-400" />
         <MetricCard icon={<UserCheck className="text-[#10B981]" />} title="Daily Active Users" value={data.topMetrics.dailyActiveUsers.value.toLocaleString()} trend={data.topMetrics.dailyActiveUsers.trend} trendColor="text-green-400" />
         <MetricCard icon={<DollarSign className="text-[#10B981]" />} title="Monthly Revenue" value={`${data.topMetrics.monthlyRevenue.prefix}${data.topMetrics.monthlyRevenue.value.toLocaleString()}`} trend={data.topMetrics.monthlyRevenue.trend} trendColor="text-green-400" />
@@ -86,7 +86,7 @@ export default function AdminOverview() {
         <div className="lg:col-span-2 bg-card border border-border shadow-md rounded-2xl bg-[#13131A] p-5 rounded-2xl border border-white/5">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-semibold">User Growth</h3>
-            <Button onClick={() => handleSoon('Chart Timeline Filter')} variant="ghost" size="sm" className="h-8 text-xs text-muted-foreground hover:text-white">
+            <Button onClick={() => handleSoon('Chart Timeline Filter')} variant="ghost" size="sm" className="h-8 text-xs text-[#707070] hover:text-white">
               Last 30 Days <ChevronDown className="ml-1 w-3 h-3" />
             </Button>
           </div>
@@ -118,11 +118,11 @@ export default function AdminOverview() {
         <div className="bg-card border border-border shadow-md rounded-2xl bg-[#13131A] p-5 rounded-2xl border border-white/5 flex flex-col">
           <div className="flex justify-between items-center mb-2">
             <h3 className="font-semibold">User Demographics</h3>
-            <span onClick={() => handleSoon('Demographics Detailed View')} className="text-xs text-purple-400 cursor-pointer hover:underline">View All</span>
+            <span onClick={() => handleSoon('Demographics Detailed View')} className="text-xs text-[#F6A8B7] cursor-pointer hover:underline">View All</span>
           </div>
           <div className="flex-1 flex gap-4 h-[250px]">
             <div className="flex-1 flex flex-col">
-              <span className="text-xs text-muted-foreground mb-2">Gender Distribution</span>
+              <span className="text-xs text-[#707070] mb-2">Gender Distribution</span>
               <div className="flex-1 relative">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -139,7 +139,7 @@ export default function AdminOverview() {
                   {data.charts.genderDistribution.map((item: any, i: number) => (
                     <div key={item.name} className="flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full" style={{ backgroundColor: [CHART_COLORS.pink, CHART_COLORS.blue, CHART_COLORS.purple][i] }} />
-                      <span className="w-12 text-muted-foreground">{item.name}</span>
+                      <span className="w-12 text-[#707070]">{item.name}</span>
                       <span>{item.value}%</span>
                     </div>
                   ))}
@@ -147,7 +147,7 @@ export default function AdminOverview() {
               </div>
             </div>
             <div className="flex-1 flex flex-col">
-              <span className="text-xs text-muted-foreground mb-2">Age Distribution</span>
+              <span className="text-xs text-[#707070] mb-2">Age Distribution</span>
               <div className="flex-1 relative">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -164,7 +164,7 @@ export default function AdminOverview() {
                   {data.charts.ageDistribution.map((item: any, i: number) => (
                     <div key={item.name} className="flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full" style={{ backgroundColor: [CHART_COLORS.green, CHART_COLORS.blue, CHART_COLORS.orange, CHART_COLORS.purple][i] }} />
-                      <span className="w-10 text-muted-foreground">{item.name}</span>
+                      <span className="w-10 text-[#707070]">{item.name}</span>
                       <span>{item.value}%</span>
                     </div>
                   ))}
@@ -181,7 +181,7 @@ export default function AdminOverview() {
         <div className="bg-card border border-border shadow-md rounded-2xl bg-[#13131A] p-5 rounded-2xl border border-white/5">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-semibold">Insights Overview</h3>
-            <span onClick={() => handleSoon('Insights Detailed View')} className="text-xs text-purple-400 cursor-pointer hover:underline">View Details</span>
+            <span onClick={() => handleSoon('Insights Detailed View')} className="text-xs text-[#F6A8B7] cursor-pointer hover:underline">View Details</span>
           </div>
           <div className="flex items-center h-[180px]">
             <div className="w-[140px] h-[140px] relative">
@@ -195,7 +195,7 @@ export default function AdminOverview() {
               </ResponsiveContainer>
               <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                 <span className="text-2xl font-bold">{data.charts.aiAnalysis.averageScore}%</span>
-                <span className="text-[9px] text-muted-foreground text-center leading-tight">Average Confidence<br/>Score</span>
+                <span className="text-[9px] text-[#707070] text-center leading-tight">Average Confidence<br/>Score</span>
               </div>
             </div>
             <div className="flex-1 ml-4 flex flex-col gap-3 text-xs">
@@ -203,7 +203,7 @@ export default function AdminOverview() {
                 <div key={i} className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }} />
-                    <span className="text-muted-foreground">{item.name}</span>
+                    <span className="text-[#707070]">{item.name}</span>
                   </div>
                   <span className="tabular-nums">{item.value.toLocaleString()} ({item.percentage}%)</span>
                 </div>
@@ -216,23 +216,23 @@ export default function AdminOverview() {
         <div className="bg-card border border-border shadow-md rounded-2xl bg-[#13131A] p-5 rounded-2xl border border-white/5">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-semibold">Match Performance</h3>
-            <span onClick={() => handleSoon('Match Performance Detailed View')} className="text-xs text-purple-400 cursor-pointer hover:underline">View Details</span>
+            <span onClick={() => handleSoon('Match Performance Detailed View')} className="text-xs text-[#F6A8B7] cursor-pointer hover:underline">View Details</span>
           </div>
           <div className="flex justify-between text-center mb-4 text-sm">
              <div>
-               <div className="text-muted-foreground text-xs">Matches Generated</div>
+               <div className="text-[#707070] text-xs">Matches Generated</div>
                <div className="font-semibold mt-1">{data.charts.matchPerformance.generated.toLocaleString()}</div>
              </div>
              <div>
-               <div className="text-muted-foreground text-xs">Matches Accepted</div>
+               <div className="text-[#707070] text-xs">Matches Accepted</div>
                <div className="font-semibold mt-1 text-blue-400">{data.charts.matchPerformance.accepted.toLocaleString()}</div>
              </div>
              <div>
-               <div className="text-muted-foreground text-xs">Matches Rejected</div>
-               <div className="font-semibold mt-1 text-pink-400">{data.charts.matchPerformance.rejected.toLocaleString()}</div>
+               <div className="text-[#707070] text-xs">Matches Rejected</div>
+               <div className="font-semibold mt-1 text-[#F6A8B7]">{data.charts.matchPerformance.rejected.toLocaleString()}</div>
              </div>
              <div>
-               <div className="text-muted-foreground text-xs">Success Rate</div>
+               <div className="text-[#707070] text-xs">Success Rate</div>
                <div className="font-semibold mt-1 text-green-400">{data.charts.matchPerformance.successRate}%</div>
              </div>
           </div>
@@ -253,7 +253,7 @@ export default function AdminOverview() {
         <div className="bg-card border border-border shadow-md rounded-2xl bg-[#13131A] p-5 rounded-2xl border border-white/5">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-semibold">Questionnaire Progress</h3>
-            <span onClick={() => handleSoon('Questionnaire Progress Details')} className="text-xs text-purple-400 cursor-pointer hover:underline">View Details</span>
+            <span onClick={() => handleSoon('Questionnaire Progress Details')} className="text-xs text-[#F6A8B7] cursor-pointer hover:underline">View Details</span>
           </div>
           <div className="flex items-center h-[180px]">
             <div className="w-[140px] h-[140px] relative">
@@ -267,7 +267,7 @@ export default function AdminOverview() {
               </ResponsiveContainer>
               <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                 <span className="text-2xl font-bold">{data.charts.questionnaireProgress.averageCompletion}%</span>
-                <span className="text-[9px] text-muted-foreground text-center">Avg. Completion</span>
+                <span className="text-[9px] text-[#707070] text-center">Avg. Completion</span>
               </div>
             </div>
             <div className="flex-1 ml-6 flex flex-col gap-4 text-xs">
@@ -275,7 +275,7 @@ export default function AdminOverview() {
                 <div key={i} className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }} />
-                    <span className="text-muted-foreground">{item.name}</span>
+                    <span className="text-[#707070]">{item.name}</span>
                   </div>
                   <span className="tabular-nums">{item.value.toLocaleString()} ({item.percentage}%)</span>
                 </div>
@@ -291,7 +291,7 @@ export default function AdminOverview() {
         <div className="bg-card border border-border shadow-md rounded-2xl bg-[#13131A] p-5 rounded-2xl border border-white/5">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-semibold">Recent Registrations</h3>
-            <span onClick={() => handleSoon('Recent Registrations List')} className="text-xs text-purple-400 cursor-pointer hover:underline">View All</span>
+            <span onClick={() => handleSoon('Recent Registrations List')} className="text-xs text-[#F6A8B7] cursor-pointer hover:underline">View All</span>
           </div>
           <div className="space-y-4 mt-4">
             {data.lists.recentRegistrations.map((user: any) => (
@@ -303,12 +303,12 @@ export default function AdminOverview() {
                   </Avatar>
                   <div>
                     <div className="font-medium text-white">{user.name}</div>
-                    <div className="text-muted-foreground mt-0.5">{user.email}</div>
+                    <div className="text-[#707070] mt-0.5">{user.email}</div>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-muted-foreground">{user.time}</div>
-                  <div className="text-muted-foreground mt-0.5">{user.location}</div>
+                  <div className="text-[#707070]">{user.time}</div>
+                  <div className="text-[#707070] mt-0.5">{user.location}</div>
                 </div>
               </div>
             ))}
@@ -319,7 +319,7 @@ export default function AdminOverview() {
         <div className="bg-card border border-border shadow-md rounded-2xl bg-[#13131A] p-5 rounded-2xl border border-white/5">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-semibold">Recent Matches</h3>
-            <span onClick={() => handleSoon('Recent Matches List')} className="text-xs text-purple-400 cursor-pointer hover:underline">View All</span>
+            <span onClick={() => handleSoon('Recent Matches List')} className="text-xs text-[#F6A8B7] cursor-pointer hover:underline">View All</span>
           </div>
           <div className="space-y-4 mt-4">
             {data.lists.recentMatches.map((match: any) => (
@@ -337,8 +337,8 @@ export default function AdminOverview() {
                   </div>
                   <span className="ml-2 text-white font-medium">{match.p1} & {match.p2}</span>
                 </div>
-                <div className="text-muted-foreground">{match.compatibility}% Compatible</div>
-                <div className="text-muted-foreground">{match.time}</div>
+                <div className="text-[#707070]">{match.compatibility}% Compatible</div>
+                <div className="text-[#707070]">{match.time}</div>
               </div>
             ))}
           </div>
@@ -348,7 +348,7 @@ export default function AdminOverview() {
         <div className="bg-card border border-border shadow-md rounded-2xl bg-[#13131A] p-5 rounded-2xl border border-white/5">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-semibold">System Health</h3>
-            <span onClick={() => handleSoon('System Health Dashboard')} className="text-xs text-purple-400 cursor-pointer hover:underline">View All</span>
+            <span onClick={() => handleSoon('System Health Dashboard')} className="text-xs text-[#F6A8B7] cursor-pointer hover:underline">View All</span>
           </div>
           <div className="space-y-5 mt-6">
             {data.lists.systemHealth.map((sys: any, i: number) => (
@@ -385,7 +385,7 @@ function MetricCard({ icon, title, value, trend, trendColor }: any) {
           {icon}
         </div>
         <div className="flex-1">
-          <div className="text-xs text-muted-foreground font-medium">{title}</div>
+          <div className="text-xs text-[#707070] font-medium">{title}</div>
           <div className="text-2xl font-bold mt-1 text-white">{value}</div>
         </div>
       </div>

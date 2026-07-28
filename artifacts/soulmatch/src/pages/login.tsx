@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { useForm } from "react-hook-form";
-import { Heart, Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
+import { Heart, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -25,6 +25,9 @@ export default function LoginPage() {
   const [otp, setOtp] = useState("");
 
   const form = useForm<LoginForm>();
+  const watchEmail = form.watch("email");
+  const watchPassword = form.watch("password");
+  const isLoginValid = Boolean(watchEmail && watchPassword);
 
   async function onLogin(data: LoginForm) {
     setLoading(true);
@@ -69,14 +72,8 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-background relative overflow-hidden">
-      {/* Background Orbs */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute w-[400px] h-[400px] rounded-full bg-primary/10 blur-[80px] -top-20 -left-20" />
-        <div className="absolute w-[300px] h-[300px] rounded-full bg-[#9B4DFF]/10 blur-[60px] top-1/2 -right-20" />
-      </div>
-
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 relative z-10">
+    <div className="min-h-[100dvh] flex flex-col soulmatch-mesh-bg relative overflow-y-auto overflow-x-hidden">
+      <div className="flex-1 flex flex-col items-center justify-center px-4 py-8 relative z-10 w-full max-w-md mx-auto min-h-[600px]">
         
         {/* Animated Logo */}
         <motion.div 
@@ -87,10 +84,10 @@ export default function LoginPage() {
         >
           <Link href="/">
             <div className="flex flex-col items-center gap-4 cursor-pointer">
-              <div className="w-16 h-16 rounded-[1.5rem] bg-gradient-to-br from-primary to-[#9B4DFF] text-white shadow-lg shadow-primary/20 flex items-center justify-center transform hover:scale-105 transition-transform">
-                <Heart className="w-8 h-8 fill-white" />
+              <div className="w-16 h-16 rounded-[1.5rem] gradient-coral-button text-white shadow-md border border-white/45 backdrop-blur-md flex items-center justify-center transform hover:scale-105 transition-transform">
+                <Heart className="w-8 h-8 fill-white/20" />
               </div>
-              <span className="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-primary to-[#9B4DFF]">
+              <span className="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-[#FF8F8F] to-[#FFB39A]">
                 SoulMatch
               </span>
             </div>
@@ -101,17 +98,17 @@ export default function LoginPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15, duration: 0.5 }}
-          className="w-full max-w-sm"
+          className="w-full premium-glass-card p-6 sm:p-10"
         >
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-extrabold text-foreground mb-2">Welcome back</h2>
-            <p className="text-muted-foreground text-sm font-medium">Sign in to continue your journey</p>
+            <h2 className="text-3xl font-bold text-[#222222] mb-2">Welcome back</h2>
+            <p className="text-[#6F6F6F] text-sm font-medium">Sign in to continue your journey</p>
           </div>
 
           {/* Premium Segmented Control Tab Switcher */}
-          <div className="flex bg-foreground/5 p-1 rounded-2xl mb-8 relative">
+          <div className="flex bg-white/30 backdrop-blur-sm border border-white/40 p-1 rounded-2xl mb-8 relative shadow-sm">
             <motion.div 
-              className="absolute top-1 bottom-1 w-[calc(50%-4px)] bg-background shadow-md rounded-[14px]"
+              className="absolute top-1 bottom-1 w-[calc(50%-4px)] bg-white/70 shadow-sm rounded-[12px]"
               animate={{ left: activeTab === "password" ? "4px" : "calc(50%)" }}
               transition={{ type: "spring", stiffness: 400, damping: 30 }}
             />
@@ -119,8 +116,8 @@ export default function LoginPage() {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold z-10 transition-colors duration-200 ${
-                  activeTab === tab ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                className={`flex-1 py-2.5 px-4 rounded-xl text-sm font-bold z-10 transition-colors duration-200 ${
+                  activeTab === tab ? "text-[#FF8F8F]" : "text-[#6F6F6F] hover:text-[#222222]"
                 }`}
               >
                 {tab === "password" ? "Password" : "Email Code"}
@@ -141,14 +138,14 @@ export default function LoginPage() {
                 className="space-y-5"
               >
                 <div className="space-y-2">
-                  <Label className="text-foreground font-semibold ml-1">Email Address</Label>
+                  <Label className="text-[#222222] font-semibold ml-1">Email Address</Label>
                   <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                    <Mail className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#707070]" />
                     <Input
                       type="email"
                       placeholder="you@example.com"
                       autoComplete="email"
-                      className="pl-12 h-14 rounded-2xl text-base bg-foreground/[0.03] border-foreground/10 focus:bg-background focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all shadow-sm"
+                      className="pl-12 glass-input"
                       {...form.register("email", { required: true })}
                     />
                   </div>
@@ -156,21 +153,21 @@ export default function LoginPage() {
 
                 <div className="space-y-2">
                   <div className="flex justify-between items-center ml-1">
-                    <Label className="text-foreground font-semibold">Password</Label>
+                    <Label className="text-[#222222] font-semibold">Password</Label>
                   </div>
                   <div className="relative">
-                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                    <Lock className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#707070]" />
                     <Input
                       type={showPassword ? "text" : "password"}
                       placeholder="Your password"
                       autoComplete="current-password"
-                      className="pl-12 pr-12 h-14 rounded-2xl text-base bg-foreground/[0.03] border-foreground/10 focus:bg-background focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all shadow-sm"
+                      className="pl-12 pr-12 glass-input"
                       {...form.register("password", { required: true })}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 p-1 text-muted-foreground hover:text-foreground transition-colors"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 p-1 text-[#707070] hover:text-[#222222] transition-colors"
                     >
                       {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
@@ -179,7 +176,7 @@ export default function LoginPage() {
                 
                 <div className="flex justify-end pr-1">
                   <Link href="/forgot-password">
-                    <span className="text-sm font-bold text-primary cursor-pointer hover:text-primary/80 transition-colors">
+                    <span className="text-sm font-bold text-[#FF8F8F] cursor-pointer hover:text-[#FF8F8F]/80 transition-colors">
                       Forgot password?
                     </span>
                   </Link>
@@ -187,8 +184,12 @@ export default function LoginPage() {
 
                 <Button
                   type="submit"
-                  disabled={loading}
-                  className="w-full h-14 rounded-2xl font-bold text-lg text-white mt-4 active:scale-[0.98] transition-all bg-gradient-to-r from-primary to-[#9B4DFF] hover:opacity-90 shadow-lg shadow-primary/20"
+                  disabled={loading || !isLoginValid}
+                  className={`w-full h-[56px] rounded-full font-bold text-base text-white mt-4 active:scale-[0.98] transition-all duration-300 ${
+                    !isLoginValid 
+                      ? "bg-[#FFB39A]/60 opacity-60" 
+                      : "gradient-coral-button hover:opacity-95 shadow-md glow-coral-button"
+                  }`}
                 >
                   {loading ? (
                     <span className="flex items-center gap-3">
@@ -213,16 +214,16 @@ export default function LoginPage() {
                 className="space-y-5"
               >
                 <div className="space-y-2">
-                  <Label className="text-foreground font-semibold ml-1">Email Address</Label>
+                  <Label className="text-[#222222] font-semibold ml-1">Email Address</Label>
                   <div className="flex gap-2">
                     <div className="relative flex-1">
-                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                      <Mail className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#707070]" />
                       <Input
                         type="email"
                         placeholder="you@example.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="pl-12 h-14 rounded-2xl text-base bg-foreground/[0.03] border-foreground/10 focus:bg-background focus:border-primary shadow-sm"
+                        className="pl-12 glass-input"
                       />
                     </div>
                     <Button
@@ -230,11 +231,7 @@ export default function LoginPage() {
                       onClick={sendOtp}
                       disabled={sendingOtp || otpSent}
                       variant="outline"
-                      className={`h-14 px-6 rounded-2xl font-bold transition-all ${
-                        otpSent 
-                          ? "bg-muted border-border text-muted-foreground" 
-                          : "border-primary text-primary hover:bg-primary/5 active:scale-95"
-                      }`}
+                      className={`h-[56px] px-6 rounded-[18px] font-bold transition-all border-[#FF8F8F]/50 text-[#FF8F8F] bg-white/40 backdrop-blur-sm hover:bg-white/60 active:scale-95`}
                     >
                       {sendingOtp ? "..." : otpSent ? "Sent ✓" : "Send"}
                     </Button>
@@ -249,7 +246,7 @@ export default function LoginPage() {
                       exit={{ opacity: 0, height: 0 }}
                       className="space-y-2 overflow-hidden pt-2"
                     >
-                      <Label className="text-foreground font-semibold ml-1">6-digit code</Label>
+                      <Label className="text-[#222222] font-semibold ml-1">6-digit code</Label>
                       <Input
                         type="text"
                         inputMode="numeric"
@@ -257,7 +254,7 @@ export default function LoginPage() {
                         placeholder="000000"
                         value={otp}
                         onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-                        className="h-16 rounded-2xl text-center text-3xl tracking-[0.5em] font-black bg-foreground/[0.03] border-foreground/10 focus:bg-background focus:border-primary shadow-sm"
+                        className="h-[56px] rounded-[18px] text-center text-2xl tracking-[0.5em] font-black bg-white/60 border-white/45 focus:border-[#FF8F8F] focus:ring-1 focus:ring-[#FF8F8F]/20 shadow-sm"
                       />
                     </motion.div>
                   )}
@@ -268,7 +265,7 @@ export default function LoginPage() {
                     <Button
                       onClick={verifyOtp}
                       disabled={loading || otp.length < 6}
-                      className="w-full h-14 rounded-2xl font-bold text-lg text-white mt-4 active:scale-[0.98] transition-all bg-gradient-to-r from-primary to-[#9B4DFF] hover:opacity-90 shadow-lg shadow-primary/20"
+                      className="w-full h-[56px] rounded-full font-bold text-base text-white mt-4 active:scale-[0.98] transition-all gradient-coral-button hover:opacity-95 shadow-md glow-coral-button"
                     >
                       {loading ? "Verifying..." : "Verify & Sign In"}
                     </Button>
@@ -281,14 +278,14 @@ export default function LoginPage() {
           {/* Divider */}
           <div className="flex items-center gap-4 my-8">
             <div className="flex-1 h-px bg-border/60" />
-            <span className="text-sm font-medium text-muted-foreground">or</span>
+            <span className="text-sm font-medium text-[#6F6F6F]">or</span>
             <div className="flex-1 h-px bg-border/60" />
           </div>
 
-          <p className="text-center text-base font-medium text-muted-foreground">
+          <p className="text-center text-base font-medium text-[#6F6F6F]">
             New to SoulMatch?{" "}
             <Link href="/register">
-              <span className="font-bold text-primary cursor-pointer hover:underline underline-offset-4">
+              <span className="font-bold text-[#FF8F8F] cursor-pointer hover:underline underline-offset-4">
                 Create free account
               </span>
             </Link>

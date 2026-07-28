@@ -9,7 +9,7 @@ export default function AdminComingSoon({ title }: { title: string }) {
           <Construction className="w-10 h-10 text-primary" />
         </div>
         <h2 className="text-2xl font-bold mb-2">Module In Development</h2>
-        <p className="text-muted-foreground max-w-md">
+        <p className="text-[#707070] max-w-md">
           The {title} module is currently being built and will be available in the next platform update.
         </p>
       </div>

@@ -1,13 +1,14 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { Brain, RefreshCw, Sparkles, TrendingUp, Compass, Target, ArrowRight, ShieldCheck, Activity } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { 
+  Brain, Sparkles, TrendingUp, Target, ShieldCheck, Heart, 
+  ChevronLeft, Info, User, ArrowRight
+} from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Link, useLocation } from "wouter";
 import { useGetPersonalityProfile, useGetJourneyProgress } from "@workspace/api-client-react";
 import { getAccessToken } from "@/lib/auth-context";
-import { formatDate } from "@/lib/utils";
 
 function authHeaders() {
   const token = getAccessToken();
@@ -15,246 +16,235 @@ function authHeaders() {
   return { Authorization: `Bearer ${token}` } as Record<string, string>;
 }
 
-const traitColors = [
-  "from-pink-500 to-purple-500",
-  "from-purple-500 to-indigo-500",
-  "from-indigo-500 to-blue-500",
-  "from-blue-500 to-cyan-500",
-  "from-cyan-500 to-teal-500",
-];
-
 export default function PersonalityPage() {
   const [, navigate] = useLocation();
-  const { data: profile, isLoading } = useGetPersonalityProfile({
+  
+  const { data: profile, isLoading: loadingProfile } = useGetPersonalityProfile({
     query: { enabled: true } as any,
     request: { headers: authHeaders() },
   });
 
-  const { data: journeyProgress } = useGetJourneyProgress({
+  const { data: journeyProgress, isLoading: loadingJourney } = useGetJourneyProgress({
     query: { enabled: true } as any,
     request: { headers: authHeaders() },
   });
 
-  const p = profile as any;
+  const isLoading = loadingProfile || loadingJourney;
 
-  const displayScores = useMemo(() => {
-    if (!p) return {};
-    const qScores = (journeyProgress as any)?.categoryScores || p.questionnaireCategoryScores || {};
-    const sScores = p.storyCategoryScores || {};
-    
-    const cats = Array.from(new Set([...Object.keys(qScores), ...Object.keys(sScores)]));
-    if (cats.length === 0 && p.finalUnifiedCategoryScores) {
-      return p.finalUnifiedCategoryScores;
-    }
+  const rawTraits = (profile as any)?.traits;
+  const snapshotTraits = Array.isArray(rawTraits) ? rawTraits : [];
+  
+  const connectionScore = snapshotTraits.find((t: any) => t?.trait === "Connection")?.score || 0;
+  const stabilityScore = snapshotTraits.find((t: any) => t?.trait === "Stability")?.score || 0;
+  const growthScore = snapshotTraits.find((t: any) => t?.trait === "Growth")?.score || 0;
+  const explorationScore = snapshotTraits.find((t: any) => t?.trait === "Exploration")?.score || 0;
 
-    const raw: Record<string, number> = {};
-    cats.forEach(c => {
-       const q = Number(qScores[c]) || 0;
-       const s = Number(sScores[c]) || 0;
-       if (q > 0 && s > 0) raw[c] = (q * 0.6) + (s * 0.4);
-       else if (q > 0) raw[c] = q;
-       else if (s > 0) raw[c] = s;
-    });
-    
-    const max = Math.max(...(Object.values(raw) as number[]), 1);
-    const normalized: Record<string, number> = {};
-    for (const [k, v] of Object.entries(raw)) {
-       normalized[k] = Math.round(((v as number) / max) * 100);
-    }
-    return normalized;
-  }, [p, journeyProgress]);
+  const answeredQuestions = (journeyProgress as any)?.answeredQuestions || 0;
+  const analysisProgressPercent = Math.min(100, Math.round((answeredQuestions / 150) * 100));
 
-  // Derive Insights from Behavioral Traits
-  const insights = useMemo(() => {
-    if (!p || !p.behavioralTraits) return [];
-    const b = typeof p.behavioralTraits === "string" ? JSON.parse(p.behavioralTraits) : p.behavioralTraits;
-    const entries = Object.entries(b) as [string, number][];
-    if (entries.length === 0) return [];
-    
-    const sorted = entries.sort(([, a], [, b]) => b - a);
-    const maxScore = sorted[0][1];
-    
-    const results = [];
-    // Top Strength
-    if (sorted.length > 0) {
-      results.push({
-        title: "Top Strength",
-        trait: sorted[0][0],
-        percentage: Math.round((sorted[0][1] / maxScore) * 100),
-        icon: <TrendingUp className="w-5 h-5 text-green-400" />,
-        color: "from-green-500/20 to-emerald-500/10",
-        borderColor: "border-green-500/30"
-      });
-    }
-    
-    // Communication / Relationship Style (middle trait)
-    if (sorted.length > 1) {
-      const mid = Math.floor(sorted.length / 2);
-      results.push({
-        title: "Communication Style",
-        trait: sorted[mid][0],
-        percentage: Math.round((sorted[mid][1] / maxScore) * 100),
-        icon: <Brain className="w-5 h-5 text-purple-400" />,
-        color: "from-purple-500/20 to-fuchsia-500/10",
-        borderColor: "border-purple-500/30"
-      });
-    }
-    
-    // Growth Opportunity (lowest trait)
-    if (sorted.length > 2) {
-      results.push({
-        title: "Growth Opportunity",
-        trait: sorted[sorted.length - 1][0],
-        percentage: Math.round((sorted[sorted.length - 1][1] / maxScore) * 100),
-        icon: <Target className="w-5 h-5 text-orange-400" />,
-        color: "from-orange-500/20 to-amber-500/10",
-        borderColor: "border-orange-500/30"
-      });
-    }
-    
-    return results;
-  }, [p]);
+  // Determine Primary & Secondary Traits
+  const sortedTraits = useMemo(() => {
+    const list = [
+      { label: "Connection", score: connectionScore, icon: Heart, color: "text-[#F6A8B7]", bg: "bg-[#F6A8B7]/15 border-[#F6A8B7]/25" },
+      { label: "Stability", score: stabilityScore, icon: ShieldCheck, color: "text-[#F6A8B7]", bg: "bg-[#F6A8B7]/15 border-[#F6A8B7]/25" },
+      { label: "Growth", score: growthScore, icon: TrendingUp, color: "text-[#F6A8B7]", bg: "bg-[#F6A8B7]/15 border-[#F6A8B7]/25" },
+      { label: "Exploration", score: explorationScore, icon: Target, color: "text-[#F6A8B7]", bg: "bg-[#F6A8B7]/15 border-[#F6A8B7]/25" },
+    ];
+    return list.sort((a, b) => b.score - a.score);
+  }, [connectionScore, stabilityScore, growthScore, explorationScore]);
 
-  const profileCompletion = Math.min(100, ((journeyProgress as any)?.qDaysCompleted || 0) * 3 + 10);
+  const primaryTrait = sortedTraits[0];
+  const secondaryTrait = sortedTraits[1];
+
+  const traitsWithDescriptions = [
+    {
+      label: "Connection",
+      score: connectionScore,
+      icon: Heart,
+      color: "text-[#F6A8B7]",
+      barBg: "bg-[#F6A8B7]",
+      bg: "bg-[#F6A8B7]/15 border-[#F6A8B7]/25",
+      desc: "You value emotional bonds, empathy, and meaningful relationships."
+    },
+    {
+      label: "Stability",
+      score: stabilityScore,
+      icon: ShieldCheck,
+      color: "text-[#F6A8B7]",
+      barBg: "bg-[#F6A8B7]",
+      bg: "bg-[#F6A8B7]/15 border-[#F6A8B7]/25",
+      desc: "You prefer trust, consistency, and long-term commitment."
+    },
+    {
+      label: "Growth",
+      score: growthScore,
+      icon: TrendingUp,
+      color: "text-[#F6A8B7]",
+      barBg: "bg-[#F6A8B7]",
+      bg: "bg-[#F6A8B7]/15 border-[#F6A8B7]/25",
+      desc: "You enjoy learning, achieving goals, and personal development."
+    },
+    {
+      label: "Exploration",
+      score: explorationScore,
+      icon: Target,
+      color: "text-[#F6A8B7]",
+      barBg: "bg-[#F6A8B7]",
+      bg: "bg-[#F6A8B7]/15 border-[#F6A8B7]/25",
+      desc: "You are open to new experiences, creativity, and adventure."
+    }
+  ];
 
   return (
     <AppLayout>
-      <div className="min-h-screen bg-background relative pb-28">
+      <div className="w-full min-h-screen pb-safe font-sans relative flex flex-col" style={{ background: 'linear-gradient(135deg, #F8F3F7 0%, #FAF1ED 100%)' }}>
+        <div className="absolute inset-0 opacity-40 pointer-events-none" style={{ background: 'radial-gradient(circle at 0% 0%, #F4F1FF 0%, transparent 50%), radial-gradient(circle at 100% 100%, #FFFDFC 0%, transparent 50%)' }} />
+        <style>{`
+          .premium-glass-card {
+            background: rgba(255, 255, 255, 0.48) !important;
+            backdrop-filter: blur(28px) !important;
+            -webkit-backdrop-filter: blur(28px) !important;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08) !important;
+          }
+        `}</style>
         
         {/* Sticky Mobile Header */}
-        <nav className="sticky top-[calc(4rem+env(safe-area-inset-top,0px))] z-50 bg-background/90 backdrop-blur-md pt-4 pb-3">
-          <div className="px-5 max-w-md mx-auto flex items-center justify-between">
-            <div>
-              <h1 className="text-[28px] font-extrabold text-foreground tracking-tight">Personality</h1>
-              {p?.generatedAt && (
-                <p className="text-[13px] text-muted-foreground font-medium mt-0.5 flex items-center gap-1.5">
-                  <Activity className="w-3.5 h-3.5 text-primary" /> Analysis: {formatDate(p.generatedAt)}
-                </p>
-              )}
-            </div>
-            {p && (
-              <div className="w-12 h-12 relative flex items-center justify-center">
-                <svg viewBox="0 0 100 100" className="w-full h-full transform -rotate-90">
-                  <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="10" className="text-muted/30" />
-                  <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="10" strokeDasharray="283" strokeDashoffset={283 - (283 * profileCompletion) / 100} className="text-primary transition-all duration-1000 ease-out" strokeLinecap="round" />
-                </svg>
-                <span className="absolute text-[10px] font-extrabold text-foreground">{profileCompletion}%</span>
-              </div>
-            )}
+        <nav className="sticky top-[calc(4rem+env(safe-area-inset-top,0px))] z-50 bg-transparent/85 backdrop-blur-md py-4">
+          <div className="px-4 max-w-md mx-auto flex items-center justify-between">
+            <button onClick={() => navigate("/dashboard")} className="p-2 -ml-2 rounded-full hover:bg-black/5 active:scale-95 transition-all text-[#252525]">
+              <ChevronLeft className="w-5 h-5 text-[#252525]" />
+            </button>
+            <h1 className="text-[20px] font-bold text-[#252525] tracking-tight">Personality Analysis</h1>
+            <div className="w-8" />
           </div>
         </nav>
 
-        <div className="px-5 max-w-md mx-auto mt-4 space-y-6">
+        <div className="px-4 max-w-md mx-auto mt-4 space-y-5">
           {isLoading ? (
-            <div className="space-y-5">
-              <Skeleton className="h-48 rounded-[24px] bg-foreground/5" />
-              <Skeleton className="h-32 rounded-[24px] bg-foreground/5" />
-              <Skeleton className="h-32 rounded-[24px] bg-foreground/5" />
+            <div className="space-y-4">
+              <Skeleton className="h-28 rounded-2xl bg-[#252525]/5" />
+              <Skeleton className="h-10 w-1/3 rounded-lg" />
+              <Skeleton className="h-24 rounded-2xl bg-[#252525]/5" />
+              <Skeleton className="h-24 rounded-2xl bg-[#252525]/5" />
             </div>
-          ) : !p || (!p.traits && !p.summary) ? (
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-card border border-border shadow-xl rounded-[32px] p-8 text-center mt-8">
-              <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Brain className="w-10 h-10 text-primary opacity-80" />
-              </div>
-              <h2 className="text-[22px] font-extrabold mb-3 text-foreground">Profile Not Ready</h2>
-              <p className="text-[15px] text-muted-foreground mb-8 leading-relaxed max-w-[260px] mx-auto">
-                Complete at least 10 journey questions to generate your highly accurate personality profile.
-              </p>
-              <Button className="w-full h-14 bg-primary text-white font-bold text-[16px] rounded-2xl shadow-lg shadow-primary/25" onClick={() => navigate('/journey')}>
-                Start Journey
-              </Button>
-            </motion.div>
           ) : (
             <>
-              {/* Personality Overview Card */}
-              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="bg-card border border-border shadow-md rounded-[28px] p-6 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-bl-[100px] -z-0" />
-                <div className="relative z-10">
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/20 text-[11px] font-bold text-primary mb-4 uppercase tracking-wider">
-                    <Sparkles className="w-3.5 h-3.5" /> Your Type
+              {/* Overview Card */}
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }} 
+                animate={{ opacity: 1, y: 0 }}
+                className="premium-glass-card border border-white/40 rounded-[28px] relative overflow-hidden p-6"
+                style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.4) 100%)' }}
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[#F6A8B7]/10 rounded-full blur-[40px] pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#F4F1FF]/40 rounded-full blur-[40px] pointer-events-none" />
+                
+                <div className="flex items-center gap-2.5 mb-5 border-b border-[#F6A8B7]/15 pb-3 relative z-10">
+                  <Brain className="w-5 h-5 text-[#F6A8B7]" />
+                  <span className="text-sm font-bold text-[#252525] uppercase tracking-wide">Analysis Overview</span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-6 text-center items-center max-w-[280px] mx-auto justify-center relative z-10">
+                  {/* Primary Trait */}
+                  <div className="flex flex-col items-center">
+                    <span className="text-[11px] text-[#707070] font-bold uppercase tracking-wider mb-2">Primary</span>
+                    <div className="relative w-14 h-14 mb-2">
+                       <div className={`absolute inset-0 rounded-full ${primaryTrait?.bg} blur-[6px] opacity-60`} />
+                       <div className={`relative w-full h-full rounded-full ${primaryTrait?.bg} flex items-center justify-center border border-white/50 shadow-sm`}>
+                         {primaryTrait && <primaryTrait.icon className={`w-6 h-6 ${primaryTrait.color}`} strokeWidth={2} />}
+                       </div>
+                    </div>
+                    <span className="text-[15px] font-extrabold text-[#252525]">{primaryTrait?.label || "Stability"}</span>
                   </div>
-                  
-                  {p.dominantType && (
-                    <h2 className="text-[26px] font-extrabold text-foreground mb-3 leading-tight">{p.dominantType}</h2>
-                  )}
-                  <p className="text-[15px] text-muted-foreground leading-relaxed font-medium">{p.summary}</p>
+
+                  {/* Secondary Trait */}
+                  <div className="flex flex-col items-center">
+                    <span className="text-[11px] text-[#707070] font-bold uppercase tracking-wider mb-2">Secondary</span>
+                    <div className="relative w-14 h-14 mb-2">
+                       <div className={`absolute inset-0 rounded-full ${secondaryTrait?.bg} blur-[6px] opacity-40`} />
+                       <div className={`relative w-full h-full rounded-full ${secondaryTrait?.bg} flex items-center justify-center border border-white/50 shadow-sm`}>
+                         {secondaryTrait && <secondaryTrait.icon className={`w-6 h-6 ${secondaryTrait.color}`} strokeWidth={2} />}
+                       </div>
+                    </div>
+                    <span className="text-[15px] font-bold text-[#252525]/80">{secondaryTrait?.label || "Connection"}</span>
+                  </div>
                 </div>
               </motion.div>
 
-              {/* AI Insights - Swipeable Cards */}
-              {insights.length > 0 && (
-                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-                  <h3 className="text-[18px] font-extrabold text-foreground mb-4 px-1">AI Insights</h3>
-                  <div className="flex gap-4 overflow-x-auto hide-scrollbar pb-4 -mx-5 px-5">
-                    {insights.map((insight, i) => (
-                      <div key={i} className={`min-w-[240px] bg-gradient-to-br ${insight.color} border ${insight.borderColor} rounded-[24px] p-5 shadow-sm snap-center shrink-0`}>
-                        <div className="flex items-center justify-between mb-8">
-                          <span className="text-[12px] font-extrabold text-foreground/70 uppercase tracking-widest">{insight.title}</span>
-                          {insight.icon}
-                        </div>
-                        <h4 className="text-[20px] font-extrabold text-foreground mb-1 leading-tight">{insight.trait}</h4>
-                        <div className="flex items-center gap-2 mt-4">
-                          <div className="h-1.5 flex-1 bg-foreground/10 rounded-full overflow-hidden">
-                            <div className="h-full bg-foreground/30 rounded-full" style={{ width: `${insight.percentage}%` }} />
-                          </div>
-                          <span className="text-[13px] font-bold text-foreground/70">{insight.percentage}%</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
+              {/* Your Personality Traits Section */}
+              <div className="space-y-4">
+                <div className="mb-1 px-1">
+                  <h3 className="text-[18px] font-bold text-[#252525] tracking-tight">Your Personality Traits</h3>
+                </div>
 
-              {/* Personality Dimensions (What Matters Most) */}
-              {displayScores && Object.keys(displayScores).length > 0 && (
-                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-card border border-border shadow-sm rounded-[28px] p-6">
-                  <h3 className="text-[18px] font-extrabold text-foreground mb-6 flex items-center gap-2">
-                    <Compass className="w-5 h-5 text-primary" /> Personality Dimensions
-                  </h3>
-                  <div className="space-y-5">
-                    {Object.entries(displayScores)
-                      .sort(([, a]: any, [, b]: any) => b - a)
-                      .map(([category, score]: any, i: number) => (
-                        <div key={category}>
-                          <div className="flex justify-between items-end mb-2">
-                            <span className="text-[15px] font-bold text-foreground">{category}</span>
-                            <span className={`text-[12px] font-extrabold px-2 py-0.5 rounded-md ${score >= 80 ? "bg-green-500/10 text-green-500" : score >= 50 ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>
-                              {score}%
-                            </span>
-                          </div>
-                          <div className="h-3 bg-muted rounded-full overflow-hidden border border-border/50">
-                            <motion.div
-                              initial={{ width: 0 }}
-                              animate={{ width: `${score}%` }}
-                              transition={{ delay: 0.3 + i * 0.1, duration: 1 }}
-                              className={`h-full rounded-full bg-gradient-to-r ${traitColors[i % traitColors.length]}`}
-                            />
-                          </div>
+                <div className="space-y-3">
+                  {traitsWithDescriptions.map((trait, index) => {
+                    const isTopTrait = trait.label === primaryTrait?.label;
+                    
+                    return (
+                      <motion.div
+                        key={trait.label}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.05 }}
+                        className={`premium-glass-card rounded-[24px] relative overflow-hidden p-4.5 flex flex-col gap-3 transition-all ${isTopTrait ? 'border-[1.5px] border-[#F6A8B7]/40 shadow-[0_8px_24px_rgba(246,168,183,0.12)] bg-white/60' : 'border border-white/35 bg-white/40'}`}
+                      >
+                        <div className="flex items-center gap-3.5">
+                           <div className={`w-12 h-12 rounded-[14px] ${trait.bg} flex items-center justify-center shrink-0 shadow-sm border border-white/50 relative`}>
+                             {isTopTrait && <div className="absolute inset-0 bg-[#F6A8B7]/20 rounded-[14px] blur-[8px]" />}
+                             <trait.icon className={`relative z-10 w-6 h-6 ${trait.color}`} strokeWidth={2} />
+                           </div>
+
+                           <div className="flex-1 min-w-0">
+                             <div className="flex items-center justify-between mb-0.5">
+                               <span className={`text-[16px] font-extrabold ${isTopTrait ? 'text-[#252525]' : 'text-[#252525]/90'}`}>{trait.label}</span>
+                               <span className={`text-[16px] font-black ${isTopTrait ? trait.color : 'text-[#252525]/70'}`}>{trait.score}%</span>
+                             </div>
+                             <p className="text-[12px] text-[#6F6F6F] leading-snug">
+                               {trait.desc}
+                             </p>
+                           </div>
                         </div>
-                      ))}
-                  </div>
-                </motion.div>
-              )}
+                        
+                        <div className="relative h-2.5 w-full bg-[#E5E5E5]/50 rounded-full overflow-hidden shadow-inner mt-0.5">
+                          {isTopTrait && (
+                             <div 
+                               className="absolute top-0 left-0 h-full bg-[#F6A8B7] blur-[4px] opacity-60 rounded-full"
+                               style={{ width: `${trait.score}%` }}
+                             />
+                          )}
+                          <div 
+                            className={`relative h-full rounded-full transition-all duration-1000 ease-out ${isTopTrait ? 'bg-gradient-to-r from-[#F6A8B7] to-[#F8C3C6]' : 'bg-[#F6A8B7]/70'}`}
+                            style={{ width: `${trait.score}%` }}
+                          />
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </div>
 
-              {/* Compatibility Keywords (Detailed Analysis) */}
-              {p.compatibilityKeywords?.length > 0 && (
-                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-                  <h3 className="text-[18px] font-extrabold text-foreground mb-4 px-1 mt-2">Core Traits</h3>
-                  <div className="flex flex-wrap gap-2.5">
-                    {p.compatibilityKeywords.map((kw: string) => (
-                      <span key={kw} className="px-4 py-2 bg-card border border-border shadow-sm text-foreground text-[14px] rounded-full font-bold">
-                        {kw}
-                      </span>
-                    ))}
+              {/* Why This Matters Section */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="premium-glass-card border border-white/40 rounded-[28px] p-5 relative overflow-hidden"
+                style={{ background: 'linear-gradient(135deg, rgba(246,168,183,0.08) 0%, rgba(255,255,255,0.4) 100%)' }}
+              >
+                <div className="relative z-10 flex items-start gap-3.5">
+                  <div className="w-10 h-10 rounded-full bg-white/60 border border-white flex items-center justify-center shrink-0 shadow-sm">
+                     <Info className="w-5 h-5 text-[#F6A8B7]" strokeWidth={2} />
                   </div>
-                </motion.div>
-              )}
+                  <div>
+                    <h4 className="text-[15px] font-extrabold text-[#252525] mb-1">Why This Matters</h4>
+                    <p className="text-[13px] text-[#6F6F6F] leading-relaxed">
+                      Your daily answers train the <span className="font-semibold text-[#F6A8B7]">Hybrid Engine</span> to deeply understand your relationship preferences, unlocking highly compatible matches tailored to your exact lifestyle and core values.
+                    </p>
+                  </div>
+                </div>
 
-              {/* Progress & Actions */}
-              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="pt-4 pb-8">
-                <Button variant="outline" className="w-full h-14 bg-card border-border shadow-sm text-foreground font-bold text-[15px] rounded-2xl gap-2 hover:bg-foreground/5">
-                  <RefreshCw className="w-4 h-4" /> Regenerate Profile Analysis
-                </Button>
+                {/* Decorative background element */}
+                <div className="absolute -right-6 -bottom-6 w-32 h-32 bg-gradient-to-br from-[#F6A8B7]/20 to-transparent rounded-full blur-[20px] pointer-events-none" />
               </motion.div>
             </>
           )}

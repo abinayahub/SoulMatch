@@ -1,6 +1,10 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, UserCircle, Activity, ChevronRight, ChevronDown, Info, Heart, Award, MessageCircle, Shield, Brain, Target, CheckSquare, ShieldCheck, CalendarDays, AlertCircle, Crown, BookOpen, Flame, Lightbulb } from "lucide-react";
+import { 
+  ChevronLeft, UserCircle, Activity, ChevronRight, ChevronDown, Info, Heart, Award, 
+  MessageCircle, Shield, Brain, Target, CheckSquare, ShieldCheck, CalendarDays, 
+  AlertCircle, Crown, BookOpen, Flame, Lightbulb, Users, TrendingUp, Sparkles, Star 
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { subMonths, addMonths, format, startOfMonth, endOfMonth, eachDayOfInterval, getDay, isSameDay, isToday, subDays, differenceInDays } from "date-fns";
 import { Link } from "wouter";
@@ -28,6 +32,7 @@ export default function ActivityPage() {
   const [expandedWhyMatches, setExpandedWhyMatches] = useState(false);
   const [expandedTips, setExpandedTips] = useState(false);
   const [showJourney, setShowJourney] = useState(false);
+  const [showSnapshot, setShowSnapshot] = useState(false);
   const [expandedStoryCalendar, setExpandedStoryCalendar] = useState(false);
   const [expandedWeeklyReflection, setExpandedWeeklyReflection] = useState(false);
   const [expandedMemoryCapsule, setExpandedMemoryCapsule] = useState(false);
@@ -249,15 +254,72 @@ export default function ActivityPage() {
   };
   const hasMatches = stats.totalMatches > 0;
 
+  const validTraits = useMemo(() => {
+    let totalScore = 0;
+    const scores = {
+      "Emotional Understanding": 0,
+      "Communication Style": 0,
+      "Relationship Values": 0,
+      "Life Goals Alignment": 0,
+      "Adventure & Openness": 0,
+    };
+
+    myJournals.forEach((j: any) => {
+      const s = j.aiAnalysis?.storyAnalysis?.storyScores || {};
+      scores["Emotional Understanding"] +=
+        (s["Emotional Wellbeing"] || 0) + (s["Kindness & Empathy"] || 0);
+      scores["Communication Style"] += s["Communication Style"] || 0;
+      scores["Relationship Values"] +=
+        (s["Family Values"] || 0) + (s["Relationship Commitment"] || 0);
+      scores["Life Goals Alignment"] +=
+        (s["Career Focus"] || 0) + (s["Personal Growth"] || 0);
+      scores["Adventure & Openness"] += s["Adventure & Travel"] || 0;
+    });
+
+    const storyCount = Math.max(1, myJournals.length);
+    // Calculate average score per story, multiply by a scalar to get a nice 0-100 absolute percentage
+    const scalar = 6;
+
+    return {
+      emotional: Math.min(
+        100,
+        Math.round((scores["Emotional Understanding"] / storyCount) * scalar),
+      ),
+      communication: Math.min(
+        100,
+        Math.round((scores["Communication Style"] / storyCount) * scalar),
+      ),
+      relationship: Math.min(
+        100,
+        Math.round((scores["Relationship Values"] / storyCount) * scalar),
+      ),
+      goals: Math.min(
+        100,
+        Math.round((scores["Life Goals Alignment"] / storyCount) * scalar),
+      ),
+      adventure: Math.min(
+        100,
+        Math.round((scores["Adventure & Openness"] / storyCount) * scalar),
+      ),
+    };
+  }, [myJournals]);
+
+  // For the overall average, calculate it from all non-zero traits (or just all 5 traits)
+  const allTraits = Object.values(validTraits);
+  const overallAvg = allTraits.length
+    ? Math.round(allTraits.reduce((acc, v) => acc + v, 0) / allTraits.length)
+    : 0;
+
   return (
     <AppLayout>
-      <div className="w-full relative bg-background font-sans min-h-screen pt-4 pb-28">
-        <div className="max-w-md mx-auto w-full px-5">
+      <div className="min-h-screen font-sans relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #F8F3F7 0%, #FAF1ED 100%)' }}>
+        <div className="absolute inset-0 opacity-40 pointer-events-none" style={{ background: 'radial-gradient(circle at 0% 0%, #F4F1FF 0%, transparent 50%), radial-gradient(circle at 100% 100%, #FFFDFC 0%, transparent 50%)' }} />
+        <div className="w-full relative z-10 pt-4 max-w-md mx-auto px-5">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-          <h1 className="text-3xl font-bold flex items-center gap-3 mb-1 text-foreground">
+          <h1 className="text-3xl font-bold flex items-center gap-3 mb-1 text-[#252525]">
             Account & Activity
           </h1>
-          <p className="text-muted-foreground">Manage your profile and view your activity.</p>
+          <p className="text-[#707070]">Manage your profile and view your activity.</p>
         </motion.div>
 
         <div className="space-y-6">
@@ -265,7 +327,7 @@ export default function ActivityPage() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-card border border-border shadow-sm rounded-[24px] relative"
+            className="border border-white/35 rounded-[24px] relative overflow-hidden" style={{ background: 'rgba(255,255,255,0.48)', backdropFilter: 'blur(28px)', WebkitBackdropFilter: 'blur(28px)', boxShadow: '0 16px 40px rgba(0,0,0,0.08)' }}
           >
             {/* Header row — always visible, clickable */}
             <div
@@ -273,15 +335,15 @@ export default function ActivityPage() {
               onClick={() => setShowJourney(!showJourney)}
             >
               <div>
-                <h3 className="text-foreground font-extrabold text-[16px]">Story Journey</h3>
-                <p className="text-[12px] text-muted-foreground font-medium mt-0.5">Your 30-day progress</p>
+                <h3 className="text-[#252525] font-extrabold text-[16px]">Story Journey</h3>
+                <p className="text-[12px] text-[#707070] font-medium mt-0.5">Your 30-day progress</p>
               </div>
               <motion.button
                 whileTap={{ scale: 0.92 }}
                 className={`text-[11px] font-bold px-3 py-1.5 rounded-full border transition-all ${
                   showJourney
-                    ? "bg-primary/10 text-primary border-primary/30"
-                    : "bg-muted text-muted-foreground border-border"
+                    ? "bg-[#F6A8B7]/10 text-[#F6A8B7] border-primary/30"
+                    : "bg-white/40 text-[#707070] border-white/40"
                 }`}
               >
                 {showJourney ? "Hide" : "View"}
@@ -331,11 +393,11 @@ export default function ActivityPage() {
                       </svg>
                       {/* Center text */}
                       <div className="flex flex-col items-center z-10">
-                        <span className="text-[28px] font-extrabold text-foreground leading-none">{journeyProgress}%</span>
-                        <span className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest mt-1">Complete</span>
+                        <span className="text-[28px] font-extrabold text-[#252525] leading-none">{journeyProgress}%</span>
+                        <span className="text-[9px] text-[#707070] font-bold uppercase tracking-widest mt-1">Complete</span>
                       </div>
                     </div>
-                    <p className="text-[12px] text-muted-foreground">
+                    <p className="text-[12px] text-[#707070]">
                       {(myJournals as any[]).length} of 30 stories shared
                     </p>
                   </div>
@@ -344,22 +406,190 @@ export default function ActivityPage() {
             </AnimatePresence>
           </motion.div>
 
+          {/* Personality Snapshot */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="border border-white/35 rounded-[24px] relative overflow-hidden" style={{ background: 'rgba(255,255,255,0.48)', backdropFilter: 'blur(28px)', WebkitBackdropFilter: 'blur(28px)', boxShadow: '0 16px 40px rgba(0,0,0,0.08)' }}
+          >
+            {/* Header row — always visible, clickable */}
+            <div
+              className="flex items-center justify-between p-5 cursor-pointer select-none"
+              onClick={() => setShowSnapshot(!showSnapshot)}
+            >
+              <div>
+                <h3 className="text-[#252525] font-extrabold text-[16px]">Personality Snapshot</h3>
+                <p className="text-[12px] text-[#707070] font-medium mt-0.5">Your story trait analyses</p>
+              </div>
+              <motion.button
+                whileTap={{ scale: 0.92 }}
+                className={`text-[11px] font-bold px-3 py-1.5 rounded-full border transition-all ${
+                  showSnapshot
+                    ? "bg-[#F6A8B7]/10 text-[#F6A8B7] border-primary/30"
+                    : "bg-white/40 text-[#707070] border-white/40"
+                }`}
+              >
+                {showSnapshot ? "Hide" : "View"}
+              </motion.button>
+            </div>
+
+            {/* Expanded details */}
+            <AnimatePresence>
+              {showSnapshot && (
+                <motion.div
+                  key="snapshot-content-wrapper"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className="overflow-hidden"
+                >
+                  <div className="flex gap-4 items-center px-5 pb-6 pt-2">
+                    {/* Left: Circle Chart */}
+                    <div className="relative w-24 h-24 flex items-center justify-center shrink-0">
+                      <svg className="absolute inset-0 w-full h-full transform -rotate-90" viewBox="0 0 96 96">
+                        {/* Background ring */}
+                        <circle
+                          cx="48"
+                          cy="48"
+                          r="40"
+                          fill="none"
+                          stroke="currentColor"
+                          className="text-[#252525]/10"
+                          strokeWidth="10"
+                        />
+                        {/* Progress ring */}
+                        <circle
+                          cx="48"
+                          cy="48"
+                          r="40"
+                          fill="none"
+                          className="stroke-primary transition-all duration-1000 ease-out"
+                          strokeWidth="10"
+                          strokeDasharray="251.33"
+                          strokeDashoffset={251.33 - (overallAvg / 100) * 251.33}
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                      <div className="flex flex-col items-center z-10">
+                        <span className="text-[18px] font-extrabold text-[#252525] leading-none tracking-tight">
+                          {overallAvg}%
+                        </span>
+                        <span className="text-[7px] text-[#707070] font-bold text-center leading-tight mt-0.5 uppercase tracking-wide">
+                          Overall<br/>Awareness
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Right: Trait Rows */}
+                    <div className="flex flex-col gap-1.5 flex-1">
+                      {[
+                        {
+                          label: "Emotional Understanding",
+                          val: validTraits.emotional,
+                          icon: Heart,
+                          color: "bg-[#ff4b4b]",
+                          text: "text-[#ff4b4b]",
+                          border: "border-[#ff4b4b]/20",
+                          bg: "bg-[#ff4b4b]/10",
+                        },
+                        {
+                          label: "Communication Style",
+                          val: validTraits.communication,
+                          icon: MessageCircle,
+                          color: "bg-[#F6A8B7]",
+                          text: "text-[#F6A8B7]",
+                          border: "border-[#F6A8B7]/20",
+                          bg: "bg-[#F6A8B7]/10",
+                        },
+                        {
+                          label: "Relationship Values",
+                          val: validTraits.relationship,
+                          icon: Users,
+                          color: "bg-[#3b82f6]",
+                          text: "text-[#3b82f6]",
+                          border: "border-[#3b82f6]/20",
+                          bg: "bg-[#3b82f6]/10",
+                        },
+                        {
+                          label: "Life Goals Alignment",
+                          val: validTraits.goals,
+                          icon: TrendingUp,
+                          color: "bg-[#10b981]",
+                          text: "text-[#10b981]",
+                          border: "border-[#10b981]/20",
+                          bg: "bg-[#10b981]/10",
+                        },
+                        {
+                          label: "Adventure & Openness",
+                          val: validTraits.adventure,
+                          icon: Sparkles,
+                          color: "bg-[#f59e0b]",
+                          text: "text-[#f59e0b]",
+                          border: "border-[#f59e0b]/20",
+                          bg: "bg-[#f59e0b]/10",
+                        },
+                      ].map((item, i) => {
+                        const tag =
+                          item.val >= 75
+                            ? "HIGH"
+                            : item.val >= 50
+                            ? "GOOD"
+                            : item.val >= 25
+                            ? "AVG"
+                            : "LOW";
+                        const tagStyles =
+                          item.val >= 75
+                            ? "text-[#10b981] bg-[#10b981]/10 border-[#10b981]/20"
+                            : item.val >= 50
+                            ? "text-[#3b82f6] bg-[#3b82f6]/10 border-[#3b82f6]/20"
+                            : item.val >= 25
+                            ? "text-[#f59e0b] bg-[#f59e0b]/10 border-[#f59e0b]/20"
+                            : "text-[#ff4b4b] bg-[#ff4b4b]/10 border-[#ff4b4b]/20";
+
+                        return (
+                          <div
+                            key={i}
+                            className="flex items-center justify-between border border-white/35 px-2.5 py-1.5 rounded-[12px]" style={{ background: 'rgba(255,255,255,0.4)', backdropFilter: 'blur(16px)' }}
+                          >
+                            <div className="flex items-center gap-2">
+                              <div className={`w-6 h-6 rounded-[7px] ${item.bg} flex items-center justify-center shrink-0`}>
+                                <item.icon className={`w-3 h-3 ${item.text}`} />
+                              </div>
+                              <span className="text-[#252525] font-semibold text-[11px] leading-tight">{item.label}</span>
+                            </div>
+                            <div className="flex items-center gap-1.5 shrink-0">
+                              <span className="font-extrabold text-[#252525] text-[12px]">{item.val}%</span>
+                              <span className={`text-[8px] font-bold px-1 py-0.5 rounded-[5px] border uppercase tracking-wider ${tagStyles}`}>
+                                {tag}
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+
           {/* Story Calendar */}
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-card border border-border shadow-sm rounded-[24px]">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="border border-white/35 rounded-[24px] relative overflow-hidden" style={{ background: 'rgba(255,255,255,0.48)', backdropFilter: 'blur(28px)', WebkitBackdropFilter: 'blur(28px)', boxShadow: '0 16px 40px rgba(0,0,0,0.08)' }}>
             <div 
               className="flex items-center justify-between p-5 cursor-pointer select-none" 
               onClick={() => setExpandedStoryCalendar(!expandedStoryCalendar)}
             >
               <div>
-                <h3 className="text-foreground font-extrabold text-[16px]">Story Calendar</h3>
-                <p className="text-[12px] text-muted-foreground font-medium mt-0.5">Your monthly story overview</p>
+                <h3 className="text-[#252525] font-extrabold text-[16px]">Story Calendar</h3>
+                <p className="text-[12px] text-[#707070] font-medium mt-0.5">Your monthly story overview</p>
               </div>
               <motion.button
                 whileTap={{ scale: 0.92 }}
                 className={`text-[11px] font-bold px-3 py-1.5 rounded-full border transition-all ${
                   expandedStoryCalendar
-                    ? "bg-primary/10 text-primary border-primary/30"
-                    : "bg-muted text-muted-foreground border-border"
+                    ? "bg-[#F6A8B7]/10 text-[#F6A8B7] border-primary/30"
+                    : "bg-white/40 text-[#707070] border-white/40"
                 }`}
               >
                 {expandedStoryCalendar ? "Hide" : "View"}
@@ -376,19 +606,19 @@ export default function ActivityPage() {
                 >
                   <div className="px-6 pb-6">
                     <div className="flex items-center justify-between mb-5">
-                      <div className="text-[15px] font-extrabold text-foreground">
+                      <div className="text-[15px] font-extrabold text-[#252525]">
                         {format(currentMonth, "MMMM yyyy")}
                       </div>
                       <div className="flex gap-2">
                         <button 
                           onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
-                          className="w-8 h-8 rounded-[10px] bg-background border border-border flex items-center justify-center text-foreground hover:bg-[var(--border)] transition-colors"
+                          className="w-8 h-8 rounded-[10px] bg-transparent border border-white/40 flex items-center justify-center text-[#252525] hover:bg-[var(--border)] transition-colors"
                         >
                           <ChevronLeft className="w-4 h-4" />
                         </button>
                         <button 
                           onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
-                          className="w-8 h-8 rounded-[10px] bg-background border border-border flex items-center justify-center text-foreground hover:bg-[var(--border)] transition-colors"
+                          className="w-8 h-8 rounded-[10px] bg-transparent border border-white/40 flex items-center justify-center text-[#252525] hover:bg-[var(--border)] transition-colors"
                         >
                           <ChevronRight className="w-4 h-4" />
                         </button>
@@ -399,7 +629,7 @@ export default function ActivityPage() {
                       {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
                         <div
                           key={i}
-                          className="text-[11px] text-muted-foreground font-bold uppercase tracking-wider"
+                          className="text-[11px] text-[#707070] font-bold uppercase tracking-wider"
                         >
                           {d}
                         </div>
@@ -442,7 +672,7 @@ export default function ActivityPage() {
                                 return (
                                   <div
                                     key={i}
-                                    className="mx-auto w-8 h-8 rounded-full bg-primary/10 text-primary border-2 border-primary flex items-center justify-center text-[13px] font-bold"
+                                    className="mx-auto w-8 h-8 rounded-full bg-[#F6A8B7]/10 text-[#F6A8B7] border-2 border-primary flex items-center justify-center text-[13px] font-bold"
                                   >
                                     {format(day, "d")}
                                   </div>
@@ -452,7 +682,7 @@ export default function ActivityPage() {
                               return (
                                 <div
                                   key={i}
-                                  className="text-[13px] text-muted-foreground font-medium flex items-center justify-center h-8"
+                                  className="text-[13px] text-[#707070] font-medium flex items-center justify-center h-8"
                                 >
                                   {format(day, "d")}
                                 </div>
@@ -463,22 +693,22 @@ export default function ActivityPage() {
                       })()}
                     </div>
 
-                    <div className="bg-background rounded-[20px] p-4 flex justify-between items-center border border-border">
+                    <div className="bg-transparent rounded-[20px] p-4 flex justify-between items-center border border-white/40">
                       <div className="flex gap-4 items-center">
                         <div className="w-12 h-12 rounded-[14px] bg-[#6366f1]/10 flex items-center justify-center shrink-0">
                           <BookOpen className="w-5 h-5 text-[#6366f1]" />
                         </div>
                         <div>
-                          <div className="text-foreground font-extrabold text-[15px]">
+                          <div className="text-[#252525] font-extrabold text-[15px]">
                             {completedCount} Stories
                           </div>
-                          <div className="text-[12px] text-muted-foreground font-medium mt-0.5">
+                          <div className="text-[12px] text-[#707070] font-medium mt-0.5">
                             Longest Streak
                           </div>
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-muted-foreground text-[11px] line-through mb-1 font-bold">
+                        <div className="text-[#707070] text-[11px] line-through mb-1 font-bold">
                           24 Days
                         </div>
                         <div className="text-[#ff6b6b] font-extrabold flex items-center gap-1 text-[15px]">
@@ -493,24 +723,24 @@ export default function ActivityPage() {
           </motion.div>
 
           {/* Weekly Reflection */}
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-card border border-border shadow-sm rounded-[24px]">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="border border-white/35 rounded-[24px] relative overflow-hidden" style={{ background: 'rgba(255,255,255,0.48)', backdropFilter: 'blur(28px)', WebkitBackdropFilter: 'blur(28px)', boxShadow: '0 16px 40px rgba(0,0,0,0.08)' }}>
             <div 
               className="flex items-center justify-between p-5 cursor-pointer select-none" 
               onClick={() => setExpandedWeeklyReflection(!expandedWeeklyReflection)}
             >
               <div>
-                <h3 className="text-foreground font-extrabold text-[16px] flex items-center gap-2">
+                <h3 className="text-[#252525] font-extrabold text-[16px] flex items-center gap-2">
                   Weekly Reflection
                   <Lightbulb className="w-4 h-4 text-[#f59e0b]" />
                 </h3>
-                <p className="text-[12px] text-muted-foreground font-medium mt-0.5">Insights from this week's stories</p>
+                <p className="text-[12px] text-[#707070] font-medium mt-0.5">Insights from this week's stories</p>
               </div>
               <motion.button
                 whileTap={{ scale: 0.92 }}
                 className={`text-[11px] font-bold px-3 py-1.5 rounded-full border transition-all ${
                   expandedWeeklyReflection
-                    ? "bg-primary/10 text-primary border-primary/30"
-                    : "bg-muted text-muted-foreground border-border"
+                    ? "bg-[#F6A8B7]/10 text-[#F6A8B7] border-primary/30"
+                    : "bg-white/40 text-[#707070] border-white/40"
                 }`}
               >
                 {expandedWeeklyReflection ? "Hide" : "View"}
@@ -526,7 +756,7 @@ export default function ActivityPage() {
                   className="overflow-hidden"
                 >
                   <div className="px-6 pb-6">
-                    <p className="text-[12px] font-bold text-muted-foreground uppercase tracking-wider mb-6">
+                    <p className="text-[12px] font-bold text-[#707070] uppercase tracking-wider mb-6">
                       {weeklyStats.dateRange}
                     </p>
 
@@ -587,32 +817,32 @@ export default function ActivityPage() {
                           )}
                         </svg>
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <Heart className="w-6 h-6 text-primary fill-primary/20" />
+                          <Heart className="w-6 h-6 text-[#F6A8B7] fill-primary/20" />
                         </div>
                       </div>
                       <div className="space-y-3 flex-1">
-                        <div className="flex justify-between text-[13px] font-bold text-foreground">
+                        <div className="flex justify-between text-[13px] font-bold text-[#252525]">
                           <span className="flex items-center gap-2">
                             <span className="w-2.5 h-2.5 rounded-full bg-[#ec4899]"></span>{" "}
                             Family
                           </span>
                           <span>{weeklyStats.familyPct}%</span>
                         </div>
-                        <div className="flex justify-between text-[13px] font-bold text-foreground">
+                        <div className="flex justify-between text-[13px] font-bold text-[#252525]">
                           <span className="flex items-center gap-2">
                             <span className="w-2.5 h-2.5 rounded-full bg-[#f97316]"></span>{" "}
                             Career
                           </span>
                           <span>{weeklyStats.careerPct}%</span>
                         </div>
-                        <div className="flex justify-between text-[13px] font-bold text-foreground">
+                        <div className="flex justify-between text-[13px] font-bold text-[#252525]">
                           <span className="flex items-center gap-2">
                             <span className="w-2.5 h-2.5 rounded-full bg-[#22c55e]"></span>{" "}
                             Growth
                           </span>
                           <span>{weeklyStats.growthPct}%</span>
                         </div>
-                        <div className="flex justify-between text-[13px] font-bold text-foreground">
+                        <div className="flex justify-between text-[13px] font-bold text-[#252525]">
                           <span className="flex items-center gap-2">
                             <span className="w-2.5 h-2.5 rounded-full bg-[#3b82f6]"></span>{" "}
                             Health
@@ -621,12 +851,12 @@ export default function ActivityPage() {
                         </div>
                       </div>
                     </div>
-                    <div className="text-center text-[13px] text-muted-foreground font-medium border-t border-border pt-4">
+                    <div className="text-center text-[13px] text-[#707070] font-medium border-t border-white/40 pt-4">
                       You shared{" "}
-                      <strong className="text-foreground">
+                      <strong className="text-[#252525]">
                         {weeklyStats.storyCount} stories
                       </strong>{" "}
-                      this week <Heart className="inline w-3.5 h-3.5 text-primary ml-1" />
+                      this week <Heart className="inline w-3.5 h-3.5 text-[#F6A8B7] ml-1" />
                     </div>
                   </div>
                 </motion.div>
@@ -636,26 +866,26 @@ export default function ActivityPage() {
 
           {/* Memory Capsule */}
           {memoryCapsule && (
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-card border border-border shadow-sm rounded-[24px] relative overflow-hidden group">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-purple-500/5 z-0" />
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-card border border-white/40 shadow-sm rounded-[24px] relative overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-[#F6A8B7]/5 z-0" />
               
               <div 
                 className="relative z-10 flex items-center justify-between p-5 cursor-pointer select-none" 
                 onClick={() => setExpandedMemoryCapsule(!expandedMemoryCapsule)}
               >
                 <div>
-                  <h3 className="text-foreground font-extrabold text-[16px] flex items-center gap-2">
+                  <h3 className="text-[#252525] font-extrabold text-[16px] flex items-center gap-2">
                     Memory Capsule
-                    <Lightbulb className="w-4 h-4 text-primary" />
+                    <Lightbulb className="w-4 h-4 text-[#F6A8B7]" />
                   </h3>
-                  <p className="text-[12px] text-muted-foreground font-medium mt-0.5">Rediscover past thoughts</p>
+                  <p className="text-[12px] text-[#707070] font-medium mt-0.5">Rediscover past thoughts</p>
                 </div>
                 <motion.button
                   whileTap={{ scale: 0.92 }}
                   className={`text-[11px] font-bold px-3 py-1.5 rounded-full border transition-all ${
                     expandedMemoryCapsule
-                      ? "bg-primary/10 text-primary border-primary/30"
-                      : "bg-muted text-muted-foreground border-border"
+                      ? "bg-[#F6A8B7]/10 text-[#F6A8B7] border-primary/30"
+                      : "bg-white/40 text-[#707070] border-white/40"
                   }`}
                 >
                   {expandedMemoryCapsule ? "Hide" : "View"}
@@ -671,48 +901,48 @@ export default function ActivityPage() {
                     className="overflow-hidden relative z-10"
                   >
                     <div className="px-6 pb-6 flex flex-col items-start w-full">
-                      <div className="text-primary text-[10px] font-bold uppercase tracking-[0.15em] mb-1 bg-card/50 px-2 py-1 rounded-[6px]">
+                      <div className="text-[#F6A8B7] text-[10px] font-bold uppercase tracking-[0.15em] mb-1 bg-card/50 px-2 py-1 rounded-[6px]">
                         {memoryCapsule.daysSince === 0
                           ? "Earlier Today"
                           : `${memoryCapsule.daysSince} Days Ago`}
                       </div>
-                      <div className="text-[13px] font-bold text-muted-foreground mb-4">
+                      <div className="text-[13px] font-bold text-[#707070] mb-4">
                         {format(
                           new Date(memoryCapsule.journal.createdAt),
                           "MMMM d, yyyy"
                         )}
                       </div>
 
-                      <div className="bg-card/80 backdrop-blur-sm border border-border/50 shadow-sm rounded-[20px] p-5 w-full mb-5">
-                        <p className="text-foreground text-[14px] leading-relaxed italic line-clamp-3 font-medium">
+                      <div className="bg-card/80 backdrop-blur-sm border border-white/40/50 shadow-sm rounded-[20px] p-5 w-full mb-5">
+                        <p className="text-[#252525] text-[14px] leading-relaxed italic line-clamp-3 font-medium">
                           "{memoryCapsule.journal.content}"
                         </p>
                         <div className="mt-4 flex gap-2">
-                          <span className="text-[10px] px-2.5 py-1.5 rounded-[8px] bg-primary/10 text-primary font-bold tracking-wide uppercase">
+                          <span className="text-[10px] px-2.5 py-1.5 rounded-[8px] bg-[#F6A8B7]/10 text-[#F6A8B7] font-bold tracking-wide uppercase">
                             {memoryCapsule.topCat}
                           </span>
                         </div>
                       </div>
 
                       <div className="space-y-4 w-full mb-6 mt-2">
-                        <p className="text-muted-foreground text-[14px] leading-relaxed font-medium border-l-[3px] border-primary/40 pl-4">
+                        <p className="text-[#707070] text-[14px] leading-relaxed font-medium border-l-[3px] border-primary/40 pl-4">
                           {memoryCapsule.aiSummary}
                         </p>
 
-                        <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-[16px] p-4 space-y-3 mt-5">
+                        <div className="bg-card/60 backdrop-blur-sm border border-white/40/50 rounded-[16px] p-4 space-y-3 mt-5">
                           <div className="flex items-center justify-between text-[13px]">
-                            <span className="text-muted-foreground font-bold">
+                            <span className="text-[#707070] font-bold">
                               Additional Stories
                             </span>
-                            <span className="text-primary font-extrabold text-[15px]">
+                            <span className="text-[#F6A8B7] font-extrabold text-[15px]">
                               +{memoryCapsule.storiesSince}
                             </span>
                           </div>
                           <div className="flex items-center justify-between text-[13px]">
-                            <span className="text-muted-foreground font-bold">
+                            <span className="text-[#707070] font-bold">
                               Recurring Themes
                             </span>
-                            <span className="text-foreground font-extrabold text-right max-w-[60%] truncate">
+                            <span className="text-[#252525] font-extrabold text-right max-w-[60%] truncate">
                               {memoryCapsule.recurringThemes.length > 0
                                 ? memoryCapsule.recurringThemes.join(", ")
                                 : "N/A"}
@@ -735,16 +965,16 @@ export default function ActivityPage() {
             </motion.div>
           )}
           {/* Match Network Stats */}
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-card border border-border shadow-md rounded-2xl p-5">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-card border border-white/40 shadow-md rounded-2xl p-5">
             <div 
               className="flex items-center justify-between cursor-pointer mb-2" 
               onClick={() => setExpandedMatchNetwork(!expandedMatchNetwork)}
             >
-              <h2 className="font-semibold text-foreground text-lg">Your Match Network</h2>
+              <h2 className="font-semibold text-[#252525] text-lg">Your Match Network</h2>
               {expandedMatchNetwork ? (
-                <ChevronDown className="w-5 h-5 text-muted-foreground" />
+                <ChevronDown className="w-5 h-5 text-[#707070]" />
               ) : (
-                <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                <ChevronRight className="w-5 h-5 text-[#707070]" />
               )}
             </div>
             
@@ -758,27 +988,27 @@ export default function ActivityPage() {
                 >
                   <div className="pt-2 pb-2">
                     <div className="grid grid-cols-2 gap-4 mb-4">
-                      <div className="bg-pink-500/5 rounded-xl p-4 border border-pink-500/20 text-center">
-                        <div className="text-2xl font-bold text-pink-400">{stats.totalMatches}</div>
-                        <div className="text-xs text-muted-foreground mt-1">Total Matches</div>
+                      <div className="bg-[#F6A8B7]/5 rounded-xl p-4 border border-[#F6A8B7]/20 text-center">
+                        <div className="text-2xl font-bold text-[#F6A8B7]">{stats.totalMatches}</div>
+                        <div className="text-xs text-[#707070] mt-1">Total Matches</div>
                       </div>
                       <div className="bg-blue-500/5 rounded-xl p-4 border border-blue-500/20 text-center">
                         <div className="text-2xl font-bold text-blue-400">{stats.newThisWeek}</div>
-                        <div className="text-xs text-muted-foreground mt-1">New This Week</div>
+                        <div className="text-xs text-[#707070] mt-1">New This Week</div>
                       </div>
                     </div>
 
                     <div>
                       <div className="flex justify-between text-xs mb-2">
-                        <span className="text-muted-foreground">Average Compatibility</span>
-                        <span className="text-foreground font-medium">{hasMatches ? `${stats.averageCompatibility}%` : "--"}</span>
+                        <span className="text-[#707070]">Average Compatibility</span>
+                        <span className="text-[#252525] font-medium">{hasMatches ? `${stats.averageCompatibility}%` : "--"}</span>
                       </div>
                       {hasMatches ? (
                         <div className="w-full bg-foreground/10 rounded-full h-1.5">
-                          <div className="bg-gradient-to-r from-pink-500 to-purple-500 h-1.5 rounded-full" style={{ width: `${stats.averageCompatibility}%` }} />
+                          <div className="bg-gradient-to-r from-[#F8C7C8] via-[#F8D9D2] to-[#F7E8EE] h-1.5 rounded-full" style={{ width: `${stats.averageCompatibility}%` }} />
                         </div>
                       ) : (
-                        <p className="text-xs text-muted-foreground leading-relaxed">
+                        <p className="text-xs text-[#707070] leading-relaxed">
                           Complete more questions and share more stories to improve your matches.
                         </p>
                       )}
@@ -789,47 +1019,47 @@ export default function ActivityPage() {
             </AnimatePresence>
           </motion.div>
           {/* Accounts Section */}
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-card border border-border shadow-md rounded-2xl p-5">
-            <h2 className="font-semibold mb-4 flex items-center gap-2 text-foreground">
-              <UserCircle className="w-5 h-5 text-primary" /> Accounts
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-card border border-white/40 shadow-md rounded-2xl p-5">
+            <h2 className="font-semibold mb-4 flex items-center gap-2 text-[#252525]">
+              <UserCircle className="w-5 h-5 text-[#F6A8B7]" /> Accounts
             </h2>
             <div className="space-y-3 pl-7">
               <div className="flex items-center justify-between border-b border-white/5 pb-3">
                 <div>
-                  <p className="text-sm font-medium text-foreground">Personal Information</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">Update your email and personal details</p>
+                  <p className="text-sm font-medium text-[#252525]">Personal Information</p>
+                  <p className="text-xs text-[#707070] mt-0.5">Update your email and personal details</p>
                 </div>
-                <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                <ChevronRight className="w-4 h-4 text-[#707070]" />
               </div>
               <div className="flex items-center justify-between border-b border-white/5 pb-3">
                 <div>
-                  <p className="text-sm font-medium text-foreground">Security</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">Manage passwords and active sessions</p>
+                  <p className="text-sm font-medium text-[#252525]">Security</p>
+                  <p className="text-xs text-[#707070] mt-0.5">Manage passwords and active sessions</p>
                 </div>
-                <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                <ChevronRight className="w-4 h-4 text-[#707070]" />
               </div>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-foreground">Linked Accounts</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">Google, Facebook, etc.</p>
+                  <p className="text-sm font-medium text-[#252525]">Linked Accounts</p>
+                  <p className="text-xs text-[#707070] mt-0.5">Google, Facebook, etc.</p>
                 </div>
-                <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                <ChevronRight className="w-4 h-4 text-[#707070]" />
               </div>
             </div>
           </motion.div>
 
           {/* Activity Section */}
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-card border border-border shadow-md rounded-2xl p-5">
-            <h2 className="font-semibold mb-4 flex items-center gap-2 text-foreground">
-              <Activity className="w-5 h-5 text-primary" /> Activity
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-card border border-white/40 shadow-md rounded-2xl p-5">
+            <h2 className="font-semibold mb-4 flex items-center gap-2 text-[#252525]">
+              <Activity className="w-5 h-5 text-[#F6A8B7]" /> Activity
             </h2>
             <div className="space-y-3 pl-7">
               <div className="flex items-center justify-between border-b border-white/5 pb-3">
                 <div>
-                  <p className="text-sm font-medium text-foreground">Match History</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">View your past matches and connections</p>
+                  <p className="text-sm font-medium text-[#252525]">Match History</p>
+                  <p className="text-xs text-[#707070] mt-0.5">View your past matches and connections</p>
                 </div>
-                <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                <ChevronRight className="w-4 h-4 text-[#707070]" />
               </div>
               
               {/* Building Profile Accordion */}
@@ -840,12 +1070,12 @@ export default function ActivityPage() {
                 >
                   <div>
                     <p className="text-sm font-medium text-yellow-500">Building Profile</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">Track your profile completeness journey</p>
+                    <p className="text-xs text-[#707070] mt-0.5">Track your profile completeness journey</p>
                   </div>
                   {expandedBuildingProfile ? (
-                    <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                    <ChevronDown className="w-4 h-4 text-[#707070]" />
                   ) : (
-                    <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                    <ChevronRight className="w-4 h-4 text-[#707070]" />
                   )}
                 </div>
                 
@@ -857,15 +1087,15 @@ export default function ActivityPage() {
                       exit={{ height: 0, opacity: 0 }}
                       className="overflow-hidden"
                     >
-                      <div className="mt-4 p-4 rounded-xl bg-foreground/5 border border-border">
+                      <div className="mt-4 p-4 rounded-xl bg-foreground/5 border border-white/40">
                         <div className="space-y-3">
                           <div className="flex justify-between items-center pb-2 border-b border-white/5">
-                            <span className="text-sm text-foreground font-medium">Questionnaire Days</span>
-                            <span className="text-sm font-bold text-foreground">{(user as any)?.qDaysCompleted ?? 0}</span>
+                            <span className="text-sm text-[#252525] font-medium">Questionnaire Days</span>
+                            <span className="text-sm font-bold text-[#252525]">{(user as any)?.qDaysCompleted ?? 0}</span>
                           </div>
                           <div className="flex justify-between items-center">
-                            <span className="text-sm text-foreground font-medium">Stories Analyzed</span>
-                            <span className="text-sm font-bold text-foreground">{(user as any)?.storiesAnalyzed ?? 0}</span>
+                            <span className="text-sm text-[#252525] font-medium">Stories Analyzed</span>
+                            <span className="text-sm font-bold text-[#252525]">{(user as any)?.storiesAnalyzed ?? 0}</span>
                           </div>
                         </div>
                       </div>
@@ -879,18 +1109,18 @@ export default function ActivityPage() {
 
           {/* Your Match Insights */}
           {matches.length > 0 && (
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="p-5 rounded-2xl bg-card border border-border shadow-md">
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="p-5 rounded-2xl bg-card border border-white/40 shadow-md">
               <div 
                 className="flex items-center justify-between cursor-pointer" 
                 onClick={() => setExpandedMatchInsights(!expandedMatchInsights)}
               >
                 <div className="flex items-center gap-2">
-                  <h2 className="font-semibold text-foreground text-lg">Your Match Insights</h2>
+                  <h2 className="font-semibold text-[#252525] text-lg">Your Match Insights</h2>
                 </div>
                 {expandedMatchInsights ? (
-                  <ChevronDown className="w-5 h-5 text-muted-foreground" />
+                  <ChevronDown className="w-5 h-5 text-[#707070]" />
                 ) : (
-                  <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                  <ChevronRight className="w-5 h-5 text-[#707070]" />
                 )}
               </div>
               
@@ -903,22 +1133,22 @@ export default function ActivityPage() {
                     className="overflow-hidden"
                   >
                     <div className="pt-3 pb-2">
-                      <p className="text-muted-foreground text-xs mb-6">Understand what makes your connections stronger.</p>
+                      <p className="text-[#707070] text-xs mb-6">Understand what makes your connections stronger.</p>
                       <div className="grid grid-cols-2 gap-3">
                         {[
-                          { label: "Overall Compatibility", value: matches[0]?.profile?.compatibilityScore ?? null, icon: Heart, color: "text-pink-500", bg: "bg-pink-500/10", border: "border-pink-500/30", isMain: true },
-                          { label: "Personality Match", value: matches[0]?.profile?.personalityMatch ?? null, icon: Award, color: "text-purple-400", bg: "bg-purple-500/10", border: "border-purple-500/20" },
+                          { label: "Overall Compatibility", value: matches[0]?.profile?.compatibilityScore ?? null, icon: Heart, color: "text-[#F6A8B7]", bg: "bg-[#F6A8B7]/10", border: "border-[#F6A8B7]/30", isMain: true },
+                          { label: "Personality Match", value: matches[0]?.profile?.personalityMatch ?? null, icon: Award, color: "text-[#F6A8B7]", bg: "bg-[#F6A8B7]/10", border: "border-[#F6A8B7]/20" },
                           { label: "Story & Values", value: matches[0]?.profile?.aiStoryMatch ?? null, textValue: (!matches[0]?.profile?.hasStories || matches[0]?.profile?.aiStoryMatch === 0) ? "Need More Stories" : null, icon: MessageCircle, color: "text-teal-400", bg: "bg-teal-500/10", border: "border-teal-500/20" },
-                          { label: "Analysis Confidence", textValue: matches[0]?.profile?.sConfidenceData ? `${matches[0].profile.sConfidenceData.level}` : "Pending", icon: Shield, color: "text-orange-400", bg: "bg-orange-500/10", border: "border-orange-500/20" },
+                          { label: "Analysis Confidence", textValue: matches[0]?.profile?.sConfidenceData ? `${matches[0].profile.sConfidenceData.level}` : "Pending", icon: Shield, color: "text-[#F6A8B7]", bg: "bg-[#F6A8B7]/10", border: "border-[#F6A8B7]/20" },
                         ].map((insight, i) => (
-                          <div key={i} className={`flex flex-col items-center text-center p-4 rounded-2xl border ${insight.isMain ? 'bg-pink-500/5 border-pink-500/30 shadow-[0_0_15px_rgba(236,72,153,0.1)]' : 'bg-foreground/5 border-border'}`}>
+                          <div key={i} className={`flex flex-col items-center text-center p-4 rounded-2xl border ${insight.isMain ? 'bg-[#F6A8B7]/5 border-[#F6A8B7]/30 shadow-[0_0_15px_rgba(236,72,153,0.1)]' : 'bg-foreground/5 border-white/40'}`}>
                             <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-2 ${insight.bg}`}>
-                              <insight.icon className={`w-5 h-5 ${insight.color} ${insight.isMain ? 'fill-pink-500' : ''}`} />
+                              <insight.icon className={`w-5 h-5 ${insight.color} ${insight.isMain ? 'fill-[#F6A8B7]' : ''}`} />
                             </div>
-                            <div className={`text-lg font-bold text-foreground mb-1 ${insight.textValue ? 'text-xs mt-1 leading-snug h-8 flex items-center text-center justify-center' : ''}`}>
+                            <div className={`text-lg font-bold text-[#252525] mb-1 ${insight.textValue ? 'text-xs mt-1 leading-snug h-8 flex items-center text-center justify-center' : ''}`}>
                               {insight.textValue ? insight.textValue : (insight.value !== null && insight.value !== undefined ? `${insight.value}%` : '--')}
                             </div>
-                            <div className="text-[9px] text-muted-foreground uppercase tracking-wider">{insight.label}</div>
+                            <div className="text-[9px] text-[#707070] uppercase tracking-wider">{insight.label}</div>
                           </div>
                         ))}
                       </div>
@@ -930,19 +1160,19 @@ export default function ActivityPage() {
           )}
 
           {/* Why These Matches? */}
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-5 rounded-2xl bg-card border border-border relative overflow-hidden shadow-md">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-5 rounded-2xl bg-card border border-white/40 relative overflow-hidden shadow-md">
             <div 
               className="flex items-center justify-between cursor-pointer relative z-20"
               onClick={() => setExpandedWhyMatches(!expandedWhyMatches)}
             >
               <div className="flex items-center gap-2">
-                <Brain className="w-5 h-5 text-pink-500" />
-                <h2 className="font-semibold text-foreground text-lg">Why These Matches?</h2>
+                <Brain className="w-5 h-5 text-[#F6A8B7]" />
+                <h2 className="font-semibold text-[#252525] text-lg">Why These Matches?</h2>
               </div>
               {expandedWhyMatches ? (
-                <ChevronDown className="w-5 h-5 text-muted-foreground" />
+                <ChevronDown className="w-5 h-5 text-[#707070]" />
               ) : (
-                <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                <ChevronRight className="w-5 h-5 text-[#707070]" />
               )}
             </div>
             
@@ -956,30 +1186,30 @@ export default function ActivityPage() {
                 >
                   <div className="pt-5 space-y-3">
                     <div className="flex items-center gap-3">
-                      <Brain className="w-4 h-4 text-pink-400" />
-                      <span className="text-xs text-muted-foreground">Similar personality traits</span>
+                      <Brain className="w-4 h-4 text-[#F6A8B7]" />
+                      <span className="text-xs text-[#707070]">Similar personality traits</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <Target className="w-4 h-4 text-purple-400" />
-                      <span className="text-xs text-muted-foreground">Shared values and goals</span>
+                      <Target className="w-4 h-4 text-[#F6A8B7]" />
+                      <span className="text-xs text-[#707070]">Shared values and goals</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <CheckSquare className="w-4 h-4 text-blue-400" />
-                      <span className="text-xs text-muted-foreground">Similar lifestyle preferences</span>
+                      <span className="text-xs text-[#707070]">Similar lifestyle preferences</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                      <span className="text-xs text-muted-foreground">Active and verified users</span>
+                      <span className="text-xs text-[#707070]">Active and verified users</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <Award className="w-4 h-4 text-pink-500" />
-                      <span className="text-xs text-muted-foreground">Completed <strong className="text-foreground">30-Day Journey</strong></span>
+                      <Award className="w-4 h-4 text-[#F6A8B7]" />
+                      <span className="text-xs text-[#707070]">Completed <strong className="text-[#252525]">30-Day Journey</strong></span>
                     </div>
                   </div>
                   
                   <div className="absolute -right-8 top-0 opacity-60 pointer-events-none">
-                    <div className="w-32 h-32 bg-pink-500/20 blur-[30px] rounded-full absolute" />
-                    <Heart className="w-24 h-24 text-pink-500 fill-pink-500 drop-shadow-[0_0_15px_rgba(236,72,153,0.5)] relative z-10" />
+                    <div className="w-32 h-32 bg-[#F6A8B7]/20 blur-[30px] rounded-full absolute" />
+                    <Heart className="w-24 h-24 text-[#F6A8B7] fill-[#F6A8B7] drop-shadow-[0_0_15px_rgba(236,72,153,0.5)] relative z-10" />
                   </div>
                 </motion.div>
               )}
@@ -987,16 +1217,16 @@ export default function ActivityPage() {
           </motion.div>
 
           {/* Tips */}
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="p-5 rounded-2xl bg-card border border-border shadow-md">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="p-5 rounded-2xl bg-card border border-white/40 shadow-md">
             <div 
               className="flex items-center justify-between cursor-pointer"
               onClick={() => setExpandedTips(!expandedTips)}
             >
-              <h2 className="font-semibold text-foreground text-lg">Tips for Better Matches</h2>
+              <h2 className="font-semibold text-[#252525] text-lg">Tips for Better Matches</h2>
               {expandedTips ? (
-                <ChevronDown className="w-5 h-5 text-muted-foreground" />
+                <ChevronDown className="w-5 h-5 text-[#707070]" />
               ) : (
-                <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                <ChevronRight className="w-5 h-5 text-[#707070]" />
               )}
             </div>
             
@@ -1010,8 +1240,8 @@ export default function ActivityPage() {
                 >
                   <div className="pt-5 space-y-4">
                     {[
-                      { title: "Answer honestly", desc: "Be authentic in your responses", icon: ShieldCheck, color: "text-pink-400" },
-                      { title: "Be consistent", desc: "Answer daily to improve accuracy", icon: CalendarDays, color: "text-purple-400" },
+                      { title: "Answer honestly", desc: "Be authentic in your responses", icon: ShieldCheck, color: "text-[#F6A8B7]" },
+                      { title: "Be consistent", desc: "Answer daily to improve accuracy", icon: CalendarDays, color: "text-[#F6A8B7]" },
                       { title: "Share your thoughts", desc: "Detailed answers help build a more complete profile", icon: AlertCircle, color: "text-blue-400" }
                     ].map((tip, i) => (
                       <div key={i} className="flex gap-4">
@@ -1019,8 +1249,8 @@ export default function ActivityPage() {
                           <tip.icon className={`w-4 h-4 ${tip.color}`} />
                         </div>
                         <div>
-                          <div className="font-medium text-foreground text-sm mb-0.5">{tip.title}</div>
-                          <div className="text-[10px] text-muted-foreground">{tip.desc}</div>
+                          <div className="font-medium text-[#252525] text-sm mb-0.5">{tip.title}</div>
+                          <div className="text-[10px] text-[#707070]">{tip.desc}</div>
                         </div>
                       </div>
                     ))}

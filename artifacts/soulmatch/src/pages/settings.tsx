@@ -113,16 +113,16 @@ export default function SettingsPage() {
 
   return (
     <AppLayout>
-      <div className="w-full relative bg-background font-sans min-h-screen pt-4 pb-28">
+      <div className="w-full relative bg-transparent font-sans min-h-screen pt-4 pb-28">
         <div className="max-w-md mx-auto w-full px-5">
-        <Button variant="ghost" onClick={() => window.history.back()} className="mb-6 -ml-4 text-muted-foreground hover:bg-card/5">
+        <Button variant="ghost" onClick={() => window.history.back()} className="mb-6 -ml-4 text-[#707070] hover:bg-card/5">
           <ChevronLeft className="w-4 h-4 mr-1" />Back
         </Button>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
           <h1 className="text-3xl font-bold flex items-center gap-3 mb-1">
             <Settings className="w-7 h-7 text-primary" />Settings
           </h1>
-          <p className="text-muted-foreground">Manage your account and preferences.</p>
+          <p className="text-[#707070]">Manage your account and preferences.</p>
         </motion.div>
 
         <div className="space-y-4">
@@ -131,15 +131,15 @@ export default function SettingsPage() {
             <h2 className="font-semibold mb-4">Account</h2>
             <div className="space-y-3">
               <div>
-                <Label className="text-xs text-muted-foreground">Email</Label>
+                <Label className="text-xs text-[#707070]">Email</Label>
                 <p className="text-sm font-medium mt-0.5">{user?.email}</p>
               </div>
               <div>
-                <Label className="text-xs text-muted-foreground">Role</Label>
+                <Label className="text-xs text-[#707070]">Role</Label>
                 <p className="text-sm font-medium mt-0.5 capitalize">{user?.role}</p>
               </div>
               <div>
-                <Label className="text-xs text-muted-foreground">Verification Status</Label>
+                <Label className="text-xs text-[#707070]">Verification Status</Label>
                 <p className="text-sm font-medium mt-0.5 capitalize">{user?.verificationStatus}</p>
               </div>
               <Link href="/verification">
@@ -169,7 +169,7 @@ export default function SettingsPage() {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm font-medium">{item.label}</p>
-                        <p className="text-xs text-muted-foreground mt-0.5">{item.description}</p>
+                        <p className="text-xs text-[#707070] mt-0.5">{item.description}</p>
                       </div>
                       {item.control}
                     </div>

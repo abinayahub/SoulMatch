@@ -81,7 +81,7 @@ export default function JournalsManagement() {
         <div className={`w-8 h-8 rounded-full flex items-center justify-center ${color.bg}`}>
           <Icon className={`w-4 h-4 ${color.text}`} />
         </div>
-        <h3 className="text-sm font-medium text-muted-foreground">{title}</h3>
+        <h3 className="text-sm font-medium text-[#707070]">{title}</h3>
       </div>
       <div>
         <div className="text-2xl font-bold mb-1">{value}</div>
@@ -105,13 +105,13 @@ export default function JournalsManagement() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h1 className="text-2xl font-bold">Stories & Journals</h1>
-            <p className="text-sm text-muted-foreground">Monitor, moderate and manage community stories and daily journal entries.</p>
+            <p className="text-sm text-[#707070]">Monitor, moderate and manage community stories and daily journal entries.</p>
           </div>
           <div className="flex items-center gap-3">
             <Button variant="outline" className="border-white/10 bg-card/5">
               <Calendar className="w-4 h-4 mr-2" /> May 7 - Jun 7, 2024 <ChevronDown className="w-4 h-4 ml-2" />
             </Button>
-            <Button variant="outline" className="border-white/10 bg-card/5 text-pink-500 hover:text-pink-400">
+            <Button variant="outline" className="border-white/10 bg-card/5 text-[#F6A8B7] hover:text-[#F6A8B7]">
               <Download className="w-4 h-4 mr-2" /> Export Report
             </Button>
           </div>
@@ -119,11 +119,11 @@ export default function JournalsManagement() {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
-          <StatCard title="Total Stories" value={statsData?.totalStories?.value || 0} trend={statsData?.totalStories?.trend || "+0%"} trendUp={true} icon={BookOpen} color={{ bg: "bg-purple-500/20", text: "text-purple-400", hex: "#A855F7" }} />
+          <StatCard title="Total Stories" value={statsData?.totalStories?.value || 0} trend={statsData?.totalStories?.trend || "+0%"} trendUp={true} icon={BookOpen} color={{ bg: "bg-[#F6A8B7]/20", text: "text-[#F6A8B7]", hex: "#A855F7" }} />
           <StatCard title="Total Journals" value={statsData?.totalJournals?.value || 0} trend={statsData?.totalJournals?.trend || "+0%"} trendUp={true} icon={BookOpen} color={{ bg: "bg-green-500/20", text: "text-green-400", hex: "#22C55E" }} />
           <StatCard title="Active Contributors" value={statsData?.activeContributors?.value || 0} trend={statsData?.activeContributors?.trend || "+0%"} trendUp={true} icon={Users} color={{ bg: "bg-blue-500/20", text: "text-blue-400", hex: "#3B82F6" }} />
-          <StatCard title="Total Reactions" value={statsData?.totalReactions?.value || 0} trend={statsData?.totalReactions?.trend || "+0%"} trendUp={true} icon={Heart} color={{ bg: "bg-pink-500/20", text: "text-pink-400", hex: "#EC4899" }} />
-          <StatCard title="Reports" value={statsData?.reports?.value || 0} trend={statsData?.reports?.trend || "+0%"} trendUp={false} icon={AlertTriangle} color={{ bg: "bg-orange-500/20", text: "text-orange-400", hex: "#F97316" }} />
+          <StatCard title="Total Reactions" value={statsData?.totalReactions?.value || 0} trend={statsData?.totalReactions?.trend || "+0%"} trendUp={true} icon={Heart} color={{ bg: "bg-[#F6A8B7]/20", text: "text-[#F6A8B7]", hex: "#EC4899" }} />
+          <StatCard title="Reports" value={statsData?.reports?.value || 0} trend={statsData?.reports?.trend || "+0%"} trendUp={false} icon={AlertTriangle} color={{ bg: "bg-[#F6A8B7]/20", text: "text-[#F6A8B7]", hex: "#F97316" }} />
           <StatCard title="Hidden Content" value={statsData?.hiddenContent?.value || 0} trend={statsData?.hiddenContent?.trend || "+0%"} trendUp={false} icon={ShieldAlert} color={{ bg: "bg-red-500/20", text: "text-red-400", hex: "#EF4444" }} />
         </div>
 
@@ -133,17 +133,17 @@ export default function JournalsManagement() {
             
             {/* Tabs */}
             <div className="flex border-b border-white/10 gap-8">
-              <button className="text-pink-400 border-b-2 border-pink-400 pb-3 font-medium text-sm">Stories</button>
-              <button className="text-muted-foreground pb-3 font-medium text-sm hover:text-white transition-colors">Journals</button>
-              <button className="text-muted-foreground pb-3 font-medium text-sm hover:text-white transition-colors flex items-center gap-2">
-                Moderation Queue <Badge className="bg-pink-500/20 text-pink-400 hover:bg-pink-500/30">23</Badge>
+              <button className="text-[#F6A8B7] border-b-2 border-[#F6A8B7] pb-3 font-medium text-sm">Stories</button>
+              <button className="text-[#707070] pb-3 font-medium text-sm hover:text-white transition-colors">Journals</button>
+              <button className="text-[#707070] pb-3 font-medium text-sm hover:text-white transition-colors flex items-center gap-2">
+                Moderation Queue <Badge className="bg-[#F6A8B7]/20 text-[#F6A8B7] hover:bg-[#F6A8B7]/30">23</Badge>
               </button>
             </div>
 
             {/* Filters */}
             <div className="bg-card border border-border shadow-md rounded-2xl p-4 rounded-2xl border border-white/5 flex flex-wrap items-center gap-4">
               <div className="relative flex-1 min-w-[200px]">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Search className="absolute z-10 left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#707070]" />
                 <Input 
                   placeholder="Search stories by title or user..." 
                   className="pl-9 bg-card/5 border-white/10 rounded-xl"
@@ -192,7 +192,7 @@ export default function JournalsManagement() {
               <Button variant="outline" className="border-white/10 bg-card/5 rounded-xl">
                 Filters
               </Button>
-              <Button className="bg-pink-500 hover:bg-pink-600 text-white rounded-xl ml-auto">
+              <Button className="w-full text-white gradient-coral-pill rounded-full border border-white/40 transition-all hover:bg-[#F6A8B7]  rounded-xl ml-auto" >
                 + Add Story (Admin)
               </Button>
             </div>
@@ -218,7 +218,7 @@ export default function JournalsManagement() {
                   ) : !journalsData ? (
                     <TableRow><TableCell colSpan={8} className="text-center py-8 text-red-400">Failed to load data. Please refresh the page.</TableCell></TableRow>
                   ) : journalsData?.journals?.length === 0 ? (
-                    <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">No content found.</TableCell></TableRow>
+                    <TableRow><TableCell colSpan={8} className="text-center py-8 text-[#707070]">No content found.</TableCell></TableRow>
                   ) : (
                     journalsData?.journals?.map((journal: any) => (
                       <TableRow 
@@ -231,12 +231,12 @@ export default function JournalsManagement() {
                               {journal.imageUrl ? (
                                 <img src={journal.imageUrl} alt="thumbnail" className="w-full h-full object-cover" />
                               ) : (
-                                <div className="w-full h-full flex items-center justify-center bg-purple-500/20"><BookOpen className="w-4 h-4 text-purple-400" /></div>
+                                <div className="w-full h-full flex items-center justify-center bg-[#F6A8B7]/20"><BookOpen className="w-4 h-4 text-[#F6A8B7]" /></div>
                               )}
                             </div>
                             <div className="max-w-[200px]">
                               <div className="text-sm font-medium truncate">{journal.content.split('\n')[0] || "Untitled Story"}</div>
-                              <div className="text-xs text-muted-foreground truncate">{journal.content.length > 50 ? journal.content.substring(0, 50) + "..." : journal.content}</div>
+                              <div className="text-xs text-[#707070] truncate">{journal.content.length > 50 ? journal.content.substring(0, 50) + "..." : journal.content}</div>
                             </div>
                           </div>
                         </TableCell>
@@ -248,49 +248,49 @@ export default function JournalsManagement() {
                             </Avatar>
                             <div>
                               <div className="text-sm font-medium leading-none">{journal.author.name}</div>
-                              <div className="text-[10px] text-muted-foreground mt-1">{journal.author.location}</div>
+                              <div className="text-[10px] text-[#707070] mt-1">{journal.author.location}</div>
                             </div>
                           </div>
                         </TableCell>
                         <TableCell>
-                          <Badge variant="outline" className={`bg-transparent border-white/10 text-[10px] font-normal px-2 ${journal.type === 'Success Story' ? 'text-green-400 border-green-500/30 bg-green-500/10' : 'text-purple-400 border-purple-500/30 bg-purple-500/10'}`}>
+                          <Badge variant="outline" className={`bg-transparent border-white/10 text-[10px] font-normal px-2 ${journal.type === 'Success Story' ? 'text-green-400 border-green-500/30 bg-green-500/10' : 'text-[#F6A8B7] border-[#F6A8B7]/30 bg-[#F6A8B7]/10'}`}>
                             {journal.type}
                           </Badge>
                         </TableCell>
                         <TableCell>
-                          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                          <div className="flex items-center gap-1.5 text-xs text-[#707070]">
                             {journal.visibility === 'Public' ? <Globe className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5" />}
                             {journal.visibility}
                           </div>
                         </TableCell>
                         <TableCell>
                           <div className="flex flex-col gap-1">
-                            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                              <Heart className="w-3.5 h-3.5 text-pink-400 fill-pink-400/20" /> {journal.reactions}
+                            <div className="flex items-center gap-1.5 text-xs text-[#707070]">
+                              <Heart className="w-3.5 h-3.5 text-[#F6A8B7] fill-[#F6A8B7]/20" /> {journal.reactions}
                             </div>
-                            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                            <div className="flex items-center gap-1.5 text-xs text-[#707070]">
                               <MessageCircle className="w-3.5 h-3.5 text-blue-400 fill-blue-400/20" /> {journal.comments}
                             </div>
                           </div>
                         </TableCell>
                         <TableCell>
-                          <span className={`text-xs font-medium ${journal.status === 'Active' ? 'text-green-400' : journal.status === 'Under Review' ? 'text-orange-400' : 'text-red-400'}`}>
+                          <span className={`text-xs font-medium ${journal.status === 'Active' ? 'text-green-400' : journal.status === 'Under Review' ? 'text-[#F6A8B7]' : 'text-red-400'}`}>
                             {journal.status}
                           </span>
                         </TableCell>
-                        <TableCell className="text-xs text-muted-foreground">
+                        <TableCell className="text-xs text-[#707070]">
                           <div>{format(new Date(journal.date), 'MMM d, yyyy')}</div>
                           <div>{format(new Date(journal.date), 'hh:mm a')}</div>
                         </TableCell>
                         <TableCell className="text-right pr-4">
                           <div className="flex justify-end items-center gap-2">
                             <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-card/10">
-                              <Eye className="w-4 h-4 text-muted-foreground" />
+                              <Eye className="w-4 h-4 text-[#707070]" />
                             </Button>
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-card/10">
-                                  <MoreVertical className="w-4 h-4 text-muted-foreground" />
+                                  <MoreVertical className="w-4 h-4 text-[#707070]" />
                                 </Button>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end" className="bg-card border border-border shadow-md rounded-2xl border-white/10">
@@ -308,7 +308,7 @@ export default function JournalsManagement() {
               </Table>
               
               <div className="p-4 border-t border-white/10 flex items-center justify-between">
-                <span className="text-xs text-muted-foreground">
+                <span className="text-xs text-[#707070]">
                   Showing {(page - 1) * 10 + 1} to {Math.min(page * 10, journalsData?.total || 0)} of {journalsData?.total || 0} entries
                 </span>
                 <div className="flex items-center gap-1">
@@ -319,18 +319,18 @@ export default function JournalsManagement() {
                     <Button 
                       key={i} 
                       variant={page === i + 1 ? "default" : "ghost"} 
-                      className={`w-8 h-8 rounded-full ${page === i + 1 ? 'bg-pink-500 hover:bg-pink-600 text-white' : ''}`}
+                      className={`w-8 h-8 rounded-full ${page === i + 1 ? 'bg-[#F6A8B7] hover:bg-[#F6A8B7] text-white' : ''}`}
                       onClick={() => setPage(i + 1)}
                     >
                       {i + 1}
                     </Button>
                   )).slice(Math.max(0, page - 3), Math.min(journalsData?.totalPages || 0, page + 2))}
-                  {journalsData?.totalPages > 5 && page < journalsData?.totalPages - 2 && <span className="px-2 text-muted-foreground">...</span>}
+                  {journalsData?.totalPages > 5 && page < journalsData?.totalPages - 2 && <span className="px-2 text-[#707070]">...</span>}
                   <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full" disabled={page === journalsData?.totalPages} onClick={() => setPage(p => p + 1)}>
                     <ChevronRight className="w-4 h-4" />
                   </Button>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <div className="flex items-center gap-2 text-xs text-[#707070]">
                   Rows per page <Select defaultValue="10"><SelectTrigger className="w-[60px] h-8 bg-transparent border-white/10"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="10">10</SelectItem></SelectContent></Select>
                 </div>
               </div>
@@ -344,24 +344,24 @@ export default function JournalsManagement() {
             <div className="bg-card border border-border shadow-md rounded-2xl p-5 rounded-2xl border border-white/5">
               <h3 className="font-semibold text-sm mb-4">Moderation Overview</h3>
               <div className="space-y-4 mb-5 text-sm">
-                <div className="flex justify-between items-center text-muted-foreground">
-                  <span className="flex items-center gap-2 text-orange-400"><Clock className="w-4 h-4" /> Pending Review</span>
+                <div className="flex justify-between items-center text-[#707070]">
+                  <span className="flex items-center gap-2 text-[#F6A8B7]"><Clock className="w-4 h-4" /> Pending Review</span>
                   <span className="font-medium text-white">23</span>
                 </div>
-                <div className="flex justify-between items-center text-muted-foreground">
-                  <span className="flex items-center gap-2 text-pink-400"><AlertTriangle className="w-4 h-4" /> Reported Stories</span>
+                <div className="flex justify-between items-center text-[#707070]">
+                  <span className="flex items-center gap-2 text-[#F6A8B7]"><AlertTriangle className="w-4 h-4" /> Reported Stories</span>
                   <span className="font-medium text-white">18</span>
                 </div>
-                <div className="flex justify-between items-center text-muted-foreground">
-                  <span className="flex items-center gap-2 text-pink-400"><AlertTriangle className="w-4 h-4" /> Reported Journals</span>
+                <div className="flex justify-between items-center text-[#707070]">
+                  <span className="flex items-center gap-2 text-[#F6A8B7]"><AlertTriangle className="w-4 h-4" /> Reported Journals</span>
                   <span className="font-medium text-white">27</span>
                 </div>
-                <div className="flex justify-between items-center text-muted-foreground">
-                  <span className="flex items-center gap-2 text-muted-foreground"><EyeOff className="w-4 h-4" /> Hidden by Admin</span>
+                <div className="flex justify-between items-center text-[#707070]">
+                  <span className="flex items-center gap-2 text-[#707070]"><EyeOff className="w-4 h-4" /> Hidden by Admin</span>
                   <span className="font-medium text-white">92</span>
                 </div>
               </div>
-              <Button className="w-full bg-pink-500/10 text-pink-400 hover:bg-pink-500/20 border border-pink-500/20">
+              <Button className="w-full bg-[#F6A8B7]/10 text-[#F6A8B7] hover:bg-[#F6A8B7]/20 border border-[#F6A8B7]/20">
                 Go to Moderation Queue
               </Button>
             </div>
@@ -370,7 +370,7 @@ export default function JournalsManagement() {
             <div className="bg-card border border-border shadow-md rounded-2xl p-5 rounded-2xl border border-white/5">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-sm">Recent Journals</h3>
-                <span className="text-xs text-pink-400 cursor-pointer">View All</span>
+                <span className="text-xs text-[#F6A8B7] cursor-pointer">View All</span>
               </div>
               <div className="space-y-4 mb-5">
                 {journalsData?.journals?.slice(0, 3).map((journal: any) => (
@@ -383,13 +383,13 @@ export default function JournalsManagement() {
                       <div className="flex-1 min-w-0">
                         <div className="flex justify-between items-center mb-1">
                           <span className="text-sm font-medium truncate">{journal.author.name}</span>
-                          <span className="text-[10px] text-muted-foreground">2 mins ago</span>
+                          <span className="text-[10px] text-[#707070]">2 mins ago</span>
                         </div>
-                        <p className="text-xs text-muted-foreground line-clamp-2 mb-2">
+                        <p className="text-xs text-[#707070] line-clamp-2 mb-2">
                           {journal.content}
                         </p>
-                        <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
-                          <span className="flex items-center gap-1"><Heart className="w-3 h-3 text-pink-400" /> {journal.reactions}</span>
+                        <div className="flex items-center gap-3 text-[10px] text-[#707070]">
+                          <span className="flex items-center gap-1"><Heart className="w-3 h-3 text-[#F6A8B7]" /> {journal.reactions}</span>
                           <span className="flex items-center gap-1"><MessageCircle className="w-3 h-3 text-blue-400" /> {journal.comments}</span>
                         </div>
                       </div>
@@ -410,7 +410,7 @@ export default function JournalsManagement() {
                 <Button variant="outline" size="sm" className="bg-card/5 border-white/10 text-xs h-10 justify-start px-3"><Star className="w-3.5 h-3.5 mr-2 text-yellow-400" /> Feature Story</Button>
                 <Button variant="outline" size="sm" className="bg-card/5 border-white/10 text-xs h-10 justify-start px-3"><EyeOff className="w-3.5 h-3.5 mr-2 text-red-400" /> Hide Content</Button>
                 <Button variant="outline" size="sm" className="bg-card/5 border-white/10 text-xs h-10 justify-start px-3"><CheckCircle2 className="w-3.5 h-3.5 mr-2 text-green-400" /> Bulk Approve</Button>
-                <Button variant="outline" size="sm" className="bg-card/5 border-white/10 text-xs h-10 justify-start px-3"><Send className="w-3.5 h-3.5 mr-2 text-purple-400" /> Send Announcement</Button>
+                <Button variant="outline" size="sm" className="bg-card/5 border-white/10 text-xs h-10 justify-start px-3"><Send className="w-3.5 h-3.5 mr-2 text-[#F6A8B7]" /> Send Announcement</Button>
               </div>
             </div>
 

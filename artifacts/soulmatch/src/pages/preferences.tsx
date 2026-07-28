@@ -68,14 +68,14 @@ export default function PreferencesPage() {
   return (
     <AppLayout>
       <div className="max-w-2xl mx-auto px-4 py-8">
-        <Button variant="ghost" onClick={() => window.history.back()} className="mb-6 -ml-4 text-muted-foreground hover:bg-card/5">
+        <Button variant="ghost" onClick={() => window.history.back()} className="mb-6 -ml-4 text-[#707070] hover:bg-card/5">
           <ChevronLeft className="w-4 h-4 mr-1" />Back
         </Button>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
           <h1 className="text-3xl font-bold flex items-center gap-3 mb-1">
             <SlidersHorizontal className="w-7 h-7 text-primary" />Match Preferences
           </h1>
-          <p className="text-muted-foreground">Tell us what you're looking for in a partner.</p>
+          <p className="text-[#707070]">Tell us what you're looking for in a partner.</p>
         </motion.div>
 
         <form onSubmit={form.handleSubmit(onSave)} className="space-y-5">

@@ -208,28 +208,28 @@ export function VerificationForm({ p, onCancel, onSave, hasPrevious }: any) {
   };
 
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-card border border-border shadow-md rounded-2xl rounded-[2rem] p-8 mb-6 relative overflow-hidden">
-      <div className="mb-6 border-b border-border pb-4 text-center">
-        <h2 className="text-3xl font-bold mb-2">Verify your profile</h2>
-        <p className="text-muted-foreground">Verified profiles get 4x more meaningful matches and a trust badge.</p>
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="premium-glass-card rounded-[24px] p-4 sm:p-6 mb-4 border border-white/50">
+      <div className="mb-5 border-b border-white/40 pb-3 text-center">
+        <h2 className="text-[20px] sm:text-[22px] font-black mb-2 text-[#4A3B3B]">Verify your profile</h2>
+        <p className="text-[#8A7A7A] text-xs">Verified profiles get 4x more meaningful matches and a trust badge.</p>
       </div>
 
-      <div className="space-y-8">
-        <div className="p-6 rounded-2xl bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-border">
-          <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center shrink-0">
-              <ShieldCheck className="w-6 h-6 text-purple-400" />
+      <div className="space-y-6">
+        <div className="p-4 rounded-2xl border border-white/50 bg-white/40 backdrop-blur-md">
+          <div className="flex items-start gap-3">
+            <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-white/60 shadow-sm border border-white/50">
+              <ShieldCheck className="w-5 h-5 text-[#FF7A7A]" />
             </div>
             <div>
-              <h3 className="font-semibold text-lg mb-1">Get the Trust Badge</h3>
-              <p className="text-sm text-muted-foreground mb-4">Complete both steps below to unlock your verified badge and increase your profile visibility.</p>
-              <div className="flex gap-2">
-                <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border ${p?.isGovIdVerified ? 'border-green-500/50 text-green-400 bg-green-500/10' : 'border-border text-muted-foreground'}`}>
-                  {p?.isGovIdVerified ? <CheckCircle2 className="w-3 h-3" /> : <div className="w-2 h-2 rounded-full bg-white/20" />}
+              <h3 className="font-bold text-[14px] mb-1 text-[#4A3B3B]">Get the Trust Badge</h3>
+              <p className="text-[11px] text-[#8A7A7A] mb-3 leading-relaxed">Complete both steps below to unlock your verified badge and increase your profile visibility.</p>
+              <div className="flex flex-wrap gap-2">
+                <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold border ${p?.isGovIdVerified ? 'border-green-400 text-green-600 bg-green-50' : 'border-white/50 text-[#8A7A7A] bg-white/40'}`}>
+                  {p?.isGovIdVerified ? <CheckCircle2 className="w-3.5 h-3.5" /> : <div className="w-2 h-2 rounded-full bg-[#8A7A7A]/30" />}
                   ID Verified
                 </div>
-                <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border ${p?.isSelfieVerified ? 'border-green-500/50 text-green-400 bg-green-500/10' : 'border-border text-muted-foreground'}`}>
-                  {p?.isSelfieVerified ? <CheckCircle2 className="w-3 h-3" /> : <div className="w-2 h-2 rounded-full bg-white/20" />}
+                <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold border ${p?.isSelfieVerified ? 'border-green-400 text-green-600 bg-green-50' : 'border-white/50 text-[#8A7A7A] bg-white/40'}`}>
+                  {p?.isSelfieVerified ? <CheckCircle2 className="w-3.5 h-3.5" /> : <div className="w-2 h-2 rounded-full bg-[#8A7A7A]/30" />}
                   Selfie Matched
                 </div>
               </div>
@@ -238,8 +238,8 @@ export function VerificationForm({ p, onCancel, onSave, hasPrevious }: any) {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold tracking-wider text-muted-foreground uppercase">Government ID</h3>
+          <div className="space-y-3">
+            <h3 className="text-[12px] font-bold tracking-wider text-[#4A3B3B] uppercase ml-1">Government ID</h3>
             
             <input 
               type="file" 
@@ -257,32 +257,32 @@ export function VerificationForm({ p, onCancel, onSave, hasPrevious }: any) {
               className="hidden" 
             />
             <div 
-              className="p-6 rounded-2xl bg-background border border-border border-dashed text-center cursor-pointer hover:bg-white/10 transition-colors relative overflow-hidden group"
+              className={`p-4 rounded-2xl flex flex-col items-center justify-center cursor-pointer transition-all relative overflow-hidden group min-h-[120px] ${p?.govIdFrontUrl ? 'border-none shadow-md' : 'border-2 border-dashed border-white/60 bg-white/40 hover:bg-white/60 hover:border-[#FF9A9A]'}`}
               onClick={() => frontIdRef.current?.click()}
             >
               {p?.govIdFrontUrl ? (
                 <>
-                  <img src={p.govIdFrontUrl} alt="Front ID" className="absolute inset-0 w-full h-full object-cover opacity-50" />
-                  <div className="relative z-10 flex flex-col items-center pointer-events-none">
-                    <CheckCircle2 className="w-8 h-8 mx-auto mb-3 text-green-400" />
-                    <p className="font-medium text-sm text-green-400">Front Uploaded</p>
+                  <img src={p.govIdFrontUrl} alt="Front ID" className="absolute inset-0 w-full h-full object-cover opacity-60" />
+                  <div className="relative z-10 flex flex-col items-center pointer-events-none p-3 rounded-xl bg-white/80 backdrop-blur-sm shadow-sm border border-white/50">
+                    <CheckCircle2 className="w-8 h-8 mx-auto mb-2 text-green-500" />
+                    <p className="font-bold text-[13px] text-green-600">Front Uploaded</p>
                   </div>
                   <button 
                     type="button"
-                    className="absolute top-3 right-3 p-2 bg-black/50 hover:bg-black/70 rounded-full text-foreground/90 transition-colors z-20 shadow-lg"
+                    className="absolute top-2 right-2 p-1.5 bg-black/50 backdrop-blur-sm hover:bg-red-500 rounded-full text-white transition-all z-20 shadow-md border border-white/20"
                     onClick={(e) => {
                       e.stopPropagation();
                       onSave({ govIdFrontUrl: null, isGovIdVerified: false }, false);
                     }}
                   >
-                    <X className="w-5 h-5" />
+                    <X className="w-4 h-4" />
                   </button>
                 </>
               ) : (
-                <>
-                  <CreditCard className="w-8 h-8 mx-auto mb-3 text-muted-foreground" />
-                  <p className="font-medium text-sm">Upload Front of ID</p>
-                </>
+                <div className="text-center transition-transform group-hover:scale-105">
+                  <CreditCard className="w-8 h-8 mx-auto mb-3 text-[#FF9A9A]" />
+                  <p className="font-bold text-[14px] text-[#4A3B3B]">Upload Front of ID</p>
+                </div>
               )}
             </div>
 
@@ -294,39 +294,39 @@ export function VerificationForm({ p, onCancel, onSave, hasPrevious }: any) {
               className="hidden" 
             />
             <div 
-              className="p-6 rounded-2xl bg-background border border-border border-dashed text-center cursor-pointer hover:bg-white/10 transition-colors relative overflow-hidden group"
+              className={`p-4 rounded-2xl flex flex-col items-center justify-center cursor-pointer transition-all relative overflow-hidden group min-h-[120px] ${p?.govIdBackUrl ? 'border-none shadow-md' : 'border-2 border-dashed border-white/60 bg-white/40 hover:bg-white/60 hover:border-[#FF9A9A]'}`}
               onClick={() => backIdRef.current?.click()}
             >
               {p?.govIdBackUrl ? (
                 <>
-                  <img src={p.govIdBackUrl} alt="Back ID" className="absolute inset-0 w-full h-full object-cover opacity-50" />
-                  <div className="relative z-10 flex flex-col items-center pointer-events-none">
-                    <CheckCircle2 className="w-8 h-8 mx-auto mb-3 text-green-400" />
-                    <p className="font-medium text-sm text-green-400">Back Uploaded</p>
+                  <img src={p.govIdBackUrl} alt="Back ID" className="absolute inset-0 w-full h-full object-cover opacity-60" />
+                  <div className="relative z-10 flex flex-col items-center pointer-events-none p-3 rounded-xl bg-white/80 backdrop-blur-sm shadow-sm border border-white/50">
+                    <CheckCircle2 className="w-8 h-8 mx-auto mb-2 text-green-500" />
+                    <p className="font-bold text-[13px] text-green-600">Back Uploaded</p>
                   </div>
                   <button 
                     type="button"
-                    className="absolute top-3 right-3 p-2 bg-black/50 hover:bg-black/70 rounded-full text-foreground/90 transition-colors z-20 shadow-lg"
+                    className="absolute top-2 right-2 p-1.5 bg-black/50 backdrop-blur-sm hover:bg-red-500 rounded-full text-white transition-all z-20 shadow-md border border-white/20"
                     onClick={(e) => {
                       e.stopPropagation();
                       onSave({ govIdBackUrl: null, isGovIdVerified: false }, false);
                     }}
                   >
-                    <X className="w-5 h-5" />
+                    <X className="w-4 h-4" />
                   </button>
                 </>
               ) : (
-                <>
-                  <CreditCard className="w-8 h-8 mx-auto mb-3 text-muted-foreground opacity-50" />
-                  <p className="font-medium text-sm">Upload Back of ID</p>
-                </>
+                <div className="text-center transition-transform group-hover:scale-105">
+                  <CreditCard className="w-8 h-8 mx-auto mb-3 text-[#B8A8A8]" />
+                  <p className="font-bold text-[14px] text-[#4A3B3B]">Upload Back of ID</p>
+                </div>
               )}
             </div>
           </div>
 
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold tracking-wider text-muted-foreground uppercase">Selfie Verification <span className="text-red-500">*</span></h3>
-            <div className="p-6 rounded-2xl bg-background border border-border min-h-[320px] flex flex-col items-center justify-center text-center relative overflow-hidden">
+          <div className="space-y-3">
+            <h3 className="text-[12px] font-bold tracking-wider text-[#4A3B3B] uppercase ml-1">Selfie Verification <span className="text-[#FF7A7A]">*</span></h3>
+            <div className="p-4 rounded-2xl border-2 border-white/60 bg-white/40 min-h-[280px] flex flex-col items-center justify-center text-center relative overflow-hidden shadow-inner">
               
               {showCamera ? (
                 <>
@@ -335,73 +335,73 @@ export function VerificationForm({ p, onCancel, onSave, hasPrevious }: any) {
                   ) : (
                     <video ref={videoRef} autoPlay playsInline muted className="absolute inset-0 w-full h-full object-cover transform -scale-x-100" />
                   )}
-                  <div className="absolute inset-0 bg-black/20 flex flex-col items-center justify-end pb-4">
+                  <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px] flex flex-col items-center justify-end pb-6">
                     {faceDetectionState === "scanning" && (
-                      <div className="bg-black/60 text-white px-4 py-2 rounded-full mb-4 animate-pulse border border-white/20 text-sm font-medium text-center">
+                      <div className="bg-black/70 backdrop-blur-md text-white px-5 py-3 rounded-2xl mb-6 animate-pulse border border-white/30 text-[13px] font-bold text-center shadow-lg">
                         Scanning... Face is not visible.<br/>Please center your face.
                       </div>
                     )}
                     {faceDetectionState === "detected" && (
-                      <div className="bg-green-500/80 text-white px-4 py-2 rounded-full mb-4 border border-green-400 text-sm font-medium">
+                      <div className="bg-green-500/90 backdrop-blur-md text-white px-5 py-3 rounded-2xl mb-6 border border-green-400 text-[14px] font-bold shadow-lg">
                         Face Detected! Taking photo...
                       </div>
                     )}
-                    <button onClick={stopCamera} className="absolute top-2 right-2 p-2 bg-black/50 rounded-full text-foreground/90 hover:bg-black/70 transition z-10"><X className="w-4 h-4" /></button>
+                    <button onClick={stopCamera} className="absolute top-4 right-4 p-2 bg-black/50 backdrop-blur-sm rounded-full text-white hover:bg-red-500 transition-all z-20 shadow-md border border-white/20"><X className="w-5 h-5" /></button>
                     {/* Face overlay guide */}
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <div className={`w-40 h-56 rounded-[100%] border-2 border-dashed ${faceDetectionState === "detected" ? "border-green-400" : "border-white/50"}`}></div>
+                      <div className={`w-48 h-64 rounded-[100%] border-2 border-dashed transition-colors duration-500 ${faceDetectionState === "detected" ? "border-green-400 bg-green-400/10" : "border-white/70"}`}></div>
                     </div>
                   </div>
                 </>
               ) : (capturedPhoto || p?.selfieUrl) ? (
                 <div className="flex flex-col items-center justify-center w-full h-full relative z-10">
-                  <div className="w-20 h-20 rounded-full bg-green-500/10 flex items-center justify-center mb-4">
+                  <div className="w-20 h-20 rounded-full bg-green-50 border border-green-200 flex items-center justify-center mb-4 shadow-sm">
                     <CheckCircle2 className="w-10 h-10 text-green-500" />
                   </div>
-                  <p className="font-bold text-xl text-foreground mb-2">Face Verified</p>
-                  <p className="text-xs text-muted-foreground text-center max-w-[220px] mb-6">
+                  <p className="font-black text-[20px] text-[#4A3B3B] mb-2">Face Verified</p>
+                  <p className="text-[12px] text-[#8A7A7A] text-center max-w-[220px] mb-8 leading-relaxed">
                     Strictly for internal verification.<br/>Will NEVER be shown publicly.
                   </p>
-                  <Button onClick={startCamera} variant="outline" className="text-foreground border-border hover:bg-muted">Retake Photo</Button>
+                  <Button onClick={startCamera} variant="outline" className="text-[#5A4A4A] border-white/80 bg-white/60 hover:bg-white rounded-full px-6 font-bold text-[13px]">Retake Photo</Button>
                 </div>
               ) : (
                 <>
-                  <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4 text-primary">
-                    <Camera className="w-8 h-8" />
+                  <div className="w-20 h-20 rounded-full flex items-center justify-center mb-5 bg-white/80 border border-white shadow-sm text-[#FF7A7A]">
+                    <Camera className="w-10 h-10" />
                   </div>
-                  <p className="font-medium mb-2">Take a live selfie</p>
-                  <p className="text-xs text-muted-foreground mb-2 max-w-[200px]">We'll match this with your ID and profile photos to verify you.</p>
-                  <p className="text-xs font-semibold text-green-500/80 mb-6 max-w-[200px] text-center">This photo is strictly for verification and will NEVER be shown publicly on your profile.</p>
-                  <Button onClick={startCamera} className="w-full max-w-[200px]">Start Camera</Button>
+                  <p className="font-black text-[18px] mb-2 text-[#4A3B3B]">Take a live selfie</p>
+                  <p className="text-[13px] text-[#8A7A7A] mb-4 max-w-[220px] leading-relaxed">We'll match this with your ID and profile photos to verify you.</p>
+                  <div className="bg-green-50 border border-green-200 rounded-xl p-3 mb-8 max-w-[240px]">
+                    <p className="text-[11px] font-bold text-green-600 text-center leading-relaxed">This photo is strictly for verification and will NEVER be shown publicly.</p>
+                  </div>
+                  <button onClick={startCamera} className="w-full max-w-[220px] h-12 text-[14px] font-bold text-white rounded-full transition-transform active:scale-[0.98] gradient-coral-pill">Start Camera</button>
                 </>
               )}
-
             </div>
           </div>
         </div>
 
-        <div className="pt-6 flex gap-3">
+        <div className="pt-4 flex gap-3 flex-wrap">
           {hasPrevious && (
-            <Button 
+            <button 
               type="button" 
-              variant="outline" 
               onClick={onCancel} 
-              className="w-1/3 h-14 text-lg font-bold rounded-xl border-border hover:bg-muted"
+              className="w-1/3 h-14 text-[15px] font-bold rounded-full border border-white/40 text-[#8A7A7A] bg-white/50 hover:bg-white/80 transition-transform active:scale-[0.98]"
             >
               Previous
-            </Button>
+            </button>
           )}
-          <Button 
+          <button 
             type="button" 
             onClick={() => {
               handleSubmit();
               onSave({}); // Trigger final step navigation
             }} 
             disabled={!capturedPhoto && !p?.isSelfieVerified}
-            className="flex-1 h-14 text-lg font-bold bg-primary text-primary-foreground shadow-md border-0 rounded-xl"
+            className="flex-1 h-14 text-[15px] font-bold text-white rounded-full transition-transform active:scale-[0.98] disabled:opacity-50 gradient-coral-pill"
           >
             Finish Profile
-          </Button>
+          </button>
         </div>
       </div>
     </motion.div>

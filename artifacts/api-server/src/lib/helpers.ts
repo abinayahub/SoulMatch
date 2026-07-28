@@ -287,12 +287,13 @@ export async function buildUserProfile(user: any) {
 }
 
 export function calculateProfileCompleteness(user: any, photos: any[] = []) {
-  // Use the exact same 9 fields as the frontend's MANDATORY_FIELDS to ensure a single source of truth
+  // Use the exact same 10 fields as the frontend's MANDATORY_FIELDS to ensure a single source of truth
   const fields = [
     "firstName", "dateOfBirth", "gender", "maritalStatus", 
-    "height", "bio", "education", "occupation", "country"
+    "height", "bio", "education", "occupation", "country",
+    "isSelfieVerified"
   ];
-  const filled = fields.filter(f => user[f] != null && user[f] !== "" && (!Array.isArray(user[f]) || user[f].length > 0)).length;
+  const filled = fields.filter(f => user[f] != null && user[f] !== "" && user[f] !== false && (!Array.isArray(user[f]) || user[f].length > 0)).length;
   const score = (filled / fields.length) * 100;
   return Math.min(100, Math.round(score));
 }

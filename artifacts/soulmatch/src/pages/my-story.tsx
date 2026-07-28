@@ -116,8 +116,8 @@ const MOODS = [
   {
     id: "Happy",
     emoji: "😄",
-    color: "text-pink-500",
-    bg: "bg-pink-500/10 border-pink-500/20",
+    color: "text-[#F6A8B7]",
+    bg: "bg-[#F6A8B7]/10 border-[#F6A8B7]/20",
   },
   {
     id: "Calm",
@@ -134,8 +134,8 @@ const MOODS = [
   {
     id: "Excited",
     emoji: "🤩",
-    color: "text-orange-500",
-    bg: "bg-orange-500/10 border-orange-500/20",
+    color: "text-[#F6A8B7]",
+    bg: "bg-[#F6A8B7]/10 border-[#F6A8B7]/20",
   },
   {
     id: "Sad",
@@ -275,8 +275,7 @@ export default function MyStory() {
           "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=800&q=80";
       }
 
-      // Add mood to content visually as prefix for now since we can't change DB
-      const finalContent = `[Feeling ${selectedMood}] ${content}`;
+      const finalContent = content;
       await postJournal({ content: finalContent, imageUrl });
 
       setContent("");
@@ -419,149 +418,159 @@ export default function MyStory() {
 
   return (
     <AppLayout>
-      <div className="min-h-screen relative overflow-x-hidden font-sans pt-4">
+      <div className="min-h-screen relative overflow-x-hidden font-sans pt-4" style={{ background: 'linear-gradient(135deg, #F8F3F7 0%, #FAF1ED 35%, #F4F1FF 70%, #FFFDFC 100%)' }}>
         <div className="max-w-md mx-auto px-5 space-y-6">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center shadow-md shadow-primary/20">
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md shadow-[#F6A8B7]/20" style={{ background: 'linear-gradient(135deg, #F6A8B7, #F8C7C8)' }}>
                 <BookOpen className="w-4 h-4 text-white" />
               </div>
-              <span className="text-[17px] font-extrabold text-foreground tracking-tight">My Story</span>
+              <span className="text-[17px] font-extrabold text-[#252525] tracking-tight">My Story</span>
             </div>
             <button
               onClick={() => setShowJourney(!showJourney)}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[12px] border text-[11px] font-bold transition-all ${
                 showJourney
-                  ? "bg-primary text-white border-primary shadow-md shadow-primary/20"
-                  : "bg-foreground/5 text-foreground border-border"
+                  ? "bg-[#F6A8B7] text-white border-[#F6A8B7] shadow-md shadow-[#F6A8B7]/20"
+                  : "text-[#707070] border-white/40"
               }`}
+              style={!showJourney ? { background: 'rgba(255,255,255,0.5)', backdropFilter: 'blur(12px)' } : undefined}
             >
               <Flame className="w-3.5 h-3.5" />
               Today's Journey
             </button>
           </div>
           
-          {/* Share Your Day */}
-          <div className="bg-card border border-border shadow-sm rounded-[24px] p-4">
-          <div className="flex items-center justify-between mb-1">
-            <div className="flex items-center gap-2 text-primary font-bold text-[10px] uppercase tracking-[0.15em]">
-              🎉 Share Your Day
-            </div>
+          {/* Share Your Story */}
+          <div className="rounded-[28px] p-5 border border-white/35" style={{ background: 'rgba(255,255,255,0.45)', backdropFilter: 'blur(28px)', WebkitBackdropFilter: 'blur(28px)', boxShadow: '0 4px 20px rgba(246,168,183,0.12)' }}>
+          <div className="flex items-center justify-between mb-3">
+             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[#F6A8B7] text-[9px] font-black uppercase tracking-widest border border-[#F6A8B7]/30" style={{ background: 'rgba(246,168,183,0.15)' }}>
+                <BookOpen className="w-3 h-3 text-[#F6A8B7]" /> Share Your Story
+             </div>
           </div>
-          <h2 className="text-[18px] font-extrabold text-foreground mb-2 leading-snug">
-            How did today make you feel?
+          <h2 className="text-[18px] font-extrabold text-[#252525] mb-1 leading-snug">
+             What happened today that mattered to you?
           </h2>
+          <p className="text-xs text-[#707070] mb-3">
+             Try one of these starters:
+          </p>
 
-          <div className="grid grid-cols-6 gap-1.5 mb-2">
-            {MOODS.map((m) => (
-              <button
-                key={m.id}
-                onClick={() => setSelectedMood(m.id)}
-                className={`flex flex-col items-center gap-0.5 py-2 px-1 rounded-[12px] border transition-all ${
-                  selectedMood === m.id ? m.bg : "border-border bg-background"
-                }`}
-              >
-                <span className="text-[20px] leading-none">{m.emoji}</span>
-                <span
-                  className={`text-[9px] font-bold leading-none mt-0.5 ${
-                    selectedMood === m.id ? m.color : "text-muted-foreground"
-                  }`}
-                >
-                  {m.id}
-                </span>
-              </button>
-            ))}
+          <div className="grid grid-cols-2 gap-2 mb-4">
+             {[
+               { id: "family", label: "I spent time with family..." },
+               { id: "friend", label: "I helped a friend..." },
+               { id: "goals", label: "I worked on my goals..." },
+               { id: "myself", label: "I took care of myself..." },
+             ].map((s) => (
+               <button
+                 key={s.id}
+                 onClick={() => setContent(s.label.replace("...", " "))}
+                 className="px-2 py-2 rounded-full border border-white/40 text-[10.5px] text-[#707070] font-bold transition-all active:scale-95 text-center truncate whitespace-nowrap hover:bg-white/40"
+                 style={{ background: 'rgba(255,255,255,0.5)', backdropFilter: 'blur(12px)' }}
+                 title={s.label}
+               >
+                 {s.label}
+               </button>
+             ))}
           </div>
 
           {/* Textarea with image upload inside */}
-          <div className="relative mb-3">
+          <div className="relative mb-4 border border-white/40 rounded-2xl overflow-hidden transition-all focus-within:ring-1 focus-within:ring-[#F6A8B7]/50" style={{ background: 'rgba(255,255,255,0.6)', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)' }}>
             {imagePreview && (
-              <div className="relative mb-2 group inline-block w-full">
+              <div className="relative p-3 pb-0 group">
                 <img
                   src={imagePreview}
                   alt="Preview"
-                  className="w-full max-h-28 rounded-[14px] object-cover border border-border"
+                  className="w-full max-h-28 rounded-xl object-cover border border-white/30"
                 />
                 <button
                   onClick={removeImage}
-                  className="absolute top-2 right-2 bg-background/80 backdrop-blur-sm text-foreground rounded-full p-1 border border-border"
+                  className="absolute top-5 right-5 bg-black/40 backdrop-blur-sm text-white rounded-full p-1 border border-white/20"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
               </div>
             )}
-            <div className="relative">
-              <Textarea
-                placeholder="Write your story..."
-                className="min-h-[72px] bg-background border border-border resize-none text-[14px] text-foreground placeholder:text-muted-foreground rounded-[18px] pt-3 pl-4 pr-4 pb-9 focus-visible:ring-1 focus-visible:ring-primary/50 leading-relaxed shadow-inner"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
+            <Textarea
+              placeholder="What's on your mind today? Share something meaningful from your day..."
+              className="w-full min-h-[100px] bg-transparent border-0 shadow-none resize-none text-[15px] text-[#252525] placeholder:text-[#8A8A8A] p-4 pb-2 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none focus:outline-none focus:ring-0 leading-relaxed"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
+            {/* Upload icon inside textarea - bottom bar */}
+            <div className="flex items-center justify-between px-4 py-2 border-t border-white/30" style={{ background: 'rgba(255,255,255,0.4)' }}>
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                className="hidden"
+                ref={fileInputRef}
+                onChange={handleImageSelect}
               />
-              {/* Upload icon inside textarea - bottom bar */}
-              <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-3 py-1.5 rounded-b-[18px] bg-background border-t border-border/40">
-                <input
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp"
-                  className="hidden"
-                  ref={fileInputRef}
-                  onChange={handleImageSelect}
-                />
-                <button
-                  className="flex items-center gap-1.5 text-muted-foreground hover:text-primary transition-colors group/btn"
-                  onClick={() => fileInputRef.current?.click()}
-                  title="Add photo"
-                >
-                  <div className="w-6 h-6 rounded-[8px] bg-foreground/5 border border-border flex items-center justify-center group-hover/btn:bg-primary/10 group-hover/btn:border-primary/30 transition-all">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
-                      <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
-                      <circle cx="12" cy="13" r="3"/>
-                    </svg>
-                  </div>
-                  <span className="text-[11px] font-semibold">Add Photo</span>
-                </button>
-                <span className="text-[11px] font-bold text-muted-foreground">
-                  {content.length}/1000
-                </span>
-              </div>
+              <button
+                className="flex items-center gap-1.5 text-[#707070] hover:text-[#F6A8B7] transition-colors group/btn"
+                onClick={() => fileInputRef.current?.click()}
+                title="Add photo"
+              >
+                <div className="w-5.5 h-5.5 p-1 rounded-lg border border-white/40 flex items-center justify-center group-hover/btn:bg-[#F6A8B7]/10 group-hover/btn:border-[#F6A8B7]/30 transition-all" style={{ background: 'rgba(255,255,255,0.5)' }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3 text-[#707070] group-hover/btn:text-[#F6A8B7]">
+                    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+                    <circle cx="12" cy="13" r="3"/>
+                  </svg>
+                </div>
+                <span className="text-[10.5px] font-bold">Add Photo</span>
+              </button>
+              <span className="text-[10px] font-black text-[#8A8A8A] tracking-wider">
+                {content.length}/1000
+              </span>
             </div>
           </div>
 
-          <Button
+          <button
             onClick={handlePost}
             disabled={(!content.trim() && !imageFile) || isPosting}
-            className="w-full bg-primary hover:bg-primary/90 text-white rounded-[18px] h-[44px] font-bold text-[15px] shadow-xl shadow-primary/20 transition-transform active:scale-[0.98]"
+            className="w-full text-white rounded-full h-[48px] font-bold text-[15px] transition-transform active:scale-[0.98] border border-white/40 disabled:opacity-50 flex items-center justify-center gradient-coral-pill"
           >
-            {isPosting ? "Saving..." : "Save Story"}
+            {isPosting ? "Posting..." : "Post Story"}
             <Send className="w-4 h-4 ml-2" />
-          </Button>
+          </button>
         </div>
 
         {/* Recent Stories */}
-        <div className="bg-card border border-border shadow-sm rounded-[24px] p-6">
+        <div className="rounded-[28px] p-6 border border-white/35" style={{ background: 'rgba(255,255,255,0.45)', backdropFilter: 'blur(28px)', WebkitBackdropFilter: 'blur(28px)', boxShadow: '0 4px 20px rgba(246,168,183,0.12)' }}>
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-foreground font-extrabold text-[18px]">
-              Recent Stories
+            <h3 className="text-[#252525] font-extrabold text-[18px]">
+              Recent stories
             </h3>
-            {myJournals.length > 5 && (
-              <Link
-                href="/story-archive"
-                className="text-primary hover:text-primary/80 text-[13px] font-bold transition-colors"
-              >
-                View All {">"}
-              </Link>
-            )}
+            <span className="text-[12px] text-[#707070] font-semibold">
+               {myJournals.length} {myJournals.length === 1 ? 'story' : 'stories'}
+            </span>
           </div>
 
           <div className="space-y-2">
             {myJournals.length === 0 ? (
-              <p className="text-muted-foreground text-center py-8 font-medium">
-                No stories found. Start sharing your moments!
-              </p>
+              <div className="flex flex-col items-center justify-center py-6 px-4 text-center">
+                 {/* Book icon */}
+                 <div className="w-12 h-12 text-[#707070]/30 mb-3 flex items-center justify-center">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-10 h-10">
+                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                    </svg>
+                 </div>
+                 <h4 className="text-[15px] font-extrabold text-[#252525] mb-2">No stories yet</h4>
+                 <p className="text-xs text-[#707070] max-w-[260px] leading-relaxed mb-5 font-medium">
+                    Your first story builds your personality profile and helps us find people who truly match your values and lifestyle.
+                 </p>
+                 <button 
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
+                    className="border border-[#F6A8B7]/40 hover:bg-[#F6A8B7]/10 text-[#F6A8B7] rounded-full px-5 py-2.5 text-xs font-bold transition-all active:scale-95 bg-transparent"
+                 >
+                    Write your first story
+                 </button>
+              </div>
             ) : (
               <>
                 {todayStories.length > 0 && (
                   <div className="mb-8">
-                    <h4 className="text-muted-foreground text-[11px] font-extrabold uppercase tracking-widest mb-4 px-1">
+                    <h4 className="text-[#707070] text-[11px] font-extrabold uppercase tracking-widest mb-4 px-1">
                       Today
                     </h4>
                     {todayStories.map((journal: any) => (
@@ -575,7 +584,7 @@ export default function MyStory() {
                 )}
                 {yesterdayStories.length > 0 && (
                   <div className="mb-8">
-                    <h4 className="text-muted-foreground text-[11px] font-extrabold uppercase tracking-widest mb-4 px-1">
+                    <h4 className="text-[#707070] text-[11px] font-extrabold uppercase tracking-widest mb-4 px-1">
                       Yesterday
                     </h4>
                     {yesterdayStories.map((journal: any) => (
@@ -589,7 +598,7 @@ export default function MyStory() {
                 )}
                 {earlierStories.length > 0 && (
                   <div className="mb-6">
-                    <h4 className="text-muted-foreground text-[11px] font-extrabold uppercase tracking-widest mb-4 px-1">
+                    <h4 className="text-[#707070] text-[11px] font-extrabold uppercase tracking-widest mb-4 px-1">
                       Earlier
                     </h4>
                     {earlierStories.map((journal: any) => (
@@ -603,11 +612,12 @@ export default function MyStory() {
                 )}
 
                 {myJournals.length > 4 && (
-                  <div className="pt-4 text-center border-t border-border mt-4">
+                  <div className="pt-4 text-center border-t border-white/30 mt-4">
                     <Link href="/story-archive">
                       <Button
                         variant="outline"
-                        className="w-full bg-background border-border text-foreground rounded-[20px] hover:bg-[var(--border)] transition-colors h-[60px] font-bold text-[16px]"
+                        className="w-full bg-transparent border-white/40 text-[#252525] rounded-[20px] hover:bg-white/40 transition-colors h-[60px] font-bold text-[16px]"
+                        style={{ background: 'rgba(255,255,255,0.4)', backdropFilter: 'blur(12px)' }}
                       >
                         View All Stories Archive
                       </Button>
@@ -638,16 +648,16 @@ export default function MyStory() {
                     <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
                       <Flame className="w-4 h-4 text-primary" />
                     </div>
-                    <h3 className="text-foreground font-extrabold text-[17px]">Today's Journey</h3>
+                    <h3 className="text-[#252525] font-extrabold text-[17px]">Today's Journey</h3>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="flex items-center gap-1 bg-foreground/5 px-2.5 py-1 rounded-[10px] border border-border">
                       <Flame className="w-3 h-3 text-[#ff6b6b]" />
-                      <span className="text-[11px] font-bold text-foreground">{currentStreak} Days</span>
+                      <span className="text-[11px] font-bold text-[#252525]">{currentStreak} Days</span>
                     </div>
                     <button
                       onClick={() => setShowJourney(false)}
-                      className="w-7 h-7 rounded-full bg-foreground/5 border border-border flex items-center justify-center text-muted-foreground hover:bg-foreground/10 transition-colors"
+                      className="w-7 h-7 rounded-full bg-foreground/5 border border-border flex items-center justify-center text-[#707070] hover:bg-foreground/10 transition-colors"
                     >
                       <X className="w-3.5 h-3.5" />
                     </button>
@@ -666,7 +676,7 @@ export default function MyStory() {
 
                   return (
                     <div className="flex flex-col gap-3">
-                      <p className="text-[12px] text-muted-foreground leading-relaxed">
+                      <p className="text-[12px] text-[#707070] leading-relaxed">
                         Complete today's activities to improve your personality and compatibility.
                       </p>
 
@@ -675,13 +685,13 @@ export default function MyStory() {
                         isQuestionAnsweredToday ? "bg-primary/5 border-primary/20" : "bg-foreground/5 border-border"
                       }`}>
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
-                          isQuestionAnsweredToday ? "bg-primary text-white shadow-md shadow-primary/20" : "bg-background border border-border text-muted-foreground"
+                          isQuestionAnsweredToday ? "bg-primary text-white shadow-md shadow-primary/20" : "bg-transparent border border-border text-[#707070]"
                         }`}>
                           {isQuestionAnsweredToday ? <Check className="w-4 h-4" /> : <div className="w-2 h-2 rounded-full bg-[var(--muted-foreground)]" />}
                         </div>
                         <div className="flex-1">
-                          <div className={`font-bold text-[13px] ${isQuestionAnsweredToday ? "text-primary" : "text-foreground"}`}>Daily Question</div>
-                          <div className="text-[11px] text-muted-foreground">{isQuestionAnsweredToday ? "✓ Completed" : "Not answered yet"}</div>
+                          <div className={`font-bold text-[13px] ${isQuestionAnsweredToday ? "text-primary" : "text-[#252525]"}`}>Daily Question</div>
+                          <div className="text-[11px] text-[#707070]">{isQuestionAnsweredToday ? "✓ Completed" : "Not answered yet"}</div>
                         </div>
                         {!isQuestionAnsweredToday && <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-1 rounded-[8px]">Go →</span>}
                       </div>
@@ -691,13 +701,13 @@ export default function MyStory() {
                         isStorySharedToday ? "bg-primary/5 border-primary/20" : "bg-foreground/5 border-border"
                       }`}>
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
-                          isStorySharedToday ? "bg-primary text-white shadow-md shadow-primary/20" : "bg-background border border-border text-muted-foreground"
+                          isStorySharedToday ? "bg-primary text-white shadow-md shadow-primary/20" : "bg-transparent border border-border text-[#707070]"
                         }`}>
                           {isStorySharedToday ? <Check className="w-4 h-4" /> : <div className="w-2 h-2 rounded-full bg-[var(--muted-foreground)]" />}
                         </div>
                         <div className="flex-1">
-                          <div className={`font-bold text-[13px] ${isStorySharedToday ? "text-primary" : "text-foreground"}`}>Story Shared</div>
-                          <div className="text-[11px] text-muted-foreground">{isStorySharedToday ? "✓ Shared today" : "Share today's experience"}</div>
+                          <div className={`font-bold text-[13px] ${isStorySharedToday ? "text-primary" : "text-[#252525]"}`}>Story Shared</div>
+                          <div className="text-[11px] text-[#707070]">{isStorySharedToday ? "✓ Shared today" : "Share today's experience"}</div>
                         </div>
                         {!isStorySharedToday && <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-1 rounded-[8px]">Go →</span>}
                       </div>
@@ -705,7 +715,7 @@ export default function MyStory() {
                       <div className="h-[1px] bg-border" />
 
                       <div className="flex justify-between items-center">
-                        <span className="text-[12px] font-bold text-foreground">Today's Progress</span>
+                        <span className="text-[12px] font-bold text-[#252525]">Today's Progress</span>
                         <span className="text-[12px] font-bold text-primary">{completedActivities} / 2 Complete</span>
                       </div>
                       <div className="h-2 w-full bg-foreground/10 rounded-full overflow-hidden">
@@ -715,7 +725,7 @@ export default function MyStory() {
                       {completedActivities === 2 && (
                         <div className="bg-primary/10 border border-primary/20 rounded-[12px] p-3 text-center">
                           <div className="font-bold text-[13px] text-primary">🎉 All done for today!</div>
-                          <div className="text-[11px] text-muted-foreground mt-0.5">Great job completing your daily journey.</div>
+                          <div className="text-[11px] text-[#707070] mt-0.5">Great job completing your daily journey.</div>
                         </div>
                       )}
                     </div>
@@ -728,159 +738,19 @@ export default function MyStory() {
           document.body
         )}
 
-        {/* Personality Snapshot */}
-        <div
-          id="personality-snapshot"
-          className="bg-card border border-border shadow-sm rounded-[24px] p-4 flex flex-col"
-        >
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-[16px] text-foreground font-extrabold">
-              Personality Snapshot
-            </h3>
-            <div className="w-7 h-7 rounded-xl bg-primary/10 flex items-center justify-center">
-              <Star className="w-3.5 h-3.5 text-primary fill-primary/20" />
-            </div>
-          </div>
 
-          {/* Side-by-side: circle left, traits right */}
-          <div className="flex gap-3 items-center">
-            {/* Left: Circle Chart */}
-            <div className="relative w-24 h-24 flex items-center justify-center shrink-0">
-              <svg className="absolute inset-0 w-full h-full transform -rotate-90" viewBox="0 0 96 96">
-                {/* Background ring */}
-                <circle
-                  cx="48"
-                  cy="48"
-                  r="40"
-                  fill="none"
-                  stroke="currentColor"
-                  className="text-foreground/10"
-                  strokeWidth="10"
-                />
-                {/* Progress ring */}
-                <circle
-                  cx="48"
-                  cy="48"
-                  r="40"
-                  fill="none"
-                  className="stroke-primary transition-all duration-1000 ease-out"
-                  strokeWidth="10"
-                  strokeDasharray="251.33"
-                  strokeDashoffset={251.33 - (overallAvg / 100) * 251.33}
-                  strokeLinecap="round"
-                />
-              </svg>
-              <div className="flex flex-col items-center z-10">
-                <span className="text-[18px] font-extrabold text-foreground leading-none tracking-tight">
-                  {overallAvg}%
-                </span>
-                <span className="text-[7px] text-muted-foreground font-bold text-center leading-tight mt-0.5 uppercase tracking-wide">
-                  Overall<br/>Awareness
-                </span>
-              </div>
-            </div>
-
-            {/* Right: Trait Rows */}
-            <div className="flex flex-col gap-1.5 flex-1">
-              {[
-                {
-                  label: "Emotional Understanding",
-                  val: validTraits.emotional,
-                  icon: Heart,
-                  color: "bg-[#ff4b4b]",
-                  text: "text-[#ff4b4b]",
-                  border: "border-[#ff4b4b]/20",
-                  bg: "bg-[#ff4b4b]/10",
-                },
-                {
-                  label: "Communication Style",
-                  val: validTraits.communication,
-                  icon: MessageCircle,
-                  color: "bg-[#9B4DFF]",
-                  text: "text-[#9B4DFF]",
-                  border: "border-[#9B4DFF]/20",
-                  bg: "bg-[#9B4DFF]/10",
-                },
-                {
-                  label: "Relationship Values",
-                  val: validTraits.relationship,
-                  icon: Users,
-                  color: "bg-[#3b82f6]",
-                  text: "text-[#3b82f6]",
-                  border: "border-[#3b82f6]/20",
-                  bg: "bg-[#3b82f6]/10",
-                },
-                {
-                  label: "Life Goals Alignment",
-                  val: validTraits.goals,
-                  icon: TrendingUp,
-                  color: "bg-[#10b981]",
-                  text: "text-[#10b981]",
-                  border: "border-[#10b981]/20",
-                  bg: "bg-[#10b981]/10",
-                },
-                {
-                  label: "Adventure & Openness",
-                  val: validTraits.adventure,
-                  icon: Sparkles,
-                  color: "bg-[#f59e0b]",
-                  text: "text-[#f59e0b]",
-                  border: "border-[#f59e0b]/20",
-                  bg: "bg-[#f59e0b]/10",
-                },
-              ].map((item, i) => {
-                const tag =
-                  item.val >= 75
-                    ? "HIGH"
-                    : item.val >= 50
-                    ? "GOOD"
-                    : item.val >= 25
-                    ? "AVG"
-                    : "LOW";
-                const tagStyles =
-                  item.val >= 75
-                    ? "text-[#10b981] bg-[#10b981]/10 border-[#10b981]/20"
-                    : item.val >= 50
-                    ? "text-[#3b82f6] bg-[#3b82f6]/10 border-[#3b82f6]/20"
-                    : item.val >= 25
-                    ? "text-[#f59e0b] bg-[#f59e0b]/10 border-[#f59e0b]/20"
-                    : "text-[#ff4b4b] bg-[#ff4b4b]/10 border-[#ff4b4b]/20";
-
-                return (
-                  <div
-                    key={i}
-                    className="flex items-center justify-between bg-card border border-border px-2.5 py-1.5 rounded-[12px]"
-                  >
-                    <div className="flex items-center gap-2">
-                      <div className={`w-6 h-6 rounded-[7px] ${item.bg} flex items-center justify-center shrink-0`}>
-                        <item.icon className={`w-3 h-3 ${item.text}`} />
-                      </div>
-                      <span className="text-foreground font-semibold text-[11px] leading-tight">{item.label}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 shrink-0">
-                      <span className="font-extrabold text-foreground text-[12px]">{item.val}%</span>
-                      <span className={`text-[8px] font-bold px-1 py-0.5 rounded-[5px] border uppercase tracking-wider ${tagStyles}`}>
-                        {tag}
-                      </span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
 
 
 
 
 
         {/* Footer */}
-        <div className="bg-card border border-border shadow-sm rounded-[24px] p-6 flex items-center justify-between relative overflow-hidden mt-6 mb-8">
+        <div className="rounded-[24px] p-6 flex items-center justify-between relative overflow-hidden mt-6 mb-8 border border-white/35" style={{ background: 'rgba(255,255,255,0.45)', backdropFilter: 'blur(28px)', WebkitBackdropFilter: 'blur(28px)', boxShadow: '0 4px 20px rgba(246,168,183,0.12)' }}>
           <div className="flex items-center gap-4 z-10">
-            <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
-              <Heart className="w-6 h-6 text-primary fill-primary" />
+            <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 border border-[#F6A8B7]/30" style={{ background: 'rgba(246,168,183,0.15)' }}>
+              <Heart className="w-6 h-6 text-[#F6A8B7] fill-[#F6A8B7]" />
             </div>
-            <p className="text-muted-foreground font-medium text-[13px] leading-relaxed max-w-[240px]">
+            <p className="text-[#707070] font-medium text-[13px] leading-relaxed max-w-[240px]">
               Every story you share is a step towards finding your perfect match.
             </p>
           </div>

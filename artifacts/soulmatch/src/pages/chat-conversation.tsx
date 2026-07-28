@@ -127,6 +127,7 @@ export default function ChatConversationPage() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const [content, setContent] = useState("");
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const audioInputRef = useRef<HTMLInputElement>(null);
@@ -301,6 +302,7 @@ export default function ChatConversationPage() {
         onSuccess: () => {
           if (type === "text") setContent("");
           queryClient.invalidateQueries({ queryKey: getListMessagesQueryKey(activeConversationId) });
+          queryClient.invalidateQueries({ queryKey: ["/api/chat/conversations"] });
         },
         onError: (err: any) => toast({ title: "Error", description: err.message, variant: "destructive" }),
       },
@@ -425,7 +427,7 @@ export default function ChatConversationPage() {
   }
 
   return (
-    <div className="w-full h-[100dvh] max-w-md mx-auto flex flex-col bg-background relative overflow-hidden">
+    <div className="w-full h-[100dvh] max-w-md mx-auto flex flex-col relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #F8F3F7 0%, #FAF1ED 35%, #F4F1FF 70%, #FFFDFC 100%)' }}>
       <div className="flex flex-1 w-full relative overflow-hidden min-h-0">
           
           {/* Call Overlay */}
@@ -447,19 +449,19 @@ export default function ChatConversationPage() {
                        )
                     ) : (
                        <div className="flex flex-col items-center">
-                          <Avatar className="w-32 h-32 ring-4 ring-pink-500/50 mb-6">
+                          <Avatar className="w-32 h-32 ring-4 ring-[#F6A8B7]/50 mb-6">
                             <AvatarImage src={otherUser?.photos?.find((p: any) => p.isPrimary)?.url} />
                             <AvatarFallback>{getInitials(otherUser?.firstName ?? "U")}</AvatarFallback>
                           </Avatar>
                           <h2 className="text-2xl font-bold text-white">{otherUser?.firstName} {otherUser?.lastName}</h2>
-                          <p className="text-pink-400 mt-2 animate-pulse">{remoteStream ? "Connected" : "Calling..."}</p>
+                          <p className="text-[#F6A8B7] mt-2 animate-pulse">{remoteStream ? "Connected" : "Calling..."}</p>
                           {remoteStream && <audio ref={remoteVideoRef} autoPlay playsInline className="hidden" />}
                        </div>
                     )}
                     
                     {/* Local Video PiP */}
                     {activeCallType === "video" && isVideoEnabled && (
-                      <div className="absolute bottom-6 right-6 w-32 h-48 bg-background rounded-xl overflow-hidden border-2 border-white/20 shadow-2xl">
+                      <div className="absolute bottom-6 right-6 w-32 h-48 bg-transparent rounded-xl overflow-hidden border-2 border-white/20 shadow-2xl">
                          <video ref={localVideoRef} autoPlay playsInline muted className="w-full h-full object-cover transform -scale-x-100" />
                       </div>
                     )}
@@ -519,14 +521,15 @@ export default function ChatConversationPage() {
                 initial={{ opacity: 0, y: -50 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -50 }}
-                className="absolute top-4 right-4 z-50 bg-[#161622] border border-white/10 rounded-2xl p-4 shadow-2xl flex items-center gap-4"
+                className="absolute top-4 right-4 z-50 rounded-2xl p-4 shadow-2xl flex items-center gap-4 border border-white/35"
+                style={{ background: 'rgba(255,255,255,0.88)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
               >
-                 <div className="w-12 h-12 rounded-full bg-pink-500/20 flex items-center justify-center animate-pulse">
-                   <Phone className="w-6 h-6 text-pink-500" />
+                 <div className="w-12 h-12 rounded-full bg-[#F6A8B7]/25 flex items-center justify-center animate-pulse">
+                   <Phone className="w-6 h-6 text-[#F6A8B7]" />
                  </div>
                  <div>
-                   <h3 className="text-white font-bold">Incoming Call</h3>
-                   <p className="text-sm text-slate-400">Someone is calling you</p>
+                   <h3 className="text-[#252525] font-bold">Incoming Call</h3>
+                   <p className="text-sm text-[#777777]">Someone is calling you</p>
                  </div>
                  <div className="flex gap-2 ml-4">
                    <Button variant="destructive" size="icon" className="rounded-full shrink-0" onClick={() => { incomingCall.close(); setIncomingCall(null); }}>
@@ -544,48 +547,49 @@ export default function ChatConversationPage() {
           </AnimatePresence>
           
           {/* View 2: Active Conversation */}
-            <div className="w-full h-full flex flex-col bg-background relative overflow-hidden">
+            <div className="w-full h-full flex flex-col bg-transparent relative overflow-hidden">
               
-              {/* Chat Header */}
-              <div className="px-4 py-3 border-b border-border flex items-center justify-between shrink-0 bg-background/95 backdrop-blur-md z-20">
-                <div className="flex items-center gap-3">
-                  <Button variant="ghost" size="icon" onClick={() => navigate("/chat")} className="text-foreground -ml-2 shrink-0 w-10 h-10 rounded-full">
-                    <ArrowLeft className="w-6 h-6" />
+              {/* Chat Header — Premium Glass */}
+              <div className="mx-3 mt-3 mb-2 px-3 py-2.5 flex items-center justify-between shrink-0 z-20 rounded-[24px] border border-white/35" style={{ background: 'rgba(255,255,255,0.45)', backdropFilter: 'blur(28px)', WebkitBackdropFilter: 'blur(28px)', boxShadow: '0 4px 20px rgba(246,168,183,0.12)' }}>
+                <div className="flex items-center gap-2">
+                  <Button variant="ghost" size="icon" onClick={() => navigate("/chat")} className="text-[#252525] shrink-0 w-9 h-9 rounded-full hover:bg-white/40">
+                    <ArrowLeft className="w-5 h-5" />
                   </Button>
                   
-                  <div className="flex items-center gap-3 cursor-pointer" onClick={() => otherUser?.id && navigate(`/profile/${otherUser.id}`)}>
+                  <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => otherUser?.id && navigate(`/profile/${otherUser.id}`)}
+                  >
                     <div className="relative shrink-0">
-                      <Avatar className="w-11 h-11">
+                      <Avatar className="w-10 h-10">
                         <AvatarImage src={otherUser?.photos?.find((p: any) => p.isPrimary)?.url} className="object-cover" />
-                        <AvatarFallback className="bg-foreground/10 text-foreground font-bold">{getInitials(otherUser?.firstName ?? "U")}</AvatarFallback>
+                        <AvatarFallback className="bg-[#F6A8B7]/30 text-[#252525] font-bold">{getInitials(otherUser?.firstName ?? "U")}</AvatarFallback>
                       </Avatar>
-                      <div className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ring-2 ring-background ${isOtherUserActive ? "bg-green-500" : "bg-slate-500"}`} />
+                      <div className={`absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full ring-2 ring-white ${isOtherUserActive ? "bg-green-500" : "bg-slate-400"}`} />
                     </div>
                     
                     <div className="flex flex-col">
-                      <h2 className="text-base font-bold text-foreground leading-tight">{otherUser?.firstName}</h2>
-                      <span className="text-[11px] text-muted-foreground font-medium">
+                      <h2 className="text-[17px] font-bold text-[#252525] leading-tight">{otherUser?.firstName}</h2>
+                      <span className={`text-[11px] font-medium ${isOtherUserActive ? "text-green-500" : "text-[#8A8A8A]"}`}>
                         {isOtherUserActive ? "Online" : "Offline"}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-1 shrink-0">
-                  <Button variant="ghost" size="icon" className="w-10 h-10 rounded-full text-pink-500 hover:bg-foreground/5" onClick={() => startCall("audio")}>
-                    <Phone className="w-5 h-5" />
+                <div className="flex items-center gap-0.5 shrink-0">
+                  <Button variant="ghost" size="icon" className="w-9 h-9 rounded-full text-[#F6A8B7] hover:bg-[#F6A8B7]/10" onClick={() => startCall("audio")}>
+                    <Phone className="w-4.5 h-4.5" />
                   </Button>
-                  <Button variant="ghost" size="icon" className="w-10 h-10 rounded-full text-pink-500 hover:bg-foreground/5" onClick={() => startCall("video")}>
-                    <Video className="w-6 h-6" />
+                  <Button variant="ghost" size="icon" className="w-9 h-9 rounded-full text-[#F6A8B7] hover:bg-[#F6A8B7]/10" onClick={() => startCall("video")}>
+                    <Video className="w-5 h-5" />
                   </Button>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <Button variant="ghost" size="icon" className="w-10 h-10 rounded-full text-muted-foreground hover:bg-foreground/5">
-                        <MoreVertical className="w-5 h-5" />
+                      <Button variant="ghost" size="icon" className="w-9 h-9 rounded-full text-[#8A8A8A] hover:bg-white/40">
+                        <MoreVertical className="w-4.5 h-4.5" />
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent align="end" className="w-48 p-2 rounded-2xl border border-border shadow-2xl bg-card">
-                      <Button variant="ghost" className="w-full justify-start text-sm font-medium" onClick={() => otherUser?.id && navigate(`/profile/${otherUser.id}`)}>View Profile</Button>
+                    <PopoverContent align="end" className="w-48 p-2 rounded-2xl border border-white/35 shadow-2xl" style={{ background: 'rgba(255,255,255,0.88)', backdropFilter: 'blur(20px)' }}>
+                      <Button variant="ghost" className="w-full justify-start text-sm font-medium text-[#252525]" onClick={() => otherUser?.id && navigate(`/profile/${otherUser.id}`)}>View Profile</Button>
                       <Button variant="ghost" className="w-full justify-start text-sm font-medium text-red-500 hover:text-red-600 hover:bg-red-500/10 mt-1" onClick={() => toast({ title: "Chat Cleared", description: "All messages have been deleted." })}>Clear Chat</Button>
                       <Button variant="ghost" className="w-full justify-start text-sm font-medium text-red-500 hover:text-red-600 hover:bg-red-500/10 mt-1" onClick={() => toast({ title: "User Blocked", description: "You will no longer see messages from this user." })}>Block User</Button>
                     </PopoverContent>
@@ -596,10 +600,10 @@ export default function ChatConversationPage() {
               {/* Chat Traits Strip Removed */}
 
               {/* Messages Area */}
-              <div className="flex-1 overflow-y-auto px-3 sm:px-4 py-4 bg-background relative flex flex-col">
-                {/* Date Divider */}
-                <div className="flex items-center justify-center mb-6 mt-2">
-                  <div className="px-3 py-1 rounded-full bg-foreground/5 text-[11px] font-medium text-muted-foreground tracking-wide">TODAY</div>
+              <div className="flex-1 overflow-y-auto px-4 py-4 bg-transparent relative flex flex-col">
+                {/* Glass Date Divider */}
+                <div className="flex items-center justify-center mb-5 mt-1">
+                  <div className="px-4 py-1 rounded-full text-[11px] font-medium text-[#8A8A8A] tracking-wider border border-white/30" style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>TODAY</div>
                 </div>
 
                 {isLoadingMessages ? (
@@ -611,14 +615,29 @@ export default function ChatConversationPage() {
                     ))}
                   </div>
                 ) : (messages as any[]).length === 0 ? (
-                  <div className="flex flex-col items-center justify-center h-full text-muted-foreground space-y-4">
-                    <div className="w-20 h-20 rounded-full bg-pink-500/10 flex items-center justify-center">
-                      <MessageCircle className="w-10 h-10 text-pink-500/50" />
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="flex flex-col items-center justify-center h-full space-y-5 px-6"
+                  >
+                    <div className="w-24 h-24 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.65)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.35)', boxShadow: '0 8px 32px rgba(246,168,183,0.2)' }}>
+                      <MessageCircle className="w-10 h-10 text-[#F6A8B7]" />
                     </div>
-                    <p className="text-sm font-medium">Say hi to {otherUser?.firstName}!</p>
-                  </div>
+                    <div className="text-center">
+                      <h3 className="text-[18px] font-bold text-[#252525] mb-1">Start your conversation</h3>
+                      <p className="text-[13px] text-[#8A8A8A] leading-relaxed">Meaningful conversations build stronger connections.</p>
+                    </div>
+                    <button
+                      onClick={() => handleSend(`👋 Hey ${otherUser?.firstName}!`, 'text')}
+                      className="px-6 py-2.5 rounded-full text-[14px] font-semibold text-[#252525] border border-white/40 active:scale-95 transition-transform"
+                      style={{ background: 'linear-gradient(135deg, #F8C7C8, #F8D9D2, #F7E8EE)', boxShadow: '0 4px 16px rgba(246,168,183,0.3)' }}
+                    >
+                      Say Hello 👋
+                    </button>
+                  </motion.div>
                 ) : (
-                  <div className="space-y-1.5 flex-1">
+                  <div className="space-y-4 flex-1">
                     {(messages as any[]).map((msg: any, i: number) => {
                       const isMine = msg.senderId === user?.id;
                       const nextMsg = (messages as any[])[i + 1];
@@ -627,25 +646,40 @@ export default function ChatConversationPage() {
                       return (
                         <motion.div
                           key={msg.id ?? i}
-                          initial={{ opacity: 0, y: 5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className={`flex items-end gap-2 group ${isMine ? "justify-end" : "justify-start"} ${isLastInGroup ? "mb-4" : ""}`}
+                          initial={{ opacity: 0, y: 10, scale: 0.97 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          transition={{ duration: 0.25 }}
+                          className={`flex items-end gap-2 group ${isMine ? "justify-end" : "justify-start"} ${isLastInGroup ? "mb-2" : ""}`}
                         >
                           {!isMine && isLastInGroup && (
                             <Avatar className="w-7 h-7 shrink-0 mb-1">
                               <AvatarImage src={otherUser?.photos?.find((p: any) => p.isPrimary)?.url} className="object-cover" />
-                              <AvatarFallback className="bg-foreground/10 text-foreground text-[10px] font-bold">{getInitials(otherUser?.firstName ?? "U")}</AvatarFallback>
+                              <AvatarFallback className="bg-[#F6A8B7]/30 text-[#252525] text-[10px] font-bold">{getInitials(otherUser?.firstName ?? "U")}</AvatarFallback>
                             </Avatar>
                           )}
                           {!isMine && !isLastInGroup && (
                             <div className="w-7 h-7 shrink-0" />
                           )}
                           
-                          <div className={`relative max-w-[75%] px-4 py-2.5 text-[15px] ${
-                            isMine 
-                              ? "bg-pink-500 text-white rounded-2xl rounded-tr-sm shadow-sm" 
-                              : "bg-foreground/10 text-foreground rounded-2xl rounded-tl-sm shadow-sm"
-                          }`}>
+                          <div
+                            className={`relative max-w-[75%] px-4 py-2.5 text-[15px] rounded-[22px] ${
+                              isMine
+                                ? "rounded-tr-sm shadow-sm"
+                                : "rounded-tl-sm"
+                            }`}
+                            style={isMine ? {
+                              background: 'linear-gradient(135deg, #F8C7C8, #F8D9D2, #F7E8EE)',
+                              boxShadow: '0 2px 12px rgba(246,168,183,0.25)',
+                              color: '#252525'
+                            } : {
+                              background: 'rgba(255,255,255,0.55)',
+                              border: '1px solid rgba(255,255,255,0.25)',
+                              backdropFilter: 'blur(12px)',
+                              WebkitBackdropFilter: 'blur(12px)',
+                              boxShadow: '0 2px 10px rgba(0,0,0,0.06)',
+                              color: '#252525'
+                            }}
+                          >
                             {msg.messageType === "image" ? (
                               <img src={msg.content} alt="Upload" className="max-w-[200px] sm:max-w-[280px] rounded-lg mt-1" />
                             ) : msg.messageType === "audio" ? (
@@ -653,14 +687,14 @@ export default function ChatConversationPage() {
                             ) : (
                               <p className="leading-snug whitespace-pre-wrap">{msg.content}</p>
                             )}
-                            <div className={`flex items-center gap-1 text-[10px] mt-1 float-right translate-y-1 ml-3 ${isMine ? "text-pink-100" : "text-muted-foreground"}`}>
+                            <div className="flex items-center gap-1 text-[11px] mt-1 float-right translate-y-1 ml-3" style={{ color: '#8A8A8A' }}>
                               {formatTime(msg.createdAt).toLowerCase()}
                               {isMine && (
                                 <span className="flex items-center">
                                   {msg.isRead ? (
-                                    <CheckCheck className="w-3.5 h-3.5 text-blue-200" />
+                                    <CheckCheck className="w-3.5 h-3.5 text-[#F6A8B7]" />
                                   ) : (
-                                    <Check className="w-3.5 h-3.5 text-pink-200" />
+                                    <Check className="w-3.5 h-3.5 text-[#8A8A8A]" />
                                   )}
                                 </span>
                               )}
@@ -674,38 +708,30 @@ export default function ChatConversationPage() {
                 )}
               </div>
 
-              {/* Chat Input */}
-              <div className="p-3 bg-background border-t border-border/50 shrink-0 pb-safe">
-                <div className="flex items-end gap-2 max-w-4xl mx-auto">
-                  <Button variant="ghost" size="icon" className="w-10 h-10 rounded-full text-foreground hover:bg-foreground/10 shrink-0 mb-0.5">
-                    <Plus className="w-6 h-6" />
-                  </Button>
+              {/* Chat Input — Premium Floating Glass */}
+              <div className="px-3 pt-2 bg-transparent shrink-0" style={{ paddingBottom: 'calc(12px + env(safe-area-inset-bottom))' }}>
+                <div className="flex items-center gap-2 max-w-4xl mx-auto">
                   
-                  <div className="flex-1 relative flex items-end bg-foreground/5 rounded-3xl px-1 shadow-sm min-h-[44px]">
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground shrink-0 h-9 w-9 rounded-full mb-1 ml-0.5">
-                          <span className="text-lg">😊</span>
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent side="top" align="start" className="w-auto p-0 border-none bg-transparent shadow-none mb-2">
-                        <EmojiPicker 
-                          theme={"dark" as any} 
-                          onEmojiClick={(emojiData) => setContent(prev => prev + emojiData.emoji)} 
-                        />
-                      </PopoverContent>
-                    </Popover>
+                  <div className="flex-1 relative flex items-center min-h-[52px] px-2 rounded-[999px] border border-white/40" style={{ background: 'rgba(255,255,255,0.65)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', boxShadow: '0 2px 16px rgba(246,168,183,0.12)' }}>
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      onClick={() => setShowEmojiPicker(!showEmojiPicker)} 
+                      className={`shrink-0 h-9 w-9 rounded-full transition-colors ${showEmojiPicker ? 'bg-[#FF9F9F]/20 text-[#FF9F9F]' : 'text-[#F6A8B7] hover:text-[#F6A8B7]/80 hover:bg-[#FF9F9F]/10'}`}
+                    >
+                      <span className="text-lg">😊</span>
+                    </Button>
 
                     <Input
-                      placeholder={isRecording ? "Recording audio..." : "Message"}
+                      placeholder={isRecording ? "Recording audio..." : "Message..."}
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
                       disabled={isRecording}
-                      className="flex-1 border-0 bg-transparent shadow-none focus-visible:ring-0 px-2 h-11 text-[15px] text-foreground placeholder:text-muted-foreground/70"
+                      className="flex-1 border-0 bg-transparent shadow-none focus-visible:ring-0 px-2 h-11 text-[15px] text-[#252525] placeholder:text-[#8A8A8A]/70"
                     />
                     
-                    <div className="flex items-center pr-1 pb-1 shrink-0">
+                    <div className="flex items-center pr-2 shrink-0">
                       <input 
                         type="file" 
                         accept="image/*" 
@@ -728,7 +754,7 @@ export default function ChatConversationPage() {
                             variant="ghost" 
                             size="icon" 
                             onClick={() => fileInputRef.current?.click()}
-                            className="text-muted-foreground hover:text-foreground shrink-0 h-9 w-9 rounded-full"
+                            className="text-[#8A8A8A] hover:text-[#F6A8B7] shrink-0 h-9 w-9 rounded-full"
                           >
                             <FileImage className="w-5 h-5" />
                           </Button>
@@ -737,7 +763,7 @@ export default function ChatConversationPage() {
                             variant="ghost" 
                             size="icon" 
                             onClick={startRecording}
-                            className="text-muted-foreground hover:text-foreground shrink-0 h-9 w-9 rounded-full"
+                            className="text-[#8A8A8A] hover:text-[#F6A8B7] shrink-0 h-9 w-9 rounded-full"
                           >
                             <Mic className="w-5 h-5" />
                           </Button>
@@ -761,12 +787,22 @@ export default function ChatConversationPage() {
                     <Button
                       onClick={() => handleSend()}
                       disabled={sendMsg.isPending}
-                      className="w-11 h-11 rounded-full bg-pink-500 hover:bg-pink-600 text-white shrink-0 mb-0 shadow-md transition-all transform active:scale-95 flex items-center justify-center p-0"
+                      className="w-11 h-11 rounded-full shrink-0 shadow-md transition-all transform active:scale-90 flex items-center justify-center p-0 border border-white/40"
+                      style={{ background: 'linear-gradient(135deg, #F6A8B7, #F8C7C8, #F8D9D2)', boxShadow: '0 4px 16px rgba(246,168,183,0.4)', color: '#252525' }}
                     >
-                      <Send className="w-5 h-5 ml-0.5" />
+                      <Send className="w-4.5 h-4.5" />
                     </Button>
                   )}
-              </div>
+                </div>
+                {showEmojiPicker && (
+                  <div className="w-full mt-2 animate-in slide-in-from-bottom-2 bg-white/90 backdrop-blur-md rounded-t-[24px] overflow-hidden border-t border-white/40 shadow-[0_-4px_16px_rgba(0,0,0,0.05)]">
+                    <EmojiPicker 
+                      theme={"light" as any} 
+                      onEmojiClick={(emojiData) => setContent(prev => prev + emojiData.emoji)} 
+                      width="100%"
+                    />
+                  </div>
+                )}
             </div>
         </div>
       </div>

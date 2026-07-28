@@ -52,31 +52,31 @@ export default function CheckoutCompatibilityPage() {
 
   return (
     <Layout showBanner={false}>
-      <div className="pb-24 pt-4 px-4 max-w-lg mx-auto min-h-screen">
+      <div className="pt-4 px-4 max-w-lg mx-auto min-h-screen">
         <Button 
           variant="ghost" 
           size="sm" 
-          className="w-fit mb-6 -ml-3 text-muted-foreground hover:text-foreground"
+          className="w-fit mb-6 -ml-3 text-[#707070] hover:text-[#252525]"
           onClick={handleReturn}
         >
           <ArrowLeft className="w-4 h-4 mr-2" /> Back
         </Button>
         
         <div className="mb-6">
-          <h1 className="text-2xl font-extrabold text-foreground mb-2 leading-tight">
+          <h1 className="text-2xl font-extrabold text-[#252525] mb-2 leading-tight">
             Unlock Compatibility
           </h1>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-[#707070] text-sm">
             Get unlimited access to deep values and personality match breakdowns.
           </p>
         </div>
         
         <div className="bg-card rounded-xl p-4 border border-border shadow-sm mb-8">
           <div className="flex justify-between items-center mb-2">
-            <span className="font-semibold text-foreground">Premium Insights</span>
+            <span className="font-semibold text-[#252525]">Premium Insights</span>
             <span className="font-bold">₹99.00</span>
           </div>
-          <div className="flex justify-between items-center text-xs text-muted-foreground pt-2 border-t border-border/50">
+          <div className="flex justify-between items-center text-xs text-[#707070] pt-2 border-t border-border/50">
             <span>One-time fee</span>
             <span>Total due: ₹99.00</span>
           </div>
@@ -91,8 +91,8 @@ export default function CheckoutCompatibilityPage() {
               exit={{ opacity: 0, scale: 0.95 }}
             >
               <div className="mb-6 flex items-center justify-between">
-                <h2 className="text-lg font-bold text-foreground">Payment Details</h2>
-                <div className="flex items-center text-[10px] text-muted-foreground bg-card px-2 py-1 rounded-full border border-border">
+                <h2 className="text-lg font-bold text-[#252525]">Payment Details</h2>
+                <div className="flex items-center text-[10px] text-[#707070] bg-card px-2 py-1 rounded-full border border-border">
                   <Lock className="w-3 h-3 mr-1" /> Secure
                 </div>
               </div>
@@ -104,8 +104,8 @@ export default function CheckoutCompatibilityPage() {
                   onClick={() => setMethod("card")}
                   className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all ${
                     method === "card"
-                      ? "border-pink-500 bg-pink-500/5 text-pink-500"
-                      : "border-border bg-card text-muted-foreground"
+                      ? "border-[#F6A8B7] bg-[#F6A8B7]/5 text-[#F6A8B7]"
+                      : "border-border bg-card text-[#707070]"
                   }`}
                 >
                   <CreditCard className="w-5 h-5 mb-1.5" />
@@ -116,8 +116,8 @@ export default function CheckoutCompatibilityPage() {
                   onClick={() => setMethod("upi")}
                   className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all ${
                     method === "upi"
-                      ? "border-pink-500 bg-pink-500/5 text-pink-500"
-                      : "border-border bg-card text-muted-foreground"
+                      ? "border-[#F6A8B7] bg-[#F6A8B7]/5 text-[#F6A8B7]"
+                      : "border-border bg-card text-[#707070]"
                   }`}
                 >
                   <Smartphone className="w-5 h-5 mb-1.5" />
@@ -130,7 +130,7 @@ export default function CheckoutCompatibilityPage() {
                 {method === "card" && (
                   <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2">
                     <div>
-                      <label className="text-xs font-medium text-foreground mb-1.5 block">Card Number</label>
+                      <label className="text-xs font-medium text-[#252525] mb-1.5 block">Card Number</label>
                       <Input 
                         placeholder="0000 0000 0000 0000" 
                         value={cardNumber}
@@ -140,11 +140,11 @@ export default function CheckoutCompatibilityPage() {
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="text-xs font-medium text-foreground mb-1.5 block">Expiry</label>
+                        <label className="text-xs font-medium text-[#252525] mb-1.5 block">Expiry</label>
                         <Input placeholder="MM/YY" className="bg-card border-border" />
                       </div>
                       <div>
-                        <label className="text-xs font-medium text-foreground mb-1.5 block">CVV</label>
+                        <label className="text-xs font-medium text-[#252525] mb-1.5 block">CVV</label>
                         <Input placeholder="123" type="password" maxLength={3} className="bg-card border-border" />
                       </div>
                     </div>
@@ -154,7 +154,7 @@ export default function CheckoutCompatibilityPage() {
                 {method === "upi" && (
                   <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2">
                     <div>
-                      <label className="text-xs font-medium text-foreground mb-1.5 block">Enter UPI ID</label>
+                      <label className="text-xs font-medium text-[#252525] mb-1.5 block">Enter UPI ID</label>
                       <Input 
                         placeholder="example@okaxis" 
                         value={upiId}
@@ -162,7 +162,7 @@ export default function CheckoutCompatibilityPage() {
                         className="bg-card border-border"
                       />
                     </div>
-                    <p className="text-xs text-muted-foreground text-center">
+                    <p className="text-xs text-[#707070] text-center">
                       A payment request will be sent to your UPI app.
                     </p>
                   </div>
@@ -171,7 +171,7 @@ export default function CheckoutCompatibilityPage() {
                 <Button 
                   type="submit" 
                   disabled={isProcessing}
-                  className="w-full h-12 bg-pink-500 hover:bg-pink-600 text-white font-bold mt-4 shadow-lg shadow-pink-500/20"
+                  className="w-full h-12 w-full text-[#252525] rounded-full border border-white/40 transition-all hover:bg-[#F6A8B7]  font-bold mt-4 shadow-lg shadow-[#F6A8B7]/20" style={{ background: 'linear-gradient(135deg, #F8C7C8, #F8D9D2, #F7E8EE)', boxShadow: '0 4px 12px rgba(246, 168, 183, 0.15)' }}
                 >
                   {isProcessing ? (
                     <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Processing...</>
@@ -191,14 +191,14 @@ export default function CheckoutCompatibilityPage() {
               <div className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <CheckCircle2 className="w-10 h-10 text-green-500" />
               </div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">Payment Successful!</h2>
-              <p className="text-muted-foreground text-sm mb-8">
+              <h2 className="text-2xl font-bold text-[#252525] mb-2">Payment Successful!</h2>
+              <p className="text-[#707070] text-sm mb-8">
                 You now have full access to compatibility history and premium insights.
               </p>
               
               <Button 
                 onClick={handleReturn}
-                className="w-full h-12 bg-pink-500 hover:bg-pink-600 text-white rounded-xl font-bold shadow-lg shadow-pink-500/20"
+                className="w-full h-12 w-full text-[#252525] rounded-full border border-white/40 transition-all hover:bg-[#F6A8B7]  rounded-xl font-bold shadow-lg shadow-[#F6A8B7]/20" style={{ background: 'linear-gradient(135deg, #F8C7C8, #F8D9D2, #F7E8EE)', boxShadow: '0 4px 12px rgba(246, 168, 183, 0.15)' }}
               >
                 Return to Profile
               </Button>

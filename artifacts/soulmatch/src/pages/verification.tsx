@@ -35,21 +35,21 @@ export default function VerificationPage() {
   return (
     <AppLayout>
       <div className="max-w-lg mx-auto px-4 py-8">
-        <Button variant="ghost" onClick={() => window.history.back()} className="mb-6 -ml-4 text-muted-foreground hover:bg-card/5">
+        <Button variant="ghost" onClick={() => window.history.back()} className="mb-6 -ml-4 text-[#707070] hover:bg-card/5">
           <ChevronLeft className="w-4 h-4 mr-1" />Back
         </Button>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
           <h1 className="text-3xl font-bold flex items-center gap-3 mb-1">
             <Shield className="w-7 h-7 text-green-400" />Identity Verification
           </h1>
-          <p className="text-muted-foreground">Verify your identity to build trust with potential matches.</p>
+          <p className="text-[#707070]">Verify your identity to build trust with potential matches.</p>
         </motion.div>
 
         {submitted ? (
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-10 text-center">
             <CheckCircle2 className="w-14 h-14 text-green-400 mx-auto mb-4" />
             <h2 className="text-xl font-bold mb-2">Verification Submitted!</h2>
-            <p className="text-muted-foreground text-sm">Our team will review your documents within 24-48 hours. You'll be notified of the result.</p>
+            <p className="text-[#707070] text-sm">Our team will review your documents within 24-48 hours. You'll be notified of the result.</p>
           </motion.div>
         ) : (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-6 space-y-5">
@@ -70,17 +70,17 @@ export default function VerificationPage() {
             <div className="space-y-1.5">
               <Label>Document Photo</Label>
               <div className="border-2 border-dashed border-white/20 rounded-xl p-8 text-center hover:border-primary/40 transition-colors cursor-pointer">
-                <Upload className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-                <p className="text-sm text-muted-foreground">Click to upload or drag & drop</p>
-                <p className="text-xs text-muted-foreground mt-1">PNG, JPG up to 10MB</p>
+                <Upload className="w-8 h-8 text-[#707070] mx-auto mb-2" />
+                <p className="text-sm text-[#707070]">Click to upload or drag & drop</p>
+                <p className="text-xs text-[#707070] mt-1">PNG, JPG up to 10MB</p>
               </div>
             </div>
 
             <div className="space-y-1.5">
               <Label>Selfie with Document</Label>
               <div className="border-2 border-dashed border-white/20 rounded-xl p-8 text-center hover:border-primary/40 transition-colors cursor-pointer">
-                <Upload className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-                <p className="text-sm text-muted-foreground">Hold your document next to your face</p>
+                <Upload className="w-8 h-8 text-[#707070] mx-auto mb-2" />
+                <p className="text-sm text-[#707070]">Hold your document next to your face</p>
               </div>
             </div>
 

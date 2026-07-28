@@ -27,7 +27,7 @@ export default function AdminDashboard() {
     { label: "Messages", value: o?.totalMessages ?? 0, icon: MessageCircle, color: "text-green-400", bg: "bg-green-500/10" },
     { label: "Monthly Revenue", value: `$${(o?.monthlyRevenue ?? 0).toFixed(0)}`, icon: DollarSign, color: "text-yellow-400", bg: "bg-yellow-500/10" },
     { label: "Active Today", value: o?.activeToday ?? 0, icon: TrendingUp, color: "text-cyan-400", bg: "bg-cyan-500/10" },
-    { label: "Pending Verif.", value: o?.pendingVerifications ?? 0, icon: Shield, color: "text-orange-400", bg: "bg-orange-500/10" },
+    { label: "Pending Verif.", value: o?.pendingVerifications ?? 0, icon: Shield, color: "text-[#F6A8B7]", bg: "bg-[#F6A8B7]/10" },
     { label: "Pending Reports", value: o?.pendingReports ?? 0, icon: Flag, color: "text-red-400", bg: "bg-red-500/10" },
   ];
 
@@ -45,7 +45,7 @@ export default function AdminDashboard() {
           <h1 className="text-3xl font-bold flex items-center gap-3 mb-1">
             <Crown className="w-7 h-7 text-accent" />Admin Dashboard
           </h1>
-          <p className="text-muted-foreground">Platform overview and management tools.</p>
+          <p className="text-[#707070]">Platform overview and management tools.</p>
         </motion.div>
 
         {/* Stats grid */}
@@ -66,7 +66,7 @@ export default function AdminDashboard() {
                     <stat.icon className={`w-5 h-5 ${stat.color}`} />
                   </div>
                   <div className="text-2xl font-bold">{stat.value}</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">{stat.label}</div>
+                  <div className="text-xs text-[#707070] mt-0.5">{stat.label}</div>
                 </>
               )}
             </motion.div>
@@ -84,7 +84,7 @@ export default function AdminDashboard() {
                   </div>
                   <div>
                     <h3 className="font-semibold group-hover:text-primary transition-colors">{link.label}</h3>
-                    <p className="text-sm text-muted-foreground mt-0.5">{link.description}</p>
+                    <p className="text-sm text-[#707070] mt-0.5">{link.description}</p>
                   </div>
                 </div>
               </Link>

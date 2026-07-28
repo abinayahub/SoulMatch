@@ -12,7 +12,7 @@ export function PrivateRoute({ component: Component }: PrivateRouteProps) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="min-h-screen flex items-center justify-center relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #F8F3F7 0%, #FAF1ED 100%)' }}>
         <div className="w-10 h-10 rounded-full border-2 border-primary border-t-transparent animate-spin" />
       </div>
     );
@@ -34,13 +34,15 @@ export function PrivateRoute({ component: Component }: PrivateRouteProps) {
   const isInterestsPage = location === "/interests";
   const isMatchesPage = location === "/matches";
   const isUserProfilePage = location.startsWith("/profile/");
+  const isPersonalityPage = location === "/personality";
   const isSupportPage = location === "/support";
   const isReflectionPage = location === "/reflection";
   const isActivityPage = location === "/activity";
   const isCheckoutPage = location.startsWith("/checkout");
+  const isRegistrationSuccessPage = location === "/registration-success";
   const questionsNeeded = 150; // 30 days * 5 questions
   
-  if (user && user.journeyProgress < questionsNeeded && !isReflectionPage && !isSupportPage && !isJourneyPage && !isProfileSetup && !isDashboardPage && !isDiscoverPage && !isPricingPage && !isMyStoryPage && !isStoryArchivePage && !isChatPage && !isNotificationsPage && !isInterestsPage && !isMatchesPage && !isUserProfilePage && !isActivityPage && !isCheckoutPage) {
+  if (user && user.journeyProgress < questionsNeeded && !isRegistrationSuccessPage && !isPersonalityPage && !isReflectionPage && !isSupportPage && !isJourneyPage && !isProfileSetup && !isDashboardPage && !isDiscoverPage && !isPricingPage && !isMyStoryPage && !isStoryArchivePage && !isChatPage && !isNotificationsPage && !isInterestsPage && !isMatchesPage && !isUserProfilePage && !isActivityPage && !isCheckoutPage) {
     return <Redirect to="/dashboard" />;
   }
 
@@ -56,7 +58,7 @@ export function AdminRoute({ component: Component }: AdminRouteProps) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="min-h-screen flex items-center justify-center relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #F8F3F7 0%, #FAF1ED 100%)' }}>
         <div className="w-10 h-10 rounded-full border-2 border-primary border-t-transparent animate-spin" />
       </div>
     );

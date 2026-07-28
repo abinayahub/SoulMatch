@@ -129,30 +129,30 @@ export default function StoryArchivePage() {
 
   return (
     <AppLayout>
-      <div className="w-full relative bg-background font-sans min-h-screen pt-4 pb-28">
+      <div className="w-full relative bg-transparent font-sans min-h-screen pt-4 pb-28">
         <div className="max-w-md mx-auto w-full">
           
           {/* Header & Controls */}
           <div className="px-5 mb-5 mt-2 flex flex-col">
             <div className="flex items-center gap-2 mb-4">
-               <button onClick={() => window.history.back()} className="text-muted-foreground p-1 -ml-1 hover:text-foreground transition-colors">
+               <button onClick={() => window.history.back()} className="text-[#707070] p-1 -ml-1 hover:text-[#252525] transition-colors">
                  <ArrowLeft className="w-5 h-5" />
                </button>
                <div>
-                  <h1 className="text-[26px] font-extrabold text-foreground tracking-tight leading-none">Story Archive</h1>
-                  <p className="text-[13px] text-muted-foreground font-medium mt-1">{completedCount} total stories</p>
+                  <h1 className="text-[26px] font-extrabold text-[#252525] tracking-tight leading-none">Story Archive</h1>
+                  <p className="text-[13px] text-[#707070] font-medium mt-1">{completedCount} total stories</p>
                </div>
             </div>
 
             <div className="flex items-center gap-3 mb-4">
               <div className="relative flex-1">
-                <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#707070]" />
                 <input
                   type="text"
                   placeholder="Search memories..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-foreground/5 border-none rounded-[20px] pl-10 pr-4 py-3 text-[14px] font-medium text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/20 transition-all"
+                  className="w-full bg-foreground/5 border-none rounded-[20px] pl-10 pr-4 py-3 text-[14px] font-medium text-[#252525] placeholder:text-[#707070] focus:ring-2 focus:ring-primary/20 transition-all"
                 />
               </div>
             </div>
@@ -166,7 +166,7 @@ export default function StoryArchivePage() {
                   className={`whitespace-nowrap px-4 py-2 rounded-full text-[13px] font-bold transition-all active:scale-95 ${
                     activeFilter === filter
                       ? "bg-foreground text-background shadow-md"
-                      : "bg-card border border-border text-foreground hover:bg-foreground/5"
+                      : "bg-card border border-border text-[#252525] hover:bg-foreground/5"
                   }`}
                 >
                   {filter}
@@ -182,18 +182,18 @@ export default function StoryArchivePage() {
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-3 gap-2.5 pb-2">
                <div className="bg-card border border-border rounded-[18px] p-3.5 shadow-sm">
                   <BookOpen className="w-4 h-4 text-blue-500 mb-2" />
-                  <div className="text-[18px] font-extrabold text-foreground leading-none mb-0.5">{completedCount}</div>
-                  <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Stories</div>
+                  <div className="text-[18px] font-extrabold text-[#252525] leading-none mb-0.5">{completedCount}</div>
+                  <div className="text-[10px] font-bold text-[#707070] uppercase tracking-wider">Stories</div>
                </div>
                <div className="bg-card border border-border rounded-[18px] p-3.5 shadow-sm">
-                  <Flame className="w-4 h-4 text-orange-500 mb-2" />
-                  <div className="text-[18px] font-extrabold text-foreground leading-none mb-0.5">{longestStreak}</div>
-                  <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Streak</div>
+                  <Flame className="w-4 h-4 text-[#F6A8B7] mb-2" />
+                  <div className="text-[18px] font-extrabold text-[#252525] leading-none mb-0.5">{longestStreak}</div>
+                  <div className="text-[10px] font-bold text-[#707070] uppercase tracking-wider">Streak</div>
                </div>
                <div className="bg-card border border-border rounded-[18px] p-3.5 shadow-sm">
-                  <Heart className="w-4 h-4 text-pink-500 mb-2" />
-                  <div className="text-[18px] font-extrabold text-foreground leading-none mb-0.5 truncate">{topMood}</div>
-                  <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Top Mood</div>
+                  <Heart className="w-4 h-4 text-[#F6A8B7] mb-2" />
+                  <div className="text-[18px] font-extrabold text-[#252525] leading-none mb-0.5 truncate">{topMood}</div>
+                  <div className="text-[10px] font-bold text-[#707070] uppercase tracking-wider">Top Mood</div>
                </div>
             </motion.div>
           )}
@@ -211,12 +211,12 @@ export default function StoryArchivePage() {
               <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Search className="w-10 h-10 text-primary opacity-80" />
               </div>
-              <h2 className="text-[22px] font-extrabold mb-3 text-foreground">No Stories Found</h2>
-              <p className="text-[15px] text-muted-foreground mb-8 leading-relaxed">
+              <h2 className="text-[22px] font-extrabold mb-3 text-[#252525]">No Stories Found</h2>
+              <p className="text-[15px] text-[#707070] mb-8 leading-relaxed">
                 Try adjusting your search query or removing the filters to explore your archive.
               </p>
               {(searchQuery || activeFilter !== "All") && (
-                <Button className="w-full h-14 bg-foreground/5 text-foreground font-bold text-[16px] rounded-2xl hover:bg-foreground/10" onClick={() => { setSearchQuery(""); setActiveFilter("All"); }}>
+                <Button className="w-full h-14 bg-foreground/5 text-[#252525] font-bold text-[16px] rounded-2xl hover:bg-foreground/10" onClick={() => { setSearchQuery(""); setActiveFilter("All"); }}>
                   Clear Filters
                 </Button>
               )}
@@ -226,7 +226,7 @@ export default function StoryArchivePage() {
               {Object.entries(groupedTimeline).map(([month, stories]: [string, any], groupIndex) => (
                 <div key={month} className="relative">
                    {/* Timeline Month Header */}
-                   <div className="sticky top-[150px] z-40 bg-background/95 backdrop-blur-sm py-2 mb-4 -mx-5 px-5">
+                   <div className="sticky top-[150px] z-40 bg-transparent/95 backdrop-blur-sm py-2 mb-4 -mx-5 px-5">
                       <h3 className="text-[15px] font-extrabold text-foreground/80 flex items-center gap-3">
                          <div className="w-2 h-2 rounded-full bg-primary/50" />
                          {month}

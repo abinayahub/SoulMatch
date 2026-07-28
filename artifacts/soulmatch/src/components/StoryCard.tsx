@@ -10,13 +10,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 
 export const CATEGORY_STYLES: Record<string, { bg: string; text: string; icon: any }> = {
-  "Family Values": { bg: "bg-pink-500/20", text: "text-pink-500", icon: Users },
-  "Career Focus": { bg: "bg-orange-500/20", text: "text-orange-500", icon: Briefcase },
-  "Personal Growth": { bg: "bg-green-500/20", text: "text-green-500", icon: TrendingUp },
-  "Health & Lifestyle": { bg: "bg-blue-500/20", text: "text-blue-500", icon: Apple },
-  "Communication Style": { bg: "bg-purple-500/20", text: "text-purple-500", icon: MessageCircle },
-  "Adventure & Travel": { bg: "bg-yellow-500/20", text: "text-yellow-500", icon: Plane },
-  "Emotional Wellbeing": { bg: "bg-teal-500/20", text: "text-teal-500", icon: Lightbulb },
+  "Family Values": { bg: "bg-[#F6A8B7]/20", text: "text-[#F6A8B7]", icon: Users },
+  "Career Focus": { bg: "bg-[#F8C7C8]/30", text: "text-[#F8C7C8]", icon: Briefcase },
+  "Personal Growth": { bg: "bg-[#F6A8B7]/20", text: "text-[#F6A8B7]", icon: TrendingUp },
+  "Health & Lifestyle": { bg: "bg-[#F6A8B7]/20", text: "text-[#F6A8B7]", icon: Apple },
+  "Communication Style": { bg: "bg-[#F6A8B7]/20", text: "text-[#F6A8B7]", icon: MessageCircle },
+  "Adventure & Travel": { bg: "bg-[#F8D9D2]/30", text: "text-[#F8D9D2]", icon: Plane },
+  "Emotional Wellbeing": { bg: "bg-[#F6A8B7]/20", text: "text-[#F6A8B7]", icon: Lightbulb },
 };
 
 const MOODS: Record<string, string> = {
@@ -110,7 +110,7 @@ export function StoryCard({ journal, onDelete, isPublic = false }: StoryCardProp
   const isMe = userName === "You";
 
   return (
-    <div className="bg-card border border-border rounded-[24px] p-4 mb-6 shadow-xl relative group transition-all hover:border-border/50 flex flex-col gap-5">
+    <div className="rounded-[28px] p-5 mb-5 relative group transition-all flex flex-col gap-5 border border-white/35" style={{ background: 'rgba(255,255,255,0.45)', backdropFilter: 'blur(28px)', WebkitBackdropFilter: 'blur(28px)', boxShadow: '0 4px 20px rgba(246,168,183,0.08)' }}>
       
       {/* Left side: Image (if present) */}
       {journal.imageUrl && (
@@ -118,7 +118,7 @@ export function StoryCard({ journal, onDelete, isPublic = false }: StoryCardProp
           <img 
             src={journal.imageUrl} 
             alt="Story visual" 
-            className="w-full h-full min-h-[200px] object-cover rounded-2xl border border-border shadow-md" 
+            className="w-full h-full min-h-[200px] object-cover rounded-2xl border border-white/40 shadow-sm" 
           />
         </div>
       )}
@@ -129,19 +129,19 @@ export function StoryCard({ journal, onDelete, isPublic = false }: StoryCardProp
         {/* Header */}
         <div className="flex justify-between items-start mb-3">
           <div className="flex items-center gap-3">
-            <Avatar className="w-9 h-9 border border-border">
-              <AvatarFallback className="bg-pink-500/20 text-pink-500 font-bold text-sm">
+            <Avatar className="w-9 h-9 border border-white/50 shadow-sm">
+              <AvatarFallback className="bg-[#F6A8B7]/20 text-[#252525] font-bold text-sm">
                 {userName[0]}
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-              <span className="font-bold text-foreground/90 text-sm">{userName}</span>
+              <span className="font-bold text-[#252525] text-[15px]">{userName}</span>
               {mood && (
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-foreground/5 text-muted-foreground flex items-center gap-1 border border-border font-medium">
+                <span className="text-[10px] px-2 py-0.5 rounded-full text-[#707070] flex items-center gap-1 border border-white/40 font-medium" style={{ background: 'rgba(255,255,255,0.5)' }}>
                   {MOODS[mood]} {mood}
                 </span>
               )}
-              <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-medium">
+              <div className="flex items-center gap-2 text-[11px] text-[#8A8A8A] font-medium">
                 <span>{format(new Date(journal.createdAt), "h:mm a")}</span>
                 <span>•</span>
                 {isPublic ? <Globe className="w-3 h-3" /> : <Lock className="w-3 h-3" />}
@@ -153,7 +153,7 @@ export function StoryCard({ journal, onDelete, isPublic = false }: StoryCardProp
           {isMe && onDelete && (
             <button 
               onClick={() => onDelete(journal.id)}
-              className="text-muted-foreground hover:text-red-500 transition-colors p-1 shrink-0"
+              className="text-[#8A8A8A] hover:text-[#252525] transition-colors p-1 shrink-0"
               title="Delete Story"
             >
               <Trash2 className="w-4 h-4" />
@@ -163,13 +163,13 @@ export function StoryCard({ journal, onDelete, isPublic = false }: StoryCardProp
 
         {/* Main Text */}
         <div className="mb-4">
-          <p className={`text-foreground/90 leading-relaxed whitespace-pre-wrap text-[16px] font-medium ${!isExpanded && displayContent.length > 200 ? 'line-clamp-3' : ''}`}>
+          <p className={`text-[#252525] leading-relaxed whitespace-pre-wrap text-[15px] font-medium ${!isExpanded && displayContent.length > 200 ? 'line-clamp-3' : ''}`}>
             {displayContent}
           </p>
           {!isExpanded && displayContent.length > 200 && (
             <button 
               onClick={() => setIsExpanded(true)}
-              className="text-pink-500 hover:text-pink-400 text-sm font-medium mt-1"
+              className="text-[#F6A8B7] hover:opacity-80 text-sm font-bold mt-1 transition-opacity"
             >
               Read more...
             </button>
@@ -200,13 +200,13 @@ export function StoryCard({ journal, onDelete, isPublic = false }: StoryCardProp
         <div className="flex-1"></div>
 
         {/* Footer / Interactions Summary */}
-        <div className="flex items-center gap-4 text-xs font-medium text-muted-foreground mt-2">
+        <div className="flex items-center gap-4 text-xs font-medium text-[#707070] mt-2">
           <button 
             onClick={handleToggleLike} 
             disabled={isLiking}
-            className={`flex items-center gap-1.5 transition-colors ${liked ? 'text-pink-500' : 'hover:text-pink-400'}`}
+            className={`flex items-center gap-1.5 transition-colors ${liked ? 'text-[#F6A8B7]' : 'hover:text-[#F6A8B7]'}`}
           >
-            <Heart className={`w-4 h-4 ${liked ? 'fill-pink-500' : ''}`} />
+            <Heart className={`w-4 h-4 ${liked ? 'fill-[#F6A8B7] text-[#F6A8B7]' : ''}`} />
             <span>{likeCount}</span>
           </button>
           
@@ -218,8 +218,8 @@ export function StoryCard({ journal, onDelete, isPublic = false }: StoryCardProp
                 className={`flex items-center gap-1 transition-all text-sm hover:scale-110 ${reaction === emoji ? 'scale-110 opacity-100' : 'opacity-50 hover:opacity-100'}`}
                 title={`React with ${emoji}`}
               >
-                <span>{emoji}</span>
-                {reaction === emoji && <span className="text-[10px] text-muted-foreground">1</span>}
+                <span className="text-xl">{emoji}</span>
+                {reaction === emoji && <span className="text-[10px] text-[#707070]">1</span>}
               </button>
             ))}
           </div>
@@ -228,7 +228,7 @@ export function StoryCard({ journal, onDelete, isPublic = false }: StoryCardProp
 
           <button 
             onClick={() => setShowCommentsList(!showCommentsList)}
-            className="flex items-center gap-1.5 hover:text-foreground transition-colors"
+            className="flex items-center gap-1.5 hover:text-[#252525] transition-colors"
           >
             <MessageCircle className="w-4 h-4" />
             <span>{comments.length}</span>
@@ -237,31 +237,32 @@ export function StoryCard({ journal, onDelete, isPublic = false }: StoryCardProp
 
       {/* Comments Section */}
       {showCommentsList && (
-        <div className="space-y-3 mt-4 pt-4 border-t border-border">
+        <div className="space-y-3 mt-4 pt-4 border-t border-white/20">
           {comments.map((c, i) => (
             <div key={i} className="flex gap-2">
-              <Avatar className="w-6 h-6 border border-border shrink-0 mt-0.5">
-                <AvatarFallback className="text-[9px] bg-muted">{c.name[0]}</AvatarFallback>
+              <Avatar className="w-6 h-6 border border-white/40 shrink-0 mt-0.5">
+                <AvatarFallback className="text-[9px] bg-white/50">{c.name[0]}</AvatarFallback>
               </Avatar>
-              <div className="bg-foreground/5 rounded-2xl rounded-tl-sm px-3 py-2 text-sm max-w-full">
-                <span className="font-bold text-foreground/80 text-xs mr-2">{c.name}</span>
-                <span className="text-foreground text-xs">{c.text}</span>
+              <div className="rounded-2xl rounded-tl-sm px-3 py-2 text-sm max-w-full border border-white/30" style={{ background: 'rgba(255,255,255,0.5)' }}>
+                <span className="font-bold text-[#252525] text-xs mr-2">{c.name}</span>
+                <span className="text-[#707070] text-xs">{c.text}</span>
               </div>
             </div>
           ))}
 
           <form onSubmit={handleCommentSubmit} className="flex gap-2 items-center mt-2">
-            <Avatar className="w-6 h-6 border border-border shrink-0">
-              <AvatarFallback className="text-[9px] bg-muted">{userName[0] || 'Y'}</AvatarFallback>
+            <Avatar className="w-6 h-6 border border-white/40 shrink-0">
+              <AvatarFallback className="text-[9px] bg-white/50">{userName[0] || 'Y'}</AvatarFallback>
             </Avatar>
             <input 
               type="text" 
               placeholder="Write a comment..." 
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
-              className="flex-1 bg-foreground/5 border border-border rounded-full px-4 py-1.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-pink-500/50"
+              className="flex-1 border border-white/40 rounded-full px-4 py-1.5 text-xs text-[#252525] placeholder:text-[#8A8A8A] focus:outline-none focus:border-[#F6A8B7]/50" 
+              style={{ background: 'rgba(255,255,255,0.6)' }}
             />
-            <button type="submit" disabled={!newComment.trim() || isCommenting} className="text-pink-500 disabled:opacity-50 p-1 hover:bg-foreground/5 rounded-full transition-colors">
+            <button type="submit" disabled={!newComment.trim() || isCommenting} className="text-[#F6A8B7] disabled:opacity-50 p-1 hover:bg-white/40 rounded-full transition-colors">
               <Send className="w-4 h-4" />
             </button>
           </form>

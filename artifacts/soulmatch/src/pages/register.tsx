@@ -185,12 +185,14 @@ export default function RegisterPage() {
         // Clear registration state
         sessionStorage.removeItem("register_step");
         sessionStorage.removeItem("register_formData");
-        // Log in the user (stores tokens in localStorage)
-        login(accessToken, refreshToken, userObj);
+        // Manually set auth tokens to prevent PublicRoute from instantly redirecting us to /dashboard
+        localStorage.setItem("soulmatch_access_token", accessToken);
+        localStorage.setItem("soulmatch_refresh_token", refreshToken);
+        localStorage.setItem("user", JSON.stringify(userObj));
         // Toast notification
         toast({ title: "Welcome to SoulMatch! 🎉", description: "Your account has been created successfully." });
-        // Hard navigation guarantees redirect and clean app load
-        window.location.href = "/dashboard";
+        // Hard navigation guarantees redirect and clean app load to our new success page
+        window.location.href = "/registration-success";
         return;
       }
     } catch (err: any) {
@@ -208,111 +210,117 @@ export default function RegisterPage() {
 
   const progress = ((step) / (STEPS.length - 1)) * 100;
 
-  // Step 3 is no longer used — redirect happens automatically in submit()
+  const isValidStep0 = Boolean(data.firstName.trim() && data.lastName.trim() && data.gender && data.dateOfBirth);
+  const isValidStep1 = Boolean(
+    data.email.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email) &&
+    data.password && data.password.length >= 8 &&
+    /[A-Z]/.test(data.password) && /[a-z]/.test(data.password) &&
+    /[0-9]/.test(data.password) && /[^A-Za-z0-9]/.test(data.password) &&
+    data.phone.replace(/\D/g, '').length === 10
+  );
+  const isCurrentStepValid = step === 0 ? isValidStep0 : step === 1 ? isValidStep1 : true;
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-8 relative" style={{ background: "hsl(var(--background))" }}>
-      {/* Ambient background */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
-        <div style={{ position: "absolute", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, hsl(340 82% 65% / 0.15) 0%, transparent 70%)", top: -100, right: -100, filter: "blur(80px)" }} />
-        <div style={{ position: "absolute", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, hsl(280 70% 65% / 0.12) 0%, transparent 70%)", bottom: -80, left: -80, filter: "blur(70px)" }} />
-      </div>
-
+    <div className="min-h-[100dvh] flex flex-col soulmatch-mesh-bg relative overflow-y-auto overflow-x-hidden">
+      <div className="flex-1 flex flex-col items-center justify-center px-4 py-8 relative z-10 w-full max-w-md mx-auto min-h-[600px]">
       <motion.div
-        initial={{ opacity: 0, y: 24 }}
+        initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="w-full max-w-md relative"
-        style={{ zIndex: 1 }}
+        className="w-full max-w-md relative mt-4 z-10"
       >
         {/* Logo */}
-        <div className="text-center mb-6">
+        <div className="text-center mb-5 flex flex-col items-center">
           <Link href="/">
-            <span className="inline-flex items-center gap-2 cursor-pointer justify-center mb-4">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "hsl(var(--primary))", boxShadow: "0 0 20px hsl(340 82% 65% / 0.3)" }}>
-                <Heart className="w-5 h-5 text-white" />
+            <span className="inline-flex items-center gap-2 cursor-pointer justify-center mb-3">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center gradient-coral-button shadow-sm border border-white/45 backdrop-blur-md">
+                <Heart className="w-5 h-5 text-white fill-white/20" />
               </div>
-              <span className="text-xl font-bold" style={{ background: "linear-gradient(135deg, hsl(340 82% 70%), hsl(280 70% 72%))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              <span className="text-xl font-black bg-clip-text text-transparent bg-gradient-to-r from-[#FF8F8F] to-[#FFB39A]">
                 SoulMatch
               </span>
             </span>
           </Link>
-          <h1 className="text-2xl font-bold text-foreground">{STEPS[step].title}</h1>
-          <p className="text-sm mt-1 text-muted-foreground">{STEPS[step].sub}</p>
+          <h1 className="text-3xl font-bold text-[#222222] tracking-tight">{STEPS[step].title}</h1>
+          <p className="text-xs mt-1 text-[#6F6F6F]">{STEPS[step].sub}</p>
         </div>
 
         {/* Progress bar */}
-        <div className="mb-6">
-          <div className="flex justify-between mb-2">
+        <div className="mb-5 px-1">
+          <div className="flex justify-between items-center mb-2">
             {STEPS.map((s, i) => (
-              <div key={i} className="flex flex-col items-center gap-1">
+              <div key={i} className="flex flex-col items-center gap-1.5 z-10">
                 <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300"
+                  className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 border backdrop-blur-md shadow-sm"
                   style={{
-                    background: i < step ? "hsl(var(--primary))" : i === step ? "rgba(219,68,120,0.15)" : "hsl(var(--card))",
-                    border: i === step ? "2px solid hsl(340 82% 65%)" : "2px solid hsl(var(--border))",
-                    color: i <= step ? (i < step ? "white" : "hsl(var(--primary))") : "hsl(var(--muted-foreground))",
-                    boxShadow: i < step ? "0 0 12px hsl(340 82% 65% / 0.3)" : "none",
+                    background: i < step 
+                      ? "linear-gradient(135deg, #FF8F8F, #FFB39A)" 
+                      : i === step 
+                        ? "linear-gradient(135deg, #FF8F8F, #FFB39A)" 
+                        : "rgba(255, 255, 255, 0.45)",
+                    borderColor: i <= step ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.3)",
+                    color: i <= step ? "white" : "#6F6F6F",
+                    boxShadow: i <= step ? "0 4px 12px rgba(255, 143, 143, 0.2)" : "none",
                   }}
                 >
-                  {i < step ? <Check className="w-4 h-4" /> : i + 1}
+                  {i < step ? <Check className="w-4 h-4 text-white stroke-[3]" /> : i + 1}
                 </div>
-                <span className="text-xs hidden sm:block" style={{ color: i === step ? "hsl(var(--primary))" : "hsl(var(--muted-foreground))" }}>
+                <span className="text-[10px] font-bold hidden sm:block" style={{ color: i === step ? "#FF8F8F" : "#6F6F6F" }}>
                   {s.title.split(" ")[0]}
                 </span>
               </div>
             ))}
           </div>
-          <div className="relative h-1.5 rounded-full mt-2" style={{ background: "hsl(var(--border))" }}>
+          <div className="relative h-1.5 rounded-full mt-2 bg-white/40 border border-white/20 shadow-sm">
             <motion.div
               className="absolute inset-y-0 left-0 rounded-full"
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.4 }}
-              style={{ background: "linear-gradient(90deg, hsl(340 82% 60%), hsl(280 70% 65%))", boxShadow: "0 0 8px hsl(340 82% 65% / 0.4)" }}
+              style={{ background: "linear-gradient(90deg, #FF8F8F, #FFB39A)", boxShadow: "0 0 8px rgba(255, 143, 143, 0.25)" }}
             />
           </div>
         </div>
 
         {/* Card */}
-        <div className="rounded-2xl p-6" style={{ background: "hsl(var(--card))", backdropFilter: "blur(20px)", border: "1px solid hsl(var(--card))" }}>
+        <div className="premium-glass-card p-7 sm:p-8">
           <AnimatePresence mode="wait">
 
             {/* ─── Step 0: Personal Info ─── */}
             {step === 0 && (
-              <motion.div key="step0" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }} className="space-y-4">
+              <motion.div key="step0" initial={{ opacity: 0, x: 15 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -15 }} transition={{ duration: 0.2 }} className="space-y-4">
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-1.5">
-                    <Label className="text-foreground/90 text-sm">First Name <span style={{ color: "hsl(340 82% 65%)" }}>*</span></Label>
+                  <div className="space-y-2">
+                    <Label className="text-[#222222] font-semibold ml-1">First Name <span className="text-[#FF8F8F]">*</span></Label>
                     <div className="relative">
-                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                      <User className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#707070]" />
                       <Input
                         placeholder="First"
                         value={data.firstName}
                         onChange={(e) => set("firstName", e.target.value)}
-                        className="auth-input pl-10 h-11 rounded-xl text-sm"
+                        className="glass-input pl-12"
                         autoComplete="given-name"
                       />
                     </div>
                   </div>
-                  <div className="space-y-1.5">
-                    <Label className="text-foreground/90 text-sm">Last Name <span style={{ color: "hsl(340 82% 65%)" }}>*</span></Label>
+                  <div className="space-y-2">
+                    <Label className="text-[#222222] font-semibold ml-1">Last Name <span className="text-[#FF8F8F]">*</span></Label>
                     <Input
                       placeholder="Last"
                       value={data.lastName}
                       onChange={(e) => set("lastName", e.target.value)}
-                      className="auth-input h-11 rounded-xl text-sm"
+                      className="glass-input px-5"
                       autoComplete="family-name"
                     />
                   </div>
                 </div>
 
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/90 text-sm">Gender <span style={{ color: "hsl(340 82% 65%)" }}>*</span></Label>
+                <div className="space-y-2">
+                  <Label className="text-[#222222] font-semibold ml-1">Gender <span className="text-[#FF8F8F]">*</span></Label>
                   <Select value={data.gender} onValueChange={(v) => set("gender", v)}>
-                    <SelectTrigger className="auth-input h-11 rounded-xl text-sm">
+                    <SelectTrigger className="glass-input px-5 flex items-center justify-between text-[#222222]">
                       <SelectValue placeholder="Select gender" />
                     </SelectTrigger>
-                    <SelectContent style={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))" }}>
+                    <SelectContent style={{ background: "rgba(255,255,255,0.95)", border: "1px solid rgba(255,255,255,0.45)", borderRadius: "18px" }}>
                       <SelectItem value="male">Male</SelectItem>
                       <SelectItem value="female">Female</SelectItem>
                       <SelectItem value="other">Other</SelectItem>
@@ -321,15 +329,15 @@ export default function RegisterPage() {
                   </Select>
                 </div>
 
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/90 text-sm">Date of Birth <span style={{ color: "hsl(340 82% 65%)" }}>*</span></Label>
+                <div className="space-y-2">
+                  <Label className="text-[#222222] font-semibold ml-1">Date of Birth <span className="text-[#FF8F8F]">*</span></Label>
                   <div className="relative">
-                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style={{ color: "hsl(215 20% 42%)" }} />
+                    <Calendar className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#707070] pointer-events-none" />
                     <Input
                       type="date"
                       value={data.dateOfBirth}
                       onChange={(e) => set("dateOfBirth", e.target.value)}
-                      className="auth-input pl-10 h-11 rounded-xl text-sm [&::-webkit-calendar-picker-indicator]:opacity-100 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:invert"
+                      className="glass-input pl-12 pr-5 [&::-webkit-calendar-picker-indicator]:opacity-100 [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                       max={new Date(Date.now() - 18 * 365.25 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]}
                     />
                   </div>
@@ -339,60 +347,59 @@ export default function RegisterPage() {
 
             {/* ─── Step 1: Account Setup ─── */}
             {step === 1 && (
-              <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }} className="space-y-4">
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/90 text-sm">Email address <span style={{ color: "hsl(340 82% 65%)" }}>*</span></Label>
+              <motion.div key="step1" initial={{ opacity: 0, x: 15 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -15 }} transition={{ duration: 0.2 }} className="space-y-4">
+                <div className="space-y-2">
+                  <Label className="text-[#222222] font-semibold ml-1">Email address <span className="text-[#FF8F8F]">*</span></Label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "hsl(215 20% 42%)" }} />
+                    <Mail className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#707070] pointer-events-none" />
                     <Input
                       type="email"
                       placeholder="you@example.com"
                       value={data.email}
                       onChange={(e) => { set("email", e.target.value); setErrors(err => ({...err, email: undefined})); }}
-                      className={`auth-input pl-10 h-11 rounded-xl text-sm ${errors.email ? "border-red-500" : ""}`}
+                      className={`glass-input pl-12 ${errors.email ? "border-red-400" : ""}`}
                       autoComplete="email"
                     />
                   </div>
-                  {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+                  {errors.email && <p className="text-red-400 text-xs mt-1 ml-1">{errors.email}</p>}
                 </div>
 
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/90 text-sm">
-                    Password <span style={{ color: "hsl(340 82% 65%)" }}>*</span>
+                <div className="space-y-2">
+                  <Label className="text-[#222222] font-semibold ml-1">
+                    Password <span className="text-[#FF8F8F]">*</span>
                   </Label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "hsl(215 20% 42%)" }} />
+                    <Lock className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#707070] pointer-events-none" />
                     <Input
                       type={showPassword ? "text" : "password"}
-                      placeholder="At least 8 chars, 1 upper, 1 lower, 1 num, 1 special"
+                      placeholder="At least 8 characters"
                       value={data.password}
                       onChange={(e) => { set("password", e.target.value); setErrors(err => ({...err, password: undefined})); }}
-                      className={`auth-input pl-10 pr-11 h-11 rounded-xl text-sm ${errors.password ? "border-red-500" : ""}`}
+                      className={`glass-input pl-12 pr-12 ${errors.password ? "border-red-400" : ""}`}
                       autoComplete="new-password"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2"
-                      style={{ color: "hsl(215 20% 45%)" }}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-[#707070] hover:text-[#222222] transition-colors p-1"
                     >
-                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
                   </div>
-                  {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+                  {errors.password && <p className="text-red-400 text-xs mt-1 ml-1">{errors.password}</p>}
                   {/* Password strength hint */}
                   {data.password.length > 0 && (
-                    <div className="flex gap-1 mt-1.5">
+                    <div className="flex gap-1 mt-1.5 px-1">
                       {[1, 2, 3, 4].map((n) => {
                         const score = getPasswordStrength(data.password);
                         return (
                           <div
                             key={n}
-                            className="flex-1 h-1 rounded-full transition-all duration-300"
+                            className="flex-1 h-1.5 rounded-full transition-all duration-300"
                             style={{
                               background: score >= n
                                 ? score <= 2 ? "hsl(0 72% 51%)" : score === 3 ? "hsl(45 90% 60%)" : "hsl(120 50% 50%)"
-                                : "hsl(var(--card))",
+                                : "rgba(255,255,255,0.3)",
                             }}
                           />
                         );
@@ -401,10 +408,10 @@ export default function RegisterPage() {
                   )}
                 </div>
 
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/90 text-sm">Phone number <span style={{ color: "hsl(340 82% 65%)" }}>*</span></Label>
+                <div className="space-y-2">
+                  <Label className="text-[#222222] font-semibold ml-1">Phone number <span className="text-[#FF8F8F]">*</span></Label>
                   <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "hsl(215 20% 42%)" }} />
+                    <Phone className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#707070] pointer-events-none" />
                     <Input
                       type="tel"
                       placeholder="e.g. 9876543210"
@@ -413,21 +420,21 @@ export default function RegisterPage() {
                         const val = e.target.value.replace(/\D/g, '').slice(0, 10);
                         set("phone", val);
                       }}
-                      className="auth-input pl-10 h-11 rounded-xl text-sm"
+                      className="glass-input pl-12"
                       autoComplete="tel"
                     />
                   </div>
-                  {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
+                  {errors.phone && <p className="text-red-400 text-xs mt-1 ml-1">{errors.phone}</p>}
                 </div>
               </motion.div>
             )}
 
             {/* ─── Step 2: Confirm ─── */}
             {step === 2 && (
-              <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }} className="space-y-4">
+              <motion.div key="step2" initial={{ opacity: 0, x: 15 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -15 }} transition={{ duration: 0.2 }} className="space-y-4">
                 {/* Summary card */}
-                <div className="rounded-xl p-4 space-y-3" style={{ background: "rgba(219,68,120,0.07)", border: "1px solid hsl(340 82% 65% / 0.2)" }}>
-                  <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: "hsl(340 82% 68%)" }}>Account Summary</p>
+                <div className="rounded-2xl p-5 space-y-3 bg-white/30 backdrop-blur-sm border border-white/40 shadow-sm">
+                  <p className="text-xs font-bold uppercase tracking-wider text-[#FF8F8F]">Account Summary</p>
                   <div className="space-y-2 text-sm">
                     {[
                       { label: "Name", value: `${data.firstName} ${data.lastName}` },
@@ -435,47 +442,46 @@ export default function RegisterPage() {
                       { label: "Gender", value: data.gender ? data.gender.charAt(0).toUpperCase() + data.gender.slice(1) : "—" },
                       ...(data.dateOfBirth ? [{ label: "Date of Birth", value: data.dateOfBirth }] : []),
                     ].map(({ label, value }) => (
-                      <div key={label} className="flex justify-between">
-                        <span className="text-muted-foreground">{label}</span>
-                        <span className="text-foreground font-medium">{value}</span>
+                      <div key={label} className="flex justify-between items-center">
+                        <span className="text-[#6F6F6F]">{label}</span>
+                        <span className="text-[#222222] font-semibold">{value}</span>
                       </div>
                     ))}
                   </div>
                   <button
                     type="button"
                     onClick={() => setStep(0)}
-                    className="text-xs underline underline-offset-2 transition-colors"
-                    style={{ color: "hsl(340 82% 65%)" }}
+                    className="text-xs font-bold underline underline-offset-2 transition-colors text-[#FF8F8F] hover:text-[#FF8F8F]/80"
                   >
                     Edit info
                   </button>
                 </div>
 
                 {/* Feature list */}
-                <div className="space-y-2">
+                <div className="space-y-2.5 py-1">
                   {[
                     "Compatibility-based matching",
                     "30-day personality discovery journey",
                     "Send & receive interests",
                     "Secure, verified profiles",
                   ].map((item) => (
-                    <div key={item} className="flex items-center gap-2.5 text-sm" style={{ color: "hsl(215 20% 60%)" }}>
-                      <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0" style={{ background: "hsl(340 82% 65% / 0.15)" }}>
-                        <Check className="w-3 h-3" style={{ color: "hsl(340 82% 68%)" }} />
+                    <div key={item} className="flex items-center gap-2.5 text-sm text-[#6F6F6F]">
+                      <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 bg-[#FF8F8F]/15">
+                        <Check className="w-3 h-3 text-[#FF8F8F] stroke-[3]" />
                       </div>
-                      {item}
+                      <span className="font-medium">{item}</span>
                     </div>
                   ))}
                 </div>
 
-                <p className="text-xs text-center" style={{ color: "hsl(215 20% 38%)" }}>
+                <p className="text-xs text-center text-[#707070] leading-normal px-2">
                   By creating an account you agree to our{" "}
                   <Link href="/terms">
-                    <span className="underline cursor-pointer" style={{ color: "hsl(340 82% 60%)" }}>Terms of Service</span>
+                    <span className="underline cursor-pointer text-[#FF8F8F] font-bold">Terms of Service</span>
                   </Link>
                   {" "}and{" "}
                   <Link href="/privacy">
-                    <span className="underline cursor-pointer" style={{ color: "hsl(340 82% 60%)" }}>Privacy Policy</span>
+                    <span className="underline cursor-pointer text-[#FF8F8F] font-bold">Privacy Policy</span>
                   </Link>
                 </p>
               </motion.div>
@@ -488,37 +494,32 @@ export default function RegisterPage() {
               <Button
                 type="button"
                 onClick={() => setStep((s) => s - 1)}
-                className="h-11 px-4 rounded-xl font-medium"
-                style={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", color: "hsl(215 20% 65%)" }}
+                className="h-[56px] px-5 rounded-full font-bold border border-white/50 bg-white/40 backdrop-blur-sm hover:bg-white/60 text-[#6F6F6F] active:scale-[0.98] transition-all shadow-sm"
               >
-                <ChevronLeft className="w-4 h-4" />
+                <ChevronLeft className="w-5 h-5" />
               </Button>
             )}
 
             <Button
               type="button"
               onClick={goNext}
-              disabled={loading}
-              className="flex-1 h-11 rounded-xl font-semibold text-white border-0"
-              style={{
-                background: "hsl(var(--primary))",
-                boxShadow: "0 4px 20px rgba(219,68,120,0.35)",
-              }}
+              disabled={loading || !isCurrentStepValid}
+              className="flex-1 h-[56px] rounded-full font-bold text-base border-0 shadow-md transition-all duration-300 gradient-coral-pill"
             >
               {loading ? (
                 <span className="flex items-center gap-2">
-                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   Creating account…
                 </span>
               ) : step < 2 ? (
-                <span className="flex items-center gap-1.5">Continue <ChevronRight className="w-4 h-4" /></span>
+                <span className="flex items-center gap-1.5">Continue <ChevronRight className="w-5 h-5" /></span>
               ) : (
-                <span className="flex items-center gap-1.5"><Heart className="w-4 h-4" /> Create My Account</span>
+                <span className="flex items-center gap-1.5"><Heart className="w-5 h-5" /> Create My Account</span>
               )}
             </Button>
           </div>
 
-          <p className="text-center text-sm mt-4" style={{ color: "hsl(215 20% 45%)" }}>
+          <p className="text-center text-sm mt-5 text-[#6F6F6F]">
             Already have an account?{" "}
             <Link href="/login">
               <span 
@@ -526,8 +527,7 @@ export default function RegisterPage() {
                   sessionStorage.removeItem("register_step");
                   sessionStorage.removeItem("register_formData");
                 }}
-                className="font-semibold cursor-pointer hover:underline" 
-                style={{ color: "hsl(340 82% 68%)" }}
+                className="font-bold cursor-pointer hover:underline text-[#FF8F8F]" 
               >
                 Sign in
               </span>
@@ -535,6 +535,7 @@ export default function RegisterPage() {
           </p>
         </div>
       </motion.div>
+      </div>
     </div>
   );
 }

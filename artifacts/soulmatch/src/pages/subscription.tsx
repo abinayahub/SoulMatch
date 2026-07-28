@@ -64,7 +64,7 @@ export default function SubscriptionPage() {
   }
 
   const tierColors: Record<string, string> = {
-    bronze: "text-orange-400 bg-orange-400/10 border-orange-400/20", 
+    bronze: "text-[#F6A8B7] bg-[#F6A8B7]/10 border-[#F6A8B7]/20", 
     silver: "text-gray-400 bg-gray-400/10 border-gray-400/20",
     gold: "text-yellow-500 bg-yellow-500/10 border-yellow-500/20", 
     platinum: "text-cyan-400 bg-cyan-400/10 border-cyan-400/20",
@@ -72,18 +72,19 @@ export default function SubscriptionPage() {
 
   return (
     <AppLayout>
-      <div className="min-h-screen bg-background relative pb-28">
+      <div className="w-full min-h-screen relative flex flex-col font-sans relative pb-28" style={{ background: 'linear-gradient(135deg, #F8F3F7 0%, #FAF1ED 100%)' }}>
+      <div className="absolute inset-0 opacity-40 pointer-events-none" style={{ background: 'radial-gradient(circle at 0% 0%, #F4F1FF 0%, transparent 50%), radial-gradient(circle at 100% 100%, #FFFDFC 0%, transparent 50%)' }} />
         <div className="max-w-md mx-auto px-5 py-6">
           
-          <button onClick={() => window.history.back()} className="text-muted-foreground hover:text-foreground flex items-center gap-2 text-sm font-medium mb-6 w-fit transition-colors">
+          <button onClick={() => window.history.back()} className="text-[#707070] hover:text-[#252525] flex items-center gap-2 text-sm font-medium mb-6 w-fit transition-colors">
             <ChevronLeft className="w-4 h-4" /> Back to Settings
           </button>
           
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-            <h1 className="text-[28px] font-extrabold flex items-center gap-3 mb-1 text-foreground">
+            <h1 className="text-[28px] font-extrabold flex items-center gap-3 mb-1 text-[#252525]">
               <CreditCard className="w-7 h-7 text-primary" />Subscription
             </h1>
-            <p className="text-muted-foreground font-medium text-[15px]">Manage your plan and rewards.</p>
+            <p className="text-[#707070] font-medium text-[15px]">Manage your plan and rewards.</p>
           </motion.div>
 
           <div className="space-y-6">
@@ -93,12 +94,12 @@ export default function SubscriptionPage() {
               <div className="absolute top-0 right-0 p-6 opacity-5">
                  <Crown className="w-24 h-24" />
               </div>
-              <h2 className="text-[13px] font-extrabold text-muted-foreground uppercase tracking-widest mb-4">Current Plan</h2>
+              <h2 className="text-[13px] font-extrabold text-[#707070] uppercase tracking-widest mb-4">Current Plan</h2>
               {currentSub ? (
                 <div className="relative z-10">
                   <div className="flex items-center gap-2 mb-3">
                     <Crown className="w-6 h-6 text-accent" />
-                    <span className="font-extrabold text-[22px] text-foreground">{(currentSub as any).plan?.name}</span>
+                    <span className="font-extrabold text-[22px] text-[#252525]">{(currentSub as any).plan?.name}</span>
                     <Badge className="bg-green-500/10 text-green-500 border border-green-500/20 font-bold px-2.5 py-0.5 rounded-full ml-auto">{(currentSub as any).status}</Badge>
                   </div>
                   <div className="flex items-center gap-2 text-[14px] font-bold text-foreground/80 mb-6 bg-foreground/5 p-3 rounded-2xl">
@@ -119,11 +120,11 @@ export default function SubscriptionPage() {
               ) : (
                 <div className="relative z-10">
                   <div className="flex items-center gap-2 mb-4">
-                    <span className="font-extrabold text-[22px] text-foreground">Free Plan</span>
+                    <span className="font-extrabold text-[22px] text-[#252525]">Free Plan</span>
                   </div>
                   <div className="space-y-3 mb-6 bg-foreground/5 p-4 rounded-2xl">
                     {["Limited profile views", "10 interests/day", "No chat access"].map((f) => (
-                      <div key={f} className="flex items-center gap-3 text-[14px] font-medium text-foreground">
+                      <div key={f} className="flex items-center gap-3 text-[14px] font-medium text-[#252525]">
                          <div className="w-5 h-5 rounded-full bg-red-500/10 flex items-center justify-center shrink-0">
                            <X className="w-3 h-3 text-red-500" />
                          </div>
@@ -139,29 +140,29 @@ export default function SubscriptionPage() {
             {rewards && (
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="bg-card border border-border shadow-sm rounded-[32px] p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-[13px] font-extrabold text-muted-foreground uppercase tracking-widest">Rewards</h2>
+                  <h2 className="text-[13px] font-extrabold text-[#707070] uppercase tracking-widest">Rewards</h2>
                   <div className={`px-3 py-1 rounded-full border text-[11px] font-bold uppercase tracking-wider ${tierColors[(rewards as any).tier ?? "bronze"]}`}>
                     {((rewards as any).tier ?? "bronze")} Tier
                   </div>
                 </div>
                 <div className="flex items-end gap-2 mb-6">
                   <Sparkles className="w-8 h-8 text-primary mb-1" />
-                  <span className="text-[40px] font-extrabold text-foreground leading-none">{(rewards as any).coins ?? 0}</span>
-                  <span className="text-[14px] font-bold text-muted-foreground mb-1">SoulCoins</span>
+                  <span className="text-[40px] font-extrabold text-[#252525] leading-none">{(rewards as any).coins ?? 0}</span>
+                  <span className="text-[14px] font-bold text-[#707070] mb-1">SoulCoins</span>
                 </div>
                 
-                <h3 className="text-[12px] font-bold text-foreground mb-3">Recent Activity</h3>
+                <h3 className="text-[12px] font-bold text-[#252525] mb-3">Recent Activity</h3>
                 <div className="space-y-2">
                   {((rewards as any).recentTransactions ?? []).slice(0, 3).map((t: any) => (
                     <div key={t.id} className="flex items-center justify-between p-3 bg-foreground/5 rounded-2xl">
-                      <span className="text-[13px] font-medium text-foreground truncate mr-4">{t.description}</span>
+                      <span className="text-[13px] font-medium text-[#252525] truncate mr-4">{t.description}</span>
                       <span className={`text-[14px] font-extrabold shrink-0 ${t.type === "earned" ? "text-green-500" : "text-red-500"}`}>
                         {t.type === "earned" ? "+" : "-"}{t.amount}
                       </span>
                     </div>
                   ))}
                   {((rewards as any).recentTransactions ?? []).length === 0 && (
-                     <p className="text-[13px] text-muted-foreground italic p-2">No recent activity.</p>
+                     <p className="text-[13px] text-[#707070] italic p-2">No recent activity.</p>
                   )}
                 </div>
               </motion.div>
@@ -169,7 +170,7 @@ export default function SubscriptionPage() {
 
             {/* Available Plans */}
             <div>
-              <h2 className="text-[18px] font-extrabold text-foreground mb-4 pl-1">Available Plans</h2>
+              <h2 className="text-[18px] font-extrabold text-[#252525] mb-4 pl-1">Available Plans</h2>
               {loadingPlans ? (
                 <div className="space-y-4">
                   {[...Array(3)].map((_, i) => <Skeleton key={i} className="h-48 rounded-[32px] bg-foreground/5" />)}
@@ -191,10 +192,10 @@ export default function SubscriptionPage() {
                       )}
                       
                       <div className="mb-5">
-                         <h3 className="font-extrabold text-[20px] text-foreground mb-1">{plan.name}</h3>
+                         <h3 className="font-extrabold text-[20px] text-[#252525] mb-1">{plan.name}</h3>
                          <div className="flex items-baseline gap-1">
                            <span className="text-[28px] font-extrabold text-primary">${plan.price}</span>
-                           <span className="text-muted-foreground font-bold text-[14px]">/{plan.interval}</span>
+                           <span className="text-[#707070] font-bold text-[14px]">/{plan.interval}</span>
                          </div>
                       </div>
 
@@ -204,14 +205,14 @@ export default function SubscriptionPage() {
                             <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
                                <Check className="w-3 h-3 text-primary" />
                             </div>
-                            <span className="text-[13px] font-medium text-foreground leading-snug">{f}</span>
+                            <span className="text-[13px] font-medium text-[#252525] leading-snug">{f}</span>
                           </div>
                         ))}
                       </div>
 
                       <Button
                         onClick={() => handleSubscribe(plan.id)}
-                        className={`w-full h-12 rounded-2xl font-bold text-[15px] transition-all ${(currentSub as any)?.planId === plan.id ? "bg-green-500/10 text-green-600 hover:bg-green-500/20 border-0" : plan.isPopular ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25 border-0 text-white" : "bg-foreground/5 hover:bg-foreground/10 text-foreground"}`}
+                        className={`w-full h-12 rounded-2xl font-bold text-[15px] transition-all ${(currentSub as any)?.planId === plan.id ? "bg-green-500/10 text-green-600 hover:bg-green-500/20 border-0" : plan.isPopular ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25 border-0 text-white" : "bg-foreground/5 hover:bg-foreground/10 text-[#252525]"}`}
                         disabled={checkout.isPending || (currentSub as any)?.planId === plan.id}
                       >
                         {(currentSub as any)?.planId === plan.id ? "Current Plan Active" : "Subscribe"}

@@ -29,7 +29,8 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4 relative">
+    <div className="w-full min-h-screen relative flex flex-col font-sans flex items-center justify-center px-4 relative" style={{ background: 'linear-gradient(135deg, #F8F3F7 0%, #FAF1ED 100%)' }}>
+      <div className="absolute inset-0 opacity-40 pointer-events-none" style={{ background: 'radial-gradient(circle at 0% 0%, #F4F1FF 0%, transparent 50%), radial-gradient(circle at 100% 100%, #FFFDFC 0%, transparent 50%)' }} />
       <div className="orb orb-1" />
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md relative z-10">
         <div className="text-center mb-8">
@@ -37,12 +38,12 @@ export default function ForgotPasswordPage() {
             <Heart className="w-5 h-5 text-white" />
           </div>
           <h1 className="text-2xl font-bold">Reset Password</h1>
-          <p className="text-muted-foreground mt-1 text-sm">Enter your email to receive a reset link</p>
+          <p className="text-[#707070] mt-1 text-sm">Enter your email to receive a reset link</p>
         </div>
         <div className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-6">
           {sent ? (
             <div className="text-center py-4 flex flex-col gap-4 items-center">
-              <p className="text-muted-foreground text-sm">We've sent a password reset link to your email.</p>
+              <p className="text-[#707070] text-sm">We've sent a password reset link to your email.</p>
               
               <Link href="/login" className="w-full">
                 <Button variant="outline" className="border-white/20 bg-card/5 w-full">Back to Login</Button>
@@ -53,7 +54,7 @@ export default function ForgotPasswordPage() {
               <div className="space-y-1.5">
                 <Label>Email Address</Label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Mail className="absolute z-10 left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#707070]" />
                   <Input type="email" placeholder="you@example.com" className="pl-9 bg-card/5 border-white/10" {...form.register("email", { required: true })} />
                 </div>
               </div>

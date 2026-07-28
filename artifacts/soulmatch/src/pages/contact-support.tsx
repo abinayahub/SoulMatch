@@ -37,7 +37,8 @@ export default function ContactSupportPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background relative flex flex-col items-center">
+    <div className="w-full min-h-screen relative flex flex-col font-sans relative flex flex-col items-center" style={{ background: 'linear-gradient(135deg, #F8F3F7 0%, #FAF1ED 100%)' }}>
+      <div className="absolute inset-0 opacity-40 pointer-events-none" style={{ background: 'radial-gradient(circle at 0% 0%, #F4F1FF 0%, transparent 50%), radial-gradient(circle at 100% 100%, #FFFDFC 0%, transparent 50%)' }} />
       <nav className="w-full max-w-5xl mx-auto px-6 h-20 flex items-center justify-between">
         <Link href="/">
           <span className="flex items-center gap-2 cursor-pointer">
@@ -47,7 +48,7 @@ export default function ContactSupportPage() {
             <span className="font-bold text-lg text-primary">SoulMatch</span>
           </span>
         </Link>
-        <Button variant="ghost" onClick={() => navigate("/dashboard")} className="text-muted-foreground hover:bg-card/5">
+        <Button variant="ghost" onClick={() => navigate("/dashboard")} className="text-[#707070] hover:bg-card/5">
           <ArrowLeft className="w-4 h-4 mr-2" /> Back to Home
         </Button>
       </nav>
@@ -58,7 +59,7 @@ export default function ContactSupportPage() {
             <HeadphonesIcon className="w-8 h-8 text-primary" />
           </div>
           <h1 className="text-3xl font-bold mb-3">We're Here to Help</h1>
-          <p className="text-muted-foreground">
+          <p className="text-[#707070]">
             Our support team is ready to assist you.
             <br />
             How can we help you today?
@@ -122,10 +123,10 @@ export default function ContactSupportPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-sm mb-1">Email Support</h3>
-                  <p className="text-muted-foreground text-xs">support@soulmatch.com</p>
+                  <p className="text-[#707070] text-xs">support@soulmatch.com</p>
                 </div>
               </div>
-              <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+              <ChevronRight className="w-5 h-5 text-[#707070] group-hover:text-primary transition-colors" />
             </div>
 
             <div className="bg-card border border-border shadow-md rounded-2xl p-6 flex items-center justify-between border-white/5 cursor-pointer hover:bg-card/5 transition-colors group">
@@ -135,10 +136,10 @@ export default function ContactSupportPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-sm mb-1">Response Time</h3>
-                  <p className="text-muted-foreground text-xs">Within 24 hours</p>
+                  <p className="text-[#707070] text-xs">Within 24 hours</p>
                 </div>
               </div>
-              <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+              <ChevronRight className="w-5 h-5 text-[#707070] group-hover:text-primary transition-colors" />
             </div>
           </div>
 
@@ -149,16 +150,16 @@ export default function ContactSupportPage() {
               </div>
               <div>
                 <h3 className="font-semibold text-sm mb-1">Looking for quick answers?</h3>
-                <p className="text-muted-foreground text-xs">Visit our Help Center for common questions and guides.</p>
+                <p className="text-[#707070] text-xs">Visit our Help Center for common questions and guides.</p>
               </div>
             </div>
-            <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+            <ChevronRight className="w-5 h-5 text-[#707070] group-hover:text-primary transition-colors" />
           </div>
         </motion.div>
 
         <footer className="mt-16 mb-8 text-center opacity-80">
-          <p className="text-sm text-muted-foreground mb-1">Thank you for being part of SoulMatch.</p>
-          <p className="text-sm text-muted-foreground mb-6">We're here to support your journey to meaningful connections.</p>
+          <p className="text-sm text-[#707070] mb-1">Thank you for being part of SoulMatch.</p>
+          <p className="text-sm text-[#707070] mb-6">We're here to support your journey to meaningful connections.</p>
           <Heart className="w-6 h-6 text-primary mx-auto opacity-50" />
         </footer>
       </main>

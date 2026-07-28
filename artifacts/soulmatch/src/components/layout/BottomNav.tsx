@@ -20,21 +20,21 @@ export function BottomNav() {
   }
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-xl border-t border-border/50 pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
-      <div className="flex items-center justify-around h-16 px-2">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/55 backdrop-blur-[24px] border-t border-white/35 rounded-t-[28px] rounded-b-none shadow-[0_-10px_35px_rgba(255,190,180,0.15)] pb-[env(safe-area-inset-bottom,0px)]">
+      <div className="flex items-center justify-around h-16 px-4">
         {navItems.map((item) => {
           const isActive = location === item.href || (item.href !== "/dashboard" && location.startsWith(item.href));
           
           return (
             <Link key={item.href} href={item.href}>
-              <div className="flex flex-col items-center justify-center w-full h-full cursor-pointer group">
-                <div className={`relative flex items-center justify-center w-12 h-8 rounded-full transition-all duration-300 ${
-                  isActive ? "bg-primary/10 text-primary scale-110" : "text-muted-foreground hover:bg-background/5"
+              <div className="flex flex-col items-center justify-center cursor-pointer group">
+                <div className={`relative flex items-center justify-center w-12 h-9 rounded-full transition-all duration-300 ${
+                  isActive ? "bg-[#FF9F9F]/10 text-[#FF9F9F] scale-110" : "text-[#757575] hover:bg-black/5"
                 }`}>
                   <item.icon className={`w-5 h-5 transition-transform duration-300 ${isActive ? "scale-110" : ""}`} />
                 </div>
-                <span className={`text-[10px] font-medium mt-1 transition-colors duration-300 ${
-                  isActive ? "text-primary font-bold" : "text-muted-foreground"
+                <span className={`text-[10px] font-semibold mt-0.5 transition-colors duration-300 ${
+                  isActive ? "text-[#FF9F9F] font-bold" : "text-[#757575]"
                 }`}>
                   {item.label}
                 </span>

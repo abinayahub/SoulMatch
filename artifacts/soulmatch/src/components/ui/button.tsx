@@ -11,28 +11,21 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-           // @replit: no hover, and add primary border
-           "bg-primary text-primary-foreground border border-primary-border",
+           "bg-gradient-to-r from-[#FAC985] via-[#F6A8B7] to-[#F6A8B7] text-white border-none shadow-[0_4px_18px_rgba(229,119,46,0.3)] hover:shadow-[0_6px_22px_rgba(229,119,46,0.45)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/0 before:via-white/20 before:to-white/0 before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-1000",
         destructive:
-          "bg-destructive text-destructive-foreground shadow-sm border-destructive-border",
+           "bg-destructive text-destructive-foreground shadow-sm border-destructive-border",
         outline:
-          // @replit Shows the background color of whatever card / sidebar / accent background it is inside of.
-          // Inherits the current text color. Uses shadow-xs. no shadow on active
-          // No hover state
-          " border [border-color:var(--button-outline)] shadow-xs active:shadow-none ",
+           " border [border-color:var(--button-outline)] shadow-xs active:shadow-none ",
         secondary:
-          // @replit border, no hover, no shadow, secondary border.
-          "border bg-secondary text-secondary-foreground border border-secondary-border ",
-        // @replit no hover, transparent border
-        ghost: "border border-transparent",
+           "border bg-secondary/30 backdrop-blur-md text-secondary-foreground border-white/20 hover:bg-secondary/40",
+        ghost: "border border-transparent hover:bg-white/10",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        // @replit changed sizes
-        default: "min-h-9 px-4 py-2",
-        sm: "min-h-8 rounded-md px-3 text-xs",
-        lg: "min-h-10 rounded-md px-8",
-        icon: "h-9 w-9",
+        default: "min-h-[54px] rounded-full px-8 py-3 text-base font-semibold tracking-wide",
+        sm: "min-h-10 rounded-full px-4 text-xs font-medium",
+        lg: "min-h-14 rounded-full px-10 text-lg font-semibold",
+        icon: "h-11 w-11 rounded-full",
       },
     },
     defaultVariants: {

@@ -61,14 +61,14 @@ export default function AdminUserDetailPage({ userId }: Props) {
   return (
     <AppLayout>
       <div className="max-w-3xl mx-auto px-4 py-8">
-        <Button variant="ghost" onClick={() => navigate("/admin/users")} className="mb-4 text-muted-foreground">
+        <Button variant="ghost" onClick={() => navigate("/admin/users")} className="mb-4 text-[#707070]">
           <ChevronLeft className="w-4 h-4 mr-1" />Back to Users
         </Button>
 
         {isLoading ? (
           <Skeleton className="h-96 rounded-2xl bg-card/5" />
         ) : !u ? (
-          <div className="text-center py-16 text-muted-foreground">User not found</div>
+          <div className="text-center py-16 text-[#707070]">User not found</div>
         ) : (
           <div className="space-y-5">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-6">
@@ -80,7 +80,7 @@ export default function AdminUserDetailPage({ userId }: Props) {
                 </Avatar>
                 <div className="flex-1">
                   <h1 className="text-2xl font-bold">{u.firstName} {u.lastName}</h1>
-                  <p className="text-muted-foreground text-sm mt-0.5">{u.email}</p>
+                  <p className="text-[#707070] text-sm mt-0.5">{u.email}</p>
                   <div className="flex flex-wrap gap-2 mt-3">
                     <Badge className="text-xs border">{u.role}</Badge>
                     <Badge className={`text-xs border ${u.status === "active" ? "bg-green-500/20 text-green-400 border-green-500/30" : "bg-red-500/20 text-red-400 border-red-500/30"}`}>
@@ -92,10 +92,10 @@ export default function AdminUserDetailPage({ userId }: Props) {
               </div>
 
               <div className="grid grid-cols-2 gap-4 mt-6 text-sm">
-                <div><p className="text-xs text-muted-foreground">Journey Progress</p><p className="font-semibold">{u.journeyProgress}/30</p></div>
-                <div><p className="text-xs text-muted-foreground">Joined</p><p className="font-semibold">{formatDate(u.createdAt)}</p></div>
-                <div><p className="text-xs text-muted-foreground">Premium</p><p className="font-semibold">{u.isPremium ? "Yes" : "No"}</p></div>
-                <div><p className="text-xs text-muted-foreground">Reports</p><p className="font-semibold">{u.reportCount ?? 0}</p></div>
+                <div><p className="text-xs text-[#707070]">Journey Progress</p><p className="font-semibold">{u.journeyProgress}/30</p></div>
+                <div><p className="text-xs text-[#707070]">Joined</p><p className="font-semibold">{formatDate(u.createdAt)}</p></div>
+                <div><p className="text-xs text-[#707070]">Premium</p><p className="font-semibold">{u.isPremium ? "Yes" : "No"}</p></div>
+                <div><p className="text-xs text-[#707070]">Reports</p><p className="font-semibold">{u.reportCount ?? 0}</p></div>
               </div>
             </motion.div>
 
@@ -103,7 +103,7 @@ export default function AdminUserDetailPage({ userId }: Props) {
               <h2 className="font-semibold mb-4">Admin Actions</h2>
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div className="space-y-1.5">
-                  <label className="text-xs text-muted-foreground">Change Role</label>
+                  <label className="text-xs text-[#707070]">Change Role</label>
                   <Select value={role} onValueChange={setRole}>
                     <SelectTrigger className="bg-card/5 border-white/10">
                       <SelectValue placeholder={u.role} />
@@ -116,7 +116,7 @@ export default function AdminUserDetailPage({ userId }: Props) {
                   </Select>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs text-muted-foreground">Change Status</label>
+                  <label className="text-xs text-[#707070]">Change Status</label>
                   <Select value={status} onValueChange={setStatus}>
                     <SelectTrigger className="bg-card/5 border-white/10">
                       <SelectValue placeholder={u.status} />
