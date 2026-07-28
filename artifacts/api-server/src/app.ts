@@ -36,6 +36,7 @@ app.use(
       "Bypass-Tunnel-Reminder",
       "x-timezone-offset",
       "x-request-id",
+      "x-test-mode",
     ],
     exposedHeaders: ["Authorization"],
   }),
