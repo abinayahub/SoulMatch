@@ -114,7 +114,7 @@ export default function PersonalityPage() {
             <button onClick={() => navigate("/dashboard")} className="p-2 -ml-2 rounded-full hover:bg-black/5 active:scale-95 transition-all text-[#252525]">
               <ChevronLeft className="w-5 h-5 text-[#252525]" />
             </button>
-            <h1 className="text-[20px] font-bold text-[#252525] tracking-tight">Personality Analysis</h1>
+            <h1 className="text-[clamp(17px,5.09vw,23px)] font-bold text-[#252525] tracking-tight">Personality Analysis</h1>
             <div className="w-8" />
           </div>
         </nav>
@@ -144,29 +144,29 @@ export default function PersonalityPage() {
                   <span className="text-sm font-bold text-[#252525] uppercase tracking-wide">Analysis Overview</span>
                 </div>
 
-                <div className="grid grid-cols-2 gap-6 text-center items-center max-w-[280px] mx-auto justify-center relative z-10">
+                <div className="grid grid-cols-2 gap-6 text-center items-center max-w-[clamp(238px,71.25vw,322px)] mx-auto justify-center relative z-10">
                   {/* Primary Trait */}
                   <div className="flex flex-col items-center">
-                    <span className="text-[11px] text-[#707070] font-bold uppercase tracking-wider mb-2">Primary</span>
+                    <span className="text-[clamp(9px,2.80vw,13px)] text-[#707070] font-bold uppercase tracking-wider mb-2">Primary</span>
                     <div className="relative w-14 h-14 mb-2">
                        <div className={`absolute inset-0 rounded-full ${primaryTrait?.bg} blur-[6px] opacity-60`} />
                        <div className={`relative w-full h-full rounded-full ${primaryTrait?.bg} flex items-center justify-center border border-white/50 shadow-sm`}>
                          {primaryTrait && <primaryTrait.icon className={`w-6 h-6 ${primaryTrait.color}`} strokeWidth={2} />}
                        </div>
                     </div>
-                    <span className="text-[15px] font-extrabold text-[#252525]">{primaryTrait?.label || "Stability"}</span>
+                    <span className="text-[clamp(13px,3.82vw,17px)] font-extrabold text-[#252525]">{primaryTrait?.label || "Stability"}</span>
                   </div>
 
                   {/* Secondary Trait */}
                   <div className="flex flex-col items-center">
-                    <span className="text-[11px] text-[#707070] font-bold uppercase tracking-wider mb-2">Secondary</span>
+                    <span className="text-[clamp(9px,2.80vw,13px)] text-[#707070] font-bold uppercase tracking-wider mb-2">Secondary</span>
                     <div className="relative w-14 h-14 mb-2">
                        <div className={`absolute inset-0 rounded-full ${secondaryTrait?.bg} blur-[6px] opacity-40`} />
                        <div className={`relative w-full h-full rounded-full ${secondaryTrait?.bg} flex items-center justify-center border border-white/50 shadow-sm`}>
                          {secondaryTrait && <secondaryTrait.icon className={`w-6 h-6 ${secondaryTrait.color}`} strokeWidth={2} />}
                        </div>
                     </div>
-                    <span className="text-[15px] font-bold text-[#252525]/80">{secondaryTrait?.label || "Connection"}</span>
+                    <span className="text-[clamp(13px,3.82vw,17px)] font-bold text-[#252525]/80">{secondaryTrait?.label || "Connection"}</span>
                   </div>
                 </div>
               </motion.div>
@@ -174,7 +174,7 @@ export default function PersonalityPage() {
               {/* Your Personality Traits Section */}
               <div className="space-y-4">
                 <div className="mb-1 px-1">
-                  <h3 className="text-[18px] font-bold text-[#252525] tracking-tight">Your Personality Traits</h3>
+                  <h3 className="text-[clamp(15px,4.58vw,21px)] font-bold text-[#252525] tracking-tight">Your Personality Traits</h3>
                 </div>
 
                 <div className="space-y-3">
@@ -197,10 +197,10 @@ export default function PersonalityPage() {
 
                            <div className="flex-1 min-w-0">
                              <div className="flex items-center justify-between mb-0.5">
-                               <span className={`text-[16px] font-extrabold ${isTopTrait ? 'text-[#252525]' : 'text-[#252525]/90'}`}>{trait.label}</span>
-                               <span className={`text-[16px] font-black ${isTopTrait ? trait.color : 'text-[#252525]/70'}`}>{trait.score}%</span>
+                               <span className={`text-[clamp(14px,4.07vw,18px)] font-extrabold ${isTopTrait ? 'text-[#252525]' : 'text-[#252525]/90'}`}>{trait.label}</span>
+                               <span className={`text-[clamp(14px,4.07vw,18px)] font-black ${isTopTrait ? trait.color : 'text-[#252525]/70'}`}>{trait.score}%</span>
                              </div>
-                             <p className="text-[12px] text-[#6F6F6F] leading-snug">
+                             <p className="text-[clamp(10px,3.05vw,14px)] text-[#6F6F6F] leading-snug">
                                {trait.desc}
                              </p>
                            </div>
@@ -236,8 +236,8 @@ export default function PersonalityPage() {
                      <Info className="w-5 h-5 text-[#F6A8B7]" strokeWidth={2} />
                   </div>
                   <div>
-                    <h4 className="text-[15px] font-extrabold text-[#252525] mb-1">Why This Matters</h4>
-                    <p className="text-[13px] text-[#6F6F6F] leading-relaxed">
+                    <h4 className="text-[clamp(13px,3.82vw,17px)] font-extrabold text-[#252525] mb-1">Why This Matters</h4>
+                    <p className="text-[clamp(11px,3.31vw,15px)] text-[#6F6F6F] leading-relaxed">
                       Your daily answers train the <span className="font-semibold text-[#F6A8B7]">Hybrid Engine</span> to deeply understand your relationship preferences, unlocking highly compatible matches tailored to your exact lifestyle and core values.
                     </p>
                   </div>

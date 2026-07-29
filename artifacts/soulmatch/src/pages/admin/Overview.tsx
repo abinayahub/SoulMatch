@@ -51,7 +51,7 @@ export default function AdminOverview() {
   }
 
   return (
-    <div className="space-y-6 max-w-[1600px] mx-auto pb-10">
+    <div className="space-y-6 max-w-[clamp(1360px,407.12vw,1840px)] mx-auto pb-10">
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
@@ -90,7 +90,7 @@ export default function AdminOverview() {
               Last 30 Days <ChevronDown className="ml-1 w-3 h-3" />
             </Button>
           </div>
-          <div className="h-[250px]">
+          <div className="h-[clamp(213px,63.61vw,288px)]">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={data.charts.userGrowth} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
@@ -120,7 +120,7 @@ export default function AdminOverview() {
             <h3 className="font-semibold">User Demographics</h3>
             <span onClick={() => handleSoon('Demographics Detailed View')} className="text-xs text-[#F6A8B7] cursor-pointer hover:underline">View All</span>
           </div>
-          <div className="flex-1 flex gap-4 h-[250px]">
+          <div className="flex-1 flex gap-4 h-[clamp(213px,63.61vw,288px)]">
             <div className="flex-1 flex flex-col">
               <span className="text-xs text-[#707070] mb-2">Gender Distribution</span>
               <div className="flex-1 relative">
@@ -183,8 +183,8 @@ export default function AdminOverview() {
             <h3 className="font-semibold">Insights Overview</h3>
             <span onClick={() => handleSoon('Insights Detailed View')} className="text-xs text-[#F6A8B7] cursor-pointer hover:underline">View Details</span>
           </div>
-          <div className="flex items-center h-[180px]">
-            <div className="w-[140px] h-[140px] relative">
+          <div className="flex items-center h-[clamp(153px,45.80vw,207px)]">
+            <div className="w-[clamp(119px,35.62vw,161px)] h-[clamp(119px,35.62vw,161px)] relative">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie data={data.charts.aiAnalysis.breakdown} cx="50%" cy="50%" innerRadius={50} outerRadius={65} paddingAngle={2} dataKey="value" stroke="none">
@@ -195,7 +195,7 @@ export default function AdminOverview() {
               </ResponsiveContainer>
               <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                 <span className="text-2xl font-bold">{data.charts.aiAnalysis.averageScore}%</span>
-                <span className="text-[9px] text-[#707070] text-center leading-tight">Average Confidence<br/>Score</span>
+                <span className="text-[clamp(8px,2.29vw,10px)] text-[#707070] text-center leading-tight">Average Confidence<br/>Score</span>
               </div>
             </div>
             <div className="flex-1 ml-4 flex flex-col gap-3 text-xs">
@@ -236,7 +236,7 @@ export default function AdminOverview() {
                <div className="font-semibold mt-1 text-green-400">{data.charts.matchPerformance.successRate}%</div>
              </div>
           </div>
-          <div className="h-[100px]">
+          <div className="h-[clamp(85px,25.45vw,115px)]">
              <ResponsiveContainer width="100%" height="100%">
                <LineChart data={data.charts.matchPerformance.trend}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ffffff10" />
@@ -255,8 +255,8 @@ export default function AdminOverview() {
             <h3 className="font-semibold">Questionnaire Progress</h3>
             <span onClick={() => handleSoon('Questionnaire Progress Details')} className="text-xs text-[#F6A8B7] cursor-pointer hover:underline">View Details</span>
           </div>
-          <div className="flex items-center h-[180px]">
-            <div className="w-[140px] h-[140px] relative">
+          <div className="flex items-center h-[clamp(153px,45.80vw,207px)]">
+            <div className="w-[clamp(119px,35.62vw,161px)] h-[clamp(119px,35.62vw,161px)] relative">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie data={data.charts.questionnaireProgress.breakdown} cx="50%" cy="50%" innerRadius={50} outerRadius={65} paddingAngle={2} dataKey="value" stroke="none">
@@ -267,7 +267,7 @@ export default function AdminOverview() {
               </ResponsiveContainer>
               <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                 <span className="text-2xl font-bold">{data.charts.questionnaireProgress.averageCompletion}%</span>
-                <span className="text-[9px] text-[#707070] text-center">Avg. Completion</span>
+                <span className="text-[clamp(8px,2.29vw,10px)] text-[#707070] text-center">Avg. Completion</span>
               </div>
             </div>
             <div className="flex-1 ml-6 flex flex-col gap-4 text-xs">
@@ -379,7 +379,7 @@ export default function AdminOverview() {
 
 function MetricCard({ icon, title, value, trend, trendColor }: any) {
   return (
-    <div className="bg-card border border-border shadow-md rounded-2xl bg-[#13131A] p-4 rounded-2xl border border-white/5 flex flex-col justify-between min-h-[110px]">
+    <div className="bg-card border border-border shadow-md rounded-2xl bg-[#13131A] p-4 rounded-2xl border border-white/5 flex flex-col justify-between min-h-[clamp(94px,27.99vw,126px)]">
       <div className="flex items-start gap-3">
         <div className="p-2 bg-[#1A1A24] rounded-lg">
           {icon}
@@ -389,7 +389,7 @@ function MetricCard({ icon, title, value, trend, trendColor }: any) {
           <div className="text-2xl font-bold mt-1 text-white">{value}</div>
         </div>
       </div>
-      <div className={`text-[10px] mt-3 ${trendColor}`}>
+      <div className={`text-[clamp(9px,2.54vw,12px)] mt-3 ${trendColor}`}>
         {trend}
       </div>
     </div>

@@ -85,7 +85,7 @@ export default function MatchesPage() {
               <Lock className="w-10 h-10 text-primary" />
             </div>
             <h2 className="text-2xl font-extrabold text-[#252525] mb-4">Complete your profile to unlock matches</h2>
-            <p className="text-[15px] text-[#707070] mb-8 leading-relaxed">
+            <p className="text-[clamp(13px,3.82vw,17px)] text-[#707070] mb-8 leading-relaxed">
               You need to complete all mandatory fields in your profile before you can access the Matches section and connect with potential partners.
             </p>
             <Button 
@@ -110,10 +110,10 @@ export default function MatchesPage() {
           <div className="px-5 max-w-md mx-auto">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-[28px] font-extrabold text-[#252525] tracking-tight flex items-center gap-2">
+                <h1 className="text-[clamp(24px,7.12vw,32px)] font-extrabold text-[#252525] tracking-tight flex items-center gap-2">
                   Matches <span className="bg-primary/10 text-primary text-xs px-2 py-0.5 rounded-full font-bold ml-1">{displayMatches.length}</span>
                 </h1>
-                <p className="text-[13px] text-[#707070] font-medium mt-0.5">Find people who align with your soul.</p>
+                <p className="text-[clamp(11px,3.31vw,15px)] text-[#707070] font-medium mt-0.5">Find people who align with your soul.</p>
               </div>
             </div>
           </div>
@@ -125,7 +125,7 @@ export default function MatchesPage() {
 
           {isLoading ? (
             <div className="space-y-5">
-              {[...Array(3)].map((_, i) => <Skeleton key={i} className="h-[400px] w-full rounded-[24px] bg-foreground/5" />)}
+              {[...Array(3)].map((_, i) => <Skeleton key={i} className="h-[clamp(340px,101.78vw,460px)] w-full rounded-[24px] bg-foreground/5" />)}
             </div>
           ) : displayMatches.length === 0 ? (
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center text-center mt-16 px-4">
@@ -138,13 +138,13 @@ export default function MatchesPage() {
                 </div>
               </div>
               
-              <h2 className="text-[24px] font-extrabold text-[#252525] mb-3">No Matches Yet</h2>
-              <p className="text-[15px] text-[#707070] mb-10 max-w-[280px] mx-auto leading-relaxed">
+              <h2 className="text-[clamp(20px,6.11vw,28px)] font-extrabold text-[#252525] mb-3">No Matches Yet</h2>
+              <p className="text-[clamp(13px,3.82vw,17px)] text-[#707070] mb-10 max-w-[clamp(238px,71.25vw,322px)] mx-auto leading-relaxed">
                 Complete more daily questions to receive better matches. The right person is worth the wait.
               </p>
               
               <Button 
-                className="w-full h-14 bg-primary hover:bg-primary/90 text-white rounded-2xl font-bold text-[16px] shadow-lg shadow-primary/25 active:scale-[0.98] transition-transform" 
+                className="w-full h-14 bg-primary hover:bg-primary/90 text-white rounded-2xl font-bold text-[clamp(14px,4.07vw,18px)] shadow-lg shadow-primary/25 active:scale-[0.98] transition-transform" 
                 onClick={() => navigate('/journey')}
               >
                 Continue Journey

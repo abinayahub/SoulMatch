@@ -136,13 +136,13 @@ export default function ProfilePage() {
         <div className="max-w-xl mx-auto px-4 py-4 md:py-8">
 
           <div className="mb-6 text-center">
-            <h1 className="text-[24px] sm:text-[28px] font-black text-[#4A3B3B] mb-2 tracking-tight">Complete Profile</h1>
+            <h1 className="text-[clamp(20px,6.11vw,28px)] sm:text-[28px] font-black text-[#4A3B3B] mb-2 tracking-tight">Complete Profile</h1>
             <div className="flex justify-center items-center gap-4 mb-3">
-              <span className="text-[13px] font-extrabold tracking-[0.2em] text-[#8A7A7A] uppercase">
+              <span className="text-[clamp(11px,3.31vw,15px)] font-extrabold tracking-[0.2em] text-[#8A7A7A] uppercase">
                 Step {currentStepNum} of {SECTIONS.length}
               </span>
               <div className="h-1.5 w-1.5 rounded-full bg-[#FF9A9A]"></div>
-              <span className="text-[13px] font-extrabold text-[#FF7A7A]">{mandatoryCompletion.percentage}%</span>
+              <span className="text-[clamp(11px,3.31vw,15px)] font-extrabold text-[#FF7A7A]">{mandatoryCompletion.percentage}%</span>
             </div>
             
             <div className="h-2 w-full max-w-sm mx-auto rounded-full overflow-hidden border border-white/40 shadow-inner" style={{ background: 'rgba(255,255,255,0.6)' }}>
@@ -157,7 +157,7 @@ export default function ProfilePage() {
 
           <div className="relative">
             {isLoading ? (
-              <Skeleton className="h-[600px] rounded-[32px] bg-white/40" />
+              <Skeleton className="h-[clamp(510px,152.67vw,690px)] rounded-[32px] bg-white/40" />
             ) : (
               <AnimatePresence mode="wait">
                 <motion.div key={activeSection} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3, ease: "easeInOut" }}>

@@ -73,7 +73,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-[100dvh] flex flex-col soulmatch-mesh-bg relative overflow-y-auto overflow-x-hidden">
-      <div className="flex-1 flex flex-col items-center justify-center px-4 py-8 relative z-10 w-full max-w-md mx-auto min-h-[600px]">
+      <div className="flex-1 flex flex-col items-center justify-center px-4 py-8 relative z-10 w-full max-w-md mx-auto min-h-[clamp(510px,152.67vw,690px)]">
         
         {/* Animated Logo */}
         <motion.div 
@@ -185,7 +185,7 @@ export default function LoginPage() {
                 <Button
                   type="submit"
                   disabled={loading || !isLoginValid}
-                  className={`w-full h-[56px] rounded-full font-bold text-base text-white mt-4 active:scale-[0.98] transition-all duration-300 ${
+                  className={`w-full h-[clamp(48px,14.25vw,64px)] rounded-full font-bold text-base text-white mt-4 active:scale-[0.98] transition-all duration-300 ${
                     !isLoginValid 
                       ? "bg-[#FFB39A]/60 opacity-60" 
                       : "gradient-coral-button hover:opacity-95 shadow-md glow-coral-button"
@@ -231,7 +231,7 @@ export default function LoginPage() {
                       onClick={sendOtp}
                       disabled={sendingOtp || otpSent}
                       variant="outline"
-                      className={`h-[56px] px-6 rounded-[18px] font-bold transition-all border-[#FF8F8F]/50 text-[#FF8F8F] bg-white/40 backdrop-blur-sm hover:bg-white/60 active:scale-95`}
+                      className={`h-[clamp(48px,14.25vw,64px)] px-6 rounded-[18px] font-bold transition-all border-[#FF8F8F]/50 text-[#FF8F8F] bg-white/40 backdrop-blur-sm hover:bg-white/60 active:scale-95`}
                     >
                       {sendingOtp ? "..." : otpSent ? "Sent ✓" : "Send"}
                     </Button>
@@ -254,7 +254,7 @@ export default function LoginPage() {
                         placeholder="000000"
                         value={otp}
                         onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-                        className="h-[56px] rounded-[18px] text-center text-2xl tracking-[0.5em] font-black bg-white/60 border-white/45 focus:border-[#FF8F8F] focus:ring-1 focus:ring-[#FF8F8F]/20 shadow-sm"
+                        className="h-[clamp(48px,14.25vw,64px)] rounded-[18px] text-center text-2xl tracking-[0.5em] font-black bg-white/60 border-white/45 focus:border-[#FF8F8F] focus:ring-1 focus:ring-[#FF8F8F]/20 shadow-sm"
                       />
                     </motion.div>
                   )}
@@ -265,7 +265,7 @@ export default function LoginPage() {
                     <Button
                       onClick={verifyOtp}
                       disabled={loading || otp.length < 6}
-                      className="w-full h-[56px] rounded-full font-bold text-base text-white mt-4 active:scale-[0.98] transition-all gradient-coral-button hover:opacity-95 shadow-md glow-coral-button"
+                      className="w-full h-[clamp(48px,14.25vw,64px)] rounded-full font-bold text-base text-white mt-4 active:scale-[0.98] transition-all gradient-coral-button hover:opacity-95 shadow-md glow-coral-button"
                     >
                       {loading ? "Verifying..." : "Verify & Sign In"}
                     </Button>

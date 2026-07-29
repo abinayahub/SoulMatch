@@ -92,7 +92,7 @@ export default function ChatConversationPage() {
     queryKey: ["/api/users/active"],
     queryFn: async () => {
       const res = await fetch(`${API_URL}/api/users/active`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        headers: { Authorization: `Bearer ${getAccessToken()}` }
       });
       return res.json();
     },
@@ -567,8 +567,8 @@ export default function ChatConversationPage() {
                     </div>
                     
                     <div className="flex flex-col">
-                      <h2 className="text-[17px] font-bold text-[#252525] leading-tight">{otherUser?.firstName}</h2>
-                      <span className={`text-[11px] font-medium ${isOtherUserActive ? "text-green-500" : "text-[#8A8A8A]"}`}>
+                      <h2 className="text-[clamp(14px,4.33vw,20px)] font-bold text-[#252525] leading-tight">{otherUser?.firstName}</h2>
+                      <span className={`text-[clamp(9px,2.80vw,13px)] font-medium ${isOtherUserActive ? "text-green-500" : "text-[#8A8A8A]"}`}>
                         {isOtherUserActive ? "Online" : "Offline"}
                       </span>
                     </div>
@@ -603,7 +603,7 @@ export default function ChatConversationPage() {
               <div className="flex-1 overflow-y-auto px-4 py-4 bg-transparent relative flex flex-col">
                 {/* Glass Date Divider */}
                 <div className="flex items-center justify-center mb-5 mt-1">
-                  <div className="px-4 py-1 rounded-full text-[11px] font-medium text-[#8A8A8A] tracking-wider border border-white/30" style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>TODAY</div>
+                  <div className="px-4 py-1 rounded-full text-[clamp(9px,2.80vw,13px)] font-medium text-[#8A8A8A] tracking-wider border border-white/30" style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>TODAY</div>
                 </div>
 
                 {isLoadingMessages ? (
@@ -625,12 +625,12 @@ export default function ChatConversationPage() {
                       <MessageCircle className="w-10 h-10 text-[#F6A8B7]" />
                     </div>
                     <div className="text-center">
-                      <h3 className="text-[18px] font-bold text-[#252525] mb-1">Start your conversation</h3>
-                      <p className="text-[13px] text-[#8A8A8A] leading-relaxed">Meaningful conversations build stronger connections.</p>
+                      <h3 className="text-[clamp(15px,4.58vw,21px)] font-bold text-[#252525] mb-1">Start your conversation</h3>
+                      <p className="text-[clamp(11px,3.31vw,15px)] text-[#8A8A8A] leading-relaxed">Meaningful conversations build stronger connections.</p>
                     </div>
                     <button
                       onClick={() => handleSend(`👋 Hey ${otherUser?.firstName}!`, 'text')}
-                      className="px-6 py-2.5 rounded-full text-[14px] font-semibold text-[#252525] border border-white/40 active:scale-95 transition-transform"
+                      className="px-6 py-2.5 rounded-full text-[clamp(12px,3.56vw,16px)] font-semibold text-[#252525] border border-white/40 active:scale-95 transition-transform"
                       style={{ background: 'linear-gradient(135deg, #F8C7C8, #F8D9D2, #F7E8EE)', boxShadow: '0 4px 16px rgba(246,168,183,0.3)' }}
                     >
                       Say Hello 👋
@@ -654,7 +654,7 @@ export default function ChatConversationPage() {
                           {!isMine && isLastInGroup && (
                             <Avatar className="w-7 h-7 shrink-0 mb-1">
                               <AvatarImage src={otherUser?.photos?.find((p: any) => p.isPrimary)?.url} className="object-cover" />
-                              <AvatarFallback className="bg-[#F6A8B7]/30 text-[#252525] text-[10px] font-bold">{getInitials(otherUser?.firstName ?? "U")}</AvatarFallback>
+                              <AvatarFallback className="bg-[#F6A8B7]/30 text-[#252525] text-[clamp(9px,2.54vw,12px)] font-bold">{getInitials(otherUser?.firstName ?? "U")}</AvatarFallback>
                             </Avatar>
                           )}
                           {!isMine && !isLastInGroup && (
@@ -662,7 +662,7 @@ export default function ChatConversationPage() {
                           )}
                           
                           <div
-                            className={`relative max-w-[75%] px-4 py-2.5 text-[15px] rounded-[22px] ${
+                            className={`relative max-w-[75%] px-4 py-2.5 text-[clamp(13px,3.82vw,17px)] rounded-[22px] ${
                               isMine
                                 ? "rounded-tr-sm shadow-sm"
                                 : "rounded-tl-sm"
@@ -681,13 +681,13 @@ export default function ChatConversationPage() {
                             }}
                           >
                             {msg.messageType === "image" ? (
-                              <img src={msg.content} alt="Upload" className="max-w-[200px] sm:max-w-[280px] rounded-lg mt-1" />
+                              <img src={msg.content} alt="Upload" className="max-w-[clamp(170px,50.89vw,230px)] sm:max-w-[280px] rounded-lg mt-1" />
                             ) : msg.messageType === "audio" ? (
-                              <audio controls src={msg.content} className="max-w-[200px] sm:max-w-[250px] h-10 mt-1" />
+                              <audio controls src={msg.content} className="max-w-[clamp(170px,50.89vw,230px)] sm:max-w-[250px] h-10 mt-1" />
                             ) : (
                               <p className="leading-snug whitespace-pre-wrap">{msg.content}</p>
                             )}
-                            <div className="flex items-center gap-1 text-[11px] mt-1 float-right translate-y-1 ml-3" style={{ color: '#8A8A8A' }}>
+                            <div className="flex items-center gap-1 text-[clamp(9px,2.80vw,13px)] mt-1 float-right translate-y-1 ml-3" style={{ color: '#8A8A8A' }}>
                               {formatTime(msg.createdAt).toLowerCase()}
                               {isMine && (
                                 <span className="flex items-center">
@@ -712,7 +712,7 @@ export default function ChatConversationPage() {
               <div className="px-3 pt-2 bg-transparent shrink-0" style={{ paddingBottom: 'calc(12px + env(safe-area-inset-bottom))' }}>
                 <div className="flex items-center gap-2 max-w-4xl mx-auto">
                   
-                  <div className="flex-1 relative flex items-center min-h-[52px] px-2 rounded-[999px] border border-white/40" style={{ background: 'rgba(255,255,255,0.65)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', boxShadow: '0 2px 16px rgba(246,168,183,0.12)' }}>
+                  <div className="flex-1 relative flex items-center min-h-[clamp(44px,13.23vw,60px)] px-2 rounded-[999px] border border-white/40" style={{ background: 'rgba(255,255,255,0.65)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', boxShadow: '0 2px 16px rgba(246,168,183,0.12)' }}>
                     <Button 
                       variant="ghost" 
                       size="icon" 
@@ -728,7 +728,7 @@ export default function ChatConversationPage() {
                       onChange={(e) => setContent(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
                       disabled={isRecording}
-                      className="flex-1 border-0 bg-transparent shadow-none focus-visible:ring-0 px-2 h-11 text-[15px] text-[#252525] placeholder:text-[#8A8A8A]/70"
+                      className="flex-1 border-0 bg-transparent shadow-none focus-visible:ring-0 px-2 h-11 text-[clamp(13px,3.82vw,17px)] text-[#252525] placeholder:text-[#8A8A8A]/70"
                     />
                     
                     <div className="flex items-center pr-2 shrink-0">

@@ -1,16 +1,25 @@
-import 'dotenv/config';
-import { drizzle } from "drizzle-orm/node-postgres";
-import pg from "pg";
-import { dailyJournalsTable } from "./src/schema/index.js";
-import { desc } from "drizzle-orm";
+import { db, instagramNotesTable } from './src/index.ts';
+import { eq, and } from 'drizzle-orm';
 
-const { Pool } = pg;
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-const db = drizzle(pool);
-
-async function check() {
-  const res = await db.select().from(dailyJournalsTable).orderBy(desc(dailyJournalsTable.createdAt)).limit(3);
-  console.log(JSON.stringify(res, null, 2));
-  pool.end();
+async function test() {
+  try {
+    const userId = 1;
+    const now = new Date();
+    const expiresAt = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+    console.log('INSERTING...');
+    const [newNote] = await db.insert(instagramNotesTable)
+      .values({
+        userId,
+        content: 'test content',
+        createdAt: now,
+        expiresAt,
+        isActive: true,
+      })
+      .returning();
+    console.log('SUCCESS:', newNote);
+  } catch(e) {
+    console.error('ERROR CAUSE:', e.cause);
+    console.error('ERROR MESSAGE:', e.message);
+  }
 }
-check();
+test();

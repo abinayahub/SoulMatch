@@ -115,10 +115,10 @@ export default function NotificationsPage() {
         <div className="w-full relative z-10 pt-4 max-w-md mx-auto px-4">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="text-[28px] font-extrabold flex items-center gap-3 text-[#252525]">
+            <h1 className="text-[clamp(24px,7.12vw,32px)] font-extrabold flex items-center gap-3 text-[#252525]">
               <Bell className="w-7 h-7 text-[#F6A8B7]" />Notifications
             </h1>
-            {unreadCount > 0 && <p className="text-[#707070] text-[14px] mt-1">{unreadCount} unread</p>}
+            {unreadCount > 0 && <p className="text-[#707070] text-[clamp(12px,3.56vw,16px)] mt-1">{unreadCount} unread</p>}
           </div>
         </motion.div>
 
@@ -129,11 +129,11 @@ export default function NotificationsPage() {
         ) : notifications.length === 0 ? (
           <div className="text-center py-16 text-[#707070]">
             <Bell className="w-12 h-12 mx-auto mb-4 opacity-50 text-[#F6A8B7]" />
-            <p className="font-bold text-[18px] text-[#252525]">No notifications yet</p>
-            <p className="text-[14px] mt-2">We'll notify you about matches, interests, and messages.</p>
+            <p className="font-bold text-[clamp(15px,4.58vw,21px)] text-[#252525]">No notifications yet</p>
+            <p className="text-[clamp(12px,3.56vw,16px)] mt-2">We'll notify you about matches, interests, and messages.</p>
           </div>
         ) : (
-          <div className="space-y-[18px]">
+          <div className="space-y-[clamp(15px,4.58vw,21px)]">
             {notifications.map((n: any, i: number) => {
               const Icon = typeIcons[n.type] ?? Bell;
               const iconClass = typeColors[n.type] ?? "text-[#F6A8B7]";
@@ -154,7 +154,7 @@ export default function NotificationsPage() {
                       navigate(n.actionUrl);
                     }
                   }}
-                  className={`border transition-all flex items-start gap-4 p-[16px] rounded-[24px] cursor-pointer relative overflow-hidden`}
+                  className={`border transition-all flex items-start gap-4 p-[clamp(14px,4.07vw,18px)] rounded-[24px] cursor-pointer relative overflow-hidden`}
                   style={{
                     background: !n.isRead ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.48)',
                     backdropFilter: 'blur(28px)',
@@ -166,7 +166,7 @@ export default function NotificationsPage() {
                   {n.actor ? (
                     <Avatar className="w-12 h-12 shrink-0 border border-white/40 shadow-sm">
                       <AvatarImage src={actorPhoto?.url} />
-                      <AvatarFallback className="bg-white/60 text-[#252525] text-[15px] font-bold">
+                      <AvatarFallback className="bg-white/60 text-[#252525] text-[clamp(13px,3.82vw,17px)] font-bold">
                         {getInitials(n.actor.firstName ?? "U")}
                       </AvatarFallback>
                     </Avatar>
@@ -176,16 +176,16 @@ export default function NotificationsPage() {
                     </div>
                   )}
                   <div className="flex-1 min-w-0">
-                    <p className="font-bold text-[15px] text-[#252525] leading-tight pr-4">{n.title}</p>
-                    <p className="text-[14px] text-[#707070] mt-1 leading-snug pr-2">{n.body}</p>
-                    <p className="text-[12px] text-[#8A8A8A] mt-2 mb-2">{timeAgo(n.createdAt)}</p>
+                    <p className="font-bold text-[clamp(13px,3.82vw,17px)] text-[#252525] leading-tight pr-4">{n.title}</p>
+                    <p className="text-[clamp(12px,3.56vw,16px)] text-[#707070] mt-1 leading-snug pr-2">{n.body}</p>
+                    <p className="text-[clamp(10px,3.05vw,14px)] text-[#8A8A8A] mt-2 mb-2">{timeAgo(n.createdAt)}</p>
                     
                     {pendingInterest && (
                       <div className="flex items-center gap-3 mt-3 w-full">
-                        <button onClick={(e) => handleRespond(e, pendingInterest.id, "accept")} disabled={respond.isPending} className="flex-1 py-[10px] rounded-full text-[14px] font-bold text-white gradient-coral-pill transition-transform active:scale-[0.98] border border-white/40 disabled:opacity-50 flex items-center justify-center gap-1.5" >
+                        <button onClick={(e) => handleRespond(e, pendingInterest.id, "accept")} disabled={respond.isPending} className="flex-1 py-[clamp(9px,2.54vw,12px)] rounded-full text-[clamp(12px,3.56vw,16px)] font-bold text-white gradient-coral-pill transition-transform active:scale-[0.98] border border-white/40 disabled:opacity-50 flex items-center justify-center gap-1.5" >
                           <Check className="w-4 h-4" /> Accept
                         </button>
-                        <button onClick={(e) => handleRespond(e, pendingInterest.id, "decline")} disabled={respond.isPending} className="flex-1 py-[10px] rounded-full text-[14px] font-bold text-[#707070] transition-transform active:scale-[0.98] border border-white/40 disabled:opacity-50 flex items-center justify-center gap-1.5" style={{ background: 'rgba(255,255,255,0.5)' }}>
+                        <button onClick={(e) => handleRespond(e, pendingInterest.id, "decline")} disabled={respond.isPending} className="flex-1 py-[clamp(9px,2.54vw,12px)] rounded-full text-[clamp(12px,3.56vw,16px)] font-bold text-[#707070] transition-transform active:scale-[0.98] border border-white/40 disabled:opacity-50 flex items-center justify-center gap-1.5" style={{ background: 'rgba(255,255,255,0.5)' }}>
                           <X className="w-4 h-4" /> Decline
                         </button>
                       </div>

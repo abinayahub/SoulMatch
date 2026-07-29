@@ -215,8 +215,8 @@ export default function JourneyPage() {
         </button>
         <div className="flex flex-col items-center justify-center text-center flex-1 min-w-0 pr-10">
           <h1 className="text-xs font-black text-[#202020] uppercase tracking-wider">30-Day Journey</h1>
-          <span className="text-[11px] font-bold text-[#FF9F9F] mt-0.5">Day {isLocked ? Math.min(30, Math.max(1, currentDay - 1)) : Math.min(30, currentDay)} of 30</span>
-          <span className="hidden xs:block text-[9px] text-[#6F6F6F] font-semibold mt-0.5 truncate max-w-[200px]">"Every answer helps us understand you better."</span>
+          <span className="text-[clamp(9px,2.80vw,13px)] font-bold text-[#FF9F9F] mt-0.5">Day {isLocked ? Math.min(30, Math.max(1, currentDay - 1)) : Math.min(30, currentDay)} of 30</span>
+          <span className="hidden xs:block text-[clamp(8px,2.29vw,10px)] text-[#6F6F6F] font-semibold mt-0.5 truncate max-w-[clamp(170px,50.89vw,230px)]">"Every answer helps us understand you better."</span>
         </div>
       </div>
 
@@ -224,21 +224,21 @@ export default function JourneyPage() {
         {/* 2. Floating Progress Glass Card */}
         <div className="dashboard-glass-card p-3 relative overflow-hidden flex justify-between items-center w-full shadow-sm">
           <div className="flex flex-col items-center flex-1 min-w-0 border-r border-white/20">
-            <div className="flex items-center gap-1 text-[#6F6F6F] text-[9px] font-bold uppercase tracking-wider mb-0.5">
+            <div className="flex items-center gap-1 text-[#6F6F6F] text-[clamp(8px,2.29vw,10px)] font-bold uppercase tracking-wider mb-0.5">
               <CalendarDays className="w-2.5 h-2.5 text-[#FF9F9F]" /> Day
             </div>
             <div className="text-sm font-black text-[#202020]">{isLocked ? Math.min(30, Math.max(1, currentDay - 1)) : Math.min(30, currentDay)}/30</div>
           </div>
           
           <div className="flex flex-col items-center flex-1 min-w-0 border-r border-white/20">
-            <div className="flex items-center gap-1 text-[#6F6F6F] text-[9px] font-bold uppercase tracking-wider mb-0.5">
+            <div className="flex items-center gap-1 text-[#6F6F6F] text-[clamp(8px,2.29vw,10px)] font-bold uppercase tracking-wider mb-0.5">
               <Flame className="w-2.5 h-2.5 text-[#FF9F9F]" /> Streak
             </div>
             <div className="text-sm font-black text-[#202020]">{streak}</div>
           </div>
           
           <div className="flex flex-col items-center flex-1 min-w-0">
-            <div className="flex items-center gap-1 text-[#6F6F6F] text-[9px] font-bold uppercase tracking-wider mb-0.5">
+            <div className="flex items-center gap-1 text-[#6F6F6F] text-[clamp(8px,2.29vw,10px)] font-bold uppercase tracking-wider mb-0.5">
               <Target className="w-2.5 h-2.5 text-[#FF9F9F]" /> Progress
             </div>
             <div className="text-sm font-black text-[#202020]">{pct}%</div>
@@ -296,14 +296,14 @@ export default function JourneyPage() {
               <p className="text-[#6F6F6F] text-xs leading-relaxed mb-5 max-w-sm flex flex-col gap-3 text-center">
                 <span>Amazing work! You've successfully finished today's questions.</span>
                 <span className="flex flex-col gap-0.5 bg-white/30 p-2 rounded-xl border border-white/20">
-                  <span className="text-[#6F6F6F] text-[9px] font-bold uppercase tracking-wider">Completed On</span>
+                  <span className="text-[#6F6F6F] text-[clamp(8px,2.29vw,10px)] font-bold uppercase tracking-wider">Completed On</span>
                   <span className="text-[#202020] font-black text-sm">{completedDateStr || new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
-                  <span className="text-[#6F6F6F] text-[11px]">{completedTimeStr || new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}</span>
+                  <span className="text-[#6F6F6F] text-[clamp(9px,2.80vw,13px)]">{completedTimeStr || new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}</span>
                 </span>
                 <span className="flex flex-col gap-0.5 bg-white/30 p-2 rounded-xl border border-white/20">
-                  <span className="text-[#FF9F9F] text-[9px] font-bold uppercase tracking-wider">Next Journey Unlocks</span>
+                  <span className="text-[#FF9F9F] text-[clamp(8px,2.29vw,10px)] font-bold uppercase tracking-wider">Next Journey Unlocks</span>
                   <span className="text-[#202020] font-black text-sm">{unlockDateStr || "Tomorrow"}</span>
-                  <span className="text-[#6F6F6F] text-[11px]">{unlockTimeStr || "12:00 AM"}</span>
+                  <span className="text-[#6F6F6F] text-[clamp(9px,2.80vw,13px)]">{unlockTimeStr || "12:00 AM"}</span>
                 </span>
               </p>
               
@@ -323,11 +323,11 @@ export default function JourneyPage() {
               {/* Question Text inside a large premium Glass card */}
               <div className="dashboard-glass-card p-5 space-y-2">
                 <div>
-                  <div className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-[#FF9F9F]/10 text-[#FF9F9F] text-[9px] font-black mb-2 uppercase tracking-widest border border-[#FF9F9F]/20">
+                  <div className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-[#FF9F9F]/10 text-[#FF9F9F] text-[clamp(8px,2.29vw,10px)] font-black mb-2 uppercase tracking-widest border border-[#FF9F9F]/20">
                     {currentQ.category}
                   </div>
-                  <h2 className="text-[19px] leading-[1.35] font-bold text-[#2B2B2B] tracking-tight">{currentQ.question}</h2>
-                  {currentQ.description && <p className="text-[13px] text-[#6F6F6F] leading-normal mt-1">{currentQ.description}</p>}
+                  <h2 className="text-[clamp(16px,4.83vw,22px)] leading-[1.35] font-bold text-[#2B2B2B] tracking-tight">{currentQ.question}</h2>
+                  {currentQ.description && <p className="text-[clamp(11px,3.31vw,15px)] text-[#6F6F6F] leading-normal mt-1">{currentQ.description}</p>}
                 </div>
               </div>
 
@@ -415,7 +415,7 @@ export default function JourneyPage() {
                     placeholder="Share your honest thoughts..."
                     value={textAnswer}
                     onChange={(e) => setTextAnswer(e.target.value)}
-                    className="bg-white/45 border border-white/35 min-h-[120px] text-sm resize-none rounded-[22px] p-4 focus-visible:ring-0 focus-visible:border-[#FF9F9F] shadow-sm text-[#2B2B2B] placeholder:text-[#6F6F6F]/60"
+                    className="bg-white/45 border border-white/35 min-h-[clamp(102px,30.53vw,138px)] text-sm resize-none rounded-[22px] p-4 focus-visible:ring-0 focus-visible:border-[#FF9F9F] shadow-sm text-[#2B2B2B] placeholder:text-[#6F6F6F]/60"
                   />
                 )}
 
@@ -441,7 +441,7 @@ export default function JourneyPage() {
                       <span>Not at all</span>
                       <div className="flex flex-col items-center justify-center">
                         <span className="text-2xl font-black text-[#2B2B2B]">{scaleValue}</span>
-                        <span className="text-[9px] uppercase tracking-widest text-[#FF9F9F] mt-0.5">Selected</span>
+                        <span className="text-[clamp(8px,2.29vw,10px)] uppercase tracking-widest text-[#FF9F9F] mt-0.5">Selected</span>
                       </div>
                       <span>Absolutely</span>
                     </div>

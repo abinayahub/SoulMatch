@@ -33,7 +33,7 @@ export function BottomNav() {
                 }`}>
                   <item.icon className={`w-5 h-5 transition-transform duration-300 ${isActive ? "scale-110" : ""}`} />
                 </div>
-                <span className={`text-[10px] font-semibold mt-0.5 transition-colors duration-300 ${
+                <span className={`text-[clamp(9px,2.54vw,12px)] font-semibold mt-0.5 transition-colors duration-300 ${
                   isActive ? "text-[#FF9F9F] font-bold" : "text-[#757575]"
                 }`}>
                   {item.label}

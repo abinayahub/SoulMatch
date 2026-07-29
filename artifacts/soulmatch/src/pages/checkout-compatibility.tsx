@@ -92,7 +92,7 @@ export default function CheckoutCompatibilityPage() {
             >
               <div className="mb-6 flex items-center justify-between">
                 <h2 className="text-lg font-bold text-[#252525]">Payment Details</h2>
-                <div className="flex items-center text-[10px] text-[#707070] bg-card px-2 py-1 rounded-full border border-border">
+                <div className="flex items-center text-[clamp(9px,2.54vw,12px)] text-[#707070] bg-card px-2 py-1 rounded-full border border-border">
                   <Lock className="w-3 h-3 mr-1" /> Secure
                 </div>
               </div>
@@ -109,7 +109,7 @@ export default function CheckoutCompatibilityPage() {
                   }`}
                 >
                   <CreditCard className="w-5 h-5 mb-1.5" />
-                  <span className="text-[11px] font-semibold">Card</span>
+                  <span className="text-[clamp(9px,2.80vw,13px)] font-semibold">Card</span>
                 </button>
                 <button
                   type="button"
@@ -121,7 +121,7 @@ export default function CheckoutCompatibilityPage() {
                   }`}
                 >
                   <Smartphone className="w-5 h-5 mb-1.5" />
-                  <span className="text-[11px] font-semibold">UPI</span>
+                  <span className="text-[clamp(9px,2.80vw,13px)] font-semibold">UPI</span>
                 </button>
               </div>
 

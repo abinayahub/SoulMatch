@@ -13,3 +13,4 @@ export * from "./support";
 export * from "./compatibility";
 export * from "./metrics";
 export * from "./daily-reflections";
+export * from "./instagram-notes";

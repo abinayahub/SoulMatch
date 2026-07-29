@@ -210,7 +210,7 @@ export function VerificationForm({ p, onCancel, onSave, hasPrevious }: any) {
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="premium-glass-card rounded-[24px] p-4 sm:p-6 mb-4 border border-white/50">
       <div className="mb-5 border-b border-white/40 pb-3 text-center">
-        <h2 className="text-[20px] sm:text-[22px] font-black mb-2 text-[#4A3B3B]">Verify your profile</h2>
+        <h2 className="text-[clamp(17px,5.09vw,23px)] sm:text-[22px] font-black mb-2 text-[#4A3B3B]">Verify your profile</h2>
         <p className="text-[#8A7A7A] text-xs">Verified profiles get 4x more meaningful matches and a trust badge.</p>
       </div>
 
@@ -221,8 +221,8 @@ export function VerificationForm({ p, onCancel, onSave, hasPrevious }: any) {
               <ShieldCheck className="w-5 h-5 text-[#FF7A7A]" />
             </div>
             <div>
-              <h3 className="font-bold text-[14px] mb-1 text-[#4A3B3B]">Get the Trust Badge</h3>
-              <p className="text-[11px] text-[#8A7A7A] mb-3 leading-relaxed">Complete both steps below to unlock your verified badge and increase your profile visibility.</p>
+              <h3 className="font-bold text-[clamp(12px,3.56vw,16px)] mb-1 text-[#4A3B3B]">Get the Trust Badge</h3>
+              <p className="text-[clamp(9px,2.80vw,13px)] text-[#8A7A7A] mb-3 leading-relaxed">Complete both steps below to unlock your verified badge and increase your profile visibility.</p>
               <div className="flex flex-wrap gap-2">
                 <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold border ${p?.isGovIdVerified ? 'border-green-400 text-green-600 bg-green-50' : 'border-white/50 text-[#8A7A7A] bg-white/40'}`}>
                   {p?.isGovIdVerified ? <CheckCircle2 className="w-3.5 h-3.5" /> : <div className="w-2 h-2 rounded-full bg-[#8A7A7A]/30" />}
@@ -239,7 +239,7 @@ export function VerificationForm({ p, onCancel, onSave, hasPrevious }: any) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-3">
-            <h3 className="text-[12px] font-bold tracking-wider text-[#4A3B3B] uppercase ml-1">Government ID</h3>
+            <h3 className="text-[clamp(10px,3.05vw,14px)] font-bold tracking-wider text-[#4A3B3B] uppercase ml-1">Government ID</h3>
             
             <input 
               type="file" 
@@ -257,7 +257,7 @@ export function VerificationForm({ p, onCancel, onSave, hasPrevious }: any) {
               className="hidden" 
             />
             <div 
-              className={`p-4 rounded-2xl flex flex-col items-center justify-center cursor-pointer transition-all relative overflow-hidden group min-h-[120px] ${p?.govIdFrontUrl ? 'border-none shadow-md' : 'border-2 border-dashed border-white/60 bg-white/40 hover:bg-white/60 hover:border-[#FF9A9A]'}`}
+              className={`p-4 rounded-2xl flex flex-col items-center justify-center cursor-pointer transition-all relative overflow-hidden group min-h-[clamp(102px,30.53vw,138px)] ${p?.govIdFrontUrl ? 'border-none shadow-md' : 'border-2 border-dashed border-white/60 bg-white/40 hover:bg-white/60 hover:border-[#FF9A9A]'}`}
               onClick={() => frontIdRef.current?.click()}
             >
               {p?.govIdFrontUrl ? (
@@ -265,7 +265,7 @@ export function VerificationForm({ p, onCancel, onSave, hasPrevious }: any) {
                   <img src={p.govIdFrontUrl} alt="Front ID" className="absolute inset-0 w-full h-full object-cover opacity-60" />
                   <div className="relative z-10 flex flex-col items-center pointer-events-none p-3 rounded-xl bg-white/80 backdrop-blur-sm shadow-sm border border-white/50">
                     <CheckCircle2 className="w-8 h-8 mx-auto mb-2 text-green-500" />
-                    <p className="font-bold text-[13px] text-green-600">Front Uploaded</p>
+                    <p className="font-bold text-[clamp(11px,3.31vw,15px)] text-green-600">Front Uploaded</p>
                   </div>
                   <button 
                     type="button"
@@ -281,7 +281,7 @@ export function VerificationForm({ p, onCancel, onSave, hasPrevious }: any) {
               ) : (
                 <div className="text-center transition-transform group-hover:scale-105">
                   <CreditCard className="w-8 h-8 mx-auto mb-3 text-[#FF9A9A]" />
-                  <p className="font-bold text-[14px] text-[#4A3B3B]">Upload Front of ID</p>
+                  <p className="font-bold text-[clamp(12px,3.56vw,16px)] text-[#4A3B3B]">Upload Front of ID</p>
                 </div>
               )}
             </div>
@@ -294,7 +294,7 @@ export function VerificationForm({ p, onCancel, onSave, hasPrevious }: any) {
               className="hidden" 
             />
             <div 
-              className={`p-4 rounded-2xl flex flex-col items-center justify-center cursor-pointer transition-all relative overflow-hidden group min-h-[120px] ${p?.govIdBackUrl ? 'border-none shadow-md' : 'border-2 border-dashed border-white/60 bg-white/40 hover:bg-white/60 hover:border-[#FF9A9A]'}`}
+              className={`p-4 rounded-2xl flex flex-col items-center justify-center cursor-pointer transition-all relative overflow-hidden group min-h-[clamp(102px,30.53vw,138px)] ${p?.govIdBackUrl ? 'border-none shadow-md' : 'border-2 border-dashed border-white/60 bg-white/40 hover:bg-white/60 hover:border-[#FF9A9A]'}`}
               onClick={() => backIdRef.current?.click()}
             >
               {p?.govIdBackUrl ? (
@@ -302,7 +302,7 @@ export function VerificationForm({ p, onCancel, onSave, hasPrevious }: any) {
                   <img src={p.govIdBackUrl} alt="Back ID" className="absolute inset-0 w-full h-full object-cover opacity-60" />
                   <div className="relative z-10 flex flex-col items-center pointer-events-none p-3 rounded-xl bg-white/80 backdrop-blur-sm shadow-sm border border-white/50">
                     <CheckCircle2 className="w-8 h-8 mx-auto mb-2 text-green-500" />
-                    <p className="font-bold text-[13px] text-green-600">Back Uploaded</p>
+                    <p className="font-bold text-[clamp(11px,3.31vw,15px)] text-green-600">Back Uploaded</p>
                   </div>
                   <button 
                     type="button"
@@ -318,15 +318,15 @@ export function VerificationForm({ p, onCancel, onSave, hasPrevious }: any) {
               ) : (
                 <div className="text-center transition-transform group-hover:scale-105">
                   <CreditCard className="w-8 h-8 mx-auto mb-3 text-[#B8A8A8]" />
-                  <p className="font-bold text-[14px] text-[#4A3B3B]">Upload Back of ID</p>
+                  <p className="font-bold text-[clamp(12px,3.56vw,16px)] text-[#4A3B3B]">Upload Back of ID</p>
                 </div>
               )}
             </div>
           </div>
 
           <div className="space-y-3">
-            <h3 className="text-[12px] font-bold tracking-wider text-[#4A3B3B] uppercase ml-1">Selfie Verification <span className="text-[#FF7A7A]">*</span></h3>
-            <div className="p-4 rounded-2xl border-2 border-white/60 bg-white/40 min-h-[280px] flex flex-col items-center justify-center text-center relative overflow-hidden shadow-inner">
+            <h3 className="text-[clamp(10px,3.05vw,14px)] font-bold tracking-wider text-[#4A3B3B] uppercase ml-1">Selfie Verification <span className="text-[#FF7A7A]">*</span></h3>
+            <div className="p-4 rounded-2xl border-2 border-white/60 bg-white/40 min-h-[clamp(238px,71.25vw,322px)] flex flex-col items-center justify-center text-center relative overflow-hidden shadow-inner">
               
               {showCamera ? (
                 <>
@@ -337,12 +337,12 @@ export function VerificationForm({ p, onCancel, onSave, hasPrevious }: any) {
                   )}
                   <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px] flex flex-col items-center justify-end pb-6">
                     {faceDetectionState === "scanning" && (
-                      <div className="bg-black/70 backdrop-blur-md text-white px-5 py-3 rounded-2xl mb-6 animate-pulse border border-white/30 text-[13px] font-bold text-center shadow-lg">
+                      <div className="bg-black/70 backdrop-blur-md text-white px-5 py-3 rounded-2xl mb-6 animate-pulse border border-white/30 text-[clamp(11px,3.31vw,15px)] font-bold text-center shadow-lg">
                         Scanning... Face is not visible.<br/>Please center your face.
                       </div>
                     )}
                     {faceDetectionState === "detected" && (
-                      <div className="bg-green-500/90 backdrop-blur-md text-white px-5 py-3 rounded-2xl mb-6 border border-green-400 text-[14px] font-bold shadow-lg">
+                      <div className="bg-green-500/90 backdrop-blur-md text-white px-5 py-3 rounded-2xl mb-6 border border-green-400 text-[clamp(12px,3.56vw,16px)] font-bold shadow-lg">
                         Face Detected! Taking photo...
                       </div>
                     )}
@@ -358,23 +358,23 @@ export function VerificationForm({ p, onCancel, onSave, hasPrevious }: any) {
                   <div className="w-20 h-20 rounded-full bg-green-50 border border-green-200 flex items-center justify-center mb-4 shadow-sm">
                     <CheckCircle2 className="w-10 h-10 text-green-500" />
                   </div>
-                  <p className="font-black text-[20px] text-[#4A3B3B] mb-2">Face Verified</p>
-                  <p className="text-[12px] text-[#8A7A7A] text-center max-w-[220px] mb-8 leading-relaxed">
+                  <p className="font-black text-[clamp(17px,5.09vw,23px)] text-[#4A3B3B] mb-2">Face Verified</p>
+                  <p className="text-[clamp(10px,3.05vw,14px)] text-[#8A7A7A] text-center max-w-[clamp(187px,55.98vw,253px)] mb-8 leading-relaxed">
                     Strictly for internal verification.<br/>Will NEVER be shown publicly.
                   </p>
-                  <Button onClick={startCamera} variant="outline" className="text-[#5A4A4A] border-white/80 bg-white/60 hover:bg-white rounded-full px-6 font-bold text-[13px]">Retake Photo</Button>
+                  <Button onClick={startCamera} variant="outline" className="text-[#5A4A4A] border-white/80 bg-white/60 hover:bg-white rounded-full px-6 font-bold text-[clamp(11px,3.31vw,15px)]">Retake Photo</Button>
                 </div>
               ) : (
                 <>
                   <div className="w-20 h-20 rounded-full flex items-center justify-center mb-5 bg-white/80 border border-white shadow-sm text-[#FF7A7A]">
                     <Camera className="w-10 h-10" />
                   </div>
-                  <p className="font-black text-[18px] mb-2 text-[#4A3B3B]">Take a live selfie</p>
-                  <p className="text-[13px] text-[#8A7A7A] mb-4 max-w-[220px] leading-relaxed">We'll match this with your ID and profile photos to verify you.</p>
-                  <div className="bg-green-50 border border-green-200 rounded-xl p-3 mb-8 max-w-[240px]">
-                    <p className="text-[11px] font-bold text-green-600 text-center leading-relaxed">This photo is strictly for verification and will NEVER be shown publicly.</p>
+                  <p className="font-black text-[clamp(15px,4.58vw,21px)] mb-2 text-[#4A3B3B]">Take a live selfie</p>
+                  <p className="text-[clamp(11px,3.31vw,15px)] text-[#8A7A7A] mb-4 max-w-[clamp(187px,55.98vw,253px)] leading-relaxed">We'll match this with your ID and profile photos to verify you.</p>
+                  <div className="bg-green-50 border border-green-200 rounded-xl p-3 mb-8 max-w-[clamp(204px,61.07vw,276px)]">
+                    <p className="text-[clamp(9px,2.80vw,13px)] font-bold text-green-600 text-center leading-relaxed">This photo is strictly for verification and will NEVER be shown publicly.</p>
                   </div>
-                  <button onClick={startCamera} className="w-full max-w-[220px] h-12 text-[14px] font-bold text-white rounded-full transition-transform active:scale-[0.98] gradient-coral-pill">Start Camera</button>
+                  <button onClick={startCamera} className="w-full max-w-[clamp(187px,55.98vw,253px)] h-12 text-[clamp(12px,3.56vw,16px)] font-bold text-white rounded-full transition-transform active:scale-[0.98] gradient-coral-pill">Start Camera</button>
                 </>
               )}
             </div>
@@ -386,7 +386,7 @@ export function VerificationForm({ p, onCancel, onSave, hasPrevious }: any) {
             <button 
               type="button" 
               onClick={onCancel} 
-              className="w-1/3 h-14 text-[15px] font-bold rounded-full border border-white/40 text-[#8A7A7A] bg-white/50 hover:bg-white/80 transition-transform active:scale-[0.98]"
+              className="w-1/3 h-14 text-[clamp(13px,3.82vw,17px)] font-bold rounded-full border border-white/40 text-[#8A7A7A] bg-white/50 hover:bg-white/80 transition-transform active:scale-[0.98]"
             >
               Previous
             </button>
@@ -398,7 +398,7 @@ export function VerificationForm({ p, onCancel, onSave, hasPrevious }: any) {
               onSave({}); // Trigger final step navigation
             }} 
             disabled={!capturedPhoto && !p?.isSelfieVerified}
-            className="flex-1 h-14 text-[15px] font-bold text-white rounded-full transition-transform active:scale-[0.98] disabled:opacity-50 gradient-coral-pill"
+            className="flex-1 h-14 text-[clamp(13px,3.82vw,17px)] font-bold text-white rounded-full transition-transform active:scale-[0.98] disabled:opacity-50 gradient-coral-pill"
           >
             Finish Profile
           </button>

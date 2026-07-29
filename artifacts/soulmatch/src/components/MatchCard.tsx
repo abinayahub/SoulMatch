@@ -53,7 +53,7 @@ export function MatchCard({
         layout
         whileHover={{ y: -4, scale: 1.02 }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
-        className="rounded-2xl overflow-hidden cursor-pointer group relative h-[450px] border border-white/10 shadow-2xl bg-slate-900"
+        className="rounded-2xl overflow-hidden cursor-pointer group relative h-[clamp(383px,114.50vw,518px)] border border-white/10 shadow-2xl bg-slate-900"
         onClick={() => onClick?.(profile.id, true)}
       >
         {/* Photo Background (Blurred) */}
@@ -76,7 +76,7 @@ export function MatchCard({
             {score > 0 && (
               <div className="bg-[#F6A8B7]/20 border border-[#F6A8B7]/30 rounded-lg px-2 py-1 shadow-[0_0_15px_rgba(236,72,153,0.3)]">
                 <span className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#F6A8B7] to-[#FAC985] block leading-none">{score}%</span>
-                <span className="text-[10px] text-[#F5B75C] font-medium">Match Potential</span>
+                <span className="text-[clamp(9px,2.54vw,12px)] text-[#F5B75C] font-medium">Match Potential</span>
               </div>
             )}
             
@@ -192,7 +192,7 @@ export function MatchCard({
           {profile.education && (
             <div className="flex items-center gap-1 text-xs text-[#707070]">
               <GraduationCap className="w-3 h-3" />
-              <span className="truncate max-w-[120px]">{profile.education}</span>
+              <span className="truncate max-w-[clamp(102px,30.53vw,138px)]">{profile.education}</span>
             </div>
           )}
         </div>
@@ -206,7 +206,7 @@ export function MatchCard({
           )}
           {profile.commonInterestsCount !== undefined && profile.commonInterestsCount > 0 && (
             <div className="flex items-center gap-1 bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-full">
-              <span className="text-[10px]">🔥</span>
+              <span className="text-[clamp(9px,2.54vw,12px)]">🔥</span>
               <span className="text-xs text-blue-400 font-medium">{profile.commonInterestsCount} Shared Interests</span>
             </div>
           )}

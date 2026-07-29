@@ -194,7 +194,7 @@ export default function QuestionnaireManager() {
     <div className="space-y-6 relative flex w-full">
       
       {/* Main Content Area */}
-      <div className={`flex-1 transition-all duration-300 ${isSidePanelOpen ? 'mr-[450px]' : ''}`}>
+      <div className={`flex-1 transition-all duration-300 ${isSidePanelOpen ? 'mr-[clamp(383px,114.50vw,518px)]' : ''}`}>
         
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
@@ -265,7 +265,7 @@ export default function QuestionnaireManager() {
 
         {/* Filters Row */}
         <div className="flex flex-wrap gap-3 mb-6">
-          <div className="relative flex-1 min-w-[200px]">
+          <div className="relative flex-1 min-w-[clamp(170px,50.89vw,230px)]">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#707070]" />
             <Input 
               placeholder="Search questions..." 
@@ -275,7 +275,7 @@ export default function QuestionnaireManager() {
             />
           </div>
           <Select value={categoryFilter} onValueChange={(v) => { setCategoryFilter(v); setPage(1); }}>
-            <SelectTrigger className="w-[160px] bg-[#1A1A24] border-white/10">
+            <SelectTrigger className="w-[clamp(136px,40.71vw,184px)] bg-[#1A1A24] border-white/10">
               <SelectValue placeholder="All Categories" />
             </SelectTrigger>
             <SelectContent>
@@ -289,7 +289,7 @@ export default function QuestionnaireManager() {
             </SelectContent>
           </Select>
           <Select value={dayFilter} onValueChange={(v) => { setDayFilter(v); setPage(1); }}>
-            <SelectTrigger className="w-[120px] bg-[#1A1A24] border-white/10">
+            <SelectTrigger className="w-[clamp(102px,30.53vw,138px)] bg-[#1A1A24] border-white/10">
               <SelectValue placeholder="All Days" />
             </SelectTrigger>
             <SelectContent>
@@ -300,7 +300,7 @@ export default function QuestionnaireManager() {
             </SelectContent>
           </Select>
           <Select value={typeFilter} onValueChange={(v) => { setTypeFilter(v); setPage(1); }}>
-            <SelectTrigger className="w-[140px] bg-[#1A1A24] border-white/10">
+            <SelectTrigger className="w-[clamp(119px,35.62vw,161px)] bg-[#1A1A24] border-white/10">
               <SelectValue placeholder="All Types" />
             </SelectTrigger>
             <SelectContent>
@@ -312,7 +312,7 @@ export default function QuestionnaireManager() {
             </SelectContent>
           </Select>
           <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v); setPage(1); }}>
-            <SelectTrigger className="w-[120px] bg-[#1A1A24] border-white/10">
+            <SelectTrigger className="w-[clamp(102px,30.53vw,138px)] bg-[#1A1A24] border-white/10">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>
@@ -331,7 +331,7 @@ export default function QuestionnaireManager() {
           <Table>
             <TableHeader className="bg-[#13131A]">
               <TableRow className="border-b border-white/5 hover:bg-transparent">
-                <TableHead className="w-[50px] font-medium text-[#707070]">#</TableHead>
+                <TableHead className="w-[clamp(43px,12.72vw,57px)] font-medium text-[#707070]">#</TableHead>
                 <TableHead className="font-medium text-[#707070]">Question</TableHead>
                 <TableHead className="font-medium text-[#707070]">Category</TableHead>
                 <TableHead className="font-medium text-[#707070]">Day</TableHead>
@@ -353,7 +353,7 @@ export default function QuestionnaireManager() {
                 questionsData?.questions?.map((q: any) => (
                   <TableRow key={q.id} className="border-b border-white/5 border-dashed hover:bg-card/[0.02] cursor-pointer" onClick={() => openSidePanel(q)}>
                     <TableCell className="font-medium text-[#707070]">{q.index}</TableCell>
-                    <TableCell className="max-w-[300px] truncate">{q.question}</TableCell>
+                    <TableCell className="max-w-[clamp(255px,76.34vw,345px)] truncate">{q.question}</TableCell>
                     <TableCell>
                       <Badge className={`${CATEGORY_COLORS[q.category] || "bg-card/10 text-white"} border hover:${CATEGORY_COLORS[q.category] || "bg-card/10"}`}>
                         {q.category}
@@ -387,7 +387,7 @@ export default function QuestionnaireManager() {
                               <MoreVertical className="w-4 h-4" />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-[160px] bg-[#1A1A24] border-white/10">
+                          <DropdownMenuContent align="end" className="w-[clamp(136px,40.71vw,184px)] bg-[#1A1A24] border-white/10">
                             <DropdownMenuItem className="cursor-pointer" onClick={() => handleDelete(q.id)}>
                               <Trash2 className="w-4 h-4 mr-2 text-red-500" /> <span className="text-red-500">Delete Question</span>
                             </DropdownMenuItem>
@@ -448,7 +448,7 @@ export default function QuestionnaireManager() {
               </Button>
               
               <Select defaultValue="10">
-                <SelectTrigger className="w-[100px] bg-[#1A1A24] border-white/10 ml-4">
+                <SelectTrigger className="w-[clamp(85px,25.45vw,115px)] bg-[#1A1A24] border-white/10 ml-4">
                   <SelectValue placeholder="10 / page" />
                 </SelectTrigger>
                 <SelectContent>
@@ -556,7 +556,7 @@ export default function QuestionnaireManager() {
                   <div className="relative">
                     <textarea 
                       placeholder="Enter your question here..." 
-                      className="w-full bg-[#1A1A24] border border-white/10 rounded-xl p-3 min-h-[120px] text-sm focus:outline-none focus:border-[#F6A8B7] custom-scrollbar"
+                      className="w-full bg-[#1A1A24] border border-white/10 rounded-xl p-3 min-h-[clamp(102px,30.53vw,138px)] text-sm focus:outline-none focus:border-[#F6A8B7] custom-scrollbar"
                       value={formData.text}
                       onChange={(e) => setFormData({...formData, text: e.target.value})}
                     />

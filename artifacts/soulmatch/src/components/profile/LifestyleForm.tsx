@@ -37,7 +37,7 @@ export function LifestyleForm({ p, onSave, onCancel, hasPrevious, isPending }: a
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="premium-glass-card rounded-[24px] p-4 sm:p-6 mb-4 border border-white/50">
       <div className="mb-5 border-b border-white/40 pb-3 text-center">
-        <h2 className="text-[20px] sm:text-[22px] font-black mb-2 text-[#4A3B3B]">Your lifestyle choices</h2>
+        <h2 className="text-[clamp(17px,5.09vw,23px)] sm:text-[22px] font-black mb-2 text-[#4A3B3B]">Your lifestyle choices</h2>
         <p className="text-[#8A7A7A] text-xs">What do your daily habits look like?</p>
       </div>
 
@@ -45,7 +45,7 @@ export function LifestyleForm({ p, onSave, onCancel, hasPrevious, isPending }: a
         
         {/* Diet */}
         <div className="space-y-2">
-          <Label className="text-[12px] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">What's your diet like? <span className="text-[#FF7A7A]">*</span></Label>
+          <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">What's your diet like? <span className="text-[#FF7A7A]">*</span></Label>
           <div className="flex flex-wrap gap-2">
             {diets.map((diet) => {
               const isSelected = form.watch("dietaryPreference") === diet || 
@@ -55,7 +55,7 @@ export function LifestyleForm({ p, onSave, onCancel, hasPrevious, isPending }: a
                   key={diet}
                   type="button"
                   onClick={() => form.setValue("dietaryPreference", diet === "🍕 No Specific Diet" ? "🍕 No Specific Diet (Eat Everything)" : diet, { shouldValidate: true })}
-                  className={`px-4 py-2 rounded-full text-[13px] font-bold transition-all border ${isSelected ? 'bg-[#FF9A9A] text-white border-[#FF9A9A] shadow-md' : 'bg-white/50 text-[#5A4A4A] border-white/50 hover:bg-white/80'}`}
+                  className={`px-4 py-2 rounded-full text-[clamp(11px,3.31vw,15px)] font-bold transition-all border ${isSelected ? 'bg-[#FF9A9A] text-white border-[#FF9A9A] shadow-md' : 'bg-white/50 text-[#5A4A4A] border-white/50 hover:bg-white/80'}`}
                 >
                   {diet}
                 </button>
@@ -68,7 +68,7 @@ export function LifestyleForm({ p, onSave, onCancel, hasPrevious, isPending }: a
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Smoking */}
           <div className="space-y-2">
-            <Label className="text-[12px] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">Do you smoke? <span className="text-gray-400 font-normal lowercase">(optional)</span></Label>
+            <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">Do you smoke? <span className="text-gray-400 font-normal lowercase">(optional)</span></Label>
             <div className="flex flex-wrap gap-2">
               {habits.map((h) => {
                 const isSelected = form.watch("smoking") === h.value;
@@ -77,7 +77,7 @@ export function LifestyleForm({ p, onSave, onCancel, hasPrevious, isPending }: a
                     key={h.value}
                     type="button"
                     onClick={() => form.setValue("smoking", h.value, { shouldValidate: true })}
-                    className={`h-10 px-4 rounded-full text-[13px] font-bold transition-all border ${isSelected ? 'bg-[#FF9A9A] text-white border-[#FF9A9A] shadow-md' : 'bg-white/50 text-[#5A4A4A] border-white/50 hover:bg-white/80'}`}
+                    className={`h-10 px-4 rounded-full text-[clamp(11px,3.31vw,15px)] font-bold transition-all border ${isSelected ? 'bg-[#FF9A9A] text-white border-[#FF9A9A] shadow-md' : 'bg-white/50 text-[#5A4A4A] border-white/50 hover:bg-white/80'}`}
                   >
                     {h.label}
                   </button>
@@ -88,7 +88,7 @@ export function LifestyleForm({ p, onSave, onCancel, hasPrevious, isPending }: a
 
           {/* Drinking */}
           <div className="space-y-2">
-            <Label className="text-[12px] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">Do you drink? <span className="text-gray-400 font-normal lowercase">(optional)</span></Label>
+            <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">Do you drink? <span className="text-gray-400 font-normal lowercase">(optional)</span></Label>
             <div className="flex flex-wrap gap-2">
               {habits.filter(h => h.value !== "trying_to_quit").map((h) => {
                 const isSelected = form.watch("drinking") === h.value;
@@ -97,7 +97,7 @@ export function LifestyleForm({ p, onSave, onCancel, hasPrevious, isPending }: a
                     key={h.value}
                     type="button"
                     onClick={() => form.setValue("drinking", h.value, { shouldValidate: true })}
-                    className={`h-10 px-4 rounded-full text-[13px] font-bold transition-all border ${isSelected ? 'bg-[#FF9A9A] text-white border-[#FF9A9A] shadow-md' : 'bg-white/50 text-[#5A4A4A] border-white/50 hover:bg-white/80'}`}
+                    className={`h-10 px-4 rounded-full text-[clamp(11px,3.31vw,15px)] font-bold transition-all border ${isSelected ? 'bg-[#FF9A9A] text-white border-[#FF9A9A] shadow-md' : 'bg-white/50 text-[#5A4A4A] border-white/50 hover:bg-white/80'}`}
                   >
                     {h.label}
                   </button>
@@ -110,11 +110,11 @@ export function LifestyleForm({ p, onSave, onCancel, hasPrevious, isPending }: a
         {/* Action Buttons */}
         <div className="pt-4 flex gap-3">
           {hasPrevious && (
-            <button type="button" onClick={onCancel} className="w-1/3 h-14 text-[15px] font-bold rounded-full border border-white/40 text-[#8A7A7A] bg-white/50 hover:bg-white/80 transition-transform active:scale-[0.98]">
+            <button type="button" onClick={onCancel} className="w-1/3 h-14 text-[clamp(13px,3.82vw,17px)] font-bold rounded-full border border-white/40 text-[#8A7A7A] bg-white/50 hover:bg-white/80 transition-transform active:scale-[0.98]">
               Previous
             </button>
           )}
-          <button type="submit" disabled={isPending} className="flex-1 h-14 text-[15px] font-bold text-white rounded-full transition-transform active:scale-[0.98] disabled:opacity-50 gradient-coral-pill">
+          <button type="submit" disabled={isPending} className="flex-1 h-14 text-[clamp(13px,3.82vw,17px)] font-bold text-white rounded-full transition-transform active:scale-[0.98] disabled:opacity-50 gradient-coral-pill">
             {isPending ? "Saving..." : "Next Step"}
           </button>
         </div>

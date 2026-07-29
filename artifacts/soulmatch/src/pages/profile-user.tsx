@@ -271,7 +271,7 @@ export default function UserProfilePage({ userId }: Props) {
                 )}
                 {!!p.compatibilityScore && (
                   <div className="absolute top-3 right-3">
-                    <div className="w-full text-[#252525] rounded-full border border-white/40 transition-all  text-[11px] font-bold px-2.5 py-1 rounded-full shadow-lg" style={{ background: 'linear-gradient(135deg, #F8C7C8, #F8D9D2, #F7E8EE)', boxShadow: '0 4px 12px rgba(246, 168, 183, 0.15)' }}>
+                    <div className="w-full text-[#252525] rounded-full border border-white/40 transition-all  text-[clamp(9px,2.80vw,13px)] font-bold px-2.5 py-1 rounded-full shadow-lg" style={{ background: 'linear-gradient(135deg, #F8C7C8, #F8D9D2, #F7E8EE)', boxShadow: '0 4px 12px rgba(246, 168, 183, 0.15)' }}>
                       {p.compatibilityScore}% match
                     </div>
                   </div>
@@ -305,17 +305,17 @@ export default function UserProfilePage({ userId }: Props) {
 
                 {/* Pills */}
                 <div className="flex gap-2 mb-4 flex-wrap">
-                  <div className="flex items-center gap-1.5 bg-transparent border border-border rounded-full px-2.5 py-1 text-[11px] font-medium text-[#707070]">
+                  <div className="flex items-center gap-1.5 bg-transparent border border-border rounded-full px-2.5 py-1 text-[clamp(9px,2.80vw,13px)] font-medium text-[#707070]">
                     <Flame className="w-3 h-3 text-[#F6A8B7]" /> {p.journeyProgress ?? 0} Steps
                   </div>
-                  <div className="flex items-center gap-1.5 bg-transparent border border-border rounded-full px-2.5 py-1 text-[11px] font-medium text-[#707070]">
+                  <div className="flex items-center gap-1.5 bg-transparent border border-border rounded-full px-2.5 py-1 text-[clamp(9px,2.80vw,13px)] font-medium text-[#707070]">
                     <BookOpen className="w-3 h-3 text-[#F6A8B7]" /> {p.storyCount ?? 0} Stories
                   </div>
-                  <div className="flex items-center gap-1.5 bg-green-500/10 border border-green-500/20 rounded-full px-2.5 py-1 text-[11px] font-medium text-green-400">
+                  <div className="flex items-center gap-1.5 bg-green-500/10 border border-green-500/20 rounded-full px-2.5 py-1 text-[clamp(9px,2.80vw,13px)] font-medium text-green-400">
                     <Shield className="w-3 h-3" /> Verified
                   </div>
                   {personalityMatch > 80 && (
-                    <div className="flex items-center gap-1.5 bg-[#F6A8B7]/10 border border-[#F6A8B7]/20 rounded-full px-2.5 py-1 text-[11px] font-medium text-[#F6A8B7]">
+                    <div className="flex items-center gap-1.5 bg-[#F6A8B7]/10 border border-[#F6A8B7]/20 rounded-full px-2.5 py-1 text-[clamp(9px,2.80vw,13px)] font-medium text-[#F6A8B7]">
                       <Heart className="w-3 h-3" /> High Match
                     </div>
                   )}
@@ -400,7 +400,7 @@ export default function UserProfilePage({ userId }: Props) {
                       <div className="h-1.5 bg-border/50 rounded-full overflow-hidden">
                         <div className={`h-full ${interestBarColor} rounded-full`} style={{ width: `${interestPct}%` }} />
                       </div>
-                      <div className="flex justify-between text-[10px] text-[#707070] mt-1">
+                      <div className="flex justify-between text-[clamp(9px,2.54vw,12px)] text-[#707070] mt-1">
                         <span>{sharedInts.length} shared</span>
                         <span>Mine: {myTotal} · Theirs: {theirTotal}</span>
                       </div>
@@ -408,14 +408,14 @@ export default function UserProfilePage({ userId }: Props) {
 
                     {sharedInts.length > 0 && (
                       <div className="mb-4">
-                        <div className="text-[10px] text-[#707070] font-bold uppercase mb-2 flex items-center gap-1.5">
+                        <div className="text-[clamp(9px,2.54vw,12px)] text-[#707070] font-bold uppercase mb-2 flex items-center gap-1.5">
                           <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" /> In Common
                         </div>
                         <div className="flex flex-wrap gap-1.5">
                           {sharedInts.map((interest, i) => {
                             const Icon = getInterestIcon(interest);
                             return (
-                              <span key={i} className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-[11px] text-green-400 font-medium">
+                              <span key={i} className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-[clamp(9px,2.80vw,13px)] text-green-400 font-medium">
                                 <Icon className="w-2.5 h-2.5" />{interest}
                               </span>
                             );
@@ -427,35 +427,35 @@ export default function UserProfilePage({ userId }: Props) {
                     {(myUnique.length > 0 || theirUnique.length > 0) && (
                       <div className="grid grid-cols-2 gap-3 mb-4">
                         <div>
-                          <div className="text-[10px] text-[#707070] font-bold mb-2 flex items-center gap-1">
+                          <div className="text-[clamp(9px,2.54vw,12px)] text-[#707070] font-bold mb-2 flex items-center gap-1">
                             <span className="w-1.5 h-1.5 rounded-full bg-[#F6A8B7] inline-block" /> Yours only
                           </div>
                           <div className="flex flex-wrap gap-1">
                             {myUnique.slice(0, 3).map((item, i) => {
                               const Icon = getInterestIcon(item);
                               return (
-                                <span key={i} className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#F6A8B7]/10 border border-[#F6A8B7]/20 text-[10px] text-[#F6A8B7] font-medium">
+                                <span key={i} className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#F6A8B7]/10 border border-[#F6A8B7]/20 text-[clamp(9px,2.54vw,12px)] text-[#F6A8B7] font-medium">
                                   <Icon className="w-2.5 h-2.5" />{item}
                                 </span>
                               );
                             })}
-                            {myUnique.length > 3 && <span className="text-[9px] text-[#707070] self-center">+{myUnique.length - 3}</span>}
+                            {myUnique.length > 3 && <span className="text-[clamp(8px,2.29vw,10px)] text-[#707070] self-center">+{myUnique.length - 3}</span>}
                           </div>
                         </div>
                         <div>
-                          <div className="text-[10px] text-[#707070] font-bold mb-2 flex items-center gap-1">
+                          <div className="text-[clamp(9px,2.54vw,12px)] text-[#707070] font-bold mb-2 flex items-center gap-1">
                             <span className="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block" /> Theirs only
                           </div>
                           <div className="flex flex-wrap gap-1">
                             {theirUnique.slice(0, 3).map((item, i) => {
                               const Icon = getInterestIcon(item);
                               return (
-                                <span key={i} className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] text-blue-400 font-medium">
+                                <span key={i} className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-[clamp(9px,2.54vw,12px)] text-blue-400 font-medium">
                                   <Icon className="w-2.5 h-2.5" />{item}
                                 </span>
                               );
                             })}
-                            {theirUnique.length > 3 && <span className="text-[9px] text-[#707070] self-center">+{theirUnique.length - 3}</span>}
+                            {theirUnique.length > 3 && <span className="text-[clamp(8px,2.29vw,10px)] text-[#707070] self-center">+{theirUnique.length - 3}</span>}
                           </div>
                         </div>
                       </div>
@@ -463,10 +463,10 @@ export default function UserProfilePage({ userId }: Props) {
 
                     {suggestedActivities.length > 0 && (
                       <div className="pt-3 border-t border-border">
-                        <div className="text-[10px] text-[#707070] font-bold uppercase mb-2">Suggested Together</div>
+                        <div className="text-[clamp(9px,2.54vw,12px)] text-[#707070] font-bold uppercase mb-2">Suggested Together</div>
                         <div className="flex flex-wrap gap-2">
                           {suggestedActivities.map((act, i) => (
-                            <span key={i} className="px-2.5 py-1 rounded-full bg-transparent border border-border text-[11px] text-[#707070] font-medium">
+                            <span key={i} className="px-2.5 py-1 rounded-full bg-transparent border border-border text-[clamp(9px,2.80vw,13px)] text-[#707070] font-medium">
                               {act.emoji} {act.label}
                             </span>
                           ))}
@@ -501,7 +501,7 @@ export default function UserProfilePage({ userId }: Props) {
                       </div>
                       <div>
                         <div className="text-xs font-semibold text-[#252525]">{item.title}</div>
-                        <div className="text-[11px] text-[#707070]">{item.desc}</div>
+                        <div className="text-[clamp(9px,2.80vw,13px)] text-[#707070]">{item.desc}</div>
                       </div>
                     </div>
                   ))}
@@ -514,7 +514,7 @@ export default function UserProfilePage({ userId }: Props) {
               <h2 className="text-lg font-extrabold text-[#252525]">Profile Comparison</h2>
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-7 px-2 text-[10px] border-border text-[#707070] rounded-full shrink-0">
+                  <Button variant="outline" size="sm" className="h-7 px-2 text-[clamp(9px,2.54vw,12px)] border-border text-[#707070] rounded-full shrink-0">
                     How it works? <HelpCircle className="w-3 h-3 ml-1" />
                   </Button>
                 </PopoverTrigger>
@@ -541,11 +541,11 @@ export default function UserProfilePage({ userId }: Props) {
                     <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-full border-2 border-[#F6A8B7] bg-[#F6A8B7]/10 flex items-center justify-center">
                       <span className="text-xs font-bold text-[#F6A8B7]">You</span>
                     </div>
-                    <span className="text-[10px] sm:text-xs font-semibold text-[#252525] mt-1">You</span>
+                    <span className="text-[clamp(9px,2.54vw,12px)] sm:text-xs font-semibold text-[#252525] mt-1">You</span>
                   </div>
 
                   {/* Connecting line left */}
-                  <div className="flex-1 h-[2px] bg-gradient-to-r from-[#F8C7C8] via-[#F8D9D2] to-[#F7E8EE] min-w-[8px] opacity-40 shrink" />
+                  <div className="flex-1 h-[2px] bg-gradient-to-r from-[#F8C7C8] via-[#F8D9D2] to-[#F7E8EE] min-w-[clamp(7px,2.04vw,9px)] opacity-40 shrink" />
 
                   {/* Score Ring */}
                   <div className="flex flex-col items-center shrink-0">
@@ -554,15 +554,15 @@ export default function UserProfilePage({ userId }: Props) {
                       <div className="text-xl sm:text-2xl font-extrabold text-[#252525] leading-none">
                         {compatScore}%
                       </div>
-                      <div className="text-[7px] sm:text-[8px] uppercase tracking-wider text-[#707070]">Match</div>
+                      <div className="text-[clamp(6px,1.78vw,8px)] sm:text-[8px] uppercase tracking-wider text-[#707070]">Match</div>
                     </div>
-                    <span className="mt-1.5 bg-transparent border border-border text-yellow-500 text-[9px] sm:text-[10px] font-medium px-2 py-0.5 rounded-full shrink-0">
+                    <span className="mt-1.5 bg-transparent border border-border text-yellow-500 text-[clamp(8px,2.29vw,10px)] sm:text-[10px] font-medium px-2 py-0.5 rounded-full shrink-0">
                       {!hasStories ? 'Pending' : getMatchQuality(compatScore)}
                     </span>
                   </div>
 
                   {/* Connecting line right */}
-                  <div className="flex-1 h-[2px] bg-gradient-to-r from-[#F6A8B7] to-blue-500 min-w-[8px] opacity-40 shrink" />
+                  <div className="flex-1 h-[2px] bg-gradient-to-r from-[#F6A8B7] to-blue-500 min-w-[clamp(7px,2.04vw,9px)] opacity-40 shrink" />
 
                   {/* Them */}
                   <div className="flex flex-col items-center shrink-0">
@@ -575,19 +575,19 @@ export default function UserProfilePage({ userId }: Props) {
                         </div>
                       )}
                     </div>
-                    <span className="text-[10px] sm:text-xs font-semibold text-[#252525] truncate max-w-[50px] sm:max-w-[60px] mt-1">{p.firstName ?? ''}</span>
+                    <span className="text-[clamp(9px,2.54vw,12px)] sm:text-xs font-semibold text-[#252525] truncate max-w-[clamp(43px,12.72vw,57px)] sm:max-w-[60px] mt-1">{p.firstName ?? ''}</span>
                   </div>
                 </div>
 
                 {/* Status */}
                 <div className="bg-transparent border border-border rounded-xl p-3">
-                  <div className="text-[10px] text-[#707070] uppercase font-bold mb-2">Analysis Status</div>
+                  <div className="text-[clamp(9px,2.54vw,12px)] text-[#707070] uppercase font-bold mb-2">Analysis Status</div>
                   <div className="space-y-1.5">
                     <div className="flex justify-between items-center text-xs">
                       <span className="flex items-center gap-1.5 text-[#707070]">
                         <span className="text-green-500">✔</span> Personality
                       </span>
-                      <span className="text-[10px] text-green-500 font-semibold bg-green-500/10 px-2 py-0.5 rounded-full">Done</span>
+                      <span className="text-[clamp(9px,2.54vw,12px)] text-green-500 font-semibold bg-green-500/10 px-2 py-0.5 rounded-full">Done</span>
                     </div>
                     <div className="flex justify-between items-center text-xs">
                       <span className="flex items-center gap-1.5 text-[#707070]">
@@ -595,7 +595,7 @@ export default function UserProfilePage({ userId }: Props) {
                           {valuesComplete ? '✔' : '⏳'}
                         </span> Story & Values
                       </span>
-                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${valuesComplete ? 'text-green-500 bg-green-500/10' : 'text-yellow-500 bg-yellow-500/10'}`}>
+                      <span className={`text-[clamp(9px,2.54vw,12px)] font-semibold px-2 py-0.5 rounded-full ${valuesComplete ? 'text-green-500 bg-green-500/10' : 'text-yellow-500 bg-yellow-500/10'}`}>
                         {confAnalyzed > 0 ? (valuesComplete ? 'Complete' : 'In Progress') : 'Pending'}
                       </span>
                     </div>
@@ -615,7 +615,7 @@ export default function UserProfilePage({ userId }: Props) {
                   </div>
                   <div>
                     <div className="text-xs font-bold text-[#252525]">Personality Match</div>
-                    <div className="text-[10px] text-[#707070]">{getMatchQuality(personalityMatch)}</div>
+                    <div className="text-[clamp(9px,2.54vw,12px)] text-[#707070]">{getMatchQuality(personalityMatch)}</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -636,7 +636,7 @@ export default function UserProfilePage({ userId }: Props) {
                   </div>
                   <div>
                     <div className="text-xs font-bold text-[#252525]">Values Match</div>
-                    <div className="text-[10px] text-[#707070]">
+                    <div className="text-[clamp(9px,2.54vw,12px)] text-[#707070]">
                       {!hasStories ? 'Needs more stories' : getMatchQuality(aiStoryMatch)}
                     </div>
                   </div>
@@ -670,7 +670,7 @@ export default function UserProfilePage({ userId }: Props) {
                       <h3 className="font-bold text-[#252525] text-sm">Personality Comparison</h3>
                       <span className="ml-auto text-base font-extrabold text-[#F6A8B7]">{personalityMatch}%</span>
                     </div>
-                    <div className="grid grid-cols-12 gap-2 text-[9px] font-bold text-[#707070] uppercase mb-3 px-1">
+                    <div className="grid grid-cols-12 gap-2 text-[clamp(8px,2.29vw,10px)] font-bold text-[#707070] uppercase mb-3 px-1">
                       <div className="col-span-5">Trait</div>
                       <div className="col-span-2 text-[#F6A8B7]">You</div>
                       <div className="col-span-2 text-blue-500">{p.firstName ?? ''}</div>
@@ -681,16 +681,16 @@ export default function UserProfilePage({ userId }: Props) {
                         <div key={i} className="grid grid-cols-12 gap-2 items-center px-1">
                           <div className="col-span-5 flex items-center gap-2">
                             <Heart className="w-3.5 h-3.5 text-[#707070] shrink-0" />
-                            <span className="text-[11px] font-semibold text-[#252525] truncate">{trait.name ?? ''}</span>
+                            <span className="text-[clamp(9px,2.80vw,13px)] font-semibold text-[#252525] truncate">{trait.name ?? ''}</span>
                           </div>
                           <div className="col-span-2">
-                            <div className="text-[11px] font-bold text-[#252525]">{trait.myScore ?? 0}%</div>
+                            <div className="text-[clamp(9px,2.80vw,13px)] font-bold text-[#252525]">{trait.myScore ?? 0}%</div>
                             <div className="h-1 bg-border rounded-full mt-0.5">
                               <div className="h-full bg-[#F6A8B7] rounded-full" style={{ width: `${trait.myScore ?? 0}%` }} />
                             </div>
                           </div>
                           <div className="col-span-2">
-                            <div className="text-[11px] font-bold text-[#252525]">{trait.theirScore ?? 0}%</div>
+                            <div className="text-[clamp(9px,2.80vw,13px)] font-bold text-[#252525]">{trait.theirScore ?? 0}%</div>
                             <div className="h-1 bg-border rounded-full mt-0.5">
                               <div className="h-full bg-blue-500 rounded-full" style={{ width: `${trait.theirScore ?? 0}%` }} />
                             </div>
@@ -715,7 +715,7 @@ export default function UserProfilePage({ userId }: Props) {
                     </div>
                     <h3 className="font-bold text-[#252525] text-sm">Life & Values</h3>
                     {sConfidence && (
-                      <Badge variant="outline" className={`ml-auto text-[9px] ${
+                      <Badge variant="outline" className={`ml-auto text-[clamp(8px,2.29vw,10px)] ${
                         sConfidence.level === 'High' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
                         sConfidence.level === 'Medium' ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20' :
                         'bg-red-500/10 text-red-500 border-red-500/20'
@@ -726,17 +726,17 @@ export default function UserProfilePage({ userId }: Props) {
                   {sConfidence && (
                     <div className="mb-4 bg-transparent p-3 rounded-xl border border-border">
                       <div className="flex justify-between items-center mb-1.5">
-                        <span className="text-[10px] text-[#707070] font-bold uppercase">Progress</span>
-                        <span className="text-[11px] text-[#F6A8B7] font-bold">{confPct}%</span>
+                        <span className="text-[clamp(9px,2.54vw,12px)] text-[#707070] font-bold uppercase">Progress</span>
+                        <span className="text-[clamp(9px,2.80vw,13px)] text-[#F6A8B7] font-bold">{confPct}%</span>
                       </div>
                       <div className="h-1.5 bg-border rounded-full overflow-hidden">
                         <div className="h-full bg-[#F6A8B7] rounded-full" style={{ width: `${confPct}%` }} />
                       </div>
-                      <div className="text-[9px] text-[#707070] mt-1">{confAnalyzed} of {confTotal} categories</div>
+                      <div className="text-[clamp(8px,2.29vw,10px)] text-[#707070] mt-1">{confAnalyzed} of {confTotal} categories</div>
                     </div>
                   )}
 
-                  <div className="grid grid-cols-12 gap-2 text-[9px] font-bold text-[#707070] uppercase mb-3 px-1">
+                  <div className="grid grid-cols-12 gap-2 text-[clamp(8px,2.29vw,10px)] font-bold text-[#707070] uppercase mb-3 px-1">
                     <div className="col-span-4">Category</div>
                     <div className="col-span-2 text-[#F6A8B7]">You</div>
                     <div className="col-span-2 text-blue-500">{p.firstName ?? ''}</div>
@@ -748,7 +748,7 @@ export default function UserProfilePage({ userId }: Props) {
                       <div key={i} className="grid grid-cols-12 gap-2 items-center px-1 py-2.5 border-b border-border/50 last:border-0">
                         <div className="col-span-4 flex items-center gap-2">
                           {getStoryIcon(cat.name ?? '')}
-                          <span className="text-[11px] font-semibold text-[#252525] leading-tight">{cat.name ?? ''}</span>
+                          <span className="text-[clamp(9px,2.80vw,13px)] font-semibold text-[#252525] leading-tight">{cat.name ?? ''}</span>
                         </div>
                         <div className="col-span-2 text-[#F6A8B7] font-bold text-xs text-center">
                           {cat.insufficientData ? '–' : `${cat.myScore ?? 0}%`}
@@ -758,7 +758,7 @@ export default function UserProfilePage({ userId }: Props) {
                         </div>
                         <div className="col-span-4 flex justify-end">
                           {cat.insufficientData
-                            ? <span className="text-[10px] text-yellow-500/80 italic">Pending</span>
+                            ? <span className="text-[clamp(9px,2.54vw,12px)] text-yellow-500/80 italic">Pending</span>
                             : <span className={`text-xs font-bold ${getMatchColor(cat.similarity ?? 0)}`}>{cat.similarity ?? 0}%</span>}
                         </div>
                       </div>
@@ -768,7 +768,7 @@ export default function UserProfilePage({ userId }: Props) {
                   <div className="mt-4 pt-3 border-t border-border flex justify-between items-center">
                     <div>
                       <div className="text-xs text-[#707070]">Values Match</div>
-                      <div className="text-[10px] mt-0.5">
+                      <div className="text-[clamp(9px,2.54vw,12px)] mt-0.5">
                         {!hasStories
                           ? <span className="text-yellow-500/80">Pending</span>
                           : !valuesComplete
@@ -817,7 +817,7 @@ export default function UserProfilePage({ userId }: Props) {
                     </div>
                     <div className="mt-4 bg-[#F6A8B7]/5 border border-[#F6A8B7]/20 rounded-xl p-3 flex gap-2">
                       <Heart className="w-4 h-4 text-[#F6A8B7] shrink-0 mt-0.5" />
-                      <p className="text-[11px] text-[#707070] leading-relaxed">
+                      <p className="text-[clamp(9px,2.80vw,13px)] text-[#707070] leading-relaxed">
                         <span className="text-[#F6A8B7] font-bold">Tip: </span>
                         Complete more stories and daily questions to unlock deeper insights.
                       </p>
@@ -854,9 +854,9 @@ export default function UserProfilePage({ userId }: Props) {
                   className="w-full h-12 w-full text-[#252525] rounded-full border border-white/40 transition-all hover:bg-[#F6A8B7]  rounded-xl font-bold" style={{ background: 'linear-gradient(135deg, #F8C7C8, #F8D9D2, #F7E8EE)', boxShadow: '0 4px 12px rgba(246, 168, 183, 0.15)' }}
                   onClick={() => navigate('/checkout/compatibility')}
                 >
-                  Unlock Now <span className="ml-2 bg-white text-[#F6A8B7] px-2 py-0.5 rounded text-[10px]">₹99</span>
+                  Unlock Now <span className="ml-2 bg-white text-[#F6A8B7] px-2 py-0.5 rounded text-[clamp(9px,2.54vw,12px)]">₹99</span>
                 </Button>
-                <div className="text-[10px] text-center text-[#707070] mt-3">One-time payment • Secure & Private</div>
+                <div className="text-[clamp(9px,2.54vw,12px)] text-center text-[#707070] mt-3">One-time payment • Secure & Private</div>
               </motion.div>
             )}
 

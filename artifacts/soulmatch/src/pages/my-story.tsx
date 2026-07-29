@@ -425,11 +425,11 @@ export default function MyStory() {
               <div className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md shadow-[#F6A8B7]/20" style={{ background: 'linear-gradient(135deg, #F6A8B7, #F8C7C8)' }}>
                 <BookOpen className="w-4 h-4 text-white" />
               </div>
-              <span className="text-[17px] font-extrabold text-[#252525] tracking-tight">My Story</span>
+              <span className="text-[clamp(14px,4.33vw,20px)] font-extrabold text-[#252525] tracking-tight">My Story</span>
             </div>
             <button
               onClick={() => setShowJourney(!showJourney)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[12px] border text-[11px] font-bold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[12px] border text-[clamp(9px,2.80vw,13px)] font-bold transition-all ${
                 showJourney
                   ? "bg-[#F6A8B7] text-white border-[#F6A8B7] shadow-md shadow-[#F6A8B7]/20"
                   : "text-[#707070] border-white/40"
@@ -444,11 +444,11 @@ export default function MyStory() {
           {/* Share Your Story */}
           <div className="rounded-[28px] p-5 border border-white/35" style={{ background: 'rgba(255,255,255,0.45)', backdropFilter: 'blur(28px)', WebkitBackdropFilter: 'blur(28px)', boxShadow: '0 4px 20px rgba(246,168,183,0.12)' }}>
           <div className="flex items-center justify-between mb-3">
-             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[#F6A8B7] text-[9px] font-black uppercase tracking-widest border border-[#F6A8B7]/30" style={{ background: 'rgba(246,168,183,0.15)' }}>
+             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[#F6A8B7] text-[clamp(8px,2.29vw,10px)] font-black uppercase tracking-widest border border-[#F6A8B7]/30" style={{ background: 'rgba(246,168,183,0.15)' }}>
                 <BookOpen className="w-3 h-3 text-[#F6A8B7]" /> Share Your Story
              </div>
           </div>
-          <h2 className="text-[18px] font-extrabold text-[#252525] mb-1 leading-snug">
+          <h2 className="text-[clamp(15px,4.58vw,21px)] font-extrabold text-[#252525] mb-1 leading-snug">
              What happened today that mattered to you?
           </h2>
           <p className="text-xs text-[#707070] mb-3">
@@ -465,7 +465,7 @@ export default function MyStory() {
                <button
                  key={s.id}
                  onClick={() => setContent(s.label.replace("...", " "))}
-                 className="px-2 py-2 rounded-full border border-white/40 text-[10.5px] text-[#707070] font-bold transition-all active:scale-95 text-center truncate whitespace-nowrap hover:bg-white/40"
+                 className="px-2 py-2 rounded-full border border-white/40 text-[clamp(9px,2.67vw,12px)] text-[#707070] font-bold transition-all active:scale-95 text-center truncate whitespace-nowrap hover:bg-white/40"
                  style={{ background: 'rgba(255,255,255,0.5)', backdropFilter: 'blur(12px)' }}
                  title={s.label}
                >
@@ -493,7 +493,7 @@ export default function MyStory() {
             )}
             <Textarea
               placeholder="What's on your mind today? Share something meaningful from your day..."
-              className="w-full min-h-[100px] bg-transparent border-0 shadow-none resize-none text-[15px] text-[#252525] placeholder:text-[#8A8A8A] p-4 pb-2 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none focus:outline-none focus:ring-0 leading-relaxed"
+              className="w-full min-h-[clamp(85px,25.45vw,115px)] bg-transparent border-0 shadow-none resize-none text-[clamp(13px,3.82vw,17px)] text-[#252525] placeholder:text-[#8A8A8A] p-4 pb-2 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none focus:outline-none focus:ring-0 leading-relaxed"
               value={content}
               onChange={(e) => setContent(e.target.value)}
             />
@@ -517,9 +517,9 @@ export default function MyStory() {
                     <circle cx="12" cy="13" r="3"/>
                   </svg>
                 </div>
-                <span className="text-[10.5px] font-bold">Add Photo</span>
+                <span className="text-[clamp(9px,2.67vw,12px)] font-bold">Add Photo</span>
               </button>
-              <span className="text-[10px] font-black text-[#8A8A8A] tracking-wider">
+              <span className="text-[clamp(9px,2.54vw,12px)] font-black text-[#8A8A8A] tracking-wider">
                 {content.length}/1000
               </span>
             </div>
@@ -528,7 +528,7 @@ export default function MyStory() {
           <button
             onClick={handlePost}
             disabled={(!content.trim() && !imageFile) || isPosting}
-            className="w-full text-white rounded-full h-[48px] font-bold text-[15px] transition-transform active:scale-[0.98] border border-white/40 disabled:opacity-50 flex items-center justify-center gradient-coral-pill"
+            className="w-full text-white rounded-full h-[clamp(41px,12.21vw,55px)] font-bold text-[clamp(13px,3.82vw,17px)] transition-transform active:scale-[0.98] border border-white/40 disabled:opacity-50 flex items-center justify-center gradient-coral-pill"
           >
             {isPosting ? "Posting..." : "Post Story"}
             <Send className="w-4 h-4 ml-2" />
@@ -538,10 +538,10 @@ export default function MyStory() {
         {/* Recent Stories */}
         <div className="rounded-[28px] p-6 border border-white/35" style={{ background: 'rgba(255,255,255,0.45)', backdropFilter: 'blur(28px)', WebkitBackdropFilter: 'blur(28px)', boxShadow: '0 4px 20px rgba(246,168,183,0.12)' }}>
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-[#252525] font-extrabold text-[18px]">
+            <h3 className="text-[#252525] font-extrabold text-[clamp(15px,4.58vw,21px)]">
               Recent stories
             </h3>
-            <span className="text-[12px] text-[#707070] font-semibold">
+            <span className="text-[clamp(10px,3.05vw,14px)] text-[#707070] font-semibold">
                {myJournals.length} {myJournals.length === 1 ? 'story' : 'stories'}
             </span>
           </div>
@@ -555,8 +555,8 @@ export default function MyStory() {
                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
                     </svg>
                  </div>
-                 <h4 className="text-[15px] font-extrabold text-[#252525] mb-2">No stories yet</h4>
-                 <p className="text-xs text-[#707070] max-w-[260px] leading-relaxed mb-5 font-medium">
+                 <h4 className="text-[clamp(13px,3.82vw,17px)] font-extrabold text-[#252525] mb-2">No stories yet</h4>
+                 <p className="text-xs text-[#707070] max-w-[clamp(221px,66.16vw,299px)] leading-relaxed mb-5 font-medium">
                     Your first story builds your personality profile and helps us find people who truly match your values and lifestyle.
                  </p>
                  <button 
@@ -570,7 +570,7 @@ export default function MyStory() {
               <>
                 {todayStories.length > 0 && (
                   <div className="mb-8">
-                    <h4 className="text-[#707070] text-[11px] font-extrabold uppercase tracking-widest mb-4 px-1">
+                    <h4 className="text-[#707070] text-[clamp(9px,2.80vw,13px)] font-extrabold uppercase tracking-widest mb-4 px-1">
                       Today
                     </h4>
                     {todayStories.map((journal: any) => (
@@ -584,7 +584,7 @@ export default function MyStory() {
                 )}
                 {yesterdayStories.length > 0 && (
                   <div className="mb-8">
-                    <h4 className="text-[#707070] text-[11px] font-extrabold uppercase tracking-widest mb-4 px-1">
+                    <h4 className="text-[#707070] text-[clamp(9px,2.80vw,13px)] font-extrabold uppercase tracking-widest mb-4 px-1">
                       Yesterday
                     </h4>
                     {yesterdayStories.map((journal: any) => (
@@ -598,7 +598,7 @@ export default function MyStory() {
                 )}
                 {earlierStories.length > 0 && (
                   <div className="mb-6">
-                    <h4 className="text-[#707070] text-[11px] font-extrabold uppercase tracking-widest mb-4 px-1">
+                    <h4 className="text-[#707070] text-[clamp(9px,2.80vw,13px)] font-extrabold uppercase tracking-widest mb-4 px-1">
                       Earlier
                     </h4>
                     {earlierStories.map((journal: any) => (
@@ -616,7 +616,7 @@ export default function MyStory() {
                     <Link href="/story-archive">
                       <Button
                         variant="outline"
-                        className="w-full bg-transparent border-white/40 text-[#252525] rounded-[20px] hover:bg-white/40 transition-colors h-[60px] font-bold text-[16px]"
+                        className="w-full bg-transparent border-white/40 text-[#252525] rounded-[20px] hover:bg-white/40 transition-colors h-[clamp(51px,15.27vw,69px)] font-bold text-[clamp(14px,4.07vw,18px)]"
                         style={{ background: 'rgba(255,255,255,0.4)', backdropFilter: 'blur(12px)' }}
                       >
                         View All Stories Archive
@@ -648,12 +648,12 @@ export default function MyStory() {
                     <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
                       <Flame className="w-4 h-4 text-primary" />
                     </div>
-                    <h3 className="text-[#252525] font-extrabold text-[17px]">Today's Journey</h3>
+                    <h3 className="text-[#252525] font-extrabold text-[clamp(14px,4.33vw,20px)]">Today's Journey</h3>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="flex items-center gap-1 bg-foreground/5 px-2.5 py-1 rounded-[10px] border border-border">
                       <Flame className="w-3 h-3 text-[#ff6b6b]" />
-                      <span className="text-[11px] font-bold text-[#252525]">{currentStreak} Days</span>
+                      <span className="text-[clamp(9px,2.80vw,13px)] font-bold text-[#252525]">{currentStreak} Days</span>
                     </div>
                     <button
                       onClick={() => setShowJourney(false)}
@@ -676,7 +676,7 @@ export default function MyStory() {
 
                   return (
                     <div className="flex flex-col gap-3">
-                      <p className="text-[12px] text-[#707070] leading-relaxed">
+                      <p className="text-[clamp(10px,3.05vw,14px)] text-[#707070] leading-relaxed">
                         Complete today's activities to improve your personality and compatibility.
                       </p>
 
@@ -690,10 +690,10 @@ export default function MyStory() {
                           {isQuestionAnsweredToday ? <Check className="w-4 h-4" /> : <div className="w-2 h-2 rounded-full bg-[var(--muted-foreground)]" />}
                         </div>
                         <div className="flex-1">
-                          <div className={`font-bold text-[13px] ${isQuestionAnsweredToday ? "text-primary" : "text-[#252525]"}`}>Daily Question</div>
-                          <div className="text-[11px] text-[#707070]">{isQuestionAnsweredToday ? "✓ Completed" : "Not answered yet"}</div>
+                          <div className={`font-bold text-[clamp(11px,3.31vw,15px)] ${isQuestionAnsweredToday ? "text-primary" : "text-[#252525]"}`}>Daily Question</div>
+                          <div className="text-[clamp(9px,2.80vw,13px)] text-[#707070]">{isQuestionAnsweredToday ? "✓ Completed" : "Not answered yet"}</div>
                         </div>
-                        {!isQuestionAnsweredToday && <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-1 rounded-[8px]">Go →</span>}
+                        {!isQuestionAnsweredToday && <span className="text-[clamp(9px,2.54vw,12px)] font-bold text-primary bg-primary/10 px-2 py-1 rounded-[8px]">Go →</span>}
                       </div>
 
                       {/* Story Shared */}
@@ -706,17 +706,17 @@ export default function MyStory() {
                           {isStorySharedToday ? <Check className="w-4 h-4" /> : <div className="w-2 h-2 rounded-full bg-[var(--muted-foreground)]" />}
                         </div>
                         <div className="flex-1">
-                          <div className={`font-bold text-[13px] ${isStorySharedToday ? "text-primary" : "text-[#252525]"}`}>Story Shared</div>
-                          <div className="text-[11px] text-[#707070]">{isStorySharedToday ? "✓ Shared today" : "Share today's experience"}</div>
+                          <div className={`font-bold text-[clamp(11px,3.31vw,15px)] ${isStorySharedToday ? "text-primary" : "text-[#252525]"}`}>Story Shared</div>
+                          <div className="text-[clamp(9px,2.80vw,13px)] text-[#707070]">{isStorySharedToday ? "✓ Shared today" : "Share today's experience"}</div>
                         </div>
-                        {!isStorySharedToday && <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-1 rounded-[8px]">Go →</span>}
+                        {!isStorySharedToday && <span className="text-[clamp(9px,2.54vw,12px)] font-bold text-primary bg-primary/10 px-2 py-1 rounded-[8px]">Go →</span>}
                       </div>
 
                       <div className="h-[1px] bg-border" />
 
                       <div className="flex justify-between items-center">
-                        <span className="text-[12px] font-bold text-[#252525]">Today's Progress</span>
-                        <span className="text-[12px] font-bold text-primary">{completedActivities} / 2 Complete</span>
+                        <span className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#252525]">Today's Progress</span>
+                        <span className="text-[clamp(10px,3.05vw,14px)] font-bold text-primary">{completedActivities} / 2 Complete</span>
                       </div>
                       <div className="h-2 w-full bg-foreground/10 rounded-full overflow-hidden">
                         <div className="h-full bg-primary rounded-full transition-all duration-700 ease-out" style={{ width: `${(completedActivities / 2) * 100}%` }} />
@@ -724,8 +724,8 @@ export default function MyStory() {
 
                       {completedActivities === 2 && (
                         <div className="bg-primary/10 border border-primary/20 rounded-[12px] p-3 text-center">
-                          <div className="font-bold text-[13px] text-primary">🎉 All done for today!</div>
-                          <div className="text-[11px] text-[#707070] mt-0.5">Great job completing your daily journey.</div>
+                          <div className="font-bold text-[clamp(11px,3.31vw,15px)] text-primary">🎉 All done for today!</div>
+                          <div className="text-[clamp(9px,2.80vw,13px)] text-[#707070] mt-0.5">Great job completing your daily journey.</div>
                         </div>
                       )}
                     </div>
@@ -750,7 +750,7 @@ export default function MyStory() {
             <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 border border-[#F6A8B7]/30" style={{ background: 'rgba(246,168,183,0.15)' }}>
               <Heart className="w-6 h-6 text-[#F6A8B7] fill-[#F6A8B7]" />
             </div>
-            <p className="text-[#707070] font-medium text-[13px] leading-relaxed max-w-[240px]">
+            <p className="text-[#707070] font-medium text-[clamp(11px,3.31vw,15px)] leading-relaxed max-w-[clamp(204px,61.07vw,276px)]">
               Every story you share is a step towards finding your perfect match.
             </p>
           </div>

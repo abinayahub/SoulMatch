@@ -335,12 +335,12 @@ export default function ActivityPage() {
               onClick={() => setShowJourney(!showJourney)}
             >
               <div>
-                <h3 className="text-[#252525] font-extrabold text-[16px]">Story Journey</h3>
-                <p className="text-[12px] text-[#707070] font-medium mt-0.5">Your 30-day progress</p>
+                <h3 className="text-[#252525] font-extrabold text-[clamp(14px,4.07vw,18px)]">Story Journey</h3>
+                <p className="text-[clamp(10px,3.05vw,14px)] text-[#707070] font-medium mt-0.5">Your 30-day progress</p>
               </div>
               <motion.button
                 whileTap={{ scale: 0.92 }}
-                className={`text-[11px] font-bold px-3 py-1.5 rounded-full border transition-all ${
+                className={`text-[clamp(9px,2.80vw,13px)] font-bold px-3 py-1.5 rounded-full border transition-all ${
                   showJourney
                     ? "bg-[#F6A8B7]/10 text-[#F6A8B7] border-primary/30"
                     : "bg-white/40 text-[#707070] border-white/40"
@@ -393,11 +393,11 @@ export default function ActivityPage() {
                       </svg>
                       {/* Center text */}
                       <div className="flex flex-col items-center z-10">
-                        <span className="text-[28px] font-extrabold text-[#252525] leading-none">{journeyProgress}%</span>
-                        <span className="text-[9px] text-[#707070] font-bold uppercase tracking-widest mt-1">Complete</span>
+                        <span className="text-[clamp(24px,7.12vw,32px)] font-extrabold text-[#252525] leading-none">{journeyProgress}%</span>
+                        <span className="text-[clamp(8px,2.29vw,10px)] text-[#707070] font-bold uppercase tracking-widest mt-1">Complete</span>
                       </div>
                     </div>
-                    <p className="text-[12px] text-[#707070]">
+                    <p className="text-[clamp(10px,3.05vw,14px)] text-[#707070]">
                       {(myJournals as any[]).length} of 30 stories shared
                     </p>
                   </div>
@@ -418,12 +418,12 @@ export default function ActivityPage() {
               onClick={() => setShowSnapshot(!showSnapshot)}
             >
               <div>
-                <h3 className="text-[#252525] font-extrabold text-[16px]">Personality Snapshot</h3>
-                <p className="text-[12px] text-[#707070] font-medium mt-0.5">Your story trait analyses</p>
+                <h3 className="text-[#252525] font-extrabold text-[clamp(14px,4.07vw,18px)]">Personality Snapshot</h3>
+                <p className="text-[clamp(10px,3.05vw,14px)] text-[#707070] font-medium mt-0.5">Your story trait analyses</p>
               </div>
               <motion.button
                 whileTap={{ scale: 0.92 }}
-                className={`text-[11px] font-bold px-3 py-1.5 rounded-full border transition-all ${
+                className={`text-[clamp(9px,2.80vw,13px)] font-bold px-3 py-1.5 rounded-full border transition-all ${
                   showSnapshot
                     ? "bg-[#F6A8B7]/10 text-[#F6A8B7] border-primary/30"
                     : "bg-white/40 text-[#707070] border-white/40"
@@ -472,10 +472,10 @@ export default function ActivityPage() {
                         />
                       </svg>
                       <div className="flex flex-col items-center z-10">
-                        <span className="text-[18px] font-extrabold text-[#252525] leading-none tracking-tight">
+                        <span className="text-[clamp(15px,4.58vw,21px)] font-extrabold text-[#252525] leading-none tracking-tight">
                           {overallAvg}%
                         </span>
-                        <span className="text-[7px] text-[#707070] font-bold text-center leading-tight mt-0.5 uppercase tracking-wide">
+                        <span className="text-[clamp(6px,1.78vw,8px)] text-[#707070] font-bold text-center leading-tight mt-0.5 uppercase tracking-wide">
                           Overall<br/>Awareness
                         </span>
                       </div>
@@ -556,11 +556,11 @@ export default function ActivityPage() {
                               <div className={`w-6 h-6 rounded-[7px] ${item.bg} flex items-center justify-center shrink-0`}>
                                 <item.icon className={`w-3 h-3 ${item.text}`} />
                               </div>
-                              <span className="text-[#252525] font-semibold text-[11px] leading-tight">{item.label}</span>
+                              <span className="text-[#252525] font-semibold text-[clamp(9px,2.80vw,13px)] leading-tight">{item.label}</span>
                             </div>
                             <div className="flex items-center gap-1.5 shrink-0">
-                              <span className="font-extrabold text-[#252525] text-[12px]">{item.val}%</span>
-                              <span className={`text-[8px] font-bold px-1 py-0.5 rounded-[5px] border uppercase tracking-wider ${tagStyles}`}>
+                              <span className="font-extrabold text-[#252525] text-[clamp(10px,3.05vw,14px)]">{item.val}%</span>
+                              <span className={`text-[clamp(7px,2.04vw,9px)] font-bold px-1 py-0.5 rounded-[5px] border uppercase tracking-wider ${tagStyles}`}>
                                 {tag}
                               </span>
                             </div>
@@ -581,12 +581,12 @@ export default function ActivityPage() {
               onClick={() => setExpandedStoryCalendar(!expandedStoryCalendar)}
             >
               <div>
-                <h3 className="text-[#252525] font-extrabold text-[16px]">Story Calendar</h3>
-                <p className="text-[12px] text-[#707070] font-medium mt-0.5">Your monthly story overview</p>
+                <h3 className="text-[#252525] font-extrabold text-[clamp(14px,4.07vw,18px)]">Story Calendar</h3>
+                <p className="text-[clamp(10px,3.05vw,14px)] text-[#707070] font-medium mt-0.5">Your monthly story overview</p>
               </div>
               <motion.button
                 whileTap={{ scale: 0.92 }}
-                className={`text-[11px] font-bold px-3 py-1.5 rounded-full border transition-all ${
+                className={`text-[clamp(9px,2.80vw,13px)] font-bold px-3 py-1.5 rounded-full border transition-all ${
                   expandedStoryCalendar
                     ? "bg-[#F6A8B7]/10 text-[#F6A8B7] border-primary/30"
                     : "bg-white/40 text-[#707070] border-white/40"
@@ -606,7 +606,7 @@ export default function ActivityPage() {
                 >
                   <div className="px-6 pb-6">
                     <div className="flex items-center justify-between mb-5">
-                      <div className="text-[15px] font-extrabold text-[#252525]">
+                      <div className="text-[clamp(13px,3.82vw,17px)] font-extrabold text-[#252525]">
                         {format(currentMonth, "MMMM yyyy")}
                       </div>
                       <div className="flex gap-2">
@@ -629,7 +629,7 @@ export default function ActivityPage() {
                       {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
                         <div
                           key={i}
-                          className="text-[11px] text-[#707070] font-bold uppercase tracking-wider"
+                          className="text-[clamp(9px,2.80vw,13px)] text-[#707070] font-bold uppercase tracking-wider"
                         >
                           {d}
                         </div>
@@ -661,7 +661,7 @@ export default function ActivityPage() {
                                 return (
                                   <div
                                     key={i}
-                                    className="mx-auto w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-[13px] font-bold shadow-md shadow-primary/30"
+                                    className="mx-auto w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-[clamp(11px,3.31vw,15px)] font-bold shadow-md shadow-primary/30"
                                   >
                                     {format(day, "d")}
                                   </div>
@@ -672,7 +672,7 @@ export default function ActivityPage() {
                                 return (
                                   <div
                                     key={i}
-                                    className="mx-auto w-8 h-8 rounded-full bg-[#F6A8B7]/10 text-[#F6A8B7] border-2 border-primary flex items-center justify-center text-[13px] font-bold"
+                                    className="mx-auto w-8 h-8 rounded-full bg-[#F6A8B7]/10 text-[#F6A8B7] border-2 border-primary flex items-center justify-center text-[clamp(11px,3.31vw,15px)] font-bold"
                                   >
                                     {format(day, "d")}
                                   </div>
@@ -682,7 +682,7 @@ export default function ActivityPage() {
                               return (
                                 <div
                                   key={i}
-                                  className="text-[13px] text-[#707070] font-medium flex items-center justify-center h-8"
+                                  className="text-[clamp(11px,3.31vw,15px)] text-[#707070] font-medium flex items-center justify-center h-8"
                                 >
                                   {format(day, "d")}
                                 </div>
@@ -699,19 +699,19 @@ export default function ActivityPage() {
                           <BookOpen className="w-5 h-5 text-[#6366f1]" />
                         </div>
                         <div>
-                          <div className="text-[#252525] font-extrabold text-[15px]">
+                          <div className="text-[#252525] font-extrabold text-[clamp(13px,3.82vw,17px)]">
                             {completedCount} Stories
                           </div>
-                          <div className="text-[12px] text-[#707070] font-medium mt-0.5">
+                          <div className="text-[clamp(10px,3.05vw,14px)] text-[#707070] font-medium mt-0.5">
                             Longest Streak
                           </div>
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-[#707070] text-[11px] line-through mb-1 font-bold">
+                        <div className="text-[#707070] text-[clamp(9px,2.80vw,13px)] line-through mb-1 font-bold">
                           24 Days
                         </div>
-                        <div className="text-[#ff6b6b] font-extrabold flex items-center gap-1 text-[15px]">
+                        <div className="text-[#ff6b6b] font-extrabold flex items-center gap-1 text-[clamp(13px,3.82vw,17px)]">
                           <Flame className="w-4 h-4" /> {longestStreak} Days
                         </div>
                       </div>
@@ -729,15 +729,15 @@ export default function ActivityPage() {
               onClick={() => setExpandedWeeklyReflection(!expandedWeeklyReflection)}
             >
               <div>
-                <h3 className="text-[#252525] font-extrabold text-[16px] flex items-center gap-2">
+                <h3 className="text-[#252525] font-extrabold text-[clamp(14px,4.07vw,18px)] flex items-center gap-2">
                   Weekly Reflection
                   <Lightbulb className="w-4 h-4 text-[#f59e0b]" />
                 </h3>
-                <p className="text-[12px] text-[#707070] font-medium mt-0.5">Insights from this week's stories</p>
+                <p className="text-[clamp(10px,3.05vw,14px)] text-[#707070] font-medium mt-0.5">Insights from this week's stories</p>
               </div>
               <motion.button
                 whileTap={{ scale: 0.92 }}
-                className={`text-[11px] font-bold px-3 py-1.5 rounded-full border transition-all ${
+                className={`text-[clamp(9px,2.80vw,13px)] font-bold px-3 py-1.5 rounded-full border transition-all ${
                   expandedWeeklyReflection
                     ? "bg-[#F6A8B7]/10 text-[#F6A8B7] border-primary/30"
                     : "bg-white/40 text-[#707070] border-white/40"
@@ -756,7 +756,7 @@ export default function ActivityPage() {
                   className="overflow-hidden"
                 >
                   <div className="px-6 pb-6">
-                    <p className="text-[12px] font-bold text-[#707070] uppercase tracking-wider mb-6">
+                    <p className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#707070] uppercase tracking-wider mb-6">
                       {weeklyStats.dateRange}
                     </p>
 
@@ -821,28 +821,28 @@ export default function ActivityPage() {
                         </div>
                       </div>
                       <div className="space-y-3 flex-1">
-                        <div className="flex justify-between text-[13px] font-bold text-[#252525]">
+                        <div className="flex justify-between text-[clamp(11px,3.31vw,15px)] font-bold text-[#252525]">
                           <span className="flex items-center gap-2">
                             <span className="w-2.5 h-2.5 rounded-full bg-[#ec4899]"></span>{" "}
                             Family
                           </span>
                           <span>{weeklyStats.familyPct}%</span>
                         </div>
-                        <div className="flex justify-between text-[13px] font-bold text-[#252525]">
+                        <div className="flex justify-between text-[clamp(11px,3.31vw,15px)] font-bold text-[#252525]">
                           <span className="flex items-center gap-2">
                             <span className="w-2.5 h-2.5 rounded-full bg-[#f97316]"></span>{" "}
                             Career
                           </span>
                           <span>{weeklyStats.careerPct}%</span>
                         </div>
-                        <div className="flex justify-between text-[13px] font-bold text-[#252525]">
+                        <div className="flex justify-between text-[clamp(11px,3.31vw,15px)] font-bold text-[#252525]">
                           <span className="flex items-center gap-2">
                             <span className="w-2.5 h-2.5 rounded-full bg-[#22c55e]"></span>{" "}
                             Growth
                           </span>
                           <span>{weeklyStats.growthPct}%</span>
                         </div>
-                        <div className="flex justify-between text-[13px] font-bold text-[#252525]">
+                        <div className="flex justify-between text-[clamp(11px,3.31vw,15px)] font-bold text-[#252525]">
                           <span className="flex items-center gap-2">
                             <span className="w-2.5 h-2.5 rounded-full bg-[#3b82f6]"></span>{" "}
                             Health
@@ -851,7 +851,7 @@ export default function ActivityPage() {
                         </div>
                       </div>
                     </div>
-                    <div className="text-center text-[13px] text-[#707070] font-medium border-t border-white/40 pt-4">
+                    <div className="text-center text-[clamp(11px,3.31vw,15px)] text-[#707070] font-medium border-t border-white/40 pt-4">
                       You shared{" "}
                       <strong className="text-[#252525]">
                         {weeklyStats.storyCount} stories
@@ -874,15 +874,15 @@ export default function ActivityPage() {
                 onClick={() => setExpandedMemoryCapsule(!expandedMemoryCapsule)}
               >
                 <div>
-                  <h3 className="text-[#252525] font-extrabold text-[16px] flex items-center gap-2">
+                  <h3 className="text-[#252525] font-extrabold text-[clamp(14px,4.07vw,18px)] flex items-center gap-2">
                     Memory Capsule
                     <Lightbulb className="w-4 h-4 text-[#F6A8B7]" />
                   </h3>
-                  <p className="text-[12px] text-[#707070] font-medium mt-0.5">Rediscover past thoughts</p>
+                  <p className="text-[clamp(10px,3.05vw,14px)] text-[#707070] font-medium mt-0.5">Rediscover past thoughts</p>
                 </div>
                 <motion.button
                   whileTap={{ scale: 0.92 }}
-                  className={`text-[11px] font-bold px-3 py-1.5 rounded-full border transition-all ${
+                  className={`text-[clamp(9px,2.80vw,13px)] font-bold px-3 py-1.5 rounded-full border transition-all ${
                     expandedMemoryCapsule
                       ? "bg-[#F6A8B7]/10 text-[#F6A8B7] border-primary/30"
                       : "bg-white/40 text-[#707070] border-white/40"
@@ -901,12 +901,12 @@ export default function ActivityPage() {
                     className="overflow-hidden relative z-10"
                   >
                     <div className="px-6 pb-6 flex flex-col items-start w-full">
-                      <div className="text-[#F6A8B7] text-[10px] font-bold uppercase tracking-[0.15em] mb-1 bg-card/50 px-2 py-1 rounded-[6px]">
+                      <div className="text-[#F6A8B7] text-[clamp(9px,2.54vw,12px)] font-bold uppercase tracking-[0.15em] mb-1 bg-card/50 px-2 py-1 rounded-[6px]">
                         {memoryCapsule.daysSince === 0
                           ? "Earlier Today"
                           : `${memoryCapsule.daysSince} Days Ago`}
                       </div>
-                      <div className="text-[13px] font-bold text-[#707070] mb-4">
+                      <div className="text-[clamp(11px,3.31vw,15px)] font-bold text-[#707070] mb-4">
                         {format(
                           new Date(memoryCapsule.journal.createdAt),
                           "MMMM d, yyyy"
@@ -914,31 +914,31 @@ export default function ActivityPage() {
                       </div>
 
                       <div className="bg-card/80 backdrop-blur-sm border border-white/40/50 shadow-sm rounded-[20px] p-5 w-full mb-5">
-                        <p className="text-[#252525] text-[14px] leading-relaxed italic line-clamp-3 font-medium">
+                        <p className="text-[#252525] text-[clamp(12px,3.56vw,16px)] leading-relaxed italic line-clamp-3 font-medium">
                           "{memoryCapsule.journal.content}"
                         </p>
                         <div className="mt-4 flex gap-2">
-                          <span className="text-[10px] px-2.5 py-1.5 rounded-[8px] bg-[#F6A8B7]/10 text-[#F6A8B7] font-bold tracking-wide uppercase">
+                          <span className="text-[clamp(9px,2.54vw,12px)] px-2.5 py-1.5 rounded-[8px] bg-[#F6A8B7]/10 text-[#F6A8B7] font-bold tracking-wide uppercase">
                             {memoryCapsule.topCat}
                           </span>
                         </div>
                       </div>
 
                       <div className="space-y-4 w-full mb-6 mt-2">
-                        <p className="text-[#707070] text-[14px] leading-relaxed font-medium border-l-[3px] border-primary/40 pl-4">
+                        <p className="text-[#707070] text-[clamp(12px,3.56vw,16px)] leading-relaxed font-medium border-l-[3px] border-primary/40 pl-4">
                           {memoryCapsule.aiSummary}
                         </p>
 
                         <div className="bg-card/60 backdrop-blur-sm border border-white/40/50 rounded-[16px] p-4 space-y-3 mt-5">
-                          <div className="flex items-center justify-between text-[13px]">
+                          <div className="flex items-center justify-between text-[clamp(11px,3.31vw,15px)]">
                             <span className="text-[#707070] font-bold">
                               Additional Stories
                             </span>
-                            <span className="text-[#F6A8B7] font-extrabold text-[15px]">
+                            <span className="text-[#F6A8B7] font-extrabold text-[clamp(13px,3.82vw,17px)]">
                               +{memoryCapsule.storiesSince}
                             </span>
                           </div>
-                          <div className="flex items-center justify-between text-[13px]">
+                          <div className="flex items-center justify-between text-[clamp(11px,3.31vw,15px)]">
                             <span className="text-[#707070] font-bold">
                               Recurring Themes
                             </span>
@@ -953,7 +953,7 @@ export default function ActivityPage() {
 
                       <div className="w-full pt-1">
                         <Link href="/story-archive">
-                          <Button className="w-full bg-primary hover:bg-primary/90 text-white border-0 transition-transform active:scale-[0.98] shadow-xl shadow-primary/20 h-[50px] rounded-[16px] font-bold text-[15px]">
+                          <Button className="w-full bg-primary hover:bg-primary/90 text-white border-0 transition-transform active:scale-[0.98] shadow-xl shadow-primary/20 h-[clamp(43px,12.72vw,57px)] rounded-[16px] font-bold text-[clamp(13px,3.82vw,17px)]">
                             Relive Memory
                           </Button>
                         </Link>
@@ -1148,7 +1148,7 @@ export default function ActivityPage() {
                             <div className={`text-lg font-bold text-[#252525] mb-1 ${insight.textValue ? 'text-xs mt-1 leading-snug h-8 flex items-center text-center justify-center' : ''}`}>
                               {insight.textValue ? insight.textValue : (insight.value !== null && insight.value !== undefined ? `${insight.value}%` : '--')}
                             </div>
-                            <div className="text-[9px] text-[#707070] uppercase tracking-wider">{insight.label}</div>
+                            <div className="text-[clamp(8px,2.29vw,10px)] text-[#707070] uppercase tracking-wider">{insight.label}</div>
                           </div>
                         ))}
                       </div>
@@ -1250,7 +1250,7 @@ export default function ActivityPage() {
                         </div>
                         <div>
                           <div className="font-medium text-[#252525] text-sm mb-0.5">{tip.title}</div>
-                          <div className="text-[10px] text-[#707070]">{tip.desc}</div>
+                          <div className="text-[clamp(9px,2.54vw,12px)] text-[#707070]">{tip.desc}</div>
                         </div>
                       </div>
                     ))}

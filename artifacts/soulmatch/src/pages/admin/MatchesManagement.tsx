@@ -125,7 +125,7 @@ export default function MatchesManagement() {
 
         {/* Filters */}
         <div className="bg-card border border-border shadow-md rounded-2xl p-4 rounded-2xl border border-white/5 flex flex-wrap items-center gap-4">
-          <div className="relative flex-1 min-w-[200px]">
+          <div className="relative flex-1 min-w-[clamp(170px,50.89vw,230px)]">
             <Search className="absolute z-10 left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#707070]" />
             <Input 
               placeholder="Search by user name or email..." 
@@ -138,7 +138,7 @@ export default function MatchesManagement() {
           <div className="flex items-center gap-2">
             <span className="text-xs text-[#707070]">Match Status</span>
             <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v); setPage(1); }}>
-              <SelectTrigger className="w-[120px] bg-card/5 border-white/10 rounded-xl text-sm">
+              <SelectTrigger className="w-[clamp(102px,30.53vw,138px)] bg-card/5 border-white/10 rounded-xl text-sm">
                 <SelectValue placeholder="All" />
               </SelectTrigger>
               <SelectContent>
@@ -153,7 +153,7 @@ export default function MatchesManagement() {
           <div className="flex items-center gap-2">
             <span className="text-xs text-[#707070]">Match Type</span>
             <Select value={typeFilter} onValueChange={setTypeFilter}>
-              <SelectTrigger className="w-[120px] bg-card/5 border-white/10 rounded-xl text-sm">
+              <SelectTrigger className="w-[clamp(102px,30.53vw,138px)] bg-card/5 border-white/10 rounded-xl text-sm">
                 <SelectValue placeholder="All" />
               </SelectTrigger>
               <SelectContent>
@@ -167,7 +167,7 @@ export default function MatchesManagement() {
           <div className="flex items-center gap-2">
             <span className="text-xs text-[#707070]">Compatibility Score</span>
             <Select value={compFilter} onValueChange={setCompFilter}>
-              <SelectTrigger className="w-[120px] bg-card/5 border-white/10 rounded-xl text-sm">
+              <SelectTrigger className="w-[clamp(102px,30.53vw,138px)] bg-card/5 border-white/10 rounded-xl text-sm">
                 <SelectValue placeholder="All" />
               </SelectTrigger>
               <SelectContent>
@@ -194,7 +194,7 @@ export default function MatchesManagement() {
             <Table>
               <TableHeader className="bg-card/[0.02]">
                 <TableRow className="border-white/10">
-                  <TableHead className="w-[40px] pl-4"><input type="checkbox" className="rounded bg-transparent border-white/20" /></TableHead>
+                  <TableHead className="w-[clamp(34px,10.18vw,46px)] pl-4"><input type="checkbox" className="rounded bg-transparent border-white/20" /></TableHead>
                   <TableHead>Match</TableHead>
                   <TableHead className="text-center">Compatibility</TableHead>
                   <TableHead>Match Score</TableHead>
@@ -221,7 +221,7 @@ export default function MatchesManagement() {
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-4">
-                          <div className="flex items-center gap-2 min-w-[140px]">
+                          <div className="flex items-center gap-2 min-w-[clamp(119px,35.62vw,161px)]">
                             <Avatar className="w-8 h-8">
                               <AvatarImage src={match.fromUser.avatar} />
                               <AvatarFallback>{match.fromUser.name[0]}</AvatarFallback>
@@ -229,11 +229,11 @@ export default function MatchesManagement() {
                             <div>
                               <div className="text-sm font-medium">{match.fromUser.name} <span className={match.fromUser.gender === 'female' ? "text-[#F6A8B7]" : "text-blue-400"}>{match.fromUser.gender === 'female' ? "♀" : "♂"}</span></div>
                               <div className="text-xs text-[#707070]">{match.fromUser.age}, {match.fromUser.location}</div>
-                              <div className="text-[10px] text-[#707070] truncate w-24">{match.fromUser.email}</div>
+                              <div className="text-[clamp(9px,2.54vw,12px)] text-[#707070] truncate w-24">{match.fromUser.email}</div>
                             </div>
                           </div>
                           <Heart className="w-3 h-3 text-[#F6A8B7] fill-[#F6A8B7] shrink-0" />
-                          <div className="flex items-center gap-2 min-w-[140px]">
+                          <div className="flex items-center gap-2 min-w-[clamp(119px,35.62vw,161px)]">
                             <Avatar className="w-8 h-8">
                               <AvatarImage src={match.toUser.avatar} />
                               <AvatarFallback>{match.toUser.name[0]}</AvatarFallback>
@@ -241,7 +241,7 @@ export default function MatchesManagement() {
                             <div>
                               <div className="text-sm font-medium">{match.toUser.name} <span className={match.toUser.gender === 'female' ? "text-[#F6A8B7]" : "text-blue-400"}>{match.toUser.gender === 'female' ? "♀" : "♂"}</span></div>
                               <div className="text-xs text-[#707070]">{match.toUser.age}, {match.toUser.location}</div>
-                              <div className="text-[10px] text-[#707070] truncate w-24">{match.toUser.email}</div>
+                              <div className="text-[clamp(9px,2.54vw,12px)] text-[#707070] truncate w-24">{match.toUser.email}</div>
                             </div>
                           </div>
                         </div>
@@ -324,7 +324,7 @@ export default function MatchesManagement() {
                 </Button>
               </div>
               <div className="flex items-center gap-2 text-xs text-[#707070]">
-                Rows per page <Select defaultValue="10"><SelectTrigger className="w-[60px] h-8 bg-transparent border-white/10"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="10">10</SelectItem></SelectContent></Select>
+                Rows per page <Select defaultValue="10"><SelectTrigger className="w-[clamp(51px,15.27vw,69px)] h-8 bg-transparent border-white/10"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="10">10</SelectItem></SelectContent></Select>
               </div>
             </div>
           </div>
@@ -362,12 +362,12 @@ export default function MatchesManagement() {
                       <div className="text-center w-1/2">
                         <p className="font-bold text-sm truncate">{selectedMatch.fromUser.name} <span className={selectedMatch.fromUser.gender === 'female' ? "text-[#F6A8B7]" : "text-blue-400"}>{selectedMatch.fromUser.gender === 'female' ? "♀" : "♂"}</span></p>
                         <p className="text-xs text-[#707070]">{selectedMatch.fromUser.age}, {selectedMatch.fromUser.location}</p>
-                        <p className="text-[10px] text-[#707070] truncate">{selectedMatch.fromUser.email}</p>
+                        <p className="text-[clamp(9px,2.54vw,12px)] text-[#707070] truncate">{selectedMatch.fromUser.email}</p>
                       </div>
                       <div className="text-center w-1/2">
                         <p className="font-bold text-sm truncate">{selectedMatch.toUser.name} <span className={selectedMatch.toUser.gender === 'female' ? "text-[#F6A8B7]" : "text-blue-400"}>{selectedMatch.toUser.gender === 'female' ? "♀" : "♂"}</span></p>
                         <p className="text-xs text-[#707070]">{selectedMatch.toUser.age}, {selectedMatch.toUser.location}</p>
-                        <p className="text-[10px] text-[#707070] truncate">{selectedMatch.toUser.email}</p>
+                        <p className="text-[clamp(9px,2.54vw,12px)] text-[#707070] truncate">{selectedMatch.toUser.email}</p>
                       </div>
                     </div>
                   </div>

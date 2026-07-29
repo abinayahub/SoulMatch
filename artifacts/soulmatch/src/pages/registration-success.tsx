@@ -106,7 +106,7 @@ export default function RegistrationSuccessPage() {
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-3 bg-clip-text text-transparent bg-gradient-to-r from-[#4A3B3B] to-[#7A5A5A]">
             Account Created<br />Successfully!
           </h1>
-          <p className="text-[#5A4A4A] text-[15px] sm:text-[16px] font-medium px-4">
+          <p className="text-[#5A4A4A] text-[clamp(13px,3.82vw,17px)] sm:text-[16px] font-medium px-4">
             Welcome to SoulMatch, {user?.firstName || 'there'} <span className="text-[#FF9A9A]">🩷</span><br />
             <span className="text-[#8A7A7A] font-normal mt-1 block">Your journey to meaningful connections starts today.</span>
           </p>
@@ -123,8 +123,8 @@ export default function RegistrationSuccessPage() {
           <div className="absolute top-0 left-0 w-[200%] h-[100%] bg-gradient-to-r from-transparent via-white/40 to-transparent transform -skew-x-45 -translate-x-full animate-[shimmer_3s_infinite]" />
           
           <div className="flex-1">
-            <h3 className="text-[16px] text-[#252525] font-bold mb-1">Your account is now ready.</h3>
-            <p className="text-[13px] sm:text-[14px] text-[#707070] font-medium leading-relaxed">
+            <h3 className="text-[clamp(14px,4.07vw,18px)] text-[#252525] font-bold mb-1">Your account is now ready.</h3>
+            <p className="text-[clamp(11px,3.31vw,15px)] sm:text-[14px] text-[#707070] font-medium leading-relaxed">
               You're fully set to discover meaningful connections, share your unique story, and begin your <span className="text-[#FF7A7A] font-bold">30-day journey!</span>
             </p>
           </div>
@@ -144,7 +144,7 @@ export default function RegistrationSuccessPage() {
           className="flex items-center justify-center gap-3 mb-6"
         >
           <div className="h-px bg-gradient-to-r from-transparent to-[#F0D4D4] flex-1" />
-          <span className="text-[11px] font-bold text-[#C8B8B8] uppercase tracking-[0.15em] shrink-0">What you can do next</span>
+          <span className="text-[clamp(9px,2.80vw,13px)] font-bold text-[#C8B8B8] uppercase tracking-[0.15em] shrink-0">What you can do next</span>
           <div className="h-px bg-gradient-to-l from-transparent to-[#F0D4D4] flex-1" />
         </motion.div>
 
@@ -160,8 +160,8 @@ export default function RegistrationSuccessPage() {
             <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-[#FFE4E1]/80 flex items-center justify-center mb-2 sm:mb-3 border border-white/60">
               <User className="w-4 h-4 sm:w-5 sm:h-5 text-[#FF7A7A]" />
             </div>
-            <h4 className="text-[#252525] font-bold text-[11px] sm:text-[14px] leading-tight mb-1">Complete<br/>Profile</h4>
-            <p className="text-[#8A7A7A] text-[10px] sm:text-[11px] mt-1 hidden sm:block">Help us understand you.</p>
+            <h4 className="text-[#252525] font-bold text-[clamp(9px,2.80vw,13px)] sm:text-[14px] leading-tight mb-1">Complete<br/>Profile</h4>
+            <p className="text-[#8A7A7A] text-[clamp(9px,2.54vw,12px)] sm:text-[11px] mt-1 hidden sm:block">Help us understand you.</p>
           </div>
 
           {/* Card 2 */}
@@ -169,8 +169,8 @@ export default function RegistrationSuccessPage() {
             <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-[#FFF0E6]/80 flex items-center justify-center mb-2 sm:mb-3 border border-white/60">
               <PenTool className="w-4 h-4 sm:w-5 sm:h-5 text-[#FF9A9A]" />
             </div>
-            <h4 className="text-[#252525] font-bold text-[11px] sm:text-[14px] leading-tight mb-1">Share Your<br/>Story</h4>
-            <p className="text-[#8A7A7A] text-[10px] sm:text-[11px] mt-1 hidden sm:block">Tell it when you're ready.</p>
+            <h4 className="text-[#252525] font-bold text-[clamp(9px,2.80vw,13px)] sm:text-[14px] leading-tight mb-1">Share Your<br/>Story</h4>
+            <p className="text-[#8A7A7A] text-[clamp(9px,2.54vw,12px)] sm:text-[11px] mt-1 hidden sm:block">Tell it when you're ready.</p>
           </div>
 
           {/* Card 3 */}
@@ -178,8 +178,8 @@ export default function RegistrationSuccessPage() {
             <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-[#FDF0F0]/80 flex items-center justify-center mb-2 sm:mb-3 border border-white/60">
               <Compass className="w-4 h-4 sm:w-5 sm:h-5 text-[#FFB8B0]" />
             </div>
-            <h4 className="text-[#252525] font-bold text-[11px] sm:text-[14px] leading-tight mb-1">Start<br/>Exploring</h4>
-            <p className="text-[#8A7A7A] text-[10px] sm:text-[11px] mt-1 hidden sm:block">Discover your dashboard.</p>
+            <h4 className="text-[#252525] font-bold text-[clamp(9px,2.80vw,13px)] sm:text-[14px] leading-tight mb-1">Start<br/>Exploring</h4>
+            <p className="text-[#8A7A7A] text-[clamp(9px,2.54vw,12px)] sm:text-[11px] mt-1 hidden sm:block">Discover your dashboard.</p>
           </div>
         </motion.div>
 
@@ -196,7 +196,7 @@ export default function RegistrationSuccessPage() {
           >
             {/* Shimmer on button */}
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full animate-[shimmer_2s_infinite_ease-in-out]" />
-            <span className="relative z-10 text-white font-bold text-[17px]">Continue to Home</span>
+            <span className="relative z-10 text-white font-bold text-[clamp(14px,4.33vw,20px)]">Continue to Home</span>
             <ArrowRight className="w-5 h-5 ml-1 relative z-10 text-white" />
           </Button>
         </motion.div>
@@ -209,7 +209,7 @@ export default function RegistrationSuccessPage() {
           className="flex items-center justify-center gap-2 mt-6 pb-4"
         >
           <ShieldCheck className="w-4 h-4 text-[#C8B8B8]" />
-          <p className="text-[12px] font-medium text-[#8A7A7A]">
+          <p className="text-[clamp(10px,3.05vw,14px)] font-medium text-[#8A7A7A]">
             Your privacy is our priority. Your data is <span className="text-[#FF7A7A] font-bold">safe with us.</span>
           </p>
         </motion.div>

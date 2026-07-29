@@ -33,6 +33,7 @@ import StoryArchivePage from "@/pages/story-archive";
 import PersonalityPage from "@/pages/personality";
 import ReflectionPage from "@/pages/reflection";
 import InterestsPage from "@/pages/interests";
+import MyNotesPage from "@/pages/my-notes";
 import ChatListPage from "@/pages/chat-list";
 import ChatConversationPage from "@/pages/chat-conversation";
 import NotificationsPage from "@/pages/notifications";
@@ -123,6 +124,9 @@ function Router() {
       </Route>
       <Route path="/interests">
         <PrivateRoute component={InterestsPage} />
+      </Route>
+      <Route path="/notes">
+        <PrivateRoute component={MyNotesPage} />
       </Route>
       <Route path="/chat">
         <PrivateRoute component={ChatListPage} />

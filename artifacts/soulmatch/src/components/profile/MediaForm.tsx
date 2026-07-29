@@ -103,7 +103,7 @@ export function MediaForm({ p, onSave, onCancel, hasPrevious, isPending }: any) 
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="premium-glass-card rounded-[24px] p-4 sm:p-6 mb-4 border border-white/50">
       <div className="mb-5 border-b border-white/40 pb-3 text-center">
-        <h2 className="text-[20px] sm:text-[22px] font-black mb-2 text-[#4A3B3B]">Add your best photos</h2>
+        <h2 className="text-[clamp(17px,5.09vw,23px)] sm:text-[22px] font-black mb-2 text-[#4A3B3B]">Add your best photos</h2>
         <p className="text-[#8A7A7A] text-xs">Show up as your real self. Upload at least 1 photo to continue.</p>
       </div>
 
@@ -111,7 +111,7 @@ export function MediaForm({ p, onSave, onCancel, hasPrevious, isPending }: any) 
         <div>
           <div className="flex items-center gap-2 mb-3">
             <ImagePlus className="w-4 h-4 text-[#FF7A7A]" />
-            <h3 className="text-[12px] font-bold text-[#4A3B3B] uppercase tracking-wider">Photo Gallery</h3>
+            <h3 className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider">Photo Gallery</h3>
           </div>
           
           <input 
@@ -156,7 +156,7 @@ export function MediaForm({ p, onSave, onCancel, hasPrevious, isPending }: any) 
                       </button>
                       {index === 0 && (
                         <div className="absolute bottom-0 inset-x-0 py-1.5 bg-black/40 backdrop-blur-sm text-center">
-                          <span className="text-[10px] font-bold text-white tracking-widest uppercase">Primary</span>
+                          <span className="text-[clamp(9px,2.54vw,12px)] font-bold text-white tracking-widest uppercase">Primary</span>
                         </div>
                       )}
                     </>
@@ -182,9 +182,9 @@ export function MediaForm({ p, onSave, onCancel, hasPrevious, isPending }: any) 
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <Video className="w-4 h-4 text-[#FF7A7A]" />
-              <h3 className="text-[12px] font-bold text-[#4A3B3B] uppercase tracking-wider">Video Introduction</h3>
+              <h3 className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider">Video Introduction</h3>
             </div>
-            <span className="text-[10px] text-[#8A7A7A] lowercase">(optional)</span>
+            <span className="text-[clamp(9px,2.54vw,12px)] text-[#8A7A7A] lowercase">(optional)</span>
           </div>
           
           <input 
@@ -232,8 +232,8 @@ export function MediaForm({ p, onSave, onCancel, hasPrevious, isPending }: any) 
             ) : (
               <div className="text-center max-w-sm px-4 transition-transform group-hover:scale-105">
                 <PlayCircle className="w-10 h-10 mx-auto mb-3 text-[#FF9A9A]" />
-                <p className="text-[15px] font-bold mb-1 text-[#4A3B3B]">Record or upload an intro</p>
-                <p className="text-[12px] text-[#8A7A7A] leading-relaxed">Up to 30 seconds (max 15MB).<br/>Let matches hear your voice!</p>
+                <p className="text-[clamp(13px,3.82vw,17px)] font-bold mb-1 text-[#4A3B3B]">Record or upload an intro</p>
+                <p className="text-[clamp(10px,3.05vw,14px)] text-[#8A7A7A] leading-relaxed">Up to 30 seconds (max 15MB).<br/>Let matches hear your voice!</p>
               </div>
             )}
           </div>
@@ -245,7 +245,7 @@ export function MediaForm({ p, onSave, onCancel, hasPrevious, isPending }: any) 
               <button 
                 type="button" 
                 onClick={onCancel} 
-                className="w-1/3 h-14 text-[15px] font-bold rounded-full border border-white/40 text-[#8A7A7A] bg-white/50 hover:bg-white/80 transition-transform active:scale-[0.98]"
+                className="w-1/3 h-14 text-[clamp(13px,3.82vw,17px)] font-bold rounded-full border border-white/40 text-[#8A7A7A] bg-white/50 hover:bg-white/80 transition-transform active:scale-[0.98]"
               >
                 Previous
               </button>
@@ -254,7 +254,7 @@ export function MediaForm({ p, onSave, onCancel, hasPrevious, isPending }: any) 
               type="button"
               onClick={() => onSave({})}
               disabled={isPending || uploadPhoto.isPending || !p?.photos?.length} 
-              className="flex-1 h-14 text-[15px] font-bold text-white rounded-full transition-transform active:scale-[0.98] disabled:opacity-50 gradient-coral-pill"
+              className="flex-1 h-14 text-[clamp(13px,3.82vw,17px)] font-bold text-white rounded-full transition-transform active:scale-[0.98] disabled:opacity-50 gradient-coral-pill"
             >
               {isPending ? "Saving..." : "Next Step"}
             </button>

@@ -16,6 +16,8 @@ import metricsRouter from "./metrics";
 import supportRouter from "./support";
 import reflectionsRouter from "./reflections";
 
+import { notesRouter } from "./notes";
+
 const router: IRouter = Router();
 
 router.use(healthRouter);
@@ -34,5 +36,6 @@ router.use("/journal", journalRouter);
 router.use("/metrics", metricsRouter);
 router.use("/support", supportRouter);
 router.use("/reflections", reflectionsRouter);
+router.use("/notes", notesRouter);
 
 export default router;

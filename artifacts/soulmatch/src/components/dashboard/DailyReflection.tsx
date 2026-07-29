@@ -168,7 +168,7 @@ export function WeeklyMoodPanel() {
               >
                 {emoji ?? (isToday ? "·" : "")}
               </div>
-              <span className={`text-[10px] font-bold ${isToday ? "text-[#F6A8B7]" : "text-[#707070]"}`}>
+              <span className={`text-[clamp(9px,2.54vw,12px)] font-bold ${isToday ? "text-[#F6A8B7]" : "text-[#707070]"}`}>
                 {label}
               </span>
             </div>
@@ -209,7 +209,7 @@ export function WeeklyMoodPanel() {
             className="h-full rounded-full bg-gradient-to-r from-[#F8C7C8] via-[#F8D9D2] to-[#F7E8EE]"
           />
         </div>
-        <p className="text-[10px] text-[#707070] mt-2 text-center">
+        <p className="text-[clamp(9px,2.54vw,12px)] text-[#707070] mt-2 text-center">
           {completedThisWeek === 7
             ? "🎉 Perfect week!"
             : completedThisWeek >= 5
@@ -389,7 +389,7 @@ export function DailyReflection() {
            <h1 className="text-xl font-black flex items-center justify-center gap-1.5 text-[#252525]">
               Reflection <Heart className="w-5 h-5 text-[#F6A8B7] fill-[#F6A8B7]" />
            </h1>
-           <p className="text-[10.5px] text-[#707070] mt-1 font-medium">A few minutes today, a better you tomorrow ✨</p>
+           <p className="text-[clamp(9px,2.67vw,12px)] text-[#707070] mt-1 font-medium">A few minutes today, a better you tomorrow ✨</p>
         </div>
 
 
@@ -400,23 +400,23 @@ export function DailyReflection() {
               <CheckCircle2 className="w-4.5 h-4.5 text-[#4CAF50]" />
            </div>
            <div className="flex-1">
-              <h4 className="text-[11px] font-black text-[#2E7D32] tracking-wide uppercase">Today's Reflection Complete</h4>
-              <p className="text-[10px] text-[#4CAF50] font-medium mt-0.5">Great job keeping your streak alive.</p>
+              <h4 className="text-[clamp(9px,2.80vw,13px)] font-black text-[#2E7D32] tracking-wide uppercase">Today's Reflection Complete</h4>
+              <p className="text-[clamp(9px,2.54vw,12px)] text-[#4CAF50] font-medium mt-0.5">Great job keeping your streak alive.</p>
            </div>
         </div>
 
         {/* 3. Your Answer Card */}
         <div className="premium-glass-card border border-white/35 rounded-[24px] relative overflow-hidden p-4">
            <div className="flex justify-between items-center mb-3">
-               <span className="text-[10px] font-black text-[#707070] uppercase tracking-widest flex items-center gap-1.5"><PenLine className="w-3.5 h-3.5" /> Your Answer</span>
+               <span className="text-[clamp(9px,2.54vw,12px)] font-black text-[#707070] uppercase tracking-widest flex items-center gap-1.5"><PenLine className="w-3.5 h-3.5" /> Your Answer</span>
            </div>
            <div className="flex items-center gap-3 mb-2">
               <div className="w-12 h-12 rounded-2xl bg-white/40 border border-white/50 flex items-center justify-center text-2xl shadow-sm shrink-0">
                   {answerEmoji}
               </div>
               <div>
-                 <span className="text-[18px] font-black text-[#252525] tracking-tight leading-tight block">{answerLabel}</span>
-                 <p className="text-[10px] text-[#707070] leading-snug mt-1 max-w-[90%]">
+                 <span className="text-[clamp(15px,4.58vw,21px)] font-black text-[#252525] tracking-tight leading-tight block">{answerLabel}</span>
+                 <p className="text-[clamp(9px,2.54vw,12px)] text-[#707070] leading-snug mt-1 max-w-[90%]">
                     {moodMessage}
                  </p>
               </div>
@@ -426,21 +426,21 @@ export function DailyReflection() {
         {/* 4. Reflection Streak Card */}
         <div className="premium-glass-card border border-white/35 rounded-[24px] relative overflow-hidden p-4">
             <div className="flex justify-between items-center mb-2">
-                <span className="text-[10px] font-black text-[#707070] uppercase tracking-widest flex items-center gap-1.5">
+                <span className="text-[clamp(9px,2.54vw,12px)] font-black text-[#707070] uppercase tracking-widest flex items-center gap-1.5">
                    <Flame className="w-3.5 h-3.5 text-[#F6A8B7] fill-[#F6A8B7]" /> Reflection Streak
                 </span>
-                <span className="text-[10px] font-bold text-[#F6A8B7]">{streak % 5}/{5}</span>
+                <span className="text-[clamp(9px,2.54vw,12px)] font-bold text-[#F6A8B7]">{streak % 5}/{5}</span>
             </div>
             
             <div className="flex items-end gap-1.5 mb-3">
-               <span className="text-[28px] font-black text-[#252525] leading-none tracking-tight">{streak}</span>
-               <span className="text-[11px] font-bold text-[#707070] mb-1">Days</span>
+               <span className="text-[clamp(24px,7.12vw,32px)] font-black text-[#252525] leading-none tracking-tight">{streak}</span>
+               <span className="text-[clamp(9px,2.80vw,13px)] font-bold text-[#707070] mb-1">Days</span>
             </div>
 
             <div className="w-full h-2 bg-foreground/5 rounded-full overflow-hidden mb-1.5">
                <div className="h-full bg-gradient-to-r from-[#F6A8B7] to-[#F8D9D2] rounded-full transition-all" style={{ width: `${milestoneProgress}%` }}></div>
             </div>
-            <span className="text-[9px] font-bold text-[#707070] flex items-center gap-1 mt-2">
+            <span className="text-[clamp(8px,2.29vw,10px)] font-bold text-[#707070] flex items-center gap-1 mt-2">
                <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" /> Next milestone at {nextMilestone} days
             </span>
         </div>
@@ -452,8 +452,8 @@ export function DailyReflection() {
                   <Clock className="w-5 h-5 text-[#F6A8B7]" />
                </div>
                <div>
-                  <span className="text-[9px] font-black text-[#707070] uppercase tracking-widest block mb-0.5">Next Check-in</span>
-                  <span className="text-[15px] font-black text-[#252525] tracking-tight tabular-nums">
+                  <span className="text-[clamp(8px,2.29vw,10px)] font-black text-[#707070] uppercase tracking-widest block mb-0.5">Next Check-in</span>
+                  <span className="text-[clamp(13px,3.82vw,17px)] font-black text-[#252525] tracking-tight tabular-nums">
                      {nextTime ? <CountdownToMidnight targetDate={nextTime} /> : "—"}
                   </span>
                </div>
@@ -462,8 +462,8 @@ export function DailyReflection() {
             <div className="flex items-center gap-2">
                <div className="text-xl leading-none">{tomorrowTheme.emoji}</div>
                <div>
-                  <span className="text-[8px] font-black text-[#707070] uppercase tracking-widest block mb-0.5">Tomorrow</span>
-                  <span className="text-[11px] font-bold text-[#252525]">{tomorrowTheme.label}</span>
+                  <span className="text-[clamp(7px,2.04vw,9px)] font-black text-[#707070] uppercase tracking-widest block mb-0.5">Tomorrow</span>
+                  <span className="text-[clamp(9px,2.80vw,13px)] font-bold text-[#252525]">{tomorrowTheme.label}</span>
                </div>
             </div>
         </div>
@@ -493,9 +493,9 @@ export function DailyReflection() {
              >
                <div className="flex items-center gap-1 mb-0.5">
                   {pill.icon}
-                  <span className="text-[8.5px] font-black text-[#707070] uppercase tracking-wider">{pill.label}</span>
+                  <span className="text-[clamp(7px,2.16vw,10px)] font-black text-[#707070] uppercase tracking-wider">{pill.label}</span>
                </div>
-               <span className="text-[11px] font-bold text-[#252525] truncate max-w-[80px] text-center tracking-tight leading-none">{pill.value}</span>
+               <span className="text-[clamp(9px,2.80vw,13px)] font-bold text-[#252525] truncate max-w-[clamp(68px,20.36vw,92px)] text-center tracking-tight leading-none">{pill.value}</span>
              </div>
            ))}
         </div>
@@ -503,10 +503,10 @@ export function DailyReflection() {
         {/* 1. Weekly Section (Merged) */}
         <div className="premium-glass-card border border-white/35 rounded-[24px] relative overflow-hidden p-4 flex flex-col gap-3">
             <div className="flex justify-between items-center">
-               <span className="text-[10px] font-black text-[#707070] uppercase tracking-widest">Weekly Progress</span>
+               <span className="text-[clamp(9px,2.54vw,12px)] font-black text-[#707070] uppercase tracking-widest">Weekly Progress</span>
                <div className="flex items-center gap-1">
-                   <span className="text-[11px] font-bold text-[#F6A8B7]">{completedThisWeek}/7</span>
-                   <span className="text-[10px] text-[#707070] font-medium">Completed</span>
+                   <span className="text-[clamp(9px,2.80vw,13px)] font-bold text-[#F6A8B7]">{completedThisWeek}/7</span>
+                   <span className="text-[clamp(9px,2.54vw,12px)] text-[#707070] font-medium">Completed</span>
                </div>
             </div>
             
@@ -517,7 +517,7 @@ export function DailyReflection() {
                   const isToday = dateStr === today.toISOString().split("T")[0];
                   return (
                      <div key={i} className="flex flex-col items-center gap-1">
-                        <div className={`w-7 h-7 rounded-full border flex items-center justify-center text-[12px] transition-all
+                        <div className={`w-7 h-7 rounded-full border flex items-center justify-center text-[clamp(10px,3.05vw,14px)] transition-all
                            ${answer 
                              ? "bg-[#F6A8B7]/20 border-[#F6A8B7]/40 shadow-[0_0_8px_rgba(236,72,153,0.15)]" 
                              : isToday 
@@ -525,7 +525,7 @@ export function DailyReflection() {
                                : "bg-muted/80 border-slate-600/60 dark:border-slate-500/70 border-slate-300"}`}>
                            {emoji ?? (isToday ? "·" : "")}
                         </div>
-                        <span className={`text-[8px] font-bold ${isToday ? "text-[#F6A8B7]" : "text-[#252525]/70"}`}>{label}</span>
+                        <span className={`text-[clamp(7px,2.04vw,9px)] font-bold ${isToday ? "text-[#F6A8B7]" : "text-[#252525]/70"}`}>{label}</span>
                      </div>
                   );
                })}
@@ -534,7 +534,7 @@ export function DailyReflection() {
 
         {/* Bottom CTA Button */}
         <div className="mt-2 w-full pt-2 sticky bottom-0 bg-background/85 backdrop-blur-md pb-safe">
-           <Button onClick={() => navigate("/my-story")} className="hover:opacity-90 active:scale-95 w-full text-white gradient-coral-pill rounded-[20px] h-[48px] border border-white/40 flex items-center justify-center gap-2 font-bold text-[15px] shrink-0 transition-all shadow-[0_4px_15px_rgba(246,168,183,0.3)]" >
+           <Button onClick={() => navigate("/my-story")} className="hover:opacity-90 active:scale-95 w-full text-white gradient-coral-pill rounded-[20px] h-[clamp(41px,12.21vw,55px)] border border-white/40 flex items-center justify-center gap-2 font-bold text-[clamp(13px,3.82vw,17px)] shrink-0 transition-all shadow-[0_4px_15px_rgba(246,168,183,0.3)]" >
               <PenLine className="w-4.5 h-4.5 mr-1" /> Write Story
            </Button>
         </div>
@@ -567,13 +567,13 @@ export function DailyReflection() {
          <h1 className="text-xl font-black flex items-center justify-center gap-1.5 text-[#252525]">
             Reflection <Heart className="w-5 h-5 text-[#F6A8B7] fill-[#F6A8B7]" />
          </h1>
-         <p className="text-[10.5px] text-[#707070] mt-0.5 font-medium">A few minutes today, a better you tomorrow ✨</p>
+         <p className="text-[clamp(9px,2.67vw,12px)] text-[#707070] mt-0.5 font-medium">A few minutes today, a better you tomorrow ✨</p>
       </div>
 
 
 
       {/* Question text */}
-      <h2 className="text-[20px] font-bold text-[#252525] mt-4 mb-5 text-center" style={{ lineHeight: "1.45" }}>
+      <h2 className="text-[clamp(17px,5.09vw,23px)] font-bold text-[#252525] mt-4 mb-5 text-center" style={{ lineHeight: "1.45" }}>
         {question.question}
       </h2>
 
@@ -589,7 +589,7 @@ export function DailyReflection() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
                 onClick={() => setSelected(opt)}
-                className="flex flex-col items-center justify-center h-[90px] rounded-[20px] border transition-all cursor-pointer"
+                className="flex flex-col items-center justify-center h-[clamp(77px,22.90vw,103px)] rounded-[20px] border transition-all cursor-pointer"
                 style={{ 
                   background: isSelected ? 'rgba(246,168,183,0.12)' : 'rgba(255,255,255,0.48)', 
                   backdropFilter: 'blur(28px)', 
@@ -600,7 +600,7 @@ export function DailyReflection() {
                 }}
               >
                 <span className="text-2xl mb-1">{opt.emoji}</span>
-                <span className={`text-[10px] lg:text-xs font-semibold ${isSelected ? "text-[#F6A8B7]" : "text-[#707070]"}`}>
+                <span className={`text-[clamp(9px,2.54vw,12px)] lg:text-xs font-semibold ${isSelected ? "text-[#F6A8B7]" : "text-[#707070]"}`}>
                   {opt.label}
                 </span>
               </motion.div>
@@ -620,11 +620,11 @@ export function DailyReflection() {
           }}
           className={`${
             !selected ? "opacity-50 cursor-not-allowed" : "hover:opacity-90 active:scale-95"
-          } w-full text-white rounded-full h-[48px] border border-white/40 flex items-center justify-center gap-2 font-bold text-[16px] shrink-0 transition-all gradient-coral-pill`}
+          } w-full text-white rounded-full h-[clamp(41px,12.21vw,55px)] border border-white/40 flex items-center justify-center gap-2 font-bold text-[clamp(14px,4.07vw,18px)] shrink-0 transition-all gradient-coral-pill`}
         >
           {submitMutation.isPending ? "Saving..." : "Submit Answer"}
         </Button>
-        <div className="flex items-center gap-2 text-[#707070] text-[10px]">
+        <div className="flex items-center gap-2 text-[#707070] text-[clamp(9px,2.54vw,12px)]">
           <Lock className="w-3.5 h-3.5 shrink-0" />
           <span>Your response is private and secure</span>
         </div>

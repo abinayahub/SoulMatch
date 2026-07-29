@@ -102,7 +102,7 @@ export default function ContactSupportPage() {
                 required 
                 value={formData.message}
                 onChange={(e) => setFormData({...formData, message: e.target.value})}
-                className="min-h-[150px] bg-card/5 border-white/10 resize-y"
+                className="min-h-[clamp(128px,38.17vw,173px)] bg-card/5 border-white/10 resize-y"
               />
             </div>
 

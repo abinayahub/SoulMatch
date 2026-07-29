@@ -60,8 +60,8 @@ export default function PricingPage() {
           <div className="w-16 h-16 rounded-full bg-accent/10 mx-auto flex items-center justify-center mb-4">
              <Crown className="w-8 h-8 text-accent" />
           </div>
-          <h1 className="text-[28px] font-extrabold mb-3 leading-tight text-[#252525]">Upgrade to <span className="text-primary">Premium</span></h1>
-          <p className="text-[#707070] text-[15px] max-w-[280px] mx-auto font-medium">Invest in finding the one. Cancel anytime.</p>
+          <h1 className="text-[clamp(24px,7.12vw,32px)] font-extrabold mb-3 leading-tight text-[#252525]">Upgrade to <span className="text-primary">Premium</span></h1>
+          <p className="text-[#707070] text-[clamp(13px,3.82vw,17px)] max-w-[clamp(238px,71.25vw,322px)] mx-auto font-medium">Invest in finding the one. Cancel anytime.</p>
         </motion.div>
 
         {isLoading ? (
@@ -80,13 +80,13 @@ export default function PricingPage() {
               >
                 {plan.isPopular && (
                   <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                    <Badge className="bg-primary text-primary-foreground shadow-md border-0 text-white px-4 py-1 font-bold text-[11px] uppercase tracking-wider rounded-full">Most Popular</Badge>
+                    <Badge className="bg-primary text-primary-foreground shadow-md border-0 text-white px-4 py-1 font-bold text-[clamp(9px,2.80vw,13px)] uppercase tracking-wider rounded-full">Most Popular</Badge>
                   </div>
                 )}
-                <h3 className="font-extrabold text-[22px] mb-2 text-[#252525] text-center">{plan.name}</h3>
+                <h3 className="font-extrabold text-[clamp(19px,5.60vw,25px)] mb-2 text-[#252525] text-center">{plan.name}</h3>
                 <div className="mb-6 text-center">
-                  <span className="text-[40px] font-extrabold text-primary tracking-tight">${plan.price}</span>
-                  <span className="text-[#707070] font-bold ml-1 text-[15px]">/{plan.interval}</span>
+                  <span className="text-[clamp(34px,10.18vw,46px)] font-extrabold text-primary tracking-tight">${plan.price}</span>
+                  <span className="text-[#707070] font-bold ml-1 text-[clamp(13px,3.82vw,17px)]">/{plan.interval}</span>
                 </div>
                 <div className="space-y-3.5 mb-8">
                   {plan.features?.map((f: string) => (
@@ -94,7 +94,7 @@ export default function PricingPage() {
                       <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
                          <Check className="w-3.5 h-3.5 text-primary" />
                       </div>
-                      <span className="text-[14px] font-medium text-[#252525] leading-snug">{f}</span>
+                      <span className="text-[clamp(12px,3.56vw,16px)] font-medium text-[#252525] leading-snug">{f}</span>
                     </div>
                   ))}
                 </div>
@@ -102,14 +102,14 @@ export default function PricingPage() {
                   <Button 
                     onClick={() => handleSubscribe(plan.id)}
                     disabled={checkout.isPending || user?.isPremium}
-                    className={`w-full h-14 rounded-2xl font-bold text-[16px] transition-all ${plan.isPopular ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25 border-0 text-white" : "bg-foreground/5 hover:bg-foreground/10 text-[#252525]"}`}
+                    className={`w-full h-14 rounded-2xl font-bold text-[clamp(14px,4.07vw,18px)] transition-all ${plan.isPopular ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25 border-0 text-white" : "bg-foreground/5 hover:bg-foreground/10 text-[#252525]"}`}
                   >
                     {user?.isPremium ? "Already Subscribed" : "Subscribe Now"} {(!user?.isPremium) && <ArrowRight className="w-5 h-5 ml-2" />}
                   </Button>
                 ) : (
                   <Button 
                     onClick={() => navigate('/register')}
-                    className={`w-full h-14 rounded-2xl font-bold text-[16px] transition-all ${plan.isPopular ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25 border-0 text-white" : "bg-foreground/5 hover:bg-foreground/10 text-[#252525]"}`}
+                    className={`w-full h-14 rounded-2xl font-bold text-[clamp(14px,4.07vw,18px)] transition-all ${plan.isPopular ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25 border-0 text-white" : "bg-foreground/5 hover:bg-foreground/10 text-[#252525]"}`}
                   >
                     Get Started <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>

@@ -4,7 +4,7 @@ export default function AdminComingSoon({ title }: { title: string }) {
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">{title}</h1>
-      <div className="bg-card border border-border shadow-md rounded-2xl rounded-2xl border border-white/10 p-12 flex flex-col items-center justify-center text-center min-h-[400px]">
+      <div className="bg-card border border-border shadow-md rounded-2xl rounded-2xl border border-white/10 p-12 flex flex-col items-center justify-center text-center min-h-[clamp(340px,101.78vw,460px)]">
         <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-6">
           <Construction className="w-10 h-10 text-primary" />
         </div>

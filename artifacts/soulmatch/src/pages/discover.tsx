@@ -11,6 +11,7 @@ import { useGetMatches, useSendInterest, useGetJourneyProgress, useGetMe, useGet
 import { getAccessToken, useAuth } from "@/lib/auth-context";
 import { useLocation } from "wouter";
 import { Progress } from "@/components/ui/progress";
+import { ProgressRing } from "@/components/ui/ProgressRing";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { MoreVertical } from "lucide-react";
 import { getMandatoryCompletion } from "@/lib/profile-utils";
@@ -235,11 +236,11 @@ export default function DiscoverPage() {
                <div className="w-16 h-16 bg-[#F6A8B7]/10 rounded-full flex items-center justify-center mx-auto mb-5">
                   <Lock className="w-7 h-7 text-[#F6A8B7]" strokeWidth={1.5} />
                </div>
-               <h2 className="text-[20px] font-bold text-[#252525] mb-2">Complete Profile</h2>
-               <p className="text-[#6F6F6F] text-[14px] mb-6 max-w-xs mx-auto leading-relaxed">
+               <h2 className="text-[clamp(17px,5.09vw,23px)] font-bold text-[#252525] mb-2">Complete Profile</h2>
+               <p className="text-[#6F6F6F] text-[clamp(12px,3.56vw,16px)] mb-6 max-w-xs mx-auto leading-relaxed">
                  Complete all mandatory fields in your profile before you can access the Discover section and view compatible matches.
                </p>
-               <Button className="w-full h-[52px] text-[16px] font-bold premium-pastel-button rounded-full" onClick={() => navigate('/profile')}>
+               <Button className="w-full h-[clamp(44px,13.23vw,60px)] text-[clamp(14px,4.07vw,18px)] font-bold premium-pastel-button rounded-full" onClick={() => navigate('/profile')}>
                  Complete Profile Now
                </Button>
              </div>
@@ -255,7 +256,7 @@ export default function DiscoverPage() {
         className="w-full min-h-screen"
         style={{ background: 'linear-gradient(135deg, #F8F3F7 0%, #FAF1ED 40%, #F4F1FF 75%, #FFFDFC 100%)' }}
       >
-        <div className="w-full max-w-md mx-auto px-4 pt-12 pb-6 space-y-[20px] flex flex-col">
+        <div className="w-full max-w-md mx-auto px-4 pt-[clamp(12px,3.56vw,16px)] pb-6 space-y-[clamp(20px,5.5vw,24px)] flex flex-col">
           <style>{`
             .premium-glass-card {
               background: rgba(255, 255, 255, 0.48) !important;
@@ -284,37 +285,32 @@ export default function DiscoverPage() {
 
           {/* Page Header */}
           <div className="flex flex-col">
-            <h1 className="text-[28px] font-bold text-[#252525] leading-none">Discover</h1>
+            <h1 className="text-[clamp(24px,7.12vw,32px)] font-bold text-[#252525] leading-none">Discover</h1>
           </div>
 
           {/* 1. Match Discovery Header Card */}
           <div className="premium-glass-card p-4 rounded-[28px] relative overflow-hidden shrink-0">
              <div className="absolute inset-0 bg-gradient-to-r from-[#FAF1ED]/30 via-[#F4F1FF]/20 to-[#FFFDFC]/15 pointer-events-none" />
              <div className="flex items-center gap-3 relative z-10">
-                <div className="relative w-[76px] h-[76px] flex-shrink-0 flex items-center justify-center">
-                   <svg className="absolute inset-0 w-full h-full transform -rotate-90">
-                      <defs>
-                         <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#F6A8B7" />
-                            <stop offset="100%" stopColor="#F8C3C6" />
-                         </linearGradient>
-                      </defs>
-                      <circle cx="38" cy="38" r="32" fill="transparent" stroke="rgba(246,168,183,0.15)" strokeWidth="5.5" />
-                      <circle cx="38" cy="38" r="32" fill="transparent" stroke="url(#gradient)" strokeWidth="5.5" strokeDasharray="201" strokeDashoffset={201 - (201 * confidenceScore) / 100} className="transition-all duration-1000 ease-out" strokeLinecap="round" />
-                   </svg>
-                   <div className="w-12 h-12 rounded-full bg-[#F6A8B7]/10 flex items-center justify-center backdrop-blur-md shadow-sm">
+                <div className="relative w-[clamp(65px,19.34vw,87px)] h-[clamp(65px,19.34vw,87px)] flex-shrink-0 flex items-center justify-center">
+                   <ProgressRing 
+                      progress={confidenceScore} 
+                      strokeWidth={5} 
+                      gradientColors={["#F6A8B7", "#F8C3C6"]} 
+                   />
+                   <div className="absolute w-[clamp(44px,13vw,58px)] h-[clamp(44px,13vw,58px)] rounded-full bg-[#F6A8B7]/10 flex items-center justify-center backdrop-blur-md shadow-sm">
                       {isLocked ? <Lock className="w-5 h-5 text-[#F6A8B7]" strokeWidth={1.5} /> : <Heart className="w-5 h-5 text-[#F6A8B7]" strokeWidth={1.5} />}
                    </div>
                 </div>
                 
                 <div className="flex-1 min-w-0">
-                   <div className="text-[#F6A8B7] text-[13px] font-bold mb-0.5 uppercase tracking-wide">
+                   <div className="text-[#F6A8B7] text-[clamp(11px,3vw,13px)] font-bold mb-0.5 uppercase tracking-wide">
                       Match Discovery
                    </div>
-                   <h2 className="text-[18px] font-bold text-[#252525] leading-tight truncate">
+                   <h2 className="text-[clamp(15px,4.5vw,18px)] font-bold text-[#252525] leading-tight line-clamp-2">
                       Your discovery is ready!
                    </h2>
-                   <p className="text-[#6F6F6F] text-[13px] leading-snug mt-1">
+                   <p className="text-[#6F6F6F] text-[clamp(11px,3.5vw,13px)] leading-snug mt-1 line-clamp-2">
                       Our Hybrid Engine refines matches as you post stories & answer questions.
                    </p>
                 </div>
@@ -325,7 +321,7 @@ export default function DiscoverPage() {
           <div className="space-y-3">
              <div className="flex items-center gap-2 mb-1">
                 <Compass className="w-5 h-5 text-[#F6A8B7]" strokeWidth={1.5} />
-                <h3 className="text-[20px] font-bold text-[#252525]">Unique Matches</h3>
+                <h3 className="text-[clamp(17px,5.09vw,23px)] font-bold text-[#252525]">Unique Matches</h3>
              </div>
 
              {isLoading ? (
@@ -333,12 +329,12 @@ export default function DiscoverPage() {
                    {[...Array(3)].map((_, i) => <Skeleton key={i} className="h-24 rounded-[28px] bg-white/20 border border-white/10" />)}
                 </div>
              ) : matches.length === 0 ? (
-                <div className="premium-glass-card p-6 text-center flex flex-col items-center justify-center min-h-[200px] rounded-[28px]">
+                <div className="premium-glass-card p-6 text-center flex flex-col items-center justify-center min-h-[clamp(170px,50.89vw,230px)] rounded-[28px]">
                    <div className="w-14 h-14 bg-[#F6A8B7]/10 rounded-full flex items-center justify-center mb-3">
                       <Compass className="w-7 h-7 text-[#F6A8B7]" strokeWidth={1.5} />
                    </div>
-                   <h4 className="text-[16px] font-bold text-[#252525] mb-1">No matches found</h4>
-                   <p className="text-[13px] text-[#6F6F6F] max-w-[260px] mx-auto leading-normal">
+                   <h4 className="text-[clamp(14px,4.07vw,18px)] font-bold text-[#252525] mb-1">No matches found</h4>
+                   <p className="text-[clamp(11px,3.31vw,15px)] text-[#6F6F6F] max-w-[clamp(221px,66.16vw,299px)] mx-auto leading-normal">
                       Try answering more questions!
                    </p>
                 </div>
@@ -355,73 +351,65 @@ export default function DiscoverPage() {
                           key={profile.id} 
                           initial={{ opacity: 0, y: 10 }} 
                           animate={{ opacity: 1, y: 0 }} 
+                          whileTap={{ scale: 0.98 }}
                           transition={{ delay: localIdx * 0.05 }}
-                          className="premium-glass-card p-4 rounded-[28px] relative overflow-hidden flex flex-col gap-3.5"
+                          onClick={() => navigate(`/profile/${profile.id}`)}
+                          className="premium-glass-card p-3 md:p-[18px] rounded-[22px] relative overflow-hidden flex items-center justify-between gap-3 md:gap-4 cursor-pointer hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-shadow"
+                          style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.04)' }}
                         >
-                           <div className="flex items-center justify-between gap-3">
-                              {/* Left avatar and info */}
-                              <div className="flex items-center gap-3 flex-1 min-w-0">
-                                 <div className="relative w-14 h-14 rounded-full overflow-hidden flex-shrink-0 bg-white/30 border border-white/40">
-                                    {isBestPick && (
-                                      <div className="absolute top-0 left-0 w-full w-full text-[#252525] rounded-full border border-white/40 transition-all text-[8px] font-bold text-center py-0.5 z-10  shadow-sm uppercase tracking-wider" style={{ background: 'linear-gradient(135deg, #F8C7C8, #F8D9D2, #F7E8EE)', boxShadow: '0 4px 12px rgba(246, 168, 183, 0.15)' }}>
-                                         Best Pick
-                                      </div>
-                                    )}
-                                    {profile.photos?.[0] ? (
-                                      <img src={profile.photos[0].url} alt={profile.displayName || profile.firstName} className="w-full h-full object-cover" />
-                                    ) : (
-                                      <div className="absolute inset-0 bg-[#F6A8B7]/10" />
-                                    )}
-                                    {matchItem.isLocked && <Lock className="absolute inset-0 m-auto w-5 h-5 text-[#252525]/60" strokeWidth={1.5} />}
-                                    <div className="absolute bottom-0 right-0 w-3 bg-green-400 rounded-full border-2 border-white/60" />
-                                 </div>
-                                 
-                                 <div className="flex-1 min-w-0">
-                                    <h4 className={`font-bold text-[#252525] text-[16px] mb-0.5 truncate pr-1 ${matchItem.isLocked ? 'filter blur-[4px] select-none' : ''}`}>
-                                       {profile.displayName || profile.firstName || "Hidden"}, {profile.age || 25}
-                                    </h4>
-                                    <p className={`text-[13px] text-[#6F6F6F] truncate ${matchItem.isLocked ? 'filter blur-[2px] select-none' : ''}`}>
-                                       {profile.city || 'Unknown City'}
-                                    </p>
-                                 </div>
-                              </div>
+                           {/* LEFT: Profile Image */}
+                           <div className="relative w-[60px] h-[60px] md:w-[64px] md:h-[64px] rounded-full overflow-hidden flex-shrink-0 bg-white/30 border-2 border-white shadow-sm">
+                              {profile.photos?.[0] ? (
+                                <img src={profile.photos[0].url} alt={profile.displayName || profile.firstName} className="w-full h-full object-cover" />
+                              ) : (
+                                <div className="absolute inset-0 bg-[#F6A8B7]/10" />
+                              )}
+                              {matchItem.isLocked && <Lock className="absolute inset-0 m-auto w-5 h-5 text-[#252525]/60" strokeWidth={1.5} />}
+                              <div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-400 rounded-full border-[2.5px] border-white z-10" />
+                           </div>
+                           
+                           {/* CENTER: Info & Badges */}
+                           <div className="flex-1 min-w-0 flex flex-col justify-center">
+                              <h4 className={`font-semibold text-[#252525] text-[16px] md:text-[18px] mb-0.5 truncate ${matchItem.isLocked ? 'filter blur-[4px] select-none' : ''}`}>
+                                 {profile.displayName || profile.firstName || "Hidden"}, {profile.age || 25}
+                              </h4>
+                              <p className={`text-[13px] md:text-[14px] text-[#6F6F6F] truncate ${matchItem.isLocked ? 'filter blur-[2px] select-none' : ''}`}>
+                                 {profile.city || 'Unknown City'}
+                              </p>
+                           </div>
 
-                              {/* Center score */}
-                              <div className="flex flex-col items-center justify-center shrink-0 w-[55px]">
-                                 <span className="text-[15px] font-black text-[#F6A8B7] leading-none flex items-center gap-0.5 justify-center">
-                                    <Heart className="w-3.5 h-3.5 fill-[#F6A8B7] stroke-[#F6A8B7]" strokeWidth={1.5} />
-                                    {matchItem.compatibilityScore}%
-                                 </span>
-                                 <span className="text-[9px] text-[#777777] font-bold uppercase mt-1 text-center select-none">Match</span>
-                              </div>
+                           {/* CENTER: Match Percentage */}
+                           <div className="flex flex-col items-center justify-center shrink-0">
+                              <span className="text-[15px] md:text-[17px] font-black text-[#F6A8B7] leading-none flex items-center justify-center">
+                                 <Heart className="w-3.5 h-3.5 md:w-4 md:h-4 fill-[#F6A8B7] stroke-[#F6A8B7] mr-1" strokeWidth={1.5} />
+                                 {matchItem.compatibilityScore}%
+                              </span>
+                              <span className="text-[9px] md:text-[10px] text-[#777777] font-bold uppercase mt-1 text-center select-none">Match</span>
+                           </div>
 
-                              {/* Right Actions */}
-                              <div className="flex flex-col gap-1.5 w-[92px] shrink-0">
-                                 {matchItem.isLocked ? (
-                                   <Button size="sm" className="w-full text-[10px] h-[25px] premium-pastel-button border-0 rounded-[8px] px-2 flex justify-center items-center shadow-[0_2px_8px_rgba(246,168,183,0.15)]" onClick={() => navigate('/pricing')}>
-                                      <Lock className="w-3 h-3 mr-1" strokeWidth={2} /> Unlock
-                                   </Button>
-                                 ) : matchItem.isMutualInterest || profile.isMutualMatch ? (
-                                   <Button size="sm" className="w-full text-[10px] h-[25px] premium-pastel-button border-0 rounded-[8px] px-2 flex justify-center items-center shadow-[0_2px_8px_rgba(246,168,183,0.15)]" onClick={() => navigate(`/chat?userId=${profile.id}`)}>
-                                      <MessageCircle className="w-3 h-3 mr-1" strokeWidth={2} /> Chat
-                                   </Button>
-                                 ) : (profile.interestSentByViewer || localSentInterests.includes(profile.id)) ? (
-                                   <div className="w-full text-[10px] h-[25px] bg-green-500/15 text-green-700 border border-green-500/30 rounded-[8px] px-2 flex justify-center items-center shadow-none font-bold select-none cursor-default">
-                                      <CheckCircle2 className="w-3 h-3 mr-1" strokeWidth={2.5} /> Sent
-                                   </div>
-                                 ) : profile.hasPendingInterest ? (
-                                   <Button size="sm" className="w-full text-[10px] h-[25px] premium-pastel-button border-0 rounded-[8px] px-2 flex justify-center items-center shadow-[0_2px_8px_rgba(246,168,183,0.15)]" onClick={() => navigate(`/profile/${profile.id}`)}>
-                                      <HeartHandshake className="w-3 h-3 mr-1" strokeWidth={2} /> Respond
-                                   </Button>
-                                 ) : (
-                                   <Button size="sm" className="w-full text-[10px] h-[25px] premium-pastel-button border-0 rounded-[8px] px-2 flex justify-center items-center shadow-[0_2px_8px_rgba(246,168,183,0.15)]" onClick={() => handleSendInterest(profile.id)}>
-                                      <Heart className="w-3 h-3 mr-1" strokeWidth={2} /> Connect
-                                   </Button>
-                                 )}
-                                 <Button size="sm" className="w-full text-[10px] h-[25px] bg-white/80 border border-[#F6A8B7]/40 text-[#252525] hover:bg-white shadow-[0_2px_8px_rgba(0,0,0,0.04)] rounded-[8px] px-2 flex justify-center items-center font-semibold" onClick={() => navigate(`/profile/${profile.id}`)}>
-                                    View Profile
-                                 </Button>
-                              </div>
+                           {/* RIGHT: Action Button */}
+                           <div className="shrink-0 flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+                              {matchItem.isLocked ? (
+                                <motion.button whileTap={{ scale: 0.95 }} className="px-3 md:px-4 h-[36px] md:h-[40px] text-[13px] md:text-[14px] premium-pastel-button border-0 rounded-[14px] md:rounded-[16px] flex justify-center items-center font-bold whitespace-nowrap" onClick={() => navigate('/pricing')}>
+                                   <Lock className="w-3.5 h-3.5 md:w-4 md:h-4 mr-1 md:mr-1.5" strokeWidth={2} /> Unlock
+                                </motion.button>
+                              ) : matchItem.isMutualInterest || profile.isMutualMatch ? (
+                                <motion.button whileTap={{ scale: 0.95 }} className="px-3 md:px-4 h-[36px] md:h-[40px] text-[13px] md:text-[14px] premium-pastel-button border-0 rounded-[14px] md:rounded-[16px] flex justify-center items-center font-bold whitespace-nowrap" onClick={() => navigate(`/chat/new?userId=${profile.id}`)}>
+                                   <MessageCircle className="w-3.5 h-3.5 md:w-4 md:h-4 mr-1 md:mr-1.5" strokeWidth={2} /> Chat
+                                </motion.button>
+                              ) : (profile.interestSentByViewer || localSentInterests.includes(profile.id)) ? (
+                                <motion.button whileTap={{ scale: 0.95 }} className="px-3 md:px-4 h-[36px] md:h-[40px] text-[13px] md:text-[14px] bg-green-500/15 text-green-700 border border-green-500/30 rounded-[14px] md:rounded-[16px] flex justify-center items-center font-bold cursor-default whitespace-nowrap">
+                                   <CheckCircle2 className="w-3.5 h-3.5 md:w-4 md:h-4 mr-1 md:mr-1.5" strokeWidth={2.5} /> Sent
+                                </motion.button>
+                              ) : profile.hasPendingInterest ? (
+                                <motion.button whileTap={{ scale: 0.95 }} className="px-3 md:px-4 h-[36px] md:h-[40px] text-[13px] md:text-[14px] premium-pastel-button border-0 rounded-[14px] md:rounded-[16px] flex justify-center items-center font-bold whitespace-nowrap" onClick={() => navigate(`/profile/${profile.id}`)}>
+                                   <HeartHandshake className="w-3.5 h-3.5 md:w-4 md:h-4 mr-1 md:mr-1.5" strokeWidth={2} /> Reply
+                                </motion.button>
+                              ) : (
+                                <motion.button whileTap={{ scale: 0.95 }} className="px-3 md:px-4 h-[36px] md:h-[40px] text-[13px] md:text-[14px] premium-pastel-button border-0 rounded-[14px] md:rounded-[16px] flex justify-center items-center font-bold whitespace-nowrap" onClick={() => handleSendInterest(profile.id)}>
+                                   <Heart className="w-3.5 h-3.5 md:w-4 md:h-4 mr-1 md:mr-1.5" strokeWidth={2} /> Connect
+                                </motion.button>
+                              )}
                            </div>
                         </motion.div>
                       );
@@ -462,11 +450,11 @@ export default function DiscoverPage() {
             <div className="premium-glass-card p-6 rounded-[28px] text-center relative overflow-hidden shrink-0">
                <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#F6A8B7]/10 rounded-full blur-[30px]" />
                <Crown className="w-8 h-8 text-[#F6A8B7] mx-auto mb-3" strokeWidth={1.5} />
-               <h3 className="font-bold text-[#252525] text-[18px] mb-1">Preview Matches</h3>
-               <p className="text-[14px] text-[#6F6F6F] mb-5 leading-normal">
+               <h3 className="font-bold text-[#252525] text-[clamp(15px,4.58vw,21px)] mb-1">Preview Matches</h3>
+               <p className="text-[clamp(12px,3.56vw,16px)] text-[#6F6F6F] mb-5 leading-normal">
                   You have {totalMatches} potential matches waiting! Upgrade to Premium to preview match insights early.
                </p>
-               <Button className="w-full premium-pastel-button font-bold h-[52px] rounded-full" onClick={() => navigate('/pricing')}>
+               <Button className="w-full premium-pastel-button font-bold h-[clamp(44px,13.23vw,60px)] rounded-full" onClick={() => navigate('/pricing')}>
                   Upgrade Now
                </Button>
             </div>
@@ -476,12 +464,12 @@ export default function DiscoverPage() {
           <div className="premium-glass-card p-6 rounded-[28px] text-center relative overflow-hidden shrink-0">
              <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#EADCF8]/10 rounded-full blur-[30px]" />
              <UserPlus className="w-8 h-8 text-[#F6A8B7] mx-auto mb-3" strokeWidth={1.5} />
-             <h3 className="font-bold text-[#252525] text-[18px] mb-1">Invite Your Friends</h3>
-             <p className="text-[14px] text-[#6F6F6F] mb-5 leading-normal">
+             <h3 className="font-bold text-[#252525] text-[clamp(15px,4.58vw,21px)] mb-1">Invite Your Friends</h3>
+             <p className="text-[clamp(12px,3.56vw,16px)] text-[#6F6F6F] mb-5 leading-normal">
                 More friends, more matches!
              </p>
              <Button 
-                className="w-full premium-pastel-button font-bold h-[52px] rounded-full"
+                className="w-full premium-pastel-button font-bold h-[clamp(44px,13.23vw,60px)] rounded-full"
                 onClick={handleInviteClick}
              >
                 Invite Now

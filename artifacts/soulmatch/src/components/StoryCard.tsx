@@ -118,7 +118,7 @@ export function StoryCard({ journal, onDelete, isPublic = false }: StoryCardProp
           <img 
             src={journal.imageUrl} 
             alt="Story visual" 
-            className="w-full h-full min-h-[200px] object-cover rounded-2xl border border-white/40 shadow-sm" 
+            className="w-full h-full min-h-[clamp(170px,50.89vw,230px)] object-cover rounded-2xl border border-white/40 shadow-sm" 
           />
         </div>
       )}
@@ -135,13 +135,13 @@ export function StoryCard({ journal, onDelete, isPublic = false }: StoryCardProp
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-              <span className="font-bold text-[#252525] text-[15px]">{userName}</span>
+              <span className="font-bold text-[#252525] text-[clamp(13px,3.82vw,17px)]">{userName}</span>
               {mood && (
-                <span className="text-[10px] px-2 py-0.5 rounded-full text-[#707070] flex items-center gap-1 border border-white/40 font-medium" style={{ background: 'rgba(255,255,255,0.5)' }}>
+                <span className="text-[clamp(9px,2.54vw,12px)] px-2 py-0.5 rounded-full text-[#707070] flex items-center gap-1 border border-white/40 font-medium" style={{ background: 'rgba(255,255,255,0.5)' }}>
                   {MOODS[mood]} {mood}
                 </span>
               )}
-              <div className="flex items-center gap-2 text-[11px] text-[#8A8A8A] font-medium">
+              <div className="flex items-center gap-2 text-[clamp(9px,2.80vw,13px)] text-[#8A8A8A] font-medium">
                 <span>{format(new Date(journal.createdAt), "h:mm a")}</span>
                 <span>•</span>
                 {isPublic ? <Globe className="w-3 h-3" /> : <Lock className="w-3 h-3" />}
@@ -163,7 +163,7 @@ export function StoryCard({ journal, onDelete, isPublic = false }: StoryCardProp
 
         {/* Main Text */}
         <div className="mb-4">
-          <p className={`text-[#252525] leading-relaxed whitespace-pre-wrap text-[15px] font-medium ${!isExpanded && displayContent.length > 200 ? 'line-clamp-3' : ''}`}>
+          <p className={`text-[#252525] leading-relaxed whitespace-pre-wrap text-[clamp(13px,3.82vw,17px)] font-medium ${!isExpanded && displayContent.length > 200 ? 'line-clamp-3' : ''}`}>
             {displayContent}
           </p>
           {!isExpanded && displayContent.length > 200 && (
@@ -188,7 +188,7 @@ export function StoryCard({ journal, onDelete, isPublic = false }: StoryCardProp
               return (
                 <span
                   key={c}
-                  className={`text-[10px] font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 border ${s.bg} border-${colorName}-500/20 ${s.text}`}
+                  className={`text-[clamp(9px,2.54vw,12px)] font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 border ${s.bg} border-${colorName}-500/20 ${s.text}`}
                 >
                   <Icon className="w-3 h-3" /> {c}
                 </span>
@@ -219,7 +219,7 @@ export function StoryCard({ journal, onDelete, isPublic = false }: StoryCardProp
                 title={`React with ${emoji}`}
               >
                 <span className="text-xl">{emoji}</span>
-                {reaction === emoji && <span className="text-[10px] text-[#707070]">1</span>}
+                {reaction === emoji && <span className="text-[clamp(9px,2.54vw,12px)] text-[#707070]">1</span>}
               </button>
             ))}
           </div>
@@ -241,7 +241,7 @@ export function StoryCard({ journal, onDelete, isPublic = false }: StoryCardProp
           {comments.map((c, i) => (
             <div key={i} className="flex gap-2">
               <Avatar className="w-6 h-6 border border-white/40 shrink-0 mt-0.5">
-                <AvatarFallback className="text-[9px] bg-white/50">{c.name[0]}</AvatarFallback>
+                <AvatarFallback className="text-[clamp(8px,2.29vw,10px)] bg-white/50">{c.name[0]}</AvatarFallback>
               </Avatar>
               <div className="rounded-2xl rounded-tl-sm px-3 py-2 text-sm max-w-full border border-white/30" style={{ background: 'rgba(255,255,255,0.5)' }}>
                 <span className="font-bold text-[#252525] text-xs mr-2">{c.name}</span>
@@ -252,7 +252,7 @@ export function StoryCard({ journal, onDelete, isPublic = false }: StoryCardProp
 
           <form onSubmit={handleCommentSubmit} className="flex gap-2 items-center mt-2">
             <Avatar className="w-6 h-6 border border-white/40 shrink-0">
-              <AvatarFallback className="text-[9px] bg-white/50">{userName[0] || 'Y'}</AvatarFallback>
+              <AvatarFallback className="text-[clamp(8px,2.29vw,10px)] bg-white/50">{userName[0] || 'Y'}</AvatarFallback>
             </Avatar>
             <input 
               type="text" 

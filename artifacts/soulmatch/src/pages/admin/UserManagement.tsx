@@ -93,7 +93,7 @@ export default function UserManagement() {
     <div className="space-y-6 relative flex w-full">
       
       {/* Main Content Area */}
-      <div className={`flex-1 transition-all duration-300 ${selectedUser ? 'mr-[400px]' : ''}`}>
+      <div className={`flex-1 transition-all duration-300 ${selectedUser ? 'mr-[clamp(340px,101.78vw,460px)]' : ''}`}>
         
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
@@ -117,7 +117,7 @@ export default function UserManagement() {
 
         {/* Filters */}
         <div className="bg-card border border-border shadow-md rounded-2xl rounded-2xl border border-white/10 p-4 mb-6 flex flex-wrap items-center gap-4">
-          <div className="relative flex-1 min-w-[200px]">
+          <div className="relative flex-1 min-w-[clamp(170px,50.89vw,230px)]">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#707070]" />
             <Input 
               placeholder="Search by name, email or phone..." 
@@ -271,7 +271,7 @@ export default function UserManagement() {
 
       {/* Side Panel */}
       {selectedUser && (
-        <div className="fixed top-[60px] right-0 bottom-0 w-[400px] bg-[#0B0B10] border-l border-white/10 z-40 overflow-y-auto custom-scrollbar flex flex-col transform transition-transform duration-300">
+        <div className="fixed top-[clamp(51px,15.27vw,69px)] right-0 bottom-0 w-[clamp(340px,101.78vw,460px)] bg-[#0B0B10] border-l border-white/10 z-40 overflow-y-auto custom-scrollbar flex flex-col transform transition-transform duration-300">
           
           <div className="p-6 border-b border-white/10 relative">
             <div className="flex justify-between items-start mb-6">
@@ -289,12 +289,12 @@ export default function UserManagement() {
               <div>
                 <div className="flex items-center gap-2">
                   <h3 className="text-lg font-bold text-white">{selectedUser.firstName} {selectedUser.lastName}</h3>
-                  <Badge className="bg-green-500/10 text-green-400 hover:bg-green-500/20 border-none px-2 py-0 h-5 text-[10px]">
+                  <Badge className="bg-green-500/10 text-green-400 hover:bg-green-500/20 border-none px-2 py-0 h-5 text-[clamp(9px,2.54vw,12px)]">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span> {selectedUser.status}
                   </Badge>
                 </div>
                 <div className="text-sm text-[#707070] mt-1 flex items-center gap-2">
-                  <div className="truncate w-[200px]">{selectedUser.email}</div>
+                  <div className="truncate w-[clamp(170px,50.89vw,230px)]">{selectedUser.email}</div>
                 </div>
                 <div className="text-sm text-[#707070] mt-1">
                   {selectedUser.phone || '+91 98765 43210'}
@@ -355,7 +355,7 @@ export default function UserManagement() {
                 <div className="bg-card border border-border shadow-md rounded-2xl bg-[#13131A] p-5 rounded-xl border border-white/5">
                   <div className="flex justify-between items-center mb-4">
                     <h4 className="text-sm font-medium">Personality Traits</h4>
-                    <span className="text-[10px] text-[#F6A8B7] cursor-pointer hover:underline" onClick={() => handleSoon('Full Profile Insights')}>View Full Analysis</span>
+                    <span className="text-[clamp(9px,2.54vw,12px)] text-[#F6A8B7] cursor-pointer hover:underline" onClick={() => handleSoon('Full Profile Insights')}>View Full Analysis</span>
                   </div>
                   <div className="space-y-4">
                     <TraitBar label="Connection Oriented" percent={35} color="bg-[#F6A8B7]" />
@@ -428,7 +428,7 @@ function StatCard({ icon, bg, title, data }: any) {
       <div>
         <div className="text-xs text-[#707070]">{title}</div>
         <div className="text-2xl font-bold text-white mt-0.5">{data?.value ? data.value.toLocaleString() : '...'}</div>
-        <div className={`text-[10px] mt-2 ${data?.trend?.includes('+') ? 'text-green-400' : 'text-red-400'}`}>
+        <div className={`text-[clamp(9px,2.54vw,12px)] mt-2 ${data?.trend?.includes('+') ? 'text-green-400' : 'text-red-400'}`}>
           {data?.trend || '...'}
         </div>
       </div>
@@ -439,9 +439,9 @@ function StatCard({ icon, bg, title, data }: any) {
 function FilterSelect({ label }: { label: string }) {
   return (
     <div className="flex-shrink-0">
-      <div className="text-[10px] text-[#707070] mb-1 ml-1">{label}</div>
+      <div className="text-[clamp(9px,2.54vw,12px)] text-[#707070] mb-1 ml-1">{label}</div>
       <Select defaultValue="all">
-        <SelectTrigger className="w-[120px] h-8 bg-transparent border-white/10 text-xs">
+        <SelectTrigger className="w-[clamp(102px,30.53vw,138px)] h-8 bg-transparent border-white/10 text-xs">
           <SelectValue />
         </SelectTrigger>
         <SelectContent className="bg-[#1A1A24] border-white/10">
@@ -452,7 +452,7 @@ function FilterSelect({ label }: { label: string }) {
   );
 }
 
-function CircularProgress({ value, size = 32, strokeWidth = 3, color = "stroke-green-400", showText = true, className = "text-[10px]" }: any) {
+function CircularProgress({ value, size = 32, strokeWidth = 3, color = "stroke-green-400", showText = true, className = "text-[clamp(9px,2.54vw,12px)]" }: any) {
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
   const offset = circumference - (value / 100) * circumference;
@@ -482,7 +482,7 @@ function CalendarIcon() {
 function TraitBar({ label, percent, color }: any) {
   return (
     <div>
-      <div className="flex justify-between text-[10px] mb-1.5">
+      <div className="flex justify-between text-[clamp(9px,2.54vw,12px)] mb-1.5">
         <span className="text-[#707070]">{label}</span>
         <span className="text-white">{percent}%</span>
       </div>
@@ -500,7 +500,7 @@ function ActionBtn({ icon, label, onClick }: any) {
       className="bg-card border border-border shadow-md rounded-2xl bg-[#1A1A24] hover:bg-card/5 border border-white/5 rounded-lg flex flex-col items-center justify-center p-3 gap-2 cursor-pointer transition-colors"
     >
       <div className="w-5 h-5 flex items-center justify-center text-[#707070]">{icon}</div>
-      <span className="text-[9px] text-center text-[#707070] leading-tight">{label}</span>
+      <span className="text-[clamp(8px,2.29vw,10px)] text-center text-[#707070] leading-tight">{label}</span>
     </div>
   );
 }

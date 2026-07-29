@@ -143,7 +143,7 @@ export default function CompleteProfilePage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-[56px] rounded-full font-bold text-base text-white border-0 mt-4 active:scale-[0.98] transition-all gradient-coral-button hover:opacity-95 shadow-md glow-coral-button"
+              className="w-full h-[clamp(48px,14.25vw,64px)] rounded-full font-bold text-base text-white border-0 mt-4 active:scale-[0.98] transition-all gradient-coral-button hover:opacity-95 shadow-md glow-coral-button"
             >
               {loading ? (
                 <span className="flex items-center gap-2">

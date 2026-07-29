@@ -222,7 +222,7 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-[100dvh] flex flex-col soulmatch-mesh-bg relative overflow-y-auto overflow-x-hidden">
-      <div className="flex-1 flex flex-col items-center justify-center px-4 py-8 relative z-10 w-full max-w-md mx-auto min-h-[600px]">
+      <div className="flex-1 flex flex-col items-center justify-center px-4 py-8 relative z-10 w-full max-w-md mx-auto min-h-[clamp(510px,152.67vw,690px)]">
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
@@ -265,7 +265,7 @@ export default function RegisterPage() {
                 >
                   {i < step ? <Check className="w-4 h-4 text-white stroke-[3]" /> : i + 1}
                 </div>
-                <span className="text-[10px] font-bold hidden sm:block" style={{ color: i === step ? "#FF8F8F" : "#6F6F6F" }}>
+                <span className="text-[clamp(9px,2.54vw,12px)] font-bold hidden sm:block" style={{ color: i === step ? "#FF8F8F" : "#6F6F6F" }}>
                   {s.title.split(" ")[0]}
                 </span>
               </div>
@@ -494,7 +494,7 @@ export default function RegisterPage() {
               <Button
                 type="button"
                 onClick={() => setStep((s) => s - 1)}
-                className="h-[56px] px-5 rounded-full font-bold border border-white/50 bg-white/40 backdrop-blur-sm hover:bg-white/60 text-[#6F6F6F] active:scale-[0.98] transition-all shadow-sm"
+                className="h-[clamp(48px,14.25vw,64px)] px-5 rounded-full font-bold border border-white/50 bg-white/40 backdrop-blur-sm hover:bg-white/60 text-[#6F6F6F] active:scale-[0.98] transition-all shadow-sm"
               >
                 <ChevronLeft className="w-5 h-5" />
               </Button>
@@ -504,7 +504,7 @@ export default function RegisterPage() {
               type="button"
               onClick={goNext}
               disabled={loading || !isCurrentStepValid}
-              className="flex-1 h-[56px] rounded-full font-bold text-base border-0 shadow-md transition-all duration-300 gradient-coral-pill"
+              className="flex-1 h-[clamp(48px,14.25vw,64px)] rounded-full font-bold text-base border-0 shadow-md transition-all duration-300 gradient-coral-pill"
             >
               {loading ? (
                 <span className="flex items-center gap-2">

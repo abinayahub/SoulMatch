@@ -142,7 +142,7 @@ export default function JournalsManagement() {
 
             {/* Filters */}
             <div className="bg-card border border-border shadow-md rounded-2xl p-4 rounded-2xl border border-white/5 flex flex-wrap items-center gap-4">
-              <div className="relative flex-1 min-w-[200px]">
+              <div className="relative flex-1 min-w-[clamp(170px,50.89vw,230px)]">
                 <Search className="absolute z-10 left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#707070]" />
                 <Input 
                   placeholder="Search stories by title or user..." 
@@ -153,7 +153,7 @@ export default function JournalsManagement() {
               </div>
               
               <Select value={typeFilter} onValueChange={(v) => { setTypeFilter(v); setPage(1); }}>
-                <SelectTrigger className="w-[120px] bg-card/5 border-white/10 rounded-xl text-sm">
+                <SelectTrigger className="w-[clamp(102px,30.53vw,138px)] bg-card/5 border-white/10 rounded-xl text-sm">
                   <SelectValue placeholder="All Types" />
                 </SelectTrigger>
                 <SelectContent>
@@ -164,7 +164,7 @@ export default function JournalsManagement() {
               </Select>
               
               <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v); setPage(1); }}>
-                <SelectTrigger className="w-[120px] bg-card/5 border-white/10 rounded-xl text-sm">
+                <SelectTrigger className="w-[clamp(102px,30.53vw,138px)] bg-card/5 border-white/10 rounded-xl text-sm">
                   <SelectValue placeholder="All Status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -176,7 +176,7 @@ export default function JournalsManagement() {
               </Select>
               
               <Select value={visFilter} onValueChange={(v) => { setVisFilter(v); setPage(1); }}>
-                <SelectTrigger className="w-[120px] bg-card/5 border-white/10 rounded-xl text-sm">
+                <SelectTrigger className="w-[clamp(102px,30.53vw,138px)] bg-card/5 border-white/10 rounded-xl text-sm">
                   <SelectValue placeholder="All Visibility" />
                 </SelectTrigger>
                 <SelectContent>
@@ -234,7 +234,7 @@ export default function JournalsManagement() {
                                 <div className="w-full h-full flex items-center justify-center bg-[#F6A8B7]/20"><BookOpen className="w-4 h-4 text-[#F6A8B7]" /></div>
                               )}
                             </div>
-                            <div className="max-w-[200px]">
+                            <div className="max-w-[clamp(170px,50.89vw,230px)]">
                               <div className="text-sm font-medium truncate">{journal.content.split('\n')[0] || "Untitled Story"}</div>
                               <div className="text-xs text-[#707070] truncate">{journal.content.length > 50 ? journal.content.substring(0, 50) + "..." : journal.content}</div>
                             </div>
@@ -248,12 +248,12 @@ export default function JournalsManagement() {
                             </Avatar>
                             <div>
                               <div className="text-sm font-medium leading-none">{journal.author.name}</div>
-                              <div className="text-[10px] text-[#707070] mt-1">{journal.author.location}</div>
+                              <div className="text-[clamp(9px,2.54vw,12px)] text-[#707070] mt-1">{journal.author.location}</div>
                             </div>
                           </div>
                         </TableCell>
                         <TableCell>
-                          <Badge variant="outline" className={`bg-transparent border-white/10 text-[10px] font-normal px-2 ${journal.type === 'Success Story' ? 'text-green-400 border-green-500/30 bg-green-500/10' : 'text-[#F6A8B7] border-[#F6A8B7]/30 bg-[#F6A8B7]/10'}`}>
+                          <Badge variant="outline" className={`bg-transparent border-white/10 text-[clamp(9px,2.54vw,12px)] font-normal px-2 ${journal.type === 'Success Story' ? 'text-green-400 border-green-500/30 bg-green-500/10' : 'text-[#F6A8B7] border-[#F6A8B7]/30 bg-[#F6A8B7]/10'}`}>
                             {journal.type}
                           </Badge>
                         </TableCell>
@@ -331,7 +331,7 @@ export default function JournalsManagement() {
                   </Button>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-[#707070]">
-                  Rows per page <Select defaultValue="10"><SelectTrigger className="w-[60px] h-8 bg-transparent border-white/10"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="10">10</SelectItem></SelectContent></Select>
+                  Rows per page <Select defaultValue="10"><SelectTrigger className="w-[clamp(51px,15.27vw,69px)] h-8 bg-transparent border-white/10"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="10">10</SelectItem></SelectContent></Select>
                 </div>
               </div>
             </div>
@@ -383,12 +383,12 @@ export default function JournalsManagement() {
                       <div className="flex-1 min-w-0">
                         <div className="flex justify-between items-center mb-1">
                           <span className="text-sm font-medium truncate">{journal.author.name}</span>
-                          <span className="text-[10px] text-[#707070]">2 mins ago</span>
+                          <span className="text-[clamp(9px,2.54vw,12px)] text-[#707070]">2 mins ago</span>
                         </div>
                         <p className="text-xs text-[#707070] line-clamp-2 mb-2">
                           {journal.content}
                         </p>
-                        <div className="flex items-center gap-3 text-[10px] text-[#707070]">
+                        <div className="flex items-center gap-3 text-[clamp(9px,2.54vw,12px)] text-[#707070]">
                           <span className="flex items-center gap-1"><Heart className="w-3 h-3 text-[#F6A8B7]" /> {journal.reactions}</span>
                           <span className="flex items-center gap-1"><MessageCircle className="w-3 h-3 text-blue-400" /> {journal.comments}</span>
                         </div>
