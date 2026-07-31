@@ -52,7 +52,6 @@ import {
   Lightbulb,
   MessageCircle,
   Calendar as CalendarIcon,
-  Sparkles,
   CheckCircle2,
   Check,
   Search,
@@ -66,6 +65,11 @@ import {
   X,
   LayoutGrid,
   User,
+  Feather,
+  ArrowLeft,
+  Camera,
+  Video as VideoIcon,
+  ShieldCheck,
 } from "lucide-react";
 
 // --- API Functions ---
@@ -175,8 +179,19 @@ export default function MyStory() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showJourney, setShowJourney] = useState(false);
+  const [isComposerOpen, setIsComposerOpen] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.location.search.includes("create=true") || 
+             window.location.search.includes("compose=true") ||
+             window.location.hash.includes("compose");
+    }
+    return false;
+  });
 
   useEffect(() => {
+    if (window.location.search.includes("create=true") || window.location.search.includes("compose=true")) {
+      setIsComposerOpen(true);
+    }
     if (window.location.hash) {
       setTimeout(() => {
         const id = window.location.hash.replace("#", "");
@@ -280,11 +295,13 @@ export default function MyStory() {
 
       setContent("");
       removeImage();
+      setIsComposerOpen(false);
       toast({
         title: "Journal posted!",
         description: "Your behavior profile has been updated.",
       });
       queryClient.invalidateQueries({ queryKey: ["myJournals"] });
+      queryClient.invalidateQueries({ queryKey: ["journalFeed"] });
     } catch (e) {
       toast({
         title: "Error",
@@ -418,216 +435,248 @@ export default function MyStory() {
 
   return (
     <AppLayout>
-      <div className="min-h-screen relative overflow-x-hidden font-sans pt-4" style={{ background: 'linear-gradient(135deg, #F8F3F7 0%, #FAF1ED 35%, #F4F1FF 70%, #FFFDFC 100%)' }}>
+      <div className="min-h-screen relative overflow-x-hidden font-sans pt-4" style={{ background: 'linear-gradient(135deg, #FAF2EF 0%, #F5F0FB 50%, #FFFDFB 75%, #F7F7FA 100%)' }}>
         <div className="max-w-md mx-auto px-5 space-y-6">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md shadow-[#F6A8B7]/20" style={{ background: 'linear-gradient(135deg, #F6A8B7, #F8C7C8)' }}>
-                <BookOpen className="w-4 h-4 text-white" />
-              </div>
-              <span className="text-[clamp(14px,4.33vw,20px)] font-extrabold text-[#252525] tracking-tight">My Story</span>
-            </div>
-            <button
-              onClick={() => setShowJourney(!showJourney)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[12px] border text-[clamp(9px,2.80vw,13px)] font-bold transition-all ${
-                showJourney
-                  ? "bg-[#F6A8B7] text-white border-[#F6A8B7] shadow-md shadow-[#F6A8B7]/20"
-                  : "text-[#707070] border-white/40"
-              }`}
-              style={!showJourney ? { background: 'rgba(255,255,255,0.5)', backdropFilter: 'blur(12px)' } : undefined}
-            >
-              <Flame className="w-3.5 h-3.5" />
-              Today's Journey
-            </button>
-          </div>
-          
-          {/* Share Your Story */}
-          <div className="rounded-[28px] p-5 border border-white/35" style={{ background: 'rgba(255,255,255,0.45)', backdropFilter: 'blur(28px)', WebkitBackdropFilter: 'blur(28px)', boxShadow: '0 4px 20px rgba(246,168,183,0.12)' }}>
-          <div className="flex items-center justify-between mb-3">
-             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[#F6A8B7] text-[clamp(8px,2.29vw,10px)] font-black uppercase tracking-widest border border-[#F6A8B7]/30" style={{ background: 'rgba(246,168,183,0.15)' }}>
-                <BookOpen className="w-3 h-3 text-[#F6A8B7]" /> Share Your Story
-             </div>
-          </div>
-          <h2 className="text-[clamp(15px,4.58vw,21px)] font-extrabold text-[#252525] mb-1 leading-snug">
-             What happened today that mattered to you?
-          </h2>
-          <p className="text-xs text-[#707070] mb-3">
-             Try one of these starters:
-          </p>
-
-          <div className="grid grid-cols-2 gap-2 mb-4">
-             {[
-               { id: "family", label: "I spent time with family..." },
-               { id: "friend", label: "I helped a friend..." },
-               { id: "goals", label: "I worked on my goals..." },
-               { id: "myself", label: "I took care of myself..." },
-             ].map((s) => (
-               <button
-                 key={s.id}
-                 onClick={() => setContent(s.label.replace("...", " "))}
-                 className="px-2 py-2 rounded-full border border-white/40 text-[clamp(9px,2.67vw,12px)] text-[#707070] font-bold transition-all active:scale-95 text-center truncate whitespace-nowrap hover:bg-white/40"
-                 style={{ background: 'rgba(255,255,255,0.5)', backdropFilter: 'blur(12px)' }}
-                 title={s.label}
-               >
-                 {s.label}
-               </button>
-             ))}
-          </div>
-
-          {/* Textarea with image upload inside */}
-          <div className="relative mb-4 border border-white/40 rounded-2xl overflow-hidden transition-all focus-within:ring-1 focus-within:ring-[#F6A8B7]/50" style={{ background: 'rgba(255,255,255,0.6)', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)' }}>
-            {imagePreview && (
-              <div className="relative p-3 pb-0 group">
-                <img
-                  src={imagePreview}
-                  alt="Preview"
-                  className="w-full max-h-28 rounded-xl object-cover border border-white/30"
-                />
-                <button
-                  onClick={removeImage}
-                  className="absolute top-5 right-5 bg-black/40 backdrop-blur-sm text-white rounded-full p-1 border border-white/20"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            )}
-            <Textarea
-              placeholder="What's on your mind today? Share something meaningful from your day..."
-              className="w-full min-h-[clamp(85px,25.45vw,115px)] bg-transparent border-0 shadow-none resize-none text-[clamp(13px,3.82vw,17px)] text-[#252525] placeholder:text-[#8A8A8A] p-4 pb-2 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none focus:outline-none focus:ring-0 leading-relaxed"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            />
-            {/* Upload icon inside textarea - bottom bar */}
-            <div className="flex items-center justify-between px-4 py-2 border-t border-white/30" style={{ background: 'rgba(255,255,255,0.4)' }}>
-              <input
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-                className="hidden"
-                ref={fileInputRef}
-                onChange={handleImageSelect}
-              />
-              <button
-                className="flex items-center gap-1.5 text-[#707070] hover:text-[#F6A8B7] transition-colors group/btn"
-                onClick={() => fileInputRef.current?.click()}
-                title="Add photo"
-              >
-                <div className="w-5.5 h-5.5 p-1 rounded-lg border border-white/40 flex items-center justify-center group-hover/btn:bg-[#F6A8B7]/10 group-hover/btn:border-[#F6A8B7]/30 transition-all" style={{ background: 'rgba(255,255,255,0.5)' }}>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3 text-[#707070] group-hover/btn:text-[#F6A8B7]">
-                    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
-                    <circle cx="12" cy="13" r="3"/>
-                  </svg>
+          {/* Header */}
+          <div className="mb-4">
+            <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md shadow-[#F6A8B7]/20" style={{ background: 'linear-gradient(135deg, #F6A8B7, #F8C7C8)' }}>
+                  <BookOpen className="w-4 h-4 text-white" />
                 </div>
-                <span className="text-[clamp(9px,2.67vw,12px)] font-bold">Add Photo</span>
+                <span className="text-[clamp(18px,5vw,24px)] font-black text-[#252525] tracking-tight">Stories</span>
+              </div>
+              <button
+                onClick={() => setShowJourney(!showJourney)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[12px] border text-[clamp(9px,2.80vw,13px)] font-bold transition-all ${
+                  showJourney
+                    ? "bg-[#F6A8B7] text-white border-[#F6A8B7] shadow-md shadow-[#F6A8B7]/20"
+                    : "text-[#707070] border-white/40"
+                }`}
+                style={!showJourney ? { background: 'rgba(255,255,255,0.5)', backdropFilter: 'blur(12px)' } : undefined}
+              >
+                <Flame className="w-3.5 h-3.5" />
+                Today's Journey
               </button>
-              <span className="text-[clamp(9px,2.54vw,12px)] font-black text-[#8A8A8A] tracking-wider">
-                {content.length}/1000
-              </span>
             </div>
           </div>
 
-          <button
-            onClick={handlePost}
-            disabled={(!content.trim() && !imageFile) || isPosting}
-            className="w-full text-white rounded-full h-[clamp(41px,12.21vw,55px)] font-bold text-[clamp(13px,3.82vw,17px)] transition-transform active:scale-[0.98] border border-white/40 disabled:opacity-50 flex items-center justify-center gradient-coral-pill"
-          >
-            {isPosting ? "Posting..." : "Post Story"}
-            <Send className="w-4 h-4 ml-2" />
-          </button>
-        </div>
+          {/* 1. YOUR STORY CARD (Always Share Story Action) */}
+          {(() => {
+            return (
+              <div 
+                onClick={() => setIsComposerOpen(true)}
+                className="w-full rounded-[24px] p-4.5 border border-[#F8D6DD]/40 shadow-[0_10px_30px_rgba(246,168,183,0.08)] cursor-pointer active:scale-[0.99] transition-all relative overflow-hidden group mb-6 backdrop-blur-xl"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,240,245,0.4) 100%)',
+                }}
+              >
+                <div className="flex items-center gap-4">
+                  {/* Left Feather Icon Box with + badge */}
+                  <div className="w-14 h-14 rounded-[20px] bg-[#F6A8B7]/10 flex items-center justify-center shrink-0 relative border border-[#F6A8B7]/30 shadow-2xs">
+                    <Feather className="w-6 h-6 text-[#F6A8B7]" />
+                    <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-white border-2 border-white flex items-center justify-center text-[#F6A8B7] text-xs font-black shadow-2xs">
+                      +
+                    </div>
+                  </div>
 
-        {/* Recent Stories */}
-        <div className="rounded-[28px] p-6 border border-white/35" style={{ background: 'rgba(255,255,255,0.45)', backdropFilter: 'blur(28px)', WebkitBackdropFilter: 'blur(28px)', boxShadow: '0 4px 20px rgba(246,168,183,0.12)' }}>
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-[#252525] font-extrabold text-[clamp(15px,4.58vw,21px)]">
-              Recent stories
-            </h3>
-            <span className="text-[clamp(10px,3.05vw,14px)] text-[#707070] font-semibold">
-               {myJournals.length} {myJournals.length === 1 ? 'story' : 'stories'}
-            </span>
-          </div>
-
-          <div className="space-y-2">
-            {myJournals.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-6 px-4 text-center">
-                 {/* Book icon */}
-                 <div className="w-12 h-12 text-[#707070]/30 mb-3 flex items-center justify-center">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-10 h-10">
-                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-                    </svg>
-                 </div>
-                 <h4 className="text-[clamp(13px,3.82vw,17px)] font-extrabold text-[#252525] mb-2">No stories yet</h4>
-                 <p className="text-xs text-[#707070] max-w-[clamp(221px,66.16vw,299px)] leading-relaxed mb-5 font-medium">
-                    Your first story builds your personality profile and helps us find people who truly match your values and lifestyle.
-                 </p>
-                 <button 
-                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
-                    className="border border-[#F6A8B7]/40 hover:bg-[#F6A8B7]/10 text-[#F6A8B7] rounded-full px-5 py-2.5 text-xs font-bold transition-all active:scale-95 bg-transparent"
-                 >
-                    Write your first story
-                 </button>
+                  {/* Right Content */}
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-base sm:text-lg font-extrabold text-[#252525] leading-tight">Your Story</h3>
+                    <p className="text-xs sm:text-sm text-[#707070] font-medium leading-normal truncate">
+                      Share what's on your mind today
+                    </p>
+                    <span className="text-xs sm:text-sm font-bold text-[#F6A8B7] mt-0.5 block group-hover:underline">
+                      Tap to create your story
+                    </span>
+                  </div>
+                </div>
               </div>
-            ) : (
-              <>
-                {todayStories.length > 0 && (
-                  <div className="mb-8">
-                    <h4 className="text-[#707070] text-[clamp(9px,2.80vw,13px)] font-extrabold uppercase tracking-widest mb-4 px-1">
-                      Today
-                    </h4>
-                    {todayStories.map((journal: any) => (
-                      <StoryCard
-                        key={journal.id}
-                        journal={journal}
-                        onDelete={handleDelete}
-                      />
-                    ))}
-                  </div>
-                )}
-                {yesterdayStories.length > 0 && (
-                  <div className="mb-8">
-                    <h4 className="text-[#707070] text-[clamp(9px,2.80vw,13px)] font-extrabold uppercase tracking-widest mb-4 px-1">
-                      Yesterday
-                    </h4>
-                    {yesterdayStories.map((journal: any) => (
-                      <StoryCard
-                        key={journal.id}
-                        journal={journal}
-                        onDelete={handleDelete}
-                      />
-                    ))}
-                  </div>
-                )}
-                {earlierStories.length > 0 && (
-                  <div className="mb-6">
-                    <h4 className="text-[#707070] text-[clamp(9px,2.80vw,13px)] font-extrabold uppercase tracking-widest mb-4 px-1">
-                      Earlier
-                    </h4>
-                    {earlierStories.map((journal: any) => (
-                      <StoryCard
-                        key={journal.id}
-                        journal={journal}
-                        onDelete={handleDelete}
-                      />
-                    ))}
-                  </div>
-                )}
+            );
+          })()}
 
-                {myJournals.length > 4 && (
-                  <div className="pt-4 text-center border-t border-white/30 mt-4">
-                    <Link href="/story-archive">
-                      <Button
-                        variant="outline"
-                        className="w-full bg-transparent border-white/40 text-[#252525] rounded-[20px] hover:bg-white/40 transition-colors h-[clamp(51px,15.27vw,69px)] font-bold text-[clamp(14px,4.07vw,18px)]"
-                        style={{ background: 'rgba(255,255,255,0.4)', backdropFilter: 'blur(12px)' }}
-                      >
-                        View All Stories Archive
-                      </Button>
-                    </Link>
+          {/* 2. STORIES FROM CONNECTIONS (Portrait Rectangular Cards) */}
+          <div className="w-full mb-6 select-none">
+            <div className="flex items-center justify-between mb-3 px-0.5">
+              <h3 className="text-[#252525] font-extrabold text-sm sm:text-base">
+                Stories from connections
+              </h3>
+            </div>
+
+            <div 
+              className="flex items-center gap-3.5 overflow-x-auto no-scrollbar scroll-smooth py-1 px-0.5"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {/* 1. Your Story Portrait Card */}
+              {(() => {
+                const hasPostedToday = todayStories.length > 0;
+                const userPhoto = user?.photos?.[0]?.url || myJournals?.[0]?.imageUrl || undefined;
+
+                return (
+                  <div 
+                    onClick={() => {
+                      if (hasPostedToday) {
+                        setSelectedJournal(todayStories[0]);
+                      } else {
+                        setIsComposerOpen(true);
+                      }
+                    }}
+                    className={`w-[96px] h-[152px] rounded-[18px] shrink-0 relative overflow-hidden cursor-pointer active:scale-95 transition-all group shadow-md ${
+                      hasPostedToday
+                        ? "border-2 border-[#F6A8B7] shadow-[0_4px_16px_rgba(246,168,183,0.18)]"
+                        : "border-2 border-dashed border-[#F6A8B7]/70 bg-[#FFF0F3]"
+                    }`}
+                  >
+                    {/* User Background Image */}
+                    {userPhoto ? (
+                      <img 
+                        src={userPhoto} 
+                        alt="Your Story" 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-[#FFF0F3] to-[#FCE4EC] flex items-center justify-center">
+                        <User className="w-9 h-9 text-[#F6A8B7]" />
+                      </div>
+                    )}
+
+                    {/* Dark Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent p-2.5 flex flex-col justify-between">
+                      {/* Top Action Badge */}
+                      <div className="flex justify-end">
+                        {!hasPostedToday ? (
+                          <div className="w-6 h-6 rounded-full bg-[#F6A8B7] border-2 border-white flex items-center justify-center text-white text-xs font-black shadow-2xs">
+                            +
+                          </div>
+                        ) : (
+                          <div className="w-2.5 h-2.5 rounded-full bg-[#F6A8B7] border border-white shadow-2xs" />
+                        )}
+                      </div>
+
+                      {/* Bottom Info */}
+                      <div>
+                        <span className="text-[12px] font-bold text-white leading-tight block truncate drop-shadow-sm">
+                          Your Story
+                        </span>
+                        <span className="text-[10px] font-semibold text-white/80 block leading-tight">
+                          {hasPostedToday ? "Active" : "Add story"}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                )}
-              </>
-            )}
+                );
+              })()}
+
+              {/* 2. Connected Users' Story Cards */}
+              {(() => {
+                const feedJournals = Array.isArray(feedData) ? feedData : (feedData as any)?.journals || [];
+                
+                const userStoriesMap = new Map<number, any>();
+                feedJournals.forEach((j: any) => {
+                  if (j.user && j.user.id && !userStoriesMap.has(j.user.id)) {
+                    userStoriesMap.set(j.user.id, j);
+                  }
+                });
+
+                const userStories = Array.from(userStoriesMap.values());
+
+                if (userStories.length === 0) {
+                  return (
+                    <div className="w-[96px] h-[152px] rounded-[18px] shrink-0 border border-dashed border-[#F6A8B7]/30 bg-white/40 p-3 flex flex-col items-center justify-center text-center gap-1.5 shadow-2xs">
+                      <div className="w-8 h-8 rounded-full bg-[#F6A8B7]/10 flex items-center justify-center text-[#F6A8B7]">
+                        <Users className="w-4 h-4" />
+                      </div>
+                      <span className="text-[10px] font-bold text-[#707070] leading-snug">
+                        No connection stories today
+                      </span>
+                    </div>
+                  );
+                }
+
+                return userStories.map((j: any) => {
+                  const firstName = j.user.firstName || j.user.displayName || "User";
+                  const avatar = j.user.photos?.[0]?.url || j.imageUrl || "/blurred-avatar.png";
+                  const date = new Date(j.createdAt);
+                  const now = new Date();
+                  const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
+                  let timeAgo = "Just now";
+                  if (diffInMinutes >= 60) {
+                    const hours = Math.floor(diffInMinutes / 60);
+                    timeAgo = `${hours}h ago`;
+                  } else if (diffInMinutes > 0) {
+                    timeAgo = `${diffInMinutes}m ago`;
+                  }
+
+                  return (
+                    <div
+                      key={j.id}
+                      onClick={() => setSelectedJournal(j)}
+                      className="w-[96px] h-[152px] rounded-[18px] shrink-0 relative overflow-hidden cursor-pointer active:scale-95 transition-all group shadow-md border-2 border-[#F6A8B7] shadow-[0_4px_14px_rgba(246,168,183,0.15)]"
+                    >
+                      {/* Background Image */}
+                      <img 
+                        src={avatar} 
+                        alt={firstName} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+                      />
+
+                      {/* Gradient Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent p-2.5 flex flex-col justify-between">
+                        {/* Top Indicator */}
+                        <div className="flex justify-between items-center">
+                          <span className="px-1.5 py-0.5 rounded-full bg-[#F6A8B7] backdrop-blur-xs text-[8px] font-black uppercase text-white tracking-wider">
+                            NEW
+                          </span>
+                          <div className="w-2.5 h-2.5 rounded-full bg-[#F6A8B7] border border-white shadow-2xs" />
+                        </div>
+
+                        {/* Bottom Label */}
+                        <div>
+                          <span className="text-[12px] font-bold text-white leading-tight block truncate drop-shadow-sm">
+                            {firstName}
+                          </span>
+                          <span className="text-[10px] font-medium text-white/80 block leading-tight">
+                            {timeAgo}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                });
+              })()}
+            </div>
           </div>
-        </div>
+
+
+          {/* 3. MY STORY JOURNAL LINK CARD */}
+          <div className="w-full mb-6">
+            <Link href="/story-archive">
+              <div 
+                className="w-full rounded-[24px] p-4.5 border border-[#F8D6DD]/40 cursor-pointer active:scale-[0.99] transition-all relative overflow-hidden group backdrop-blur-xl shadow-[0_10px_30px_rgba(246,168,183,0.08)]"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,240,245,0.4) 100%)',
+                }}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 rounded-[20px] bg-[#F6A8B7]/10 flex items-center justify-center shrink-0 border border-[#F6A8B7]/30 shadow-2xs">
+                      <BookOpen className="w-6 h-6 text-[#F6A8B7]" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-extrabold text-[#252525] leading-snug">My Story Journal</h3>
+                      <p className="text-xs text-[#707070] font-medium leading-normal">
+                        View your previous stories and memories
+                      </p>
+                    </div>
+                  </div>
+                  <div className="w-9 h-9 rounded-full bg-white/70 backdrop-blur-md flex items-center justify-center text-[#707070] group-hover:text-[#F6A8B7] group-hover:scale-110 transition-all border border-[#F8D6DD]/40">
+                    <ChevronRight className="w-5 h-5" />
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </div>
+
         {/* Today's Journey - Centered Modal Popup */}
         {showJourney && ReactDOM.createPortal(
           <>
@@ -735,6 +784,322 @@ export default function MyStory() {
             </div>
             <style>{`@keyframes popIn { from { transform: scale(0.85); opacity:0; } to { transform: scale(1); opacity:1; } }`}</style>
           </>,
+          document.body
+        )}
+
+        {/* Full-Screen Dedicated "Share Your Story" Page Overlay */}
+        {isComposerOpen && ReactDOM.createPortal(
+          <div 
+            className="fixed inset-0 z-[99999] overflow-y-auto font-sans animate-in slide-in-from-bottom-5 duration-300"
+            style={{ background: 'linear-gradient(135deg, #FAF2EF 0%, #F5F0FB 50%, #FFFDFB 75%, #F7F7FA 100%)' }}
+          >
+            <div className="min-h-screen relative max-w-md mx-auto px-5 py-6 flex flex-col justify-between">
+              
+              {/* Top Header */}
+              <div>
+                <div className="flex items-center justify-between mb-5">
+                  <button 
+                    onClick={() => setIsComposerOpen(false)}
+                    className="w-10 h-10 rounded-full bg-white border border-black/5 shadow-sm flex items-center justify-center text-[#252525] hover:bg-white/80 active:scale-95 transition-all"
+                  >
+                    <ArrowLeft className="w-5 h-5" />
+                  </button>
+
+                  <div className="text-center">
+                    <h1 className="text-lg sm:text-xl font-extrabold text-[#252525] leading-tight">Share Your Story</h1>
+                    <p className="text-xs text-[#707070] font-medium mt-0.5">Your moment. Your story.</p>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#FF477E]/20 bg-[#FF7E95]/10 text-[#FF477E] text-xs font-bold shadow-2xs">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    <span>Private</span>
+                  </div>
+                </div>
+
+                {/* Progress Steps Indicator */}
+                <div className="flex items-center justify-center gap-4 my-6">
+                  {/* Step 1: Write */}
+                  <div className="flex flex-col items-center gap-1">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-all ${
+                      content.trim() || !imageFile ? "bg-[#FF477E] text-white shadow-md shadow-[#FF477E]/30" : "bg-black/5 text-[#707070]"
+                    }`}>
+                      1
+                    </div>
+                    <span className={`text-xs font-bold ${content.trim() ? "text-[#FF477E]" : "text-[#707070]"}`}>
+                      Write
+                    </span>
+                  </div>
+
+                  <div className="w-10 h-[2px] bg-black/10 -mt-4" />
+
+                  {/* Step 2: Add Media */}
+                  <div className="flex flex-col items-center gap-1">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-all ${
+                      imageFile ? "bg-[#FF477E] text-white shadow-md shadow-[#FF477E]/30" : "bg-black/5 text-[#707070]"
+                    }`}>
+                      2
+                    </div>
+                    <span className={`text-xs font-bold ${imageFile ? "text-[#FF477E]" : "text-[#707070]"}`}>
+                      Add Media
+                    </span>
+                  </div>
+
+                  <div className="w-10 h-[2px] bg-black/10 -mt-4" />
+
+                  {/* Step 3: Post */}
+                  <div className="flex flex-col items-center gap-1">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-all ${
+                      isPosting ? "bg-[#FF477E] text-white shadow-md shadow-[#FF477E]/30" : "bg-black/5 text-[#707070]"
+                    }`}>
+                      3
+                    </div>
+                    <span className="text-xs font-bold text-[#707070]">
+                      Post
+                    </span>
+                  </div>
+                </div>
+
+                {/* Main Content Card */}
+                <div className="bg-white border border-black/5 rounded-[28px] p-5 shadow-xl shadow-[#F6A8B7]/15 space-y-4 mb-5">
+                  
+                  {/* Title Box */}
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 rounded-2xl bg-[#FF477E]/10 border border-[#FF477E]/20 flex items-center justify-center shrink-0 mt-0.5">
+                      <BookOpen className="w-5 h-5 text-[#FF477E]" />
+                    </div>
+                    <div>
+                      <h2 className="text-base sm:text-lg font-extrabold text-[#252525] leading-snug">
+                        {todayPrompt || "What happened today that mattered to you?"}
+                      </h2>
+                      <p className="text-xs text-[#707070] font-medium mt-0.5">
+                        Try one of these starters:
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Prompt Chips */}
+                  <div className="grid grid-cols-2 gap-2">
+                    {[
+                      { id: "family", label: "I spent time with family..." },
+                      { id: "friend", label: "I helped a friend..." },
+                      { id: "goals", label: "I worked on my goals..." },
+                      { id: "myself", label: "I took care of myself..." },
+                    ].map((s) => (
+                      <button
+                        key={s.id}
+                        onClick={() => setContent(s.label.replace("...", " "))}
+                        className="px-3 py-2.5 rounded-full border border-black/5 text-xs text-[#707070] font-bold transition-all active:scale-95 text-center truncate whitespace-nowrap bg-[#FAF4F6]/50 hover:bg-white hover:border-[#FF477E]/30 shadow-2xs"
+                        title={s.label}
+                      >
+                        {s.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Textarea Input Card */}
+                  <div className="relative border border-[#F6A8B7]/50 rounded-[20px] overflow-hidden bg-white shadow-2xs transition-all focus-within:border-[#FF477E] focus-within:ring-2 focus-within:ring-[#FF477E]/20 focus-within:shadow-[0_0_16px_rgba(255,71,126,0.15)]">
+                    {imagePreview && (
+                      <div className="relative p-3.5 pb-0 group">
+                        <img
+                          src={imagePreview}
+                          alt="Preview"
+                          className="w-full max-h-36 rounded-xl object-cover border border-black/5"
+                        />
+                        <button
+                          onClick={removeImage}
+                          className="absolute top-5 right-5 bg-black/60 backdrop-blur-sm text-white rounded-full p-1 border border-white/20"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    )}
+                    <textarea
+                      placeholder="What's on your mind today? Share something meaningful from your day..."
+                      spellCheck={false}
+                      value={content}
+                      onChange={(e) => setContent(e.target.value)}
+                      className="story-textarea w-full bg-transparent text-sm sm:text-base text-[#252525] placeholder:text-[#9E9E9E] leading-relaxed block"
+                      style={{
+                        outline: 'none',
+                        border: 'none',
+                        boxShadow: 'none',
+                        resize: 'none',
+                        borderRadius: '0',
+                        minHeight: '145px',
+                        padding: '16px 20px',
+                        WebkitAppearance: 'none',
+                        MozAppearance: 'none',
+                        appearance: 'none'
+                      }}
+                    />
+                    <div className="flex items-center justify-between px-4 sm:px-5 py-3 border-t border-black/5 bg-black/[0.01]">
+                      <button
+                        onClick={() => fileInputRef.current?.click()}
+                        className="flex items-center gap-1.5 text-xs font-bold text-[#707070] hover:text-[#FF477E] transition-colors"
+                      >
+                        <ImageIcon className="w-4 h-4 text-[#FF477E]" />
+                        <span>Add Photo</span>
+                      </button>
+                      <span className="text-xs font-extrabold text-[#9E9E9E] tracking-wider">
+                        {content.length}/1000
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Media Section */}
+                  <div className="border-2 border-dashed border-[#F6A8B7]/60 rounded-2xl p-5 bg-[#FFF0F3]/40 text-center flex flex-col items-center gap-2">
+                    <div className="w-11 h-11 rounded-2xl bg-[#FF477E]/10 flex items-center justify-center text-[#FF477E]">
+                      <ImageIcon className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-extrabold text-[#252525]">Add a photo or video (optional)</h4>
+                      <p className="text-xs text-[#707070] font-medium mt-0.5 max-w-[260px] mx-auto">Share a moment, a place, or something that made your day special.</p>
+                    </div>
+
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp,video/mp4"
+                      className="hidden"
+                      ref={fileInputRef}
+                      onChange={handleImageSelect}
+                    />
+
+                    <div className="flex items-center justify-center gap-3 mt-1">
+                      <button
+                        onClick={() => fileInputRef.current?.click()}
+                        className="px-5 py-2 rounded-full bg-white border border-black/10 text-xs font-bold text-[#FF477E] flex items-center gap-1.5 shadow-2xs hover:bg-[#FFF0F3] active:scale-95 transition-all"
+                      >
+                        <Camera className="w-3.5 h-3.5" /> Photo
+                      </button>
+                      <button
+                        onClick={() => fileInputRef.current?.click()}
+                        className="px-5 py-2 rounded-full bg-white border border-black/10 text-xs font-bold text-[#FF477E] flex items-center gap-1.5 shadow-2xs hover:bg-[#FFF0F3] active:scale-95 transition-all"
+                      >
+                        <VideoIcon className="w-3.5 h-3.5" /> Video
+                      </button>
+                    </div>
+                  </div>
+
+
+
+                </div>
+              </div>
+
+              {/* Bottom Post Button */}
+              <div className="pt-2 pb-4">
+                <button
+                  onClick={handlePost}
+                  disabled={(!content.trim() && !imageFile) || isPosting}
+                  className="w-full text-white rounded-full h-13 font-extrabold text-base transition-transform active:scale-[0.98] border border-white/40 disabled:opacity-50 flex items-center justify-center gradient-coral-pill shadow-lg shadow-[#FF477E]/25 gap-2"
+                >
+                  <span>{isPosting ? "Posting..." : "Post Story"}</span>
+                  <Send className="w-4.5 h-4.5 ml-1" />
+                </button>
+              </div>
+
+            </div>
+          </div>,
+          document.body
+        )}
+
+        {/* Instagram-Style Mobile-Framed Story Viewer Modal */}
+        {selectedJournal && ReactDOM.createPortal(
+          <div 
+            onClick={() => setSelectedJournal(null)}
+            className="fixed inset-0 z-[99999] bg-black/90 backdrop-blur-2xl flex items-center justify-center p-0 sm:p-4 overflow-hidden select-none animate-in fade-in duration-200"
+          >
+            {/* Centered Mobile Phone Frame Container (Max-width 420px on Desktop) */}
+            <div 
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-[420px] h-full sm:h-[90vh] sm:max-h-[860px] sm:rounded-[36px] bg-slate-950 flex flex-col justify-between relative overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.8)] border border-white/10"
+            >
+              {/* Top Progress Bar & Header */}
+              <div className="absolute top-0 left-0 right-0 p-4 z-20 bg-gradient-to-b from-black/85 via-black/40 to-transparent pt-3">
+                {/* Progress Bar Line */}
+                <div className="h-1 w-full bg-white/30 rounded-full overflow-hidden mb-3">
+                  <div className="h-full bg-white rounded-full w-full animate-[progress_5s_linear]" />
+                </div>
+                
+                {/* User Info Header */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full overflow-hidden border border-white/50 bg-slate-800 shrink-0 shadow-md">
+                      <img 
+                        src={selectedJournal.user?.photos?.[0]?.url || selectedJournal.imageUrl || user?.photos?.[0]?.url || "/blurred-avatar.png"} 
+                        alt="User" 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div>
+                      <h4 className="text-white font-extrabold text-sm drop-shadow-md leading-tight">
+                        {selectedJournal.user?.firstName || (selectedJournal.userId === user?.id ? "You" : user?.firstName || "Your Story")}
+                      </h4>
+                      <p className="text-white/80 text-xs font-medium flex items-center gap-1 mt-0.5">
+                        <span>{selectedJournal.createdAt ? format(new Date(selectedJournal.createdAt), "h:mm a") : "Just now"}</span>
+                        <span>•</span>
+                        <Lock className="w-3 h-3 text-white/80" />
+                        <span>Private</span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <button 
+                    onClick={() => setSelectedJournal(null)} 
+                    className="w-9 h-9 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white flex items-center justify-center hover:bg-black/60 active:scale-95 transition-all shadow-md"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Main Story Image / Text Content */}
+              <div className="relative flex-1 w-full h-full flex items-center justify-center bg-slate-950 overflow-hidden">
+                {selectedJournal.imageUrl ? (
+                  <img 
+                    src={selectedJournal.imageUrl} 
+                    alt="Story" 
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full p-8 flex flex-col items-center justify-center text-center bg-gradient-to-br from-[#FF7E95] via-[#FF477E] to-[#FF8FA3]">
+                    <p className="text-white font-extrabold text-xl sm:text-2xl leading-relaxed drop-shadow-lg max-w-xs px-2">
+                      "{selectedJournal.content}"
+                    </p>
+                  </div>
+                )}
+
+                {/* Caption Overlay for Image Stories */}
+                {selectedJournal.imageUrl && selectedJournal.content && (
+                  <div className="absolute bottom-20 left-0 right-0 p-5 bg-gradient-to-t from-black/90 via-black/50 to-transparent text-white">
+                    <p className="text-white font-semibold text-sm sm:text-base leading-snug drop-shadow-md">
+                      {selectedJournal.content}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Bottom Story Controls (Message, Like, Send) */}
+              <div className="absolute bottom-0 left-0 right-0 p-4 z-20 flex items-center gap-2.5 bg-gradient-to-t from-black/90 via-black/50 to-transparent pb-5">
+                <input 
+                  type="text" 
+                  placeholder="Send message..." 
+                  className="flex-1 h-11 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white placeholder:text-white/70 px-4 text-sm focus:outline-none focus:ring-1 focus:ring-white/50"
+                />
+                <button 
+                  onClick={() => toast({ title: "Reaction sent", description: "Liked this story ❤️" })}
+                  className="w-11 h-11 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center active:scale-90 transition-transform shrink-0"
+                >
+                  <Heart className="w-5 h-5 text-white fill-white/20" />
+                </button>
+                <button 
+                  onClick={() => toast({ title: "Shared", description: "Story shared to chat" })}
+                  className="w-11 h-11 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center active:scale-90 transition-transform shrink-0"
+                >
+                  <Send className="w-5 h-5 text-white" />
+                </button>
+              </div>
+            </div>
+          </div>,
           document.body
         )}
 

@@ -95,6 +95,17 @@
 }
 
 
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
 /* DARK MODE */
 :root, .dark {
   --button-outline: rgba(146, 30, 18, .10);
@@ -240,7 +251,7 @@
     background-attachment: fixed !important;
   }
 
-  input[type="text"], input[type="email"], input[type="password"], input[type="tel"], input[type="date"], input[type="search"], select, textarea, .auth-input {
+  input[type="text"], input[type="email"], input[type="password"], input[type="tel"], input[type="date"], input[type="search"], select, .auth-input {
     border-radius: 9999px !important;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
@@ -252,11 +263,46 @@
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
-  input:focus, select:focus, textarea:focus {
+  input:focus, select:focus {
     background: rgba(255, 255, 255, 0.65) !important;
     border-color: #E5772E !important;
     box-shadow: 0 0 0 3px rgba(229, 119, 46, 0.25) !important;
     outline: none !important;
+  }
+
+  textarea,
+  .story-textarea,
+  .story-textarea:focus,
+  .story-textarea:focus-visible {
+    border-radius: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    color: #252525 !important;
+  }
+
+  /* ─── Chat Search Bar Override ───────────────────────────────────────
+     Neutralise every global input decoration so the search input is
+     completely transparent inside its parent container.  No second
+     rounded rectangle, no orange / pink border, no box-shadow.           */
+  .chat-search-input,
+  .chat-search-input:focus,
+  .chat-search-input:focus-visible {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    color: #252525 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
 
   button.w-full, button[type="submit"], button.h-11, button.h-12, button.h-10, button.px-6, button.px-8, .btn-primary, .btn-secondary {

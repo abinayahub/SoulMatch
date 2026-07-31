@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { motion } from "framer-motion";
-import { Sparkles, Check } from "lucide-react";
+import { Sparkles, Check, ChevronRight, Lock } from "lucide-react";
 
 const COMMON_INTERESTS = [
   "Reading", "Traveling", "Cooking", "Photography", 
@@ -37,27 +37,29 @@ export function PreferencesForm({ p, onSave, onCancel, hasPrevious, isPending }:
   };
 
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="premium-glass-card rounded-[24px] p-4 sm:p-6 mb-4 border border-white/50">
-      <div className="mb-5 border-b border-white/40 pb-3 text-center">
-        <h2 className="text-[clamp(17px,5.09vw,23px)] sm:text-[22px] font-black mb-2 text-[#4A3B3B]">Your Interests</h2>
-        <p className="text-[#8A7A7A] text-xs">Tell us about your hobbies and passions.</p>
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-[28px] p-6 sm:p-8 mb-4 border border-[#F8D6DD] shadow-[0_12px_40px_rgba(255,143,168,0.12)]">
+      <div className="mb-6 pb-4 border-b border-[#F8D6DD]/50">
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1E1E1E] tracking-tight mb-1">Your Interests</h2>
+        <p className="text-sm text-[#6D6D6D] font-normal">Tell us about your hobbies and passions.</p>
       </div>
 
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
         
         <div className="space-y-2">
-          <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">What do you like to do? <span className="text-[#FF7A7A]">*</span></Label>
+          <Label className="text-sm font-bold text-[#1E1E1E] ml-0.5">
+            What do you like to do? <span className="text-[#FF8FA8]">*</span>
+          </Label>
           <div className="relative">
-            <Sparkles className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C8B8B8]" />
+            <Sparkles className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#FF8FA8]" />
             <Input 
-              className={`h-[clamp(43px,12.72vw,57px)] pl-10 text-[clamp(13px,3.82vw,17px)] text-[#252525] placeholder:text-[#B8A8A8] focus-visible:ring-[#FF9A9A]/50 bg-white/60 ${form.formState.errors.interests ? "border-red-500" : "border-white/50"}`} 
+              className={`h-14 pl-11 text-sm sm:text-base font-medium text-[#1E1E1E] placeholder:text-[#6D6D6D]/40 focus-visible:ring-2 focus-visible:ring-[#FF8FA8]/30 focus-visible:border-[#FF8FA8] bg-white rounded-[18px] ${form.formState.errors.interests ? "border-red-500" : "border-[#F4DCE3]"}`} 
               placeholder="e.g. Reading, Traveling, Cooking" 
               {...form.register("interests", { required: "At least one interest is required" })} 
             />
           </div>
-          <p className="text-[clamp(9px,2.54vw,12px)] text-[#8A7A7A] ml-1">Type your interests separated by commas, or select from below.</p>
+          <p className="text-xs text-[#6D6D6D] ml-1">Type your interests separated by commas, or select from below.</p>
           
-          <div className="flex flex-wrap gap-1.5 pt-1">
+          <div className="flex flex-wrap gap-2 pt-2">
             {COMMON_INTERESTS.map(interest => {
               const isActive = currentInterestsStr.includes(interest);
               return (
@@ -65,9 +67,9 @@ export function PreferencesForm({ p, onSave, onCancel, hasPrevious, isPending }:
                   key={interest}
                   type="button"
                   onClick={() => toggleInterest(interest)}
-                  className={`px-3 py-1.5 rounded-full text-[clamp(10px,3.05vw,14px)] font-bold transition-all border ${isActive ? 'bg-[#FF9A9A] text-white border-[#FF9A9A]' : 'bg-white/40 text-[#8A7A7A] border-white/50 hover:bg-white/80'}`}
+                  className={`h-10 px-4 rounded-full text-xs sm:text-sm font-bold transition-all border flex items-center gap-1.5 active:scale-[0.98] ${isActive ? 'bg-gradient-to-r from-[#FF9CB3] to-[#FF7E9C] text-white border-transparent shadow-[0_2px_10px_rgba(255,126,156,0.25)]' : 'bg-white text-[#6D6D6D] border-[#F4DCE3] hover:border-[#FF8FA8]'}`}
                 >
-                  {isActive && <Check className="w-3 h-3 inline-block mr-1" />}
+                  {isActive && <Check className="w-3.5 h-3.5 text-white" strokeWidth={3} />}
                   {interest}
                 </button>
               );
@@ -80,13 +82,20 @@ export function PreferencesForm({ p, onSave, onCancel, hasPrevious, isPending }:
         {/* Action Buttons */}
         <div className="pt-4 flex gap-3">
           {hasPrevious && (
-            <button type="button" onClick={onCancel} className="w-1/3 h-14 text-[clamp(13px,3.82vw,17px)] font-bold rounded-full border border-white/40 text-[#8A7A7A] bg-white/50 hover:bg-white/80 transition-transform active:scale-[0.98]">
+            <button type="button" onClick={onCancel} className="w-1/3 h-14 text-sm sm:text-base font-bold rounded-full border border-[#F8D6DD] text-[#6D6D6D] bg-[#FFE6EC]/50 hover:bg-[#FFE6EC] transition-transform active:scale-[0.98]">
               Previous
             </button>
           )}
-          <button type="submit" disabled={isPending} className="flex-1 h-14 text-[clamp(13px,3.82vw,17px)] font-bold text-white rounded-full transition-transform active:scale-[0.98] disabled:opacity-50 gradient-coral-pill">
-            {isPending ? "Saving..." : "Next Step"}
+          <button type="submit" disabled={isPending} className="flex-1 h-14 text-base font-bold text-white rounded-full transition-transform active:scale-[0.98] disabled:opacity-50 bg-gradient-to-r from-[#FF9CB3] to-[#FF7E9C] hover:opacity-95 shadow-[0_8px_24px_rgba(255,126,156,0.35)] flex items-center justify-center gap-2">
+            <span>{isPending ? "Saving..." : "Continue"}</span>
+            <ChevronRight className="w-5 h-5 text-white" strokeWidth={2.5} />
           </button>
+        </div>
+
+        {/* Bottom Security Hint */}
+        <div className="pt-3 border-t border-[#F8D6DD]/60 flex items-center justify-center gap-1.5 text-xs text-[#6D6D6D] font-medium">
+          <Lock className="w-3.5 h-3.5 text-[#FF8FA8]" />
+          <span>Your information is safe and secure.</span>
         </div>
       </form>
     </motion.div>

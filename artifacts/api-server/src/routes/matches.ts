@@ -92,10 +92,21 @@ router.get("/", authenticate, async (req: AuthRequest, res) => {
       photosByUser.get(p.userId)!.push(p);
     });
 
+    const userAnswers = await db.select().from(journeyAnswersTable).where(eq(journeyAnswersTable.userId, currentUser.id));
+    const isJourneyCompleted = currentUser.journeyCompleted || (currentUser.journeyProgress || 0) >= 30 || userAnswers.length >= 30;
+
+    if (!currentUser.journeyCompleted && isJourneyCompleted) {
+      await db.update(usersTable)
+        .set({ journeyCompleted: true, journeyCompletedAt: new Date() })
+        .where(eq(usersTable.id, currentUser.id))
+        .execute()
+        .catch(() => {});
+    }
+
     const daysPassed = currentUser.journeyStartedAt 
       ? Math.floor((Date.now() - currentUser.journeyStartedAt.getTime()) / (1000 * 60 * 60 * 24)) 
       : 0;
-    const isLocked = false;
+    const isLocked = !isJourneyCompleted;
 
     const currentUserProfile = await db.query.personalityProfilesTable.findFirst({
       where: eq(personalityProfilesTable.userId, currentUser.id)
@@ -158,72 +169,28 @@ router.get("/", authenticate, async (req: AuthRequest, res) => {
       const traitMap: Record<string, string> = {
         "Adventure & Travel": "Adventurous",
         "Family Values": "Family-oriented",
-        "Career Focus": "Driven",
-        "Kindness & Empathy": "Compassionate",
-        "Emotional Wellbeing": "Calm",
-        "Relationship Commitment": "Loyal",
-        "Communication Style": "Communicative",
-        "Personal Growth": "Growth-oriented",
-        "Social Engagement": "Outgoing",
-        "Health & Lifestyle": "Active"
+        "Career Goals": "Driven",
+        "Lifestyle": "Balanced",
+        "Communication Style": "Empathetic",
+        "Personality": "Growth-oriented"
       };
-      
-      const commonTraits = sortedTraits.slice(0, 3).map(t => traitMap[t] || t as string);
-      if (commonTraits.length === 0) commonTraits.push("Mysterious");
 
-      const topInterest = sharedInterests.length > 0 ? sharedInterests[0] : "new activities";
-      const topTrait = commonTraits[0] ? commonTraits[0].toLowerCase() : "values";
-      const topValue = sortedTraits[0] || "meaningful connections";
+      const topTraits = sortedTraits.slice(0, 3).map(t => traitMap[t] || t);
+      const commonTraits = topTraits.length > 0 ? topTraits : COMMON_TRAITS[i % COMMON_TRAITS.length];
       
       let aiInsight = "";
-      if (compatibilityScore >= 75) {
+      if (compatibilityScore >= 90) {
+        const topInterest = sharedInterests[0] || (currentUserInterests[0] || "Travelling");
+        const topValue = sortedTraits[0] || "Family Values";
+        const topTrait = commonTraits[0] || "driven";
         aiInsight = `You both prioritize ${topValue.toLowerCase()}, enjoy ${topInterest}, and share similar ${topTrait} traits. These shared characteristics contribute to your high compatibility.`;
       } else {
+        const topInterest = sharedInterests[0] || "new activities";
         aiInsight = `While you both have some shared interests like ${topInterest}, there are distinct differences in your core values and personality traits.`;
       }
 
       const isPremiumUser = u.role === "premium" || u.role === "admin";
       return {
-      userId: u.id,
-      isLocked,
-      profile: {
-        id: u.id,
-        firstName: isLocked ? "Hidden" : u.firstName,
-        displayName: isLocked ? "Hidden Profile" : u.displayName,
-        age: calculateAge(u.dateOfBirth),
-        occupation: u.occupation,
-        education: u.education,
-        city: u.city,
-        country: u.country,
-        religion: u.religion,
-        bio: isLocked ? "Profile is locked. Upgrade to reveal or wait 30 days." : u.bio,
-        photos: isLocked 
-          ? [{ id: 0, url: "/blurred-avatar.png", isPrimary: true, publicId: "" }]
-          : (photosByUser.get(u.id) || []).map((p) => ({ id: p.id, url: p.url, isPrimary: p.isPrimary, publicId: p.publicId })),
-        verificationStatus: u.verificationStatus,
-        isPremium: u.role === "premium" || u.role === "admin",
-        compatibilityScore,
-        journeyProgress: u.journeyProgress,
-        hasPendingInterest,
-        interestSentByViewer,
-        isMutualMatch,
-        commonInterestsCount,
-        sharedInterestsPreview: sharedInterests,
-        valueMatchScore: result.personalityMatch || compatibilityScore,
-          personalityMatch: result.personalityMatch ?? null,
-          aiStoryMatch: result.aiStoryMatch ?? null,
-        valueAlignment: (result as any).valueAlignment ?? null,
-        communicationMatch: (result as any).communicationMatch ?? null,
-        emotionalCompatibility: (result as any).emotionalCompatibility ?? null,
-        overallCompatibility: (result as any).overallCompatibility ?? null,
-          sConfidenceData: result.sConfidenceData ?? null,
-          pConfidence: result.pConfidence ?? null,
-          hasStories: result.hasStories ?? null,
-      },
-      compatibilityScore,
-      commonTraits,
-      aiInsight,
-      isNew: i < 3,
       isMutualInterest: isMutualMatch,
     };
     }));

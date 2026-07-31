@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { motion } from "framer-motion";
-import { User, Heart, Calendar, Ruler, Scale } from "lucide-react";
+import { User, Heart, Calendar, Ruler, Scale, Check, ChevronRight, Lock } from "lucide-react";
 
 export function PersonalDetailsForm({ p, onSave, onCancel, hasPrevious, isPending }: any) {
   const form = useForm({
@@ -53,39 +53,45 @@ export function PersonalDetailsForm({ p, onSave, onCancel, hasPrevious, isPendin
   ];
 
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="premium-glass-card rounded-[24px] p-4 sm:p-6 mb-4 border border-white/50">
-      <div className="mb-5 border-b border-white/40 pb-3 text-center">
-        <h2 className="text-[clamp(17px,5.09vw,23px)] sm:text-[22px] font-black mb-2 text-[#4A3B3B]">Personal Details</h2>
-        <p className="text-[#8A7A7A] text-xs">Tell us the basics to help find compatible matches.</p>
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-[28px] p-6 sm:p-8 mb-4 border border-[#F8D6DD] shadow-[0_12px_40px_rgba(255,143,168,0.12)]">
+      <div className="mb-6 pb-4 border-b border-[#F8D6DD]/50">
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1E1E1E] tracking-tight mb-1">Personal Details</h2>
+        <p className="text-sm text-[#6D6D6D] font-normal">Tell us the basics to help find compatible matches.</p>
       </div>
 
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
         
         {/* Full Name */}
-        <div className="space-y-1">
-          <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">Full Name <span className="text-[#FF7A7A]">*</span></Label>
+        <div className="space-y-1.5">
+          <Label className="text-sm font-bold text-[#1E1E1E] ml-0.5">
+            Full Name <span className="text-[#FF8FA8]">*</span>
+          </Label>
           <div className="relative">
-            <User className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C8B8B8]" />
-            <Input className={`h-[clamp(43px,12.72vw,57px)] pl-10 text-[clamp(13px,3.82vw,17px)] text-[#252525] placeholder:text-[#B8A8A8] focus-visible:ring-[#FF9A9A]/50 bg-white/60 ${form.formState.errors.fullName ? "border-red-500" : "border-white/50"}`} placeholder="e.g. Aria Sharma" {...form.register("fullName", { required: "Name is required" })} />
+            <User className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#FF8FA8]" />
+            <Input className={`h-14 pl-11 text-sm sm:text-base font-medium text-[#1E1E1E] placeholder:text-[#6D6D6D]/40 focus-visible:ring-2 focus-visible:ring-[#FF8FA8]/30 focus-visible:border-[#FF8FA8] bg-white rounded-[18px] ${form.formState.errors.fullName ? "border-red-500" : "border-[#F4DCE3]"}`} placeholder="e.g. Aria Sharma" {...form.register("fullName", { required: "Name is required" })} />
           </div>
           {form.formState.errors.fullName && <p className="text-xs text-red-500 ml-1">{form.formState.errors.fullName.message as string}</p>}
         </div>
 
         {/* Date of Birth */}
-        <div className="space-y-1">
-          <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">Date of Birth <span className="text-[#FF7A7A]">*</span></Label>
+        <div className="space-y-1.5">
+          <Label className="text-sm font-bold text-[#1E1E1E] ml-0.5">
+            Date of Birth <span className="text-[#FF8FA8]">*</span>
+          </Label>
           <div className="relative">
-            <Calendar className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C8B8B8]" />
-            <Input type="date" className={`h-[clamp(43px,12.72vw,57px)] pl-10 pr-4 text-[clamp(13px,3.82vw,17px)] text-[#252525] focus-visible:ring-[#FF9A9A]/50 bg-white/60 ${form.formState.errors.dateOfBirth ? "border-red-500" : "border-white/50"}`} {...form.register("dateOfBirth", { required: "Birthday is required" })} />
+            <Calendar className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#FF8FA8]" />
+            <Input type="date" className={`h-14 pl-11 pr-4 text-sm sm:text-base font-medium text-[#1E1E1E] focus-visible:ring-2 focus-visible:ring-[#FF8FA8]/30 focus-visible:border-[#FF8FA8] bg-white rounded-[18px] ${form.formState.errors.dateOfBirth ? "border-red-500" : "border-[#F4DCE3]"}`} {...form.register("dateOfBirth", { required: "Birthday is required" })} />
           </div>
           {form.formState.errors.dateOfBirth && <p className="text-xs text-red-500 ml-1">{form.formState.errors.dateOfBirth.message as string}</p>}
-          <p className="text-[clamp(9px,2.80vw,13px)] text-[#8A7A7A] ml-1">Used to calculate your age. Cannot be changed later.</p>
+          <p className="text-xs text-[#6D6D6D] ml-1">Used to calculate your age. Cannot be changed later.</p>
         </div>
 
         {/* Gender Choice Chips */}
         <div className="space-y-2">
-          <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">Gender <span className="text-[#FF7A7A]">*</span></Label>
-          <div className="flex flex-wrap gap-2">
+          <Label className="text-sm font-bold text-[#1E1E1E] ml-0.5">
+            Gender <span className="text-[#FF8FA8]">*</span>
+          </Label>
+          <div className="flex flex-wrap gap-2.5">
             {genders.map((g) => {
               const isSelected = form.watch("gender") === g.value;
               return (
@@ -93,8 +99,9 @@ export function PersonalDetailsForm({ p, onSave, onCancel, hasPrevious, isPendin
                   key={g.value}
                   type="button"
                   onClick={() => form.setValue("gender", g.value, { shouldValidate: true })}
-                  className={`h-10 px-4 rounded-full text-[clamp(11px,3.31vw,15px)] font-bold transition-all border ${isSelected ? 'bg-[#FF9A9A] text-white border-[#FF9A9A] shadow-md' : 'bg-white/50 text-[#5A4A4A] border-white/50 hover:bg-white/80'}`}
+                  className={`h-11 px-5 rounded-full text-sm transition-all border flex items-center justify-center gap-1.5 active:scale-[0.98] ${isSelected ? 'bg-gradient-to-r from-[#FF9CB3] to-[#FF7E9C] text-white border-transparent font-bold shadow-[0_4px_14px_rgba(255,126,156,0.3)]' : 'bg-white text-[#1E1E1E] border-[#F4DCE3] font-semibold hover:border-[#FF8FA8]'}`}
                 >
+                  {isSelected && <Check className="w-4 h-4 text-white" strokeWidth={3} />}
                   {g.label}
                 </button>
               );
@@ -105,8 +112,10 @@ export function PersonalDetailsForm({ p, onSave, onCancel, hasPrevious, isPendin
 
         {/* Relationship Status Choice Chips */}
         <div className="space-y-2">
-          <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">Relationship Status <span className="text-[#FF7A7A]">*</span></Label>
-          <div className="flex flex-wrap gap-2">
+          <Label className="text-sm font-bold text-[#1E1E1E] ml-0.5">
+            Relationship Status <span className="text-[#FF8FA8]">*</span>
+          </Label>
+          <div className="flex flex-wrap gap-2.5">
             {statuses.map((s) => {
               const isSelected = form.watch("maritalStatus") === s.value;
               return (
@@ -114,8 +123,9 @@ export function PersonalDetailsForm({ p, onSave, onCancel, hasPrevious, isPendin
                   key={s.value}
                   type="button"
                   onClick={() => form.setValue("maritalStatus", s.value, { shouldValidate: true })}
-                  className={`h-10 px-4 rounded-full text-[clamp(11px,3.31vw,15px)] font-bold transition-all border ${isSelected ? 'bg-[#FF9A9A] text-white border-[#FF9A9A] shadow-md' : 'bg-white/50 text-[#5A4A4A] border-white/50 hover:bg-white/80'}`}
+                  className={`h-11 px-5 rounded-full text-sm transition-all border flex items-center justify-center gap-1.5 active:scale-[0.98] ${isSelected ? 'bg-gradient-to-r from-[#FF9CB3] to-[#FF7E9C] text-white border-transparent font-bold shadow-[0_4px_14px_rgba(255,126,156,0.3)]' : 'bg-white text-[#1E1E1E] border-[#F4DCE3] font-semibold hover:border-[#FF8FA8]'}`}
                 >
+                  {isSelected && <Check className="w-4 h-4 text-white" strokeWidth={3} />}
                   {s.label}
                 </button>
               );
@@ -124,50 +134,59 @@ export function PersonalDetailsForm({ p, onSave, onCancel, hasPrevious, isPendin
           {form.formState.errors.maritalStatus && <p className="text-xs text-red-500 ml-1">{form.formState.errors.maritalStatus.message as string}</p>}
         </div>
 
-        {/* Height & Weight */}
+        {/* Height & Weight Side-by-Side */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-1">
-            <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">Height (cm) <span className="text-[#FF7A7A]">*</span></Label>
+          <div className="space-y-1.5">
+            <Label className="text-sm font-bold text-[#1E1E1E] ml-0.5">
+              Height (cm) <span className="text-[#FF8FA8]">*</span>
+            </Label>
             <div className="relative">
-              <Ruler className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C8B8B8]" />
-              <Input type="number" className={`h-[clamp(43px,12.72vw,57px)] pl-10 text-[clamp(13px,3.82vw,17px)] text-[#252525] placeholder:text-[#B8A8A8] focus-visible:ring-[#FF9A9A]/50 bg-white/60 ${form.formState.errors.height ? "border-red-500" : "border-white/50"}`} placeholder="170" {...form.register("height", { required: "Height is required" })} />
+              <Ruler className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#FF8FA8]" />
+              <Input type="number" className={`h-14 pl-11 text-sm sm:text-base font-medium text-[#1E1E1E] placeholder:text-[#6D6D6D]/40 focus-visible:ring-2 focus-visible:ring-[#FF8FA8]/30 focus-visible:border-[#FF8FA8] bg-white rounded-[18px] ${form.formState.errors.height ? "border-red-500" : "border-[#F4DCE3]"}`} placeholder="170" {...form.register("height", { required: "Height is required" })} />
             </div>
             {form.formState.errors.height && <p className="text-xs text-red-500 ml-1">{form.formState.errors.height.message as string}</p>}
-            <p className="text-[clamp(9px,2.80vw,13px)] text-[#8A7A7A] ml-1">Improves match accuracy.</p>
           </div>
           
-          <div className="space-y-1">
-            <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">Weight (kg)</Label>
+          <div className="space-y-1.5">
+            <Label className="text-sm font-bold text-[#1E1E1E] ml-0.5">Weight (kg)</Label>
             <div className="relative">
-              <Scale className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C8B8B8]" />
-              <Input type="number" className="h-[clamp(43px,12.72vw,57px)] pl-10 text-[clamp(13px,3.82vw,17px)] text-[#252525] placeholder:text-[#B8A8A8] focus-visible:ring-[#FF9A9A]/50 bg-white/60 border-white/50" placeholder="65" {...form.register("weight")} />
+              <Scale className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#FF8FA8]" />
+              <Input type="number" className="h-14 pl-11 text-sm sm:text-base font-medium text-[#1E1E1E] placeholder:text-[#6D6D6D]/40 focus-visible:ring-2 focus-visible:ring-[#FF8FA8]/30 focus-visible:border-[#FF8FA8] bg-white rounded-[18px] border-[#F4DCE3]" placeholder="65" {...form.register("weight")} />
             </div>
-            <p className="text-[clamp(9px,2.80vw,13px)] text-[#8A7A7A] ml-1">Optional field.</p>
           </div>
         </div>
 
         {/* Bio */}
-        <div className="space-y-1">
-          <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">Bio <span className="text-[#FF7A7A]">*</span></Label>
+        <div className="space-y-1.5">
+          <Label className="text-sm font-bold text-[#1E1E1E] ml-0.5">
+            Bio <span className="text-[#FF8FA8]">*</span>
+          </Label>
           <Textarea 
-            className={`min-h-[clamp(68px,20.36vw,92px)] p-4 rounded-[16px] text-[clamp(12px,3.56vw,16px)] leading-relaxed resize-none text-[#252525] placeholder:text-[#B8A8A8] focus-visible:ring-[#FF9A9A]/50 bg-white/70 shadow-sm border ${form.formState.errors.bio ? "border-red-500" : "border-white/60"}`} 
+            className={`min-h-[92px] p-4 rounded-[18px] text-sm sm:text-base font-medium leading-relaxed resize-none text-[#1E1E1E] placeholder:text-[#6D6D6D]/40 focus-visible:ring-2 focus-visible:ring-[#FF8FA8]/30 focus-visible:border-[#FF8FA8] bg-white border ${form.formState.errors.bio ? "border-red-500" : "border-[#F4DCE3]"}`} 
             placeholder="I love quiet mornings, long walks, and discovering new coffee spots..." 
             {...form.register("bio", { required: "Please write a short bio" })} 
           />
           {form.formState.errors.bio && <p className="text-xs text-red-500 ml-1">{form.formState.errors.bio.message as string}</p>}
-          <p className="text-[clamp(9px,2.54vw,12px)] text-[#8A7A7A] ml-1">Write 2–3 sentences about yourself.</p>
+          <p className="text-xs text-[#6D6D6D] ml-1">Write 2–3 sentences about yourself.</p>
         </div>
 
         {/* Action Buttons */}
         <div className="pt-4 flex gap-3">
           {hasPrevious && (
-            <button type="button" onClick={onCancel} className="w-1/3 h-14 text-[clamp(13px,3.82vw,17px)] font-bold rounded-full border border-white/40 text-[#8A7A7A] bg-white/50 hover:bg-white/80 transition-transform active:scale-[0.98]">
+            <button type="button" onClick={onCancel} className="w-1/3 h-14 text-sm sm:text-base font-bold rounded-full border border-[#F8D6DD] text-[#6D6D6D] bg-[#FFE6EC]/50 hover:bg-[#FFE6EC] transition-transform active:scale-[0.98]">
               Previous
             </button>
           )}
-          <button type="submit" disabled={isPending} className="flex-1 h-14 text-[clamp(13px,3.82vw,17px)] font-bold text-white rounded-full transition-transform active:scale-[0.98] disabled:opacity-50 gradient-coral-pill">
-            {isPending ? "Saving..." : "Next Step"}
+          <button type="submit" disabled={isPending} className="flex-1 h-14 text-base font-bold text-white rounded-full transition-transform active:scale-[0.98] disabled:opacity-50 bg-gradient-to-r from-[#FF9CB3] to-[#FF7E9C] hover:opacity-95 shadow-[0_8px_24px_rgba(255,126,156,0.35)] flex items-center justify-center gap-2">
+            <span>{isPending ? "Saving..." : "Continue"}</span>
+            <ChevronRight className="w-5 h-5 text-white" strokeWidth={2.5} />
           </button>
+        </div>
+
+        {/* Bottom Security Hint */}
+        <div className="pt-3 border-t border-[#F8D6DD]/60 flex items-center justify-center gap-1.5 text-xs text-[#6D6D6D] font-medium">
+          <Lock className="w-3.5 h-3.5 text-[#FF8FA8]" />
+          <span>Your information is safe and secure.</span>
         </div>
       </form>
     </motion.div>

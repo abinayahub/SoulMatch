@@ -42,79 +42,53 @@ export function MatchCard({
   profile, compatibilityScore, commonTraits = [], aiInsight,
   isNew, onSendInterest, onClick, loading, isLocked = false,
 }: MatchCardProps) {
-  const photo = profile.photos?.find((p) => p.isPrimary) ?? profile.photos?.[0];
-  const score = compatibilityScore ?? profile.compatibilityScore ?? 0;
-  const displayName = profile.displayName ?? profile.firstName;
+  const photo = profile?.photos?.find((p) => p.isPrimary) ?? profile?.photos?.[0];
+  const score = compatibilityScore ?? profile?.compatibilityScore ?? 0;
+  const displayName = profile?.displayName ?? profile?.firstName ?? "User";
 
-  // PREMIUM LOCKED STATE UI
+  // PREMIUM SOFT PASTEL LOCKED STATE UI
   if (isLocked) {
     return (
-      <motion.div
-        layout
-        whileHover={{ y: -4, scale: 1.02 }}
-        transition={{ type: "spring", stiffness: 300, damping: 25 }}
-        className="rounded-2xl overflow-hidden cursor-pointer group relative h-[clamp(383px,114.50vw,518px)] border border-white/10 shadow-2xl bg-slate-900"
-        onClick={() => onClick?.(profile.id, true)}
+      <div
+        className="rounded-[30px] overflow-hidden cursor-pointer relative h-[clamp(383px,114.50vw,518px)] border border-[#F8D6DD] shadow-[0_12px_32px_rgba(255,143,168,0.22)] bg-gradient-to-br from-[#FFF0F3] via-[#FDF2F5] to-[#FFF8F8] select-none active:scale-[0.98] transition-transform"
+        onClick={() => onClick?.(profile?.id || 0, true)}
       >
-        {/* Photo Background (Blurred) */}
-        {photo ? (
-          <img src={photo.url} alt="Hidden" className="absolute inset-0 w-full h-full object-cover filter blur-[20px] opacity-40 mix-blend-luminosity" />
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center bg-primary text-primary-foreground shadow-md filter blur-[20px] opacity-30">
-            <span className="text-4xl font-bold text-white">{getInitials(profile.firstName)}</span>
-          </div>
-        )}
-        
-        {/* Overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20" />
+        {/* Soft Pastel Ambient Glows */}
+        <div className="absolute -top-12 -left-12 w-48 h-48 bg-[#FF7E95]/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-12 -right-12 w-48 h-48 bg-[#FF477E]/15 rounded-full blur-3xl pointer-events-none" />
 
-        {/* Premium Content */}
-        <div className="absolute inset-0 flex flex-col p-6 z-10">
+        {/* Content Container */}
+        <div className="relative z-10 w-full h-full flex flex-col items-center justify-between p-6 text-center">
           
-          {/* Top Info */}
-          <div className="flex justify-between items-start mb-auto">
-            {score > 0 && (
-              <div className="bg-[#F6A8B7]/20 border border-[#F6A8B7]/30 rounded-lg px-2 py-1 shadow-[0_0_15px_rgba(236,72,153,0.3)]">
-                <span className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#F6A8B7] to-[#FAC985] block leading-none">{score}%</span>
-                <span className="text-[clamp(9px,2.54vw,12px)] text-[#F5B75C] font-medium">Match Potential</span>
-              </div>
-            )}
+          {/* Top Match % Badge */}
+          <div className="w-full flex justify-between items-start">
+            <div className="bg-white/95 backdrop-blur-xl px-4 py-1.5 rounded-full shadow-[0_4px_16px_rgba(255,71,126,0.15)] border border-[#F8D6DD] flex items-center justify-center gap-1.5">
+              <span className="text-sm sm:text-base font-black text-[#FF477E] leading-none">{score}%</span>
+              <span className="text-[10px] font-extrabold text-[#FF6B8B] tracking-widest uppercase leading-none">MATCH</span>
+            </div>
+          </div>
+
+          {/* Center Glowing Lock Icon & Subtext */}
+          <div className="flex flex-col items-center justify-center my-auto">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-[#FF7E95] to-[#FF477E] flex items-center justify-center text-white shadow-[0_8px_25px_rgba(255,71,126,0.35)] mb-4 animate-pulse">
+              <Lock className="w-7 h-7 text-white" strokeWidth={2.2} />
+            </div>
+
+            <h3 className="text-2xl font-black text-[#252525] mb-2 tracking-tight flex items-center justify-center">
+              Great Match!
+            </h3>
             
-            <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-md">
-              
-            </div>
-          </div>
-
-          {/* Glowing Lock Icon */}
-          <div className="mx-auto w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-8 border border-white/10 backdrop-blur-xl shadow-[0_0_30px_rgba(255,255,255,0.1)]">
-            <Lock className="w-6 h-6 text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]" />
-          </div>
-
-          {/* Traits List */}
-          <div className="space-y-3 mb-6">
-            <div className="flex items-center gap-3 bg-white/5 rounded-lg p-2 border border-white/5">
-              <Heart className="w-4 h-4 text-[#F6A8B7]" fill="currentColor" />
-              <span className="text-sm text-slate-200 font-medium">Compatibility Potential</span>
-            </div>
-            <div className="flex items-center gap-3 bg-white/5 rounded-lg p-2 border border-white/5">
-              <div className="text-yellow-500">👨‍👩‍👧</div>
-              <span className="text-sm text-slate-200 font-medium">Shared Family Values</span>
-            </div>
-            <div className="flex items-center gap-3 bg-white/5 rounded-lg p-2 border border-white/5">
-              <div className="text-blue-400">💬</div>
-              <span className="text-sm text-slate-200 font-medium">Communication Alignment</span>
-            </div>
-
-          </div>
-
-          {/* Action Footer */}
-          <div className="text-center pt-4 border-t border-white/10">
-            <p className="text-sm text-slate-400 font-medium">
-              Unlock after Day 30
+            <p className="text-[#6F6F6F] font-semibold text-sm max-w-xs leading-relaxed">
+              Complete your 30-Day Journey to unlock this profile.
             </p>
           </div>
+
+          {/* Bottom Lock Indicator */}
+          <div className="w-full pt-3 border-t border-[#F8D6DD]/60 text-center">
+            <span className="text-xs font-bold text-[#FF477E]">🔒 Locked Profile</span>
+          </div>
         </div>
-      </motion.div>
+      </div>
     );
   }
 

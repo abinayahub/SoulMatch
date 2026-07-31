@@ -195,6 +195,18 @@ router.get("/:userId", authenticate, async (req: AuthRequest, res) => {
   try {
     const userId = parseInt(req.params.userId as string);
     const viewerId = req.user!.userId;
+
+    const viewer = await db.query.usersTable.findFirst({ where: eq(usersTable.id, viewerId) });
+    const isCompleted = viewer?.journeyCompleted || (viewer?.journeyProgress || 0) >= 30;
+
+    if (userId !== viewerId && !isCompleted) {
+      return res.status(403).json({
+        error: "Complete your 30-Day Journey",
+        message: "Answer your daily questions and continue posting stories to unlock compatible matches.",
+        isLocked: true
+      });
+    }
+
     const profile = await buildPublicProfile(userId, viewerId);
     if (!profile) return res.status(404).json({ error: "User not found" });
     

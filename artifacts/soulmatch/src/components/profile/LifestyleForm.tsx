@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { Label } from "@/components/ui/label";
 import { motion } from "framer-motion";
+import { Check, ChevronRight, Lock } from "lucide-react";
 
 export function LifestyleForm({ p, onSave, onCancel, hasPrevious, isPending }: any) {
   const form = useForm({
@@ -35,18 +36,20 @@ export function LifestyleForm({ p, onSave, onCancel, hasPrevious, isPending }: a
   ];
 
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="premium-glass-card rounded-[24px] p-4 sm:p-6 mb-4 border border-white/50">
-      <div className="mb-5 border-b border-white/40 pb-3 text-center">
-        <h2 className="text-[clamp(17px,5.09vw,23px)] sm:text-[22px] font-black mb-2 text-[#4A3B3B]">Your lifestyle choices</h2>
-        <p className="text-[#8A7A7A] text-xs">What do your daily habits look like?</p>
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-[28px] p-6 sm:p-8 mb-4 border border-[#F8D6DD] shadow-[0_12px_40px_rgba(255,143,168,0.12)]">
+      <div className="mb-6 pb-4 border-b border-[#F8D6DD]/50">
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1E1E1E] tracking-tight mb-1">Your Lifestyle Choices</h2>
+        <p className="text-sm text-[#6D6D6D] font-normal">What do your daily habits look like?</p>
       </div>
 
-      <form onSubmit={form.handleSubmit(onSave)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSave)} className="space-y-6">
         
         {/* Diet */}
-        <div className="space-y-2">
-          <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">What's your diet like? <span className="text-[#FF7A7A]">*</span></Label>
-          <div className="flex flex-wrap gap-2">
+        <div className="space-y-2.5">
+          <Label className="text-sm font-bold text-[#1E1E1E] ml-0.5">
+            What's your diet like? <span className="text-[#FF8FA8]">*</span>
+          </Label>
+          <div className="flex flex-wrap gap-2.5">
             {diets.map((diet) => {
               const isSelected = form.watch("dietaryPreference") === diet || 
                                  (diet === "🍕 No Specific Diet" && form.watch("dietaryPreference") === "🍕 No Specific Diet (Eat Everything)");
@@ -55,8 +58,9 @@ export function LifestyleForm({ p, onSave, onCancel, hasPrevious, isPending }: a
                   key={diet}
                   type="button"
                   onClick={() => form.setValue("dietaryPreference", diet === "🍕 No Specific Diet" ? "🍕 No Specific Diet (Eat Everything)" : diet, { shouldValidate: true })}
-                  className={`px-4 py-2 rounded-full text-[clamp(11px,3.31vw,15px)] font-bold transition-all border ${isSelected ? 'bg-[#FF9A9A] text-white border-[#FF9A9A] shadow-md' : 'bg-white/50 text-[#5A4A4A] border-white/50 hover:bg-white/80'}`}
+                  className={`h-11 px-5 rounded-full text-sm transition-all border flex items-center gap-1.5 active:scale-[0.98] ${isSelected ? 'bg-gradient-to-r from-[#FF9CB3] to-[#FF7E9C] text-white border-transparent font-bold shadow-[0_4px_14px_rgba(255,126,156,0.3)]' : 'bg-white text-[#1E1E1E] border-[#F4DCE3] font-semibold hover:border-[#FF8FA8]'}`}
                 >
+                  {isSelected && <Check className="w-4 h-4 text-white" strokeWidth={3} />}
                   {diet}
                 </button>
               );
@@ -65,10 +69,12 @@ export function LifestyleForm({ p, onSave, onCancel, hasPrevious, isPending }: a
           {form.formState.errors.dietaryPreference && <p className="text-xs text-red-500 ml-1">{form.formState.errors.dietaryPreference.message as string}</p>}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
           {/* Smoking */}
-          <div className="space-y-2">
-            <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">Do you smoke? <span className="text-gray-400 font-normal lowercase">(optional)</span></Label>
+          <div className="space-y-2.5">
+            <Label className="text-sm font-bold text-[#1E1E1E] ml-0.5">
+              Do you smoke? <span className="text-[#6D6D6D] font-normal text-xs">(optional)</span>
+            </Label>
             <div className="flex flex-wrap gap-2">
               {habits.map((h) => {
                 const isSelected = form.watch("smoking") === h.value;
@@ -77,8 +83,9 @@ export function LifestyleForm({ p, onSave, onCancel, hasPrevious, isPending }: a
                     key={h.value}
                     type="button"
                     onClick={() => form.setValue("smoking", h.value, { shouldValidate: true })}
-                    className={`h-10 px-4 rounded-full text-[clamp(11px,3.31vw,15px)] font-bold transition-all border ${isSelected ? 'bg-[#FF9A9A] text-white border-[#FF9A9A] shadow-md' : 'bg-white/50 text-[#5A4A4A] border-white/50 hover:bg-white/80'}`}
+                    className={`h-10 px-4 rounded-full text-sm transition-all border flex items-center gap-1.5 active:scale-[0.98] ${isSelected ? 'bg-gradient-to-r from-[#FF9CB3] to-[#FF7E9C] text-white border-transparent font-bold shadow-[0_4px_14px_rgba(255,126,156,0.3)]' : 'bg-white text-[#1E1E1E] border-[#F4DCE3] font-semibold hover:border-[#FF8FA8]'}`}
                   >
+                    {isSelected && <Check className="w-3.5 h-3.5 text-white" strokeWidth={3} />}
                     {h.label}
                   </button>
                 );
@@ -87,8 +94,10 @@ export function LifestyleForm({ p, onSave, onCancel, hasPrevious, isPending }: a
           </div>
 
           {/* Drinking */}
-          <div className="space-y-2">
-            <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">Do you drink? <span className="text-gray-400 font-normal lowercase">(optional)</span></Label>
+          <div className="space-y-2.5">
+            <Label className="text-sm font-bold text-[#1E1E1E] ml-0.5">
+              Do you drink? <span className="text-[#6D6D6D] font-normal text-xs">(optional)</span>
+            </Label>
             <div className="flex flex-wrap gap-2">
               {habits.filter(h => h.value !== "trying_to_quit").map((h) => {
                 const isSelected = form.watch("drinking") === h.value;
@@ -97,8 +106,9 @@ export function LifestyleForm({ p, onSave, onCancel, hasPrevious, isPending }: a
                     key={h.value}
                     type="button"
                     onClick={() => form.setValue("drinking", h.value, { shouldValidate: true })}
-                    className={`h-10 px-4 rounded-full text-[clamp(11px,3.31vw,15px)] font-bold transition-all border ${isSelected ? 'bg-[#FF9A9A] text-white border-[#FF9A9A] shadow-md' : 'bg-white/50 text-[#5A4A4A] border-white/50 hover:bg-white/80'}`}
+                    className={`h-10 px-4 rounded-full text-sm transition-all border flex items-center gap-1.5 active:scale-[0.98] ${isSelected ? 'bg-gradient-to-r from-[#FF9CB3] to-[#FF7E9C] text-white border-transparent font-bold shadow-[0_4px_14px_rgba(255,126,156,0.3)]' : 'bg-white text-[#1E1E1E] border-[#F4DCE3] font-semibold hover:border-[#FF8FA8]'}`}
                   >
+                    {isSelected && <Check className="w-3.5 h-3.5 text-white" strokeWidth={3} />}
                     {h.label}
                   </button>
                 );
@@ -110,13 +120,20 @@ export function LifestyleForm({ p, onSave, onCancel, hasPrevious, isPending }: a
         {/* Action Buttons */}
         <div className="pt-4 flex gap-3">
           {hasPrevious && (
-            <button type="button" onClick={onCancel} className="w-1/3 h-14 text-[clamp(13px,3.82vw,17px)] font-bold rounded-full border border-white/40 text-[#8A7A7A] bg-white/50 hover:bg-white/80 transition-transform active:scale-[0.98]">
+            <button type="button" onClick={onCancel} className="w-1/3 h-14 text-sm sm:text-base font-bold rounded-full border border-[#F8D6DD] text-[#6D6D6D] bg-[#FFE6EC]/50 hover:bg-[#FFE6EC] transition-transform active:scale-[0.98]">
               Previous
             </button>
           )}
-          <button type="submit" disabled={isPending} className="flex-1 h-14 text-[clamp(13px,3.82vw,17px)] font-bold text-white rounded-full transition-transform active:scale-[0.98] disabled:opacity-50 gradient-coral-pill">
-            {isPending ? "Saving..." : "Next Step"}
+          <button type="submit" disabled={isPending} className="flex-1 h-14 text-base font-bold text-white rounded-full transition-transform active:scale-[0.98] disabled:opacity-50 bg-gradient-to-r from-[#FF9CB3] to-[#FF7E9C] hover:opacity-95 shadow-[0_8px_24px_rgba(255,126,156,0.35)] flex items-center justify-center gap-2">
+            <span>{isPending ? "Saving..." : "Continue"}</span>
+            <ChevronRight className="w-5 h-5 text-white" strokeWidth={2.5} />
           </button>
+        </div>
+
+        {/* Bottom Security Hint */}
+        <div className="pt-3 border-t border-[#F8D6DD]/60 flex items-center justify-center gap-1.5 text-xs text-[#6D6D6D] font-medium">
+          <Lock className="w-3.5 h-3.5 text-[#FF8FA8]" />
+          <span>Your information is safe and secure.</span>
         </div>
       </form>
     </motion.div>

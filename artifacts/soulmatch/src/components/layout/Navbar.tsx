@@ -41,16 +41,19 @@ export function Navbar() {
   const unreadCount = (notifData as any)?.unreadCount ?? 0;
 
   return (
-    <nav 
-      className="fixed top-0 left-0 right-0 md:top-3 md:left-4 md:right-4 z-50 h-[calc(72px+env(safe-area-inset-top,0px))] md:h-[80px] pt-[env(safe-area-inset-top,0px)] rounded-none md:rounded-full px-[20px] flex items-center justify-between transition-all duration-300"
+    <nav
+      className="fixed top-0 left-0 right-0 md:top-3 md:left-4 md:right-4 z-50 rounded-none md:rounded-full transition-all duration-300"
       style={{
-        background: 'linear-gradient(180deg, rgba(255,248,250,0.88) 0%, rgba(255,245,248,0.88) 45%, rgba(255,243,247,0.88) 100%)',
+        paddingTop: 'env(safe-area-inset-top, 0px)',
+        background: 'linear-gradient(180deg, rgba(255,248,250,0.92) 0%, rgba(255,245,248,0.92) 100%)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
         borderBottom: '1px solid rgba(246,168,183,0.15)',
-        boxShadow: '0 8px 32px rgba(246,168,183,0.06)'
+        boxShadow: '0 4px 20px rgba(246,168,183,0.08)',
       }}
     >
+      {/* Icon row — 54px on mobile, 60px on md+ */}
+      <div className="h-[54px] md:h-[60px] px-4 flex items-center justify-between">
       {dropdownOpen && (
         <div 
           className="fixed inset-0 bg-black/10 backdrop-blur-[1px] z-40 transition-opacity duration-200"
@@ -64,7 +67,7 @@ export function Navbar() {
           <div className="w-8 h-8 rounded-full bg-gradient-to-r from-[#FFB8B0] to-[#FFC9BF] flex items-center justify-center shadow-sm">
             <Heart className="w-4 h-4 text-white" />
           </div>
-          <span className="text-lg font-bold text-[#FF9F9F] hidden sm:block">SoulMatch</span>
+          <span className="text-[clamp(17px,4.9vw,22px)] font-bold text-[#FF9F9F] whitespace-nowrap">SoulMatch</span>
         </span>
       </Link>
 
@@ -95,7 +98,7 @@ export function Navbar() {
       </div>
 
       {/* Right side */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3">
         <Link href="/notifications">
           <Button variant="ghost" size="icon" className="relative text-[#555555] hover:text-[#252525] hover:bg-black/5">
             <Bell className="w-[22px] h-[22px]" />
@@ -160,8 +163,9 @@ export function Navbar() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+      </div>{/* end icon row */}
 
-      {/* Mobile menu */}
+      {/* Mobile menu — outside the icon row, still inside nav */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div

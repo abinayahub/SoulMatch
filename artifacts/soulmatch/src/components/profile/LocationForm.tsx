@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { Check, ChevronsUpDown, Globe2, Map, MapPin, Flag, MessageSquare, BookHeart } from "lucide-react";
+import { Check, ChevronsUpDown, Globe2, Map, MapPin, Flag, MessageSquare, BookHeart, ChevronRight, Lock } from "lucide-react";
 import { motion } from "framer-motion";
 
 import { Country, State } from 'country-state-city';
@@ -57,37 +57,39 @@ export function LocationForm({ p, onSave, onCancel, hasPrevious, isPending }: an
   }, [form.register]);
 
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="premium-glass-card rounded-[24px] p-4 sm:p-6 mb-4 border border-white/50">
-      <div className="mb-5 border-b border-white/40 pb-3 text-center">
-        <h2 className="text-[clamp(17px,5.09vw,23px)] sm:text-[22px] font-black mb-2 text-[#4A3B3B]">Where are you based?</h2>
-        <p className="text-[#8A7A7A] text-xs">Find matches near you or where you're from.</p>
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white rounded-[28px] p-6 sm:p-8 mb-4 border border-[#F8D6DD] shadow-[0_12px_40px_rgba(255,143,168,0.12)]">
+      <div className="mb-6 pb-4 border-b border-[#F8D6DD]/50">
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1E1E1E] tracking-tight mb-1">Where are you based?</h2>
+        <p className="text-sm text-[#6D6D6D] font-normal">Find matches near you or where you're from.</p>
       </div>
 
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
         
         {/* Country & State */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-1">
-            <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">Country <span className="text-[#FF7A7A]">*</span></Label>
+          <div className="space-y-1.5">
+            <Label className="text-sm font-bold text-[#1E1E1E] ml-0.5">
+              Country <span className="text-[#FF8FA8]">*</span>
+            </Label>
             <Popover open={openCountry} onOpenChange={setOpenCountry}>
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
                   role="combobox"
                   aria-expanded={openCountry}
-                  className={`w-full justify-between h-[clamp(43px,12.72vw,57px)] pl-4 pr-4 text-[clamp(13px,3.82vw,17px)] font-normal text-[#252525] focus-visible:ring-[#FF9A9A]/50 bg-white/60 ${form.formState.errors.country ? "border-red-500" : "border-white/50"} ${!form.watch("country") && "text-[#B8A8A8]"}`}
+                  className={`w-full justify-between h-14 pl-4 pr-4 text-sm sm:text-base font-medium text-[#1E1E1E] focus:ring-2 focus:ring-[#FF8FA8]/30 focus:border-[#FF8FA8] bg-white rounded-[18px] ${form.formState.errors.country ? "border-red-500" : "border-[#F4DCE3]"} ${!form.watch("country") && "text-[#6D6D6D]/50"}`}
                 >
                   <div className="flex items-center gap-2">
-                    <Globe2 className="w-4 h-4 text-[#C8B8B8]" />
+                    <Globe2 className="w-5 h-5 text-[#FF8FA8]" />
                     {form.watch("country") ? form.watch("country") : "Select country"}
                   </div>
-                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 text-[#FF8FA8]" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start" side="bottom" sideOffset={4} onOpenAutoFocus={(e) => e.preventDefault()}>
+              <PopoverContent className="w-[--radix-popover-trigger-width] p-0 rounded-[18px] border-[#F8D6DD] shadow-lg" align="start" side="bottom" sideOffset={4} onOpenAutoFocus={(e) => e.preventDefault()}>
                 <Command>
                   <CommandInput placeholder="Search country..." />
-                  <CommandList className="max-h-[clamp(170px,50.89vw,230px)] sm:max-h-[300px]">
+                  <CommandList className="max-h-[230px] sm:max-h-[300px]">
                     <CommandEmpty>No country found.</CommandEmpty>
                     <CommandGroup>
                       {ALL_COUNTRIES.map((country) => (
@@ -100,7 +102,7 @@ export function LocationForm({ p, onSave, onCancel, hasPrevious, isPending }: an
                             setOpenCountry(false);
                           }}
                         >
-                          <Check className={`mr-2 h-4 w-4 ${form.watch("country") === country.name ? "opacity-100" : "opacity-0"}`} />
+                          <Check className={`mr-2 h-4 w-4 ${form.watch("country") === country.name ? "opacity-100 text-[#FF7E9C]" : "opacity-0"}`} />
                           {country.name}
                         </CommandItem>
                       ))}
@@ -112,8 +114,10 @@ export function LocationForm({ p, onSave, onCancel, hasPrevious, isPending }: an
             {form.formState.errors.country && <p className="text-xs text-red-500 ml-1">{form.formState.errors.country.message as string}</p>}
           </div>
 
-          <div className="space-y-1">
-            <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">State / Region <span className="text-[#FF7A7A]">*</span></Label>
+          <div className="space-y-1.5">
+            <Label className="text-sm font-bold text-[#1E1E1E] ml-0.5">
+              State / Region <span className="text-[#FF8FA8]">*</span>
+            </Label>
             {availableStates.length > 0 ? (
               <Popover open={openState} onOpenChange={setOpenState}>
                 <PopoverTrigger asChild>
@@ -121,19 +125,19 @@ export function LocationForm({ p, onSave, onCancel, hasPrevious, isPending }: an
                     variant="outline"
                     role="combobox"
                     aria-expanded={openState}
-                    className={`w-full justify-between h-[clamp(43px,12.72vw,57px)] pl-4 pr-4 text-[clamp(13px,3.82vw,17px)] font-normal text-[#252525] focus-visible:ring-[#FF9A9A]/50 bg-white/60 ${form.formState.errors.stateRegion ? "border-red-500" : "border-white/50"} ${!form.watch("stateRegion") && "text-[#B8A8A8]"}`}
+                    className={`w-full justify-between h-14 pl-4 pr-4 text-sm sm:text-base font-medium text-[#1E1E1E] focus:ring-2 focus:ring-[#FF8FA8]/30 focus:border-[#FF8FA8] bg-white rounded-[18px] ${form.formState.errors.stateRegion ? "border-red-500" : "border-[#F4DCE3]"} ${!form.watch("stateRegion") && "text-[#6D6D6D]/50"}`}
                   >
                     <div className="flex items-center gap-2">
-                      <Map className="w-4 h-4 text-[#C8B8B8]" />
+                      <Map className="w-5 h-5 text-[#FF8FA8]" />
                       {form.watch("stateRegion") ? form.watch("stateRegion") : "Select state"}
                     </div>
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 text-[#FF8FA8]" />
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start" side="bottom" sideOffset={4} onOpenAutoFocus={(e) => e.preventDefault()}>
+                <PopoverContent className="w-[--radix-popover-trigger-width] p-0 rounded-[18px] border-[#F8D6DD] shadow-lg" align="start" side="bottom" sideOffset={4} onOpenAutoFocus={(e) => e.preventDefault()}>
                   <Command>
                     <CommandInput placeholder="Search state..." />
-                    <CommandList className="max-h-[clamp(170px,50.89vw,230px)] sm:max-h-[300px]">
+                    <CommandList className="max-h-[230px] sm:max-h-[300px]">
                       <CommandEmpty>No state found.</CommandEmpty>
                       <CommandGroup>
                         {availableStates.map((state) => (
@@ -145,7 +149,7 @@ export function LocationForm({ p, onSave, onCancel, hasPrevious, isPending }: an
                               setOpenState(false);
                             }}
                           >
-                            <Check className={`mr-2 h-4 w-4 ${form.watch("stateRegion") === state.name ? "opacity-100" : "opacity-0"}`} />
+                            <Check className={`mr-2 h-4 w-4 ${form.watch("stateRegion") === state.name ? "opacity-100 text-[#FF7E9C]" : "opacity-0"}`} />
                             {state.name}
                           </CommandItem>
                         ))}
@@ -156,8 +160,8 @@ export function LocationForm({ p, onSave, onCancel, hasPrevious, isPending }: an
               </Popover>
             ) : (
               <div className="relative">
-                <Map className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C8B8B8]" />
-                <Input className={`h-[clamp(43px,12.72vw,57px)] pl-10 text-[clamp(13px,3.82vw,17px)] text-[#252525] placeholder:text-[#B8A8A8] focus-visible:ring-[#FF9A9A]/50 bg-white/60 ${form.formState.errors.stateRegion ? "border-red-500" : "border-white/50"}`} placeholder="e.g. California" {...form.register("stateRegion", { required: "State / Region is required" })} />
+                <Map className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#FF8FA8]" />
+                <Input className={`h-14 pl-11 text-sm sm:text-base font-medium text-[#1E1E1E] placeholder:text-[#6D6D6D]/40 focus-visible:ring-2 focus-visible:ring-[#FF8FA8]/30 focus-visible:border-[#FF8FA8] bg-white rounded-[18px] ${form.formState.errors.stateRegion ? "border-red-500" : "border-[#F4DCE3]"}`} placeholder="e.g. California" {...form.register("stateRegion", { required: "State / Region is required" })} />
               </div>
             )}
             {form.formState.errors.stateRegion && <p className="text-xs text-red-500 ml-1">{form.formState.errors.stateRegion.message as string}</p>}
@@ -166,20 +170,24 @@ export function LocationForm({ p, onSave, onCancel, hasPrevious, isPending }: an
 
         {/* City & Citizenship */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-1">
-            <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">City <span className="text-[#FF7A7A]">*</span></Label>
+          <div className="space-y-1.5">
+            <Label className="text-sm font-bold text-[#1E1E1E] ml-0.5">
+              City <span className="text-[#FF8FA8]">*</span>
+            </Label>
             <div className="relative">
-              <MapPin className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C8B8B8]" />
-              <Input className={`h-[clamp(43px,12.72vw,57px)] pl-10 text-[clamp(13px,3.82vw,17px)] text-[#252525] placeholder:text-[#B8A8A8] focus-visible:ring-[#FF9A9A]/50 bg-white/60 ${form.formState.errors.city ? "border-red-500" : "border-white/50"}`} placeholder="e.g. San Francisco" {...form.register("city", { required: "City is required" })} />
+              <MapPin className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#FF8FA8]" />
+              <Input className={`h-14 pl-11 text-sm sm:text-base font-medium text-[#1E1E1E] placeholder:text-[#6D6D6D]/40 focus-visible:ring-2 focus-visible:ring-[#FF8FA8]/30 focus-visible:border-[#FF8FA8] bg-white rounded-[18px] ${form.formState.errors.city ? "border-red-500" : "border-[#F4DCE3]"}`} placeholder="e.g. San Francisco" {...form.register("city", { required: "City is required" })} />
             </div>
             {form.formState.errors.city && <p className="text-xs text-red-500 ml-1">{form.formState.errors.city.message as string}</p>}
           </div>
 
-          <div className="space-y-1">
-            <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">Citizenship <span className="text-[#FF7A7A]">*</span></Label>
+          <div className="space-y-1.5">
+            <Label className="text-sm font-bold text-[#1E1E1E] ml-0.5">
+              Citizenship <span className="text-[#FF8FA8]">*</span>
+            </Label>
             <div className="relative">
-              <Flag className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C8B8B8]" />
-              <Input className={`h-[clamp(43px,12.72vw,57px)] pl-10 text-[clamp(13px,3.82vw,17px)] text-[#252525] placeholder:text-[#B8A8A8] focus-visible:ring-[#FF9A9A]/50 bg-white/60 ${form.formState.errors.citizenship ? "border-red-500" : "border-white/50"}`} placeholder="e.g. US Citizen" {...form.register("citizenship", { required: "Citizenship is required" })} />
+              <Flag className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#FF8FA8]" />
+              <Input className={`h-14 pl-11 text-sm sm:text-base font-medium text-[#1E1E1E] placeholder:text-[#6D6D6D]/40 focus-visible:ring-2 focus-visible:ring-[#FF8FA8]/30 focus-visible:border-[#FF8FA8] bg-white rounded-[18px] ${form.formState.errors.citizenship ? "border-red-500" : "border-[#F4DCE3]"}`} placeholder="e.g. US Citizen" {...form.register("citizenship", { required: "Citizenship is required" })} />
             </div>
             {form.formState.errors.citizenship && <p className="text-xs text-red-500 ml-1">{form.formState.errors.citizenship.message as string}</p>}
           </div>
@@ -187,13 +195,15 @@ export function LocationForm({ p, onSave, onCancel, hasPrevious, isPending }: an
 
         {/* Languages */}
         <div className="space-y-2">
-          <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">Languages Spoken <span className="text-[#FF7A7A]">*</span></Label>
+          <Label className="text-sm font-bold text-[#1E1E1E] ml-0.5">
+            Languages Spoken <span className="text-[#FF8FA8]">*</span>
+          </Label>
           <div className="relative">
-            <MessageSquare className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C8B8B8]" />
-            <Input className={`h-[clamp(43px,12.72vw,57px)] pl-10 text-[clamp(13px,3.82vw,17px)] text-[#252525] placeholder:text-[#B8A8A8] focus-visible:ring-[#FF9A9A]/50 bg-white/60 ${form.formState.errors.languages ? "border-red-500" : "border-white/50"}`} placeholder="Type languages separated by commas" {...form.register("languages", { required: "At least one language is required" })} />
+            <MessageSquare className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#FF8FA8]" />
+            <Input className={`h-14 pl-11 text-sm sm:text-base font-medium text-[#1E1E1E] placeholder:text-[#6D6D6D]/40 focus-visible:ring-2 focus-visible:ring-[#FF8FA8]/30 focus-visible:border-[#FF8FA8] bg-white rounded-[18px] ${form.formState.errors.languages ? "border-red-500" : "border-[#F4DCE3]"}`} placeholder="Type languages separated by commas" {...form.register("languages", { required: "At least one language is required" })} />
           </div>
           
-          <div className="flex flex-wrap gap-1.5 pt-1">
+          <div className="flex flex-wrap gap-2 pt-1">
             {COMMON_LANGUAGES.map(lang => {
               const isActive = currentLanguagesStr.includes(lang);
               return (
@@ -201,9 +211,9 @@ export function LocationForm({ p, onSave, onCancel, hasPrevious, isPending }: an
                   key={lang}
                   type="button"
                   onClick={() => toggleLanguage(lang)}
-                  className={`px-3 py-1 rounded-full text-[clamp(9px,2.80vw,13px)] font-bold transition-all border ${isActive ? 'bg-[#FF9A9A] text-white border-[#FF9A9A]' : 'bg-white/40 text-[#8A7A7A] border-white/50 hover:bg-white/80'}`}
+                  className={`h-9 px-4 rounded-full text-xs font-bold transition-all border flex items-center gap-1 active:scale-[0.98] ${isActive ? 'bg-gradient-to-r from-[#FF9CB3] to-[#FF7E9C] text-white border-transparent shadow-[0_2px_10px_rgba(255,126,156,0.25)]' : 'bg-white text-[#6D6D6D] border-[#F4DCE3] hover:border-[#FF8FA8]'}`}
                 >
-                  {isActive && <Check className="w-2.5 h-2.5 inline-block mr-1" />}
+                  {isActive && <Check className="w-3.5 h-3.5 text-white" strokeWidth={3} />}
                   {lang}
                 </button>
               );
@@ -213,16 +223,18 @@ export function LocationForm({ p, onSave, onCancel, hasPrevious, isPending }: an
         </div>
 
         {/* Religion */}
-        <div className="space-y-1">
-          <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">Religion <span className="text-gray-400 font-normal lowercase">(optional)</span></Label>
+        <div className="space-y-1.5">
+          <Label className="text-sm font-bold text-[#1E1E1E] ml-0.5">
+            Religion <span className="text-[#6D6D6D] font-normal text-xs">(optional)</span>
+          </Label>
           <Select onValueChange={(v) => form.setValue("religion", v)} defaultValue={form.getValues("religion")}>
-            <SelectTrigger className="h-[clamp(43px,12.72vw,57px)] pl-4 text-[clamp(13px,3.82vw,17px)] text-[#252525] focus-visible:ring-[#FF9A9A]/50 bg-white/60 border-white/50">
+            <SelectTrigger className="h-14 pl-4 text-sm sm:text-base font-medium text-[#1E1E1E] focus:ring-2 focus:ring-[#FF8FA8]/30 focus:border-[#FF8FA8] bg-white rounded-[18px] border-[#F4DCE3]">
               <div className="flex items-center gap-2">
-                <BookHeart className="w-4 h-4 text-[#C8B8B8]" />
+                <BookHeart className="w-5 h-5 text-[#FF8FA8]" />
                 <SelectValue placeholder="Select religion" />
               </div>
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="rounded-[18px] border-[#F8D6DD] p-1">
               <SelectItem value="Christianity">Christianity</SelectItem>
               <SelectItem value="Islam">Islam</SelectItem>
               <SelectItem value="Hinduism">Hinduism</SelectItem>
@@ -238,13 +250,20 @@ export function LocationForm({ p, onSave, onCancel, hasPrevious, isPending }: an
         {/* Action Buttons */}
         <div className="pt-4 flex gap-3">
           {hasPrevious && (
-            <button type="button" onClick={onCancel} className="w-1/3 h-14 text-[clamp(13px,3.82vw,17px)] font-bold rounded-full border border-white/40 text-[#8A7A7A] bg-white/50 hover:bg-white/80 transition-transform active:scale-[0.98]">
+            <button type="button" onClick={onCancel} className="w-1/3 h-14 text-sm sm:text-base font-bold rounded-full border border-[#F8D6DD] text-[#6D6D6D] bg-[#FFE6EC]/50 hover:bg-[#FFE6EC] transition-transform active:scale-[0.98]">
               Previous
             </button>
           )}
-          <button type="submit" disabled={isPending} className="flex-1 h-14 text-[clamp(13px,3.82vw,17px)] font-bold text-white rounded-full transition-transform active:scale-[0.98] disabled:opacity-50 gradient-coral-pill">
-            {isPending ? "Saving..." : "Next Step"}
+          <button type="submit" disabled={isPending} className="flex-1 h-14 text-base font-bold text-white rounded-full transition-transform active:scale-[0.98] disabled:opacity-50 bg-gradient-to-r from-[#FF9CB3] to-[#FF7E9C] hover:opacity-95 shadow-[0_8px_24px_rgba(255,126,156,0.35)] flex items-center justify-center gap-2">
+            <span>{isPending ? "Saving..." : "Continue"}</span>
+            <ChevronRight className="w-5 h-5 text-white" strokeWidth={2.5} />
           </button>
+        </div>
+
+        {/* Bottom Security Hint */}
+        <div className="pt-3 border-t border-[#F8D6DD]/60 flex items-center justify-center gap-1.5 text-xs text-[#6D6D6D] font-medium">
+          <Lock className="w-3.5 h-3.5 text-[#FF8FA8]" />
+          <span>Your information is safe and secure.</span>
         </div>
       </form>
     </motion.div>

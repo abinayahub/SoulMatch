@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { motion } from "framer-motion";
-import { GraduationCap, BookOpen, Briefcase, Building2, Wallet } from "lucide-react";
+import { GraduationCap, BookOpen, Briefcase, Building2, Wallet, ChevronRight, Lock } from "lucide-react";
 
 export function ProfessionalDetailsForm({ p, onSave, onCancel, hasPrevious, isPending }: any) {
   const form = useForm({
@@ -23,23 +23,25 @@ export function ProfessionalDetailsForm({ p, onSave, onCancel, hasPrevious, isPe
   }, [form.register]);
 
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="premium-glass-card rounded-[24px] p-4 sm:p-6 mb-4 border border-white/50">
-      <div className="mb-5 border-b border-white/40 pb-3 text-center">
-        <h2 className="text-[clamp(17px,5.09vw,23px)] sm:text-[22px] font-black mb-2 text-[#4A3B3B]">Professional Life</h2>
-        <p className="text-[#8A7A7A] text-xs">Share your professional background with matches.</p>
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white rounded-[28px] p-6 sm:p-8 mb-4 border border-[#F8D6DD] shadow-[0_12px_40px_rgba(255,143,168,0.12)]">
+      <div className="mb-6 pb-4 border-b border-[#F8D6DD]/50">
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1E1E1E] tracking-tight mb-1">Professional Life</h2>
+        <p className="text-sm text-[#6D6D6D] font-normal">Share your professional background with matches.</p>
       </div>
 
-      <form onSubmit={form.handleSubmit(onSave)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSave)} className="space-y-5">
         
         {/* Education & Field of Study */}
-        <div className="space-y-4">
-          <div className="space-y-1">
-            <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">Highest Education <span className="text-[#FF7A7A]">*</span></Label>
+        <div className="space-y-5">
+          <div className="space-y-1.5">
+            <Label className="text-sm font-bold text-[#1E1E1E] ml-0.5">
+              Highest Education <span className="text-[#FF8FA8]">*</span>
+            </Label>
             <Select onValueChange={(v) => form.setValue("education", v, { shouldValidate: true })} defaultValue={form.getValues("education")}>
-              <SelectTrigger className={`h-[clamp(43px,12.72vw,57px)] text-[clamp(13px,3.82vw,17px)] text-[#252525] focus-visible:ring-[#FF9A9A]/50 bg-white/60 ${form.formState.errors.education ? "border-red-500" : "border-white/50"}`}>
+              <SelectTrigger className={`h-14 text-sm sm:text-base font-medium text-[#1E1E1E] focus:ring-2 focus:ring-[#FF8FA8]/30 focus:border-[#FF8FA8] bg-white rounded-[18px] ${form.formState.errors.education ? "border-red-500" : "border-[#F4DCE3]"}`}>
                 <SelectValue placeholder="Select education" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="rounded-[18px] border-[#F8D6DD] p-1">
                 <SelectItem value="high_school">High School</SelectItem>
                 <SelectItem value="bachelors">Bachelor's Degree</SelectItem>
                 <SelectItem value="masters">Master's Degree</SelectItem>
@@ -50,44 +52,52 @@ export function ProfessionalDetailsForm({ p, onSave, onCancel, hasPrevious, isPe
             {form.formState.errors.education && <p className="text-xs text-red-500 ml-1">{form.formState.errors.education.message as string}</p>}
           </div>
           
-          <div className="space-y-1">
-            <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">Field of Study <span className="text-gray-400 font-normal lowercase">(optional)</span></Label>
+          <div className="space-y-1.5">
+            <Label className="text-sm font-bold text-[#1E1E1E] ml-0.5">
+              Field of Study <span className="text-[#6D6D6D] font-normal text-xs">(optional)</span>
+            </Label>
             <div className="relative">
-              <BookOpen className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C8B8B8]" />
-              <Input className="h-[clamp(43px,12.72vw,57px)] pl-10 text-[clamp(13px,3.82vw,17px)] text-[#252525] placeholder:text-[#B8A8A8] focus-visible:ring-[#FF9A9A]/50 bg-white/60 border-white/50" placeholder="e.g. Computer Science" {...form.register("fieldOfStudy")} />
+              <BookOpen className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#FF8FA8]" />
+              <Input className="h-14 pl-11 text-sm sm:text-base font-medium text-[#1E1E1E] placeholder:text-[#6D6D6D]/40 focus-visible:ring-2 focus-visible:ring-[#FF8FA8]/30 focus-visible:border-[#FF8FA8] bg-white rounded-[18px] border-[#F4DCE3]" placeholder="e.g. Computer Science" {...form.register("fieldOfStudy")} />
             </div>
           </div>
         </div>
 
         {/* Occupation & Company */}
-        <div className="space-y-4">
-          <div className="space-y-1">
-            <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">Occupation <span className="text-[#FF7A7A]">*</span></Label>
+        <div className="space-y-5">
+          <div className="space-y-1.5">
+            <Label className="text-sm font-bold text-[#1E1E1E] ml-0.5">
+              Occupation <span className="text-[#FF8FA8]">*</span>
+            </Label>
             <div className="relative">
-              <Briefcase className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C8B8B8]" />
-              <Input className={`h-[clamp(43px,12.72vw,57px)] pl-10 text-[clamp(13px,3.82vw,17px)] text-[#252525] placeholder:text-[#B8A8A8] focus-visible:ring-[#FF9A9A]/50 bg-white/60 ${form.formState.errors.occupation ? "border-red-500" : "border-white/50"}`} placeholder="e.g. Product Designer" {...form.register("occupation", { required: "Occupation is required" })} />
+              <Briefcase className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#FF8FA8]" />
+              <Input className={`h-14 pl-11 text-sm sm:text-base font-medium text-[#1E1E1E] placeholder:text-[#6D6D6D]/40 focus-visible:ring-2 focus-visible:ring-[#FF8FA8]/30 focus-visible:border-[#FF8FA8] bg-white rounded-[18px] ${form.formState.errors.occupation ? "border-red-500" : "border-[#F4DCE3]"}`} placeholder="e.g. Product Designer" {...form.register("occupation", { required: "Occupation is required" })} />
             </div>
             {form.formState.errors.occupation && <p className="text-xs text-red-500 ml-1">{form.formState.errors.occupation.message as string}</p>}
           </div>
 
-          <div className="space-y-1">
-            <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">Company <span className="text-gray-400 font-normal lowercase">(optional)</span></Label>
+          <div className="space-y-1.5">
+            <Label className="text-sm font-bold text-[#1E1E1E] ml-0.5">
+              Company <span className="text-[#6D6D6D] font-normal text-xs">(optional)</span>
+            </Label>
             <div className="relative">
-              <Building2 className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C8B8B8]" />
-              <Input className="h-[clamp(43px,12.72vw,57px)] pl-10 text-[clamp(13px,3.82vw,17px)] text-[#252525] placeholder:text-[#B8A8A8] focus-visible:ring-[#FF9A9A]/50 bg-white/60 border-white/50" placeholder="e.g. Acme Studio" {...form.register("company")} />
+              <Building2 className="absolute z-10 left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#FF8FA8]" />
+              <Input className="h-14 pl-11 text-sm sm:text-base font-medium text-[#1E1E1E] placeholder:text-[#6D6D6D]/40 focus-visible:ring-2 focus-visible:ring-[#FF8FA8]/30 focus-visible:border-[#FF8FA8] bg-white rounded-[18px] border-[#F4DCE3]" placeholder="e.g. Acme Studio" {...form.register("company")} />
             </div>
           </div>
         </div>
 
         {/* Industry & Income */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-1">
-            <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">Industry <span className="text-gray-400 font-normal lowercase">(optional)</span></Label>
+          <div className="space-y-1.5">
+            <Label className="text-sm font-bold text-[#1E1E1E] ml-0.5">
+              Industry <span className="text-[#6D6D6D] font-normal text-xs">(optional)</span>
+            </Label>
             <Select onValueChange={(v) => form.setValue("industry", v)} defaultValue={form.getValues("industry")}>
-              <SelectTrigger className="h-[clamp(43px,12.72vw,57px)] text-[clamp(13px,3.82vw,17px)] text-[#252525] focus-visible:ring-[#FF9A9A]/50 bg-white/60 border-white/50">
+              <SelectTrigger className="h-14 text-sm sm:text-base font-medium text-[#1E1E1E] focus:ring-2 focus:ring-[#FF8FA8]/30 focus:border-[#FF8FA8] bg-white rounded-[18px] border-[#F4DCE3]">
                 <SelectValue placeholder="Select industry" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="rounded-[18px] border-[#F8D6DD] p-1">
                 <SelectItem value="technology">Technology</SelectItem>
                 <SelectItem value="finance">Finance</SelectItem>
                 <SelectItem value="healthcare">Healthcare</SelectItem>
@@ -98,13 +108,15 @@ export function ProfessionalDetailsForm({ p, onSave, onCancel, hasPrevious, isPe
             </Select>
           </div>
 
-          <div className="space-y-1">
-            <Label className="text-[clamp(10px,3.05vw,14px)] font-bold text-[#4A3B3B] uppercase tracking-wider ml-1">Annual Income <span className="text-gray-400 font-normal lowercase">(optional)</span></Label>
+          <div className="space-y-1.5">
+            <Label className="text-sm font-bold text-[#1E1E1E] ml-0.5">
+              Annual Income <span className="text-[#6D6D6D] font-normal text-xs">(optional)</span>
+            </Label>
             <Select onValueChange={(v) => form.setValue("annualIncomeRange", v)} defaultValue={form.getValues("annualIncomeRange")}>
-              <SelectTrigger className="h-[clamp(43px,12.72vw,57px)] text-[clamp(13px,3.82vw,17px)] text-[#252525] focus-visible:ring-[#FF9A9A]/50 bg-white/60 border-white/50">
+              <SelectTrigger className="h-14 text-sm sm:text-base font-medium text-[#1E1E1E] focus:ring-2 focus:ring-[#FF8FA8]/30 focus:border-[#FF8FA8] bg-white rounded-[18px] border-[#F4DCE3]">
                 <SelectValue placeholder="Select range" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="rounded-[18px] border-[#F8D6DD] p-1">
                 <SelectItem value="0-50k">Under $50k</SelectItem>
                 <SelectItem value="50k-100k">$50k - $100k</SelectItem>
                 <SelectItem value="100k-150k">$100k - $150k</SelectItem>
@@ -117,13 +129,20 @@ export function ProfessionalDetailsForm({ p, onSave, onCancel, hasPrevious, isPe
         {/* Action Buttons */}
         <div className="pt-4 flex gap-3">
           {hasPrevious && (
-            <button type="button" onClick={onCancel} className="w-1/3 h-14 text-[clamp(13px,3.82vw,17px)] font-bold rounded-full border border-white/40 text-[#8A7A7A] bg-white/50 hover:bg-white/80 transition-transform active:scale-[0.98]">
+            <button type="button" onClick={onCancel} className="w-1/3 h-14 text-sm sm:text-base font-bold rounded-full border border-[#F8D6DD] text-[#6D6D6D] bg-[#FFE6EC]/50 hover:bg-[#FFE6EC] transition-transform active:scale-[0.98]">
               Previous
             </button>
           )}
-          <button type="submit" disabled={isPending} className="flex-1 h-14 text-[clamp(13px,3.82vw,17px)] font-bold text-white rounded-full transition-transform active:scale-[0.98] disabled:opacity-50 gradient-coral-pill">
-            {isPending ? "Saving..." : "Next Step"}
+          <button type="submit" disabled={isPending} className="flex-1 h-14 text-base font-bold text-white rounded-full transition-transform active:scale-[0.98] disabled:opacity-50 bg-gradient-to-r from-[#FF9CB3] to-[#FF7E9C] hover:opacity-95 shadow-[0_8px_24px_rgba(255,126,156,0.35)] flex items-center justify-center gap-2">
+            <span>{isPending ? "Saving..." : "Continue"}</span>
+            <ChevronRight className="w-5 h-5 text-white" strokeWidth={2.5} />
           </button>
+        </div>
+
+        {/* Bottom Security Hint */}
+        <div className="pt-3 border-t border-[#F8D6DD]/60 flex items-center justify-center gap-1.5 text-xs text-[#6D6D6D] font-medium">
+          <Lock className="w-3.5 h-3.5 text-[#FF8FA8]" />
+          <span>Your information is safe and secure.</span>
         </div>
       </form>
     </motion.div>

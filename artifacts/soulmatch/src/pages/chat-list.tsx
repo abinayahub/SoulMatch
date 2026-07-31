@@ -1,10 +1,8 @@
 import { API_URL } from '../config/api';
-import { useState, useMemo } from "react";
-import { MessageCircle, Search, CalendarDays, Flame, Bell, Plus, SlidersHorizontal, Pin, CheckCircle2, Lock, ChevronRight, Star, Edit3 } from "lucide-react";
+import { useState, useMemo, useRef, useEffect } from "react";
+import { MessageCircle, Search, Plus, SlidersHorizontal, CheckCircle2, Star, X, Pencil, Trash2 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -18,7 +16,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { Button } from "@/components/ui/button";
 import { getActiveNotes, createNote, deleteNote } from "@/lib/api";
-import { useToast, toast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 
 function authHeaders() {
   const token = getAccessToken();
@@ -148,34 +146,76 @@ export default function ChatListPage() {
               <h1 className="text-[clamp(24px,7.12vw,32px)] font-bold text-[#252525] tracking-tight mb-0.5">
                 Messages
               </h1>
-              <p className="text-[clamp(11px,3.31vw,15px)] text-[#707070] font-medium flex items-center gap-1.5">
-                Stay connected, build real bonds <span className="text-[clamp(12px,3.56vw,16px)]">💕</span>
-              </p>
             </div>
             <div className="flex items-center gap-3">
               {/* Icons removed as requested */}
             </div>
           </div>
 
-          {/* Search Bar — Clean Glassmorphism */}
+          {/* Search Bar — Single Container, No Double Border */}
           <div className="px-5 mb-5">
-            <div className="relative flex items-center h-[52px] rounded-[24px] pl-5 pr-2 transition-all duration-300 border border-black/5 focus-within:shadow-[0_0_24px_rgba(246,168,183,0.25)]" style={{ background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
+            {/*
+              ONLY this outer div has border / border-radius / shadow / background.
+              The <input> uses .chat-search-input which overrides every global style
+              so it is fully transparent — no extra rounded rectangle on Android.
+            */}
+            <div
+              className="flex items-center h-[52px] rounded-[30px] pl-4 pr-2 gap-2 transition-all duration-300"
+              style={{
+                background: 'rgba(255,255,255,0.92)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                boxShadow: '0 4px 16px rgba(0,0,0,0.07)',
+                border: '1px solid #F4E6EA',
+              }}
+            >
+              {/* Search icon — vertically centred by the flex parent */}
               <Search className="w-[18px] h-[18px] text-[#A0A0A0] shrink-0" strokeWidth={2.5} />
-              <input 
+
+              {/* Input — no border, no bg, no shadow, no outline, no ring */}
+              <input
                 type="text"
-                placeholder="Search conversations..." 
+                placeholder="Search conversations..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1 border-0 bg-transparent shadow-none outline-none ring-0 focus:outline-none focus:ring-0 pl-3 pr-4 text-[15px] h-full text-[#252525] font-medium placeholder:text-[#A0A0A0]"
+                className={[
+                  "chat-search-input",   /* overrides every global @layer base rule */
+                  "flex-1",
+                  "min-w-0",
+                  "h-full",
+                  "text-[15px]",
+                  "font-medium",
+                  "text-[#252525]",
+                  "placeholder:text-[#A0A0A0]",
+                  "border-0",
+                  "outline-none",
+                  "ring-0",
+                  "focus:ring-0",
+                  "focus:outline-none",
+                  "focus:border-transparent",
+                  "shadow-none",
+                  "bg-transparent",
+                ].join(" ")}
               />
-              <div className="w-[36px] h-[36px] bg-white rounded-full flex items-center justify-center cursor-pointer transition-transform hover:scale-[1.02] active:scale-95 shadow-[0_2px_8px_rgba(0,0,0,0.08)] border border-black/5 shrink-0">
+
+              {/* Filter button — separate circular button, vertically centred */}
+              <button
+                type="button"
+                aria-label="Filter conversations"
+                className="w-[36px] h-[36px] rounded-full flex items-center justify-center shrink-0 cursor-pointer transition-transform hover:scale-[1.05] active:scale-95"
+                style={{
+                  background: '#FFFFFF',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                  border: '1px solid rgba(0,0,0,0.05)',
+                }}
+              >
                 <SlidersHorizontal className="w-[16px] h-[16px] text-[#707070]" strokeWidth={2.5} />
-              </div>
+              </button>
             </div>
           </div>
 
           {/* Instagram-Style Notes Bar */}
-          <InstagramNotesBar user={user} activeUsers={activeUsersList} navigate={navigate} />
+          <InstagramNotesBar user={user} conversations={conversations as any[]} navigate={navigate} />
 
           {/* Filter Chips — Glass */}
           <div className="px-5 mb-4">
@@ -343,234 +383,407 @@ function ConversationItem({ conv, user, navigate, isFavorite, toggleFavorite }: 
   );
 }
 
-// Custom hook for Long Press
-function useLongPress(callback: () => void, ms = 500) {
-  const [startLongPress, setStartLongPress] = useState(false);
+// ─── Instagram-Style Notes Bar ──────────────────────────────────────────────
+//
+// Behaviour:
+//  • Shows only notes where expiresAt > now (24-h expiry, client-filtered too)
+//  • Tapping another user's note: if connected → open their existing chat;
+//    if not connected → open their profile. NO popup ever.
+//  • Your own note: tapping opens a bottom sheet to edit/delete.
+//  • Notes row refreshed on mount + every 60 s.
 
-  useEffect(() => {
-    let timerId: any;
-    if (startLongPress) {
-      timerId = setTimeout(callback, ms);
-    } else {
-      clearTimeout(timerId);
-    }
-    return () => clearTimeout(timerId);
-  }, [callback, ms, startLongPress]);
-
-  return {
-    onMouseDown: () => setStartLongPress(true),
-    onMouseUp: () => setStartLongPress(false),
-    onMouseLeave: () => setStartLongPress(false),
-    onTouchStart: () => setStartLongPress(true),
-    onTouchEnd: () => setStartLongPress(false),
-  };
-}
-
-function InstagramNotesBar({ user, activeUsers, navigate }: { user: any, activeUsers: any[], navigate: any }) {
+function InstagramNotesBar({
+  user,
+  conversations,
+  navigate,
+}: {
+  user: any;
+  conversations: any[];
+  navigate: any;
+}) {
   const queryClient = useQueryClient();
 
+  // Fetch + refetch every 60 s; also refetch immediately on mount
   const { data: rawNotes = [] } = useQuery({
     queryKey: ["active-notes"],
-    queryFn: getActiveNotes,
-    refetchInterval: 60000,
+    queryFn: async () => {
+      const res = await getActiveNotes();
+      console.log("Notes API Response:", res);
+      return res;
+    },
+    refetchInterval: 60_000,
+    refetchOnMount: true,
+    staleTime: 0,
   });
 
+  // Client-side expiry guard — never show expired notes
   const activeNotes = useMemo(() => {
     const now = Date.now();
-    return rawNotes.filter((note: any) => new Date(note.expiresAt).getTime() > now && note.isActive);
+    return rawNotes.filter(
+      (note: any) =>
+        note.isActive !== false &&
+        new Date(note.expiresAt).getTime() > now,
+    );
   }, [rawNotes]);
 
-  const myNote = useMemo(() => activeNotes.find((n: any) => n.userId === user?.id), [activeNotes, user?.id]);
+  const myNote = useMemo(
+    () => activeNotes.find((n: any) => n.userId === user?.id),
+    [activeNotes, user?.id],
+  );
 
+  // Build a quick lookup: userId → existing conversationId
+  const userToConvId = useMemo(() => {
+    const map = new Map<any, number>();
+    (conversations || []).forEach((conv: any) => {
+      conv.participants?.forEach((p: any) => {
+        if (Number(p.id) !== Number(user?.id)) {
+          map.set(Number(p.id), conv.id);
+          map.set(String(p.id), conv.id);
+        }
+      });
+    });
+    return map;
+  }, [conversations, user?.id]);
+
+  // Other users who have an active note
+  const othersWithNotes = useMemo(
+    () => activeNotes.filter((n: any) => Number(n.userId) !== Number(user?.id)),
+    [activeNotes, user?.id],
+  );
+
+  // ── Own note sheet ──────────────────────────────────────────────────────
   const createMutation = useMutation({
     mutationFn: createNote,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["active-notes"] }),
   });
-
   const deleteMutation = useMutation({
     mutationFn: deleteNote,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["active-notes"] }),
   });
 
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [draftNote, setDraftNote] = useState("");
-
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [draft, setDraft] = useState("");
   const [confirmDelete, setConfirmDelete] = useState(false);
 
-  const handleOpenDialog = () => {
-    setDraftNote(myNote?.content || "");
+  const openSheet = () => {
+    setDraft(myNote?.content ?? myNote?.note ?? "");
     setConfirmDelete(false);
-    setIsDialogOpen(true);
+    setSheetOpen(true);
   };
 
-  const handleSaveNote = () => {
-    if (!draftNote.trim()) {
-      return;
-    }
-    createMutation.mutate(draftNote.trim(), {
+  const handleSave = () => {
+    if (!draft.trim()) return;
+    createMutation.mutate(draft.trim(), {
       onSuccess: () => {
-        toast({ title: "Note shared successfully" });
-        setIsDialogOpen(false);
+        toast({ title: "Note shared ✓" });
+        setSheetOpen(false);
       },
-      onError: (error: any) => toast({ title: "Failed to share note", description: String(error.message || error), variant: "destructive" })
+      onError: (err: any) =>
+        toast({ title: "Couldn't share note", description: String(err.message || err), variant: "destructive" }),
     });
   };
 
-  const handleDeleteNote = () => {
+  const handleDelete = () => {
     deleteMutation.mutate(undefined, {
       onSuccess: () => {
-        toast({ title: "Note deleted successfully" });
-        setDraftNote("");
-        setIsDialogOpen(false);
+        toast({ title: "Note deleted" });
+        setSheetOpen(false);
         setConfirmDelete(false);
       },
-      onError: () => toast({ title: "Failed to delete note", variant: "destructive" })
+      onError: () => toast({ title: "Couldn't delete note", variant: "destructive" }),
     });
   };
+
+  // ── Tap handler for other users ─────────────────────────────────────────
+  const handleTapOther = (note: any) => {
+    const targetUserId = note.userId || note.user?.id;
+    const convId = userToConvId.get(targetUserId) || userToConvId.get(Number(targetUserId));
+    if (convId) {
+      navigate(`/chat/${convId}`);
+    } else if (targetUserId) {
+      navigate(`/profile/${targetUserId}`);
+    }
+  };
+
+  const myPhotoUrl =
+    user?.photos?.find((p: any) => p.isPrimary)?.url ||
+    user?.photos?.[0]?.url;
 
   return (
     <div className="w-full mb-3">
-      <div className="flex gap-[18px] overflow-x-auto hide-scrollbar pb-1 px-5">
-        {/* Your Note */}
-        <div className="flex flex-col items-center flex-shrink-0 w-[72px] cursor-pointer" onClick={handleOpenDialog}>
-          <div className="h-[48px] w-full relative mb-2">
-            {myNote ? (
-              <motion.div initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-col items-center w-max max-w-[100px] z-10">
-                <div className="bg-white/95 backdrop-blur-md px-3 py-2 rounded-2xl shadow-[0_2px_12px_rgba(246,168,183,0.25)] border border-[#F6A8B7]/30 text-[11px] font-medium text-[#252525] text-center w-full">
-                  <span className="line-clamp-2 leading-tight break-words">{myNote.content}</span>
-                </div>
-                <div className="w-2.5 h-2.5 bg-white/95 border-b border-r border-[#F6A8B7]/30 rotate-45 -mt-1.5 shadow-[2px_2px_4px_rgba(246,168,183,0.05)]" />
-              </motion.div>
-            ) : (
-              <motion.div initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-col items-center w-max max-w-[100px] z-10">
-                <div className="bg-white/95 backdrop-blur-md px-3 py-2 rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] border border-[#E0E0E0]/50 text-[11px] font-medium text-[#8A8A8A] text-center w-full">
-                  <span className="line-clamp-2 leading-tight break-words">What's on your mind?</span>
-                </div>
-                <div className="w-2.5 h-2.5 bg-white/95 border-b border-r border-[#E0E0E0]/50 rotate-45 -mt-1.5 shadow-[2px_2px_4px_rgba(0,0,0,0.02)]" />
-              </motion.div>
-            )}
+      {/* ── Scrollable row ── */}
+      <div className="flex gap-3 overflow-x-auto hide-scrollbar pb-1 px-5">
+
+        {/* ── Your Note ── */}
+        <button
+          type="button"
+          onClick={openSheet}
+          className="flex flex-col items-center flex-shrink-0 w-[80px] cursor-pointer bg-transparent border-none p-0"
+        >
+          {/* Bubble zone */}
+          <div className="h-[64px] w-full flex flex-col items-center justify-end mb-2">
+            <AnimatePresence mode="wait">
+              {myNote ? (
+                <motion.div
+                  key="my-note"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.8, opacity: 0 }}
+                  className="flex flex-col items-center w-full"
+                >
+                  <div className="w-[78px] bg-white/95 backdrop-blur-md px-2 py-[6px] rounded-[13px] shadow-[0_2px_10px_rgba(246,168,183,0.22)] border border-[#F6A8B7]/30 text-[10.5px] font-medium text-[#252525] text-center relative">
+                    <span className="line-clamp-2 leading-[1.35] break-words">{myNote.content}</span>
+                    {/* tiny edit badge */}
+                    <span className="absolute -top-1.5 -right-1.5 w-[16px] h-[16px] rounded-full bg-[#F6A8B7] flex items-center justify-center shadow">
+                      <Pencil className="w-2 h-2 text-white" strokeWidth={3} />
+                    </span>
+                  </div>
+                  <div className="w-2 h-2 bg-white/95 border-b border-r border-[#F6A8B7]/30 rotate-45 -mt-1 mx-auto" />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="my-empty"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.8, opacity: 0 }}
+                  className="flex flex-col items-center w-full"
+                >
+                  <div className="w-[78px] bg-white/88 backdrop-blur-md px-2 py-[6px] rounded-[13px] shadow-[0_2px_8px_rgba(0,0,0,0.07)] border border-[#E0E0E0]/50 text-[10.5px] font-medium text-[#8A8A8A] text-center">
+                    <span className="leading-[1.35]">What's on your mind?</span>
+                  </div>
+                  <div className="w-2 h-2 bg-white/88 border-b border-r border-[#E0E0E0]/50 rotate-45 -mt-1 mx-auto" />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-          
+
+          {/* Avatar */}
           <div className="relative w-[60px] h-[60px]">
-            <Avatar className="w-[60px] h-[60px] ring-[2px] ring-[#F6A8B7]/40 ring-offset-[3px] ring-offset-transparent">
-              <AvatarImage src={user?.photos?.find((p:any) => p.isPrimary)?.url || user?.photos?.[0]?.url} className="object-cover" />
-              <AvatarFallback className="bg-[#F6A8B7]/15 text-[#252525] font-bold text-lg">{getInitials(user?.firstName || "U")}</AvatarFallback>
+            <Avatar className="w-[60px] h-[60px] ring-[2.5px] ring-[#F6A8B7]/55 ring-offset-[2px] ring-offset-transparent">
+              <AvatarImage src={myPhotoUrl} className="object-cover" />
+              <AvatarFallback className="bg-[#F6A8B7]/15 text-[#252525] font-bold text-base">
+                {getInitials(user?.firstName || "U")}
+              </AvatarFallback>
             </Avatar>
             {!myNote && (
-              <div className="absolute -bottom-1 -right-1 w-[20px] h-[20px] bg-white rounded-full flex items-center justify-center shadow-sm z-10 border-[1.5px] border-white text-[#F6A8B7]">
-                <div className="w-full h-full bg-[#F6A8B7]/15 rounded-full flex items-center justify-center">
-                  <Plus className="w-3 h-3" strokeWidth={3.5} />
+              <div className="absolute -bottom-0.5 -right-0.5 w-[18px] h-[18px] bg-white rounded-full flex items-center justify-center shadow-sm z-10 border border-white">
+                <div className="w-full h-full bg-[#F6A8B7]/20 rounded-full flex items-center justify-center">
+                  <Plus className="w-2.5 h-2.5 text-[#F6A8B7]" strokeWidth={3.5} />
                 </div>
               </div>
             )}
           </div>
-          <span className="text-[12px] font-medium text-[#707070] mt-1.5 text-center w-full truncate">Your Note</span>
-        </div>
+          <span className="text-[10.5px] font-medium text-[#707070] mt-1.5 text-center w-full truncate">
+            Your Note
+          </span>
+        </button>
 
-        {/* Connected Users' Notes */}
-        {activeUsers.map(activeU => {
-          const theirNote = activeNotes.find((n: any) => n.userId === activeU.id);
-          if (!theirNote) return null;
-
-          return (
-            <ConnectionNoteItem key={activeU.id} activeU={activeU} theirNote={theirNote} navigate={navigate} />
-          );
-        })}
+        {/* ── Other users' active notes ── */}
+        {othersWithNotes.map((note: any) => (
+          <NoteAvatar
+            key={note.id}
+            note={note}
+            onTap={() => handleTapOther(note)}
+          />
+        ))}
       </div>
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="w-[85vw] max-w-[320px] rounded-[24px] border-white/40 bg-white/95 backdrop-blur-2xl shadow-[0_10px_40px_rgba(0,0,0,0.15)] p-4 md:p-5">
-          <DialogHeader className="mb-1">
-            <DialogTitle className="text-center text-[#252525] text-lg font-bold">Your Note</DialogTitle>
-          </DialogHeader>
-          {confirmDelete ? (
-            <div className="py-2 text-center">
-              <h3 className="text-[#252525] font-bold text-[15px] mb-1.5">Delete this note?</h3>
-              <p className="text-[12px] text-[#707070] mb-4">This note will be permanently removed.</p>
-              <div className="flex gap-2">
-                <Button onClick={() => setConfirmDelete(false)} variant="ghost" className="flex-1 rounded-[14px] h-10 text-[#707070] font-medium bg-black/5 hover:bg-black/10">Cancel</Button>
-                <Button onClick={handleDeleteNote} disabled={deleteMutation.isPending} className="flex-1 rounded-[14px] h-10 bg-red-500 hover:bg-red-600 text-white font-bold shadow-sm shadow-red-500/20">Delete</Button>
-              </div>
-            </div>
-          ) : (
-            <>
-              <div className="py-1">
-                <Input
-                  value={draftNote}
-                  onChange={(e) => setDraftNote(e.target.value.slice(0, 60))}
-                  placeholder="Share a thought..."
-                  className="text-center border-0 bg-[#F6A8B7]/5 rounded-[16px] h-12 text-[15px] text-[#252525] font-medium focus-visible:ring-1 focus-visible:ring-[#F6A8B7]/50 shadow-inner px-4 placeholder:text-[#8A8A8A]"
-                  autoFocus
-                />
-                
-                <div className="text-center text-[10px] text-[#8A8A8A] mt-2 font-medium">
-                  {draftNote.length}/60 characters
+      {/* ── Own note bottom-sheet (edit / delete) ── */}
+      <AnimatePresence>
+        {sheetOpen && (
+          <>
+            {/* backdrop */}
+            <motion.div
+              key="backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-40 bg-black/30 backdrop-blur-[2px]"
+              onClick={() => setSheetOpen(false)}
+            />
+
+            {/* sheet */}
+            <motion.div
+              key="sheet"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 28, stiffness: 340 }}
+              className="fixed bottom-0 left-0 right-0 z-50 rounded-t-[28px] bg-white/97 backdrop-blur-2xl px-5 pt-4 pb-8 shadow-[0_-8px_40px_rgba(0,0,0,0.14)]"
+              style={{ maxHeight: "80vh" }}
+            >
+              {/* drag handle */}
+              <div className="w-10 h-1 rounded-full bg-[#E0E0E0] mx-auto mb-4" />
+
+              {confirmDelete ? (
+                <div className="text-center py-2">
+                  <h3 className="text-[#252525] font-bold text-[16px] mb-1">Delete note?</h3>
+                  <p className="text-[13px] text-[#707070] mb-5">This will remove your note for everyone.</p>
+                  <div className="flex gap-3">
+                    <Button
+                      onClick={() => setConfirmDelete(false)}
+                      variant="ghost"
+                      className="flex-1 rounded-[14px] h-11 bg-black/5 text-[#707070] font-semibold"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={handleDelete}
+                      disabled={deleteMutation.isPending}
+                      className="flex-1 rounded-[14px] h-11 bg-red-500 hover:bg-red-600 text-white font-bold"
+                    >
+                      {deleteMutation.isPending ? "Deleting..." : "Delete"}
+                    </Button>
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col gap-2 mt-3">
-                <Button onClick={handleSaveNote} disabled={createMutation.isPending || deleteMutation.isPending || !draftNote.trim()} className="rounded-[16px] h-11 w-full bg-[#F6A8B7] hover:bg-[#F6A8B7]/90 text-white font-bold text-[14px] shadow-sm shadow-[#F6A8B7]/20 transition-all disabled:opacity-50">
-                  {createMutation.isPending 
-                    ? (myNote ? "Updating..." : "Sharing...") 
-                    : (myNote ? "Update Note" : "Share Note")}
-                </Button>
-                {myNote && (
-                  <Button onClick={() => setConfirmDelete(true)} disabled={createMutation.isPending || deleteMutation.isPending} variant="ghost" className="rounded-[14px] h-10 w-full text-red-500 hover:text-red-600 hover:bg-red-50 font-bold text-[13px]">
-                    Delete Note
-                  </Button>
-                )}
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
+              ) : (
+                <>
+                  <p className="text-center text-[13px] font-semibold text-[#707070] mb-3">
+                    {myNote ? "Edit your note" : "Share a thought"}
+                  </p>
+
+                  {/* text input */}
+                  <div className="relative">
+                    <textarea
+                      value={draft}
+                      onChange={(e) => setDraft(e.target.value.slice(0, 60))}
+                      placeholder="What's on your mind?"
+                      rows={2}
+                      autoFocus
+                      className={
+                        "chat-search-input w-full resize-none rounded-[16px] px-4 py-3 " +
+                        "text-[15px] text-[#252525] font-medium placeholder:text-[#A0A0A0] " +
+                        "bg-[#F6A8B7]/6 border border-[#F6A8B7]/25 leading-snug"
+                      }
+                    />
+                    <span className="absolute bottom-2 right-3 text-[10px] text-[#A0A0A0] font-medium">
+                      {draft.length}/60
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col gap-2 mt-4">
+                    <Button
+                      onClick={handleSave}
+                      disabled={createMutation.isPending || !draft.trim()}
+                      className="h-12 rounded-[16px] w-full font-bold text-[15px] text-white shadow-sm"
+                      style={{ background: "linear-gradient(135deg,#F6A8B7,#F8C3C6)" }}
+                    >
+                      {createMutation.isPending
+                        ? myNote ? "Updating..." : "Sharing..."
+                        : myNote ? "Update Note" : "Share Note"}
+                    </Button>
+
+                    {myNote && (
+                      <button
+                        type="button"
+                        onClick={() => setConfirmDelete(true)}
+                        className="h-11 rounded-[14px] w-full font-semibold text-[14px] text-red-500 hover:bg-red-50 transition-colors"
+                      >
+                        Delete Note
+                      </button>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={() => setSheetOpen(false)}
+                      className="h-10 rounded-[14px] w-full font-medium text-[13px] text-[#A0A0A0] hover:bg-black/5 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </>
+              )}
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
 
-function ConnectionNoteItem({ activeU, theirNote, navigate }: { activeU: any, theirNote: any, navigate: any }) {
-  const photoUrl = activeU.photos?.[0]?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(activeU.displayName || "User")}&background=random`;
-  const [showActions, setShowActions] = useState(false);
+// ─── NoteAvatar: a single other-user note item ───────────────────────────────
+// No popup. Tap → navigate directly.
+function getNoteUserData(note: any) {
+  const user = note.user;
+  
+  if (!user || (!user.id && !note.userId)) {
+    console.error("[Notes Frontend Data Error] Note object is missing associated user record:", note);
+  }
 
-  const longPressProps = useLongPress(() => {
-    setShowActions(true);
-  });
+  // Display name priority:
+  // user.firstName ?? user.displayName ?? user.username ?? user.email.split("@")[0]
+  const fn = (note.firstName || user?.firstName || "").trim();
+  const dn = (note.displayName || user?.displayName || "").trim();
+  const un = (note.username || user?.username || "").trim();
+  const em = (note.email || user?.email || "").trim();
+
+  let displayName = "";
+
+  if (fn && fn !== "User" && fn !== "Unknown User") {
+    displayName = fn.split(" ")[0]; // First name (e.g. Priya K -> Priya)
+  } else if (dn && dn !== "User" && dn !== "Unknown User") {
+    displayName = dn.split(" ")[0];
+  } else if (un && un !== "User") {
+    displayName = un;
+  } else if (em) {
+    displayName = em.split("@")[0];
+  } else if (fn) {
+    displayName = fn;
+  } else {
+    displayName = "User";
+  }
+
+  // Photo priority:
+  // note.profileImage || note.profilePhoto || user.profileImage || user.profilePhoto || photos primary
+  const photoUrl = 
+    note.profileImage ||
+    note.profilePhoto || 
+    user?.profileImage ||
+    user?.profilePhoto || 
+    user?.photos?.find((p: any) => p.isPrimary)?.url ||
+    user?.photos?.[0]?.url ||
+    undefined;
+
+  return { displayName, photoUrl };
+}
+
+function NoteAvatar({ note, onTap }: { note: any; onTap: () => void }) {
+  const { displayName, photoUrl } = getNoteUserData(note);
+  const noteContent = note.note || note.content;
 
   return (
-    <Popover open={showActions} onOpenChange={setShowActions}>
-      <PopoverTrigger asChild>
-        <div {...longPressProps} className="flex flex-col items-center flex-shrink-0 w-[72px] cursor-pointer group" onClick={() => setShowActions(true)}>
-          <div className="h-[48px] w-full relative mb-2">
-            <motion.div initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.1 }} className="absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-col items-center w-max max-w-[100px] z-10">
-              <div className="bg-white/95 backdrop-blur-md px-3 py-2 rounded-2xl shadow-[0_2px_12px_rgba(246,168,183,0.15)] border border-[#F6A8B7]/30 text-[11px] font-medium text-[#252525] text-center w-full">
-                <span className="line-clamp-2 leading-tight break-words">{theirNote.content}</span>
-              </div>
-              <div className="w-2.5 h-2.5 bg-white/95 border-b border-r border-[#F6A8B7]/30 rotate-45 -mt-1.5 shadow-[2px_2px_4px_rgba(246,168,183,0.05)]" />
-            </motion.div>
+    <button
+      type="button"
+      onClick={onTap}
+      className="flex flex-col items-center flex-shrink-0 w-[80px] cursor-pointer bg-transparent border-none p-0 active:scale-95 transition-transform"
+    >
+      {/* Bubble zone */}
+      <div className="h-[64px] w-full flex flex-col items-center justify-end mb-2">
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 300, damping: 22 }}
+          className="flex flex-col items-center w-full"
+        >
+          <div className="w-[78px] bg-white/95 backdrop-blur-md px-2 py-[6px] rounded-[13px] shadow-[0_2px_10px_rgba(246,168,183,0.18)] border border-[#F6A8B7]/28 text-[10.5px] font-medium text-[#252525] text-center">
+            <span className="line-clamp-2 leading-[1.35] break-words">{noteContent}</span>
           </div>
-          
-          <div className="relative w-[60px] h-[60px]">
-            <Avatar className="w-[60px] h-[60px] ring-[2px] ring-[#F6A8B7] ring-offset-[3px] ring-offset-transparent transition-transform active:scale-95">
-              <AvatarImage src={photoUrl} className="object-cover" />
-              <AvatarFallback className="bg-[#F6A8B7]/20 text-[#252525] font-bold">{getInitials(activeU.displayName || "U")}</AvatarFallback>
-            </Avatar>
-          </div>
-          <span className="text-[12px] font-medium text-[#252525] mt-1.5 text-center w-full truncate">
-            {activeU.displayName?.split(' ')[0] || "User"}
-          </span>
-        </div>
-      </PopoverTrigger>
-      <PopoverContent align="center" side="bottom" className="w-56 p-2 rounded-2xl border-white/40 bg-white/95 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
-        <div className="p-3 pb-2 text-center border-b border-black/5 mb-1">
-          <p className="text-[14px] text-[#252525] font-semibold leading-snug">"{theirNote.content}"</p>
-          <p className="text-[10px] text-[#8A8A8A] mt-1.5">{formatTime(theirNote.createdAt)}</p>
-        </div>
-        <Button variant="ghost" className="w-full justify-start text-[13px] font-semibold text-[#252525] hover:bg-[#F6A8B7]/10 rounded-xl" onClick={() => navigate(`/profile/${activeU.id}`)}>
-          View Profile
-        </Button>
-        <Button variant="ghost" className="w-full justify-start text-[13px] font-semibold text-[#252525] hover:bg-[#F6A8B7]/10 rounded-xl mt-0.5" onClick={() => navigate(`/chat/new?userId=${activeU.id}`)}>
-          Open Chat
-        </Button>
-      </PopoverContent>
-    </Popover>
+          <div className="w-2 h-2 bg-white/95 border-b border-r border-[#F6A8B7]/28 rotate-45 -mt-1 mx-auto" />
+        </motion.div>
+      </div>
+
+      {/* Avatar */}
+      <div className="relative w-[60px] h-[60px]">
+        <Avatar className="w-[60px] h-[60px] ring-[2.5px] ring-[#F6A8B7] ring-offset-[2px] ring-offset-transparent">
+          {photoUrl && <AvatarImage src={photoUrl} className="object-cover" />}
+          <AvatarFallback className="bg-[#F6A8B7]/20 text-[#252525] font-bold text-base">
+            {getInitials(displayName)}
+          </AvatarFallback>
+        </Avatar>
+      </div>
+      <span className="text-[10.5px] font-medium text-[#252525] mt-1.5 text-center w-full truncate">
+        {displayName}
+      </span>
+    </button>
   );
 }

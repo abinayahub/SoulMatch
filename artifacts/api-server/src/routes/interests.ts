@@ -75,6 +75,12 @@ router.post("/", authenticate, async (req: AuthRequest, res) => {
     if (!toUserId) return res.status(400).json({ error: "toUserId required" });
     if (toUserId === req.user!.userId) return res.status(400).json({ error: "Cannot send interest to yourself" });
 
+    const sender = await db.query.usersTable.findFirst({ where: eq(usersTable.id, req.user!.userId) });
+    const isCompleted = sender?.journeyCompleted || (sender?.journeyProgress || 0) >= 30;
+    if (!isCompleted) {
+      return res.status(403).json({ error: "Finish your journey to start connecting." });
+    }
+
     const existing = await db.query.interestsTable.findFirst({
       where: and(eq(interestsTable.fromUserId, req.user!.userId), eq(interestsTable.toUserId, toUserId)),
     });
@@ -107,6 +113,17 @@ router.patch("/:interestId", authenticate, async (req: AuthRequest, res) => {
     const interest = await db.query.interestsTable.findFirst({ where: eq(interestsTable.id, interestId) });
     if (!interest) return res.status(404).json({ error: "Interest not found" });
     if (interest.toUserId !== req.user!.userId) return res.status(403).json({ error: "Forbidden" });
+
+    if (action === "accept") {
+      const fromUserObj = await db.query.usersTable.findFirst({ where: eq(usersTable.id, interest.fromUserId) });
+      const toUserObj = await db.query.usersTable.findFirst({ where: eq(usersTable.id, interest.toUserId) });
+      const fromCompleted = fromUserObj?.journeyCompleted || (fromUserObj?.journeyProgress || 0) >= 30;
+      const toCompleted = toUserObj?.journeyCompleted || (toUserObj?.journeyProgress || 0) >= 30;
+
+      if (!fromCompleted || !toCompleted) {
+        return res.status(403).json({ error: "Both users must complete their 30-Day Journey before creating a match." });
+      }
+    }
 
     const [updated] = await db.update(interestsTable).set({
       status: action === "accept" ? "accepted" : "declined",

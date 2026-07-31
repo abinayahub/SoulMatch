@@ -35,9 +35,10 @@ export function timeAgo(date: string | Date) {
   return formatDate(date);
 }
 
-export function getInitials(firstName: string, lastName?: string) {
-  const parts = lastName ? [firstName, lastName] : firstName.split(" ");
-  return parts.map((n) => n[0]).join("").toUpperCase().slice(0, 2);
+export function getInitials(firstName?: string | null, lastName?: string | null) {
+  if (!firstName) return "SM";
+  const parts = lastName ? [firstName, lastName] : String(firstName).split(" ");
+  return parts.map((n) => n ? n[0] : "").join("").toUpperCase().slice(0, 2) || "SM";
 }
 
 export function getApiUrl(path: string) {

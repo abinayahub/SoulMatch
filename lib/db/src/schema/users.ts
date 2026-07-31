@@ -78,6 +78,8 @@ export const usersTable = pgTable("users", {
   isPhoneVerified: boolean("is_phone_verified").notNull().default(false),
   isEmailVerified: boolean("is_email_verified").notNull().default(false),
   journeyProgress: integer("journey_progress").notNull().default(0),
+  journeyCompleted: boolean("journey_completed").notNull().default(false),
+  journeyCompletedAt: timestamp("journey_completed_at"),
   googleId: text("google_id"),
   journeyStartedAt: timestamp("journey_started_at"),
   lastActive: timestamp("last_active"),
