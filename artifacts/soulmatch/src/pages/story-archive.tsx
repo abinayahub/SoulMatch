@@ -140,28 +140,31 @@ export default function StoryArchivePage() {
       >
         <div className="max-w-md mx-auto w-full px-5">
           
-          {/* Header */}
-          <div className="flex items-center justify-between mb-5 mt-2">
+          {/* Compact Mobile Header */}
+          <div className="flex items-center justify-between mb-4 mt-1">
             <div className="flex items-center gap-3">
               <button 
                 onClick={() => window.history.back()} 
-                className="w-10 h-10 rounded-full bg-white border border-black/5 shadow-xs flex items-center justify-center text-[#252525] hover:bg-white/80 active:scale-95 transition-all"
+                className="w-9 h-9 rounded-full bg-white/90 border border-[#F8D6DD]/50 shadow-xs flex items-center justify-center text-[#252525] hover:bg-white active:scale-95 transition-all"
               >
-                <ArrowLeft className="w-5 h-5" />
+                <ArrowLeft className="w-4.5 h-4.5" />
               </button>
               <div>
-                <h1 className="text-xl sm:text-2xl font-extrabold text-[#252525] tracking-tight leading-tight">
+                <h1 className="text-lg sm:text-xl font-extrabold text-[#252525] tracking-tight leading-tight">
                   Story Archive
                 </h1>
+                <p className="text-[11px] sm:text-xs text-[#707070] font-medium leading-none mt-0.5">
+                  Your journey. Your memories.
+                </p>
               </div>
             </div>
 
             <div className="flex items-center gap-2">
               <button 
-                className="w-9 h-9 rounded-full bg-white border border-black/5 flex items-center justify-center text-[#FF477E] hover:bg-[#FFF0F3] active:scale-95 transition-all shadow-2xs"
+                className="w-8 h-8 rounded-full bg-white/90 border border-[#F8D6DD]/50 flex items-center justify-center text-[#F6A8B7] hover:bg-[#FFF0F3] active:scale-95 transition-all shadow-2xs"
                 title="Calendar view"
               >
-                <Calendar className="w-4 h-4" />
+                <Calendar className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>
@@ -279,62 +282,54 @@ export default function StoryArchivePage() {
                                     const idx = filteredStories.findIndex((s) => s.id === story.id);
                                     setSelectedStoryIndex(idx >= 0 ? idx : 0);
                                   }}
-                                  className="w-full bg-white/90 backdrop-blur-md rounded-[24px] border border-[#F8D6DD]/40 p-4 shadow-[0_4px_20px_rgba(246,168,183,0.08)] hover:shadow-md transition-all cursor-pointer hover:scale-[1.01] active:scale-[0.99]"
+                                  className="w-full bg-white/90 backdrop-blur-md rounded-[20px] border border-[#F8D6DD]/40 p-4 shadow-[0_4px_20px_rgba(246,168,183,0.08)] hover:shadow-md transition-all cursor-pointer active:scale-[0.99]"
                                 >
-                                  <div className="flex items-center gap-3">
-                                    
-                                    {/* Left Side: Image / Video Thumbnail */}
-                                    {story.imageUrl ? (
-                                      <div className="w-20 h-20 rounded-2xl overflow-hidden shrink-0 border border-[#F8D6DD]/30 bg-[#FFF0F3]">
-                                        <img 
-                                          src={story.imageUrl} 
-                                          alt="Story moment" 
-                                          className="w-full h-full object-cover"
-                                        />
-                                      </div>
-                                    ) : (
-                                      <div className="w-14 h-14 rounded-2xl overflow-hidden shrink-0 border border-[#F8D6DD]/30 bg-[#FFF0F3]/60 flex items-center justify-center">
-                                        <BookOpen className="w-5 h-5 text-[#F6A8B7]" />
+                                  {/* Top Image Preview if available */}
+                                  {story.imageUrl && (
+                                    <div className="w-full h-40 sm:h-48 rounded-[16px] overflow-hidden mb-3 border border-[#F8D6DD]/30 bg-[#FFF0F3]">
+                                      <img 
+                                        src={story.imageUrl} 
+                                        alt="Story moment" 
+                                        className="w-full h-full object-cover"
+                                      />
+                                    </div>
+                                  )}
+
+                                  <div className="space-y-2">
+                                    <div className="flex items-start justify-between gap-2">
+                                      <h4 className="text-xs sm:text-sm font-extrabold text-[#252525] leading-snug line-clamp-2">
+                                        {story.content || "Memory"}
+                                      </h4>
+                                      <button 
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          handleDelete(story.id);
+                                        }}
+                                        className="text-[#707070] hover:text-red-500 p-1 shrink-0 transition-colors"
+                                        title="Delete story"
+                                      >
+                                        <Trash2 className="w-3.5 h-3.5" />
+                                      </button>
+                                    </div>
+
+                                    {/* Category / Mood Badge */}
+                                    {story.mood && (
+                                      <div>
+                                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#F6A8B7]/10 text-[#FF477E] text-[10px] font-bold border border-[#F6A8B7]/25">
+                                          <span>✨</span>
+                                          <span>{story.mood}</span>
+                                        </span>
                                       </div>
                                     )}
 
-                                    {/* Right Side: Content & Meta */}
-                                    <div className="flex-1 min-w-0 flex flex-col justify-between space-y-1.5">
-                                      <div className="flex items-start justify-between gap-1.5">
-                                        <h4 className="text-xs sm:text-sm font-extrabold text-[#252525] leading-snug truncate">
-                                          {story.content || "Memory"}
-                                        </h4>
-                                        <button 
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleDelete(story.id);
-                                          }}
-                                          className="text-[#707070] hover:text-red-500 p-0.5 shrink-0 transition-colors"
-                                          title="Delete story"
-                                        >
-                                          <Trash2 className="w-3.5 h-3.5" />
-                                        </button>
-                                      </div>
-
-                                      {/* Category / Mood Badge */}
-                                      {story.mood && (
-                                        <div>
-                                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#F6A8B7]/10 text-[#FF477E] text-[10px] font-bold border border-[#F6A8B7]/25">
-                                            <span>✨</span>
-                                            <span>{story.mood}</span>
-                                          </span>
-                                        </div>
-                                      )}
-
-                                      {/* Date & Privacy Row */}
-                                      <p className="text-[10px] sm:text-xs text-[#707070] font-medium flex items-center gap-1 truncate">
-                                        <span className="truncate">{formattedFullDate}</span>
-                                        <span>•</span>
-                                        <Lock className="w-3 h-3 shrink-0 text-[#707070]" />
+                                    {/* Date & Privacy Row */}
+                                    <div className="pt-1 border-t border-black/5 flex items-center justify-between text-[10px] sm:text-xs text-[#707070] font-medium">
+                                      <span className="truncate">{formattedFullDate}</span>
+                                      <span className="inline-flex items-center gap-1 shrink-0 bg-[#FAF4F6] px-2 py-0.5 rounded-full text-[#707070] font-semibold border border-black/5">
+                                        <Lock className="w-3 h-3 text-[#707070]" />
                                         <span>Private</span>
-                                      </p>
+                                      </span>
                                     </div>
-
                                   </div>
                                 </div>
                               </motion.div>
