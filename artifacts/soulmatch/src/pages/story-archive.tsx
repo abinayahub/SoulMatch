@@ -153,9 +153,6 @@ export default function StoryArchivePage() {
                 <h1 className="text-lg sm:text-xl font-extrabold text-[#252525] tracking-tight leading-tight">
                   Story Archive
                 </h1>
-                <p className="text-[11px] sm:text-xs text-[#707070] font-medium leading-none mt-0.5">
-                  Your journey. Your memories.
-                </p>
               </div>
             </div>
 
