@@ -2,22 +2,21 @@ import { useState, useMemo } from "react";
 import ReactDOM from "react-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { format, subDays, subMonths, isAfter } from "date-fns";
-import { 
-  Search, 
-  ArrowLeft, 
-  BookOpen, 
-  Calendar, 
-  Filter, 
-  ChevronDown, 
-  ChevronUp, 
-  ChevronLeft,
-  ChevronRight,
+import {
+  Search,
+  ArrowLeft,
+  BookOpen,
+  Calendar,
+  ChevronDown,
+  ChevronUp,
   X,
-  Heart, 
-  Lock, 
-  Trash2, 
-  Image as ImageIcon, 
-  Plus
+  Heart,
+  Lock,
+  Trash2,
+  Plus,
+  MessageCircle,
+  Share2,
+  BookMarked,
 } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
@@ -198,8 +197,9 @@ export default function StoryArchivePage() {
           {/* Timeline & Story Content */}
           {isLoading ? (
             <div className="space-y-4 pt-2">
-              <Skeleton className="h-44 rounded-[24px] bg-black/5" />
-              <Skeleton className="h-44 rounded-[24px] bg-black/5" />
+              <Skeleton className="h-[110px] rounded-[20px] bg-black/5" />
+              <Skeleton className="h-[110px] rounded-[20px] bg-black/5" />
+              <Skeleton className="h-[110px] rounded-[20px] bg-black/5" />
             </div>
           ) : filteredStories.length === 0 ? (
             <motion.div 
@@ -263,8 +263,8 @@ export default function StoryArchivePage() {
                         >
                           {stories.map((story: any, i: number) => {
                             const storyDate = new Date(story.createdAt);
+                            const formattedDate = format(storyDate, "d MMM yyyy");
                             const formattedTime = format(storyDate, "hh:mm a");
-                            const formattedFullDate = `${format(storyDate, "d MMM yyyy")} • ${formattedTime}`;
 
                             return (
                               <motion.div
@@ -273,59 +273,77 @@ export default function StoryArchivePage() {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: Math.min(i * 0.05, 0.4) }}
                               >
-                                {/* Story Card */}
-                                <div 
+                                {/* Story Card — Horizontal Layout */}
+                                <div
                                   onClick={() => {
                                     const idx = filteredStories.findIndex((s) => s.id === story.id);
                                     setSelectedStoryIndex(idx >= 0 ? idx : 0);
                                   }}
-                                  className="w-full bg-white/90 backdrop-blur-md rounded-[20px] border border-[#F8D6DD]/40 p-4 shadow-[0_4px_20px_rgba(246,168,183,0.08)] hover:shadow-md transition-all cursor-pointer active:scale-[0.99]"
+                                  className="w-full bg-white/90 backdrop-blur-md rounded-[20px] border border-[#F8D6DD]/40 p-3 shadow-[0_4px_20px_rgba(246,168,183,0.08)] hover:shadow-md transition-all cursor-pointer active:scale-[0.99] flex items-stretch gap-3"
                                 >
-                                  {/* Top Image Preview if available */}
-                                  {story.imageUrl && (
-                                    <div className="w-full h-40 sm:h-48 rounded-[16px] overflow-hidden mb-3 border border-[#F8D6DD]/30 bg-[#FFF0F3]">
-                                      <img 
-                                        src={story.imageUrl} 
-                                        alt="Story moment" 
+                                  {/* LEFT — Thumbnail */}
+                                  <div className="shrink-0 w-[100px] h-[100px] rounded-[16px] overflow-hidden border border-[#F8D6DD]/30">
+                                    {story.imageUrl ? (
+                                      <img
+                                        src={story.imageUrl}
+                                        alt="Story moment"
                                         className="w-full h-full object-cover"
                                       />
-                                    </div>
-                                  )}
+                                    ) : (
+                                      /* Gradient placeholder when no image */
+                                      <div
+                                        className="w-full h-full flex flex-col items-center justify-center gap-1"
+                                        style={{
+                                          background:
+                                            "linear-gradient(135deg, #FFD6E0 0%, #F6A8B7 50%, #FFBCD1 100%)",
+                                        }}
+                                      >
+                                        <BookOpen className="w-7 h-7 text-white/90 drop-shadow" />
+                                        <span className="text-[9px] font-bold text-white/80 tracking-wide uppercase">
+                                          Journal
+                                        </span>
+                                      </div>
+                                    )}
+                                  </div>
 
-                                  <div className="space-y-2">
+                                  {/* RIGHT — Story Details */}
+                                  <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
+                                    {/* Row 1: Title + Delete */}
                                     <div className="flex items-start justify-between gap-2">
-                                      <h4 className="text-xs sm:text-sm font-extrabold text-[#252525] leading-snug line-clamp-2">
+                                      <h4 className="text-[13px] font-extrabold text-[#252525] leading-snug line-clamp-2 flex-1 min-w-0">
                                         {story.content || "Memory"}
                                       </h4>
-                                      <button 
+                                      <button
                                         onClick={(e) => {
                                           e.stopPropagation();
                                           handleDelete(story.id);
                                         }}
-                                        className="text-[#707070] hover:text-red-500 p-1 shrink-0 transition-colors"
+                                        className="text-[#B0B0B0] hover:text-red-400 p-0.5 shrink-0 transition-colors mt-0.5"
                                         title="Delete story"
                                       >
                                         <Trash2 className="w-3.5 h-3.5" />
                                       </button>
                                     </div>
 
-                                    {/* Category / Mood Badge */}
-                                    {story.mood && (
-                                      <div>
-                                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#F6A8B7]/10 text-[#FF477E] text-[10px] font-bold border border-[#F6A8B7]/25">
-                                          <span>✨</span>
-                                          <span>{story.mood}</span>
-                                        </span>
-                                      </div>
-                                    )}
+                                    {/* Row 2: Date • Time */}
+                                    <p className="text-[11px] text-[#9E9E9E] font-medium mt-1">
+                                      {formattedDate} • {formattedTime}
+                                    </p>
 
-                                    {/* Date & Privacy Row */}
-                                    <div className="pt-1 border-t border-black/5 flex items-center justify-between text-[10px] sm:text-xs text-[#707070] font-medium">
-                                      <span className="truncate">{formattedFullDate}</span>
-                                      <span className="inline-flex items-center gap-1 shrink-0 bg-[#FAF4F6] px-2 py-0.5 rounded-full text-[#707070] font-semibold border border-black/5">
-                                        <Lock className="w-3 h-3 text-[#707070]" />
+                                    {/* Row 3: Privacy Badge */}
+                                    <div className="flex items-center gap-1.5 mt-1.5">
+                                      <span className="inline-flex items-center gap-1 bg-[#FAF4F6] border border-black/5 px-2 py-0.5 rounded-full text-[#707070] text-[10px] font-semibold">
+                                        <Lock className="w-2.5 h-2.5" />
                                         <span>Private</span>
                                       </span>
+
+                                      {/* Mood / Category Chip */}
+                                      {story.mood && (
+                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#F6A8B7]/10 text-[#FF477E] text-[10px] font-bold border border-[#F6A8B7]/25">
+                                          <span>✨</span>
+                                          <span className="truncate max-w-[80px]">{story.mood}</span>
+                                        </span>
+                                      )}
                                     </div>
                                   </div>
                                 </div>
@@ -364,170 +382,340 @@ export default function StoryArchivePage() {
         </div>
       </div>
 
-      {/* Full-Screen Story Viewer Modal */}
-      {selectedStoryIndex !== null && filteredStories[selectedStoryIndex] && ReactDOM.createPortal(
-        (() => {
-          const activeStory = filteredStories[selectedStoryIndex];
-          const activeStoryDate = new Date(activeStory.createdAt);
-          const formattedDate = format(activeStoryDate, "d MMM yyyy");
-          const formattedTime = format(activeStoryDate, "hh:mm a");
+      {/* ═══════════════════════════════════════════════════════════
+           PREMIUM STORY VIEWER MODAL
+      ═══════════════════════════════════════════════════════════ */}
+      {selectedStoryIndex !== null && filteredStories[selectedStoryIndex] &&
+        ReactDOM.createPortal(
+          (() => {
+            const activeStory = filteredStories[selectedStoryIndex];
+            const activeStoryDate = new Date(activeStory.createdAt);
+            const formattedDate = format(activeStoryDate, "d MMM yyyy");
+            const formattedTime = format(activeStoryDate, "hh:mm a");
+            const hasImage = Boolean(activeStory.imageUrl);
+            const hasMood = Boolean(activeStory.mood);
 
-          const handlePrev = (e?: React.MouseEvent) => {
-            if (e) e.stopPropagation();
-            if (selectedStoryIndex > 0) {
-              setSelectedStoryIndex(selectedStoryIndex - 1);
-            }
-          };
+            const handlePrev = (e?: React.MouseEvent) => {
+              if (e) e.stopPropagation();
+              if (selectedStoryIndex > 0) setSelectedStoryIndex(selectedStoryIndex - 1);
+            };
 
-          const handleNext = (e?: React.MouseEvent) => {
-            if (e) e.stopPropagation();
-            if (selectedStoryIndex < filteredStories.length - 1) {
-              setSelectedStoryIndex(selectedStoryIndex + 1);
-            } else {
-              setSelectedStoryIndex(null);
-            }
-          };
+            const handleNext = (e?: React.MouseEvent) => {
+              if (e) e.stopPropagation();
+              if (selectedStoryIndex < filteredStories.length - 1) {
+                setSelectedStoryIndex(selectedStoryIndex + 1);
+              } else {
+                setSelectedStoryIndex(null);
+              }
+            };
 
-          return (
-            <div 
-              onClick={() => setSelectedStoryIndex(null)}
-              className="fixed inset-0 z-[99999] bg-black/90 backdrop-blur-2xl flex items-center justify-center p-0 sm:p-4 overflow-hidden select-none animate-in fade-in duration-200"
-            >
-              {/* Centered Mobile Phone Frame Container (Max 420px on Desktop) */}
-              <div 
-                onClick={(e) => e.stopPropagation()}
-                className="w-full max-w-[420px] h-full sm:h-[90vh] sm:max-h-[860px] sm:rounded-[36px] bg-slate-950 flex flex-col justify-between relative overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.8)] border border-white/10"
+            return (
+              <div
+                onClick={() => setSelectedStoryIndex(null)}
+                className="fixed inset-0 z-[99999] flex items-end sm:items-center justify-center overflow-hidden select-none animate-in fade-in duration-200"
+                style={{ background: "rgba(0,0,0,0.92)" }}
               >
-                {/* Top Progress Bar & Header */}
-                <div className="absolute top-0 left-0 right-0 p-4 z-30 bg-gradient-to-b from-black/90 via-black/50 to-transparent pt-3">
-                  {/* Progress Bar Line */}
-                  <div className="flex items-center gap-1.5 w-full mb-3">
-                    {filteredStories.map((_, idx) => (
-                      <div key={idx} className="h-1 flex-1 bg-white/30 rounded-full overflow-hidden">
-                        <div 
-                          className={`h-full bg-white rounded-full transition-all duration-300 ${
-                            idx < selectedStoryIndex ? "w-full" : idx === selectedStoryIndex ? "w-full animate-[progress_5s_linear]" : "w-0"
-                          }`}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                  
-                  {/* User Info Header */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-9 h-9 rounded-full overflow-hidden border border-white/50 bg-slate-800 shrink-0 shadow-md">
-                        <img 
-                          src={user?.photos?.[0]?.url || "/blurred-avatar.png"} 
-                          alt="You" 
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div>
-                        <h4 className="text-white font-extrabold text-xs sm:text-sm drop-shadow-md leading-tight">
-                          You
-                        </h4>
-                        <p className="text-white/80 text-[11px] font-medium flex items-center gap-1 mt-0.5">
-                          <span>{formattedDate}</span>
-                          <span>•</span>
-                          <span>{formattedTime}</span>
-                        </p>
+                {/* ── Phone Frame ── */}
+                <div
+                  onClick={(e) => e.stopPropagation()}
+                  className="relative w-full sm:max-w-[400px] h-full sm:h-[88vh] sm:max-h-[820px] flex flex-col sm:rounded-[32px] overflow-hidden animate-in slide-in-from-bottom-4 duration-300"
+                  style={{
+                    background: hasImage
+                      ? "#0a0a0a"
+                      : "linear-gradient(160deg, #1a0a0f 0%, #2d0e1a 40%, #1a0a14 100%)",
+                    boxShadow: "0 30px 80px rgba(0,0,0,0.9)",
+                  }}
+                >
+
+                    {/* ══ PROGRESS BAR TRACK ══ */}
+                    <div className="absolute top-0 left-0 right-0 z-40 pt-[env(safe-area-inset-top,12px)] px-3 pt-3">
+                      <div className="flex items-center gap-[3px] w-full mb-0">
+                        {filteredStories.map((_, idx) => (
+                          <div
+                            key={idx}
+                            className="h-[2.5px] flex-1 rounded-full overflow-hidden"
+                            style={{ background: "rgba(255,255,255,0.25)" }}
+                          >
+                            <div
+                              className={`h-full rounded-full ${
+                                idx < selectedStoryIndex
+                                  ? "w-full"
+                                  : idx === selectedStoryIndex
+                                  ? "w-full"
+                                  : "w-0"
+                              }`}
+                              style={{
+                                background:
+                                  idx <= selectedStoryIndex
+                                    ? "rgba(255,255,255,0.95)"
+                                    : "transparent",
+                                transition: idx === selectedStoryIndex ? "width 6s linear" : "none",
+                              }}
+                            />
+                          </div>
+                        ))}
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-white text-[10px] font-bold border border-white/20">
-                        <Lock className="w-3 h-3 text-white" />
-                        <span>Private</span>
-                      </span>
-                      <button 
+                    {/* ══ HEADER OVERLAY ══ */}
+                    <div
+                      className="absolute top-0 left-0 right-0 z-30 flex items-center justify-between px-4 pt-8 pb-6"
+                      style={{
+                        background:
+                          "linear-gradient(to bottom, rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.30) 70%, transparent 100%)",
+                        paddingTop: "calc(env(safe-area-inset-top, 0px) + 28px)",
+                      }}
+                    >
+                      {/* Left — Avatar + Name + Date */}
+                      <div className="flex items-center gap-2.5">
+                        <div
+                          className="w-10 h-10 rounded-full overflow-hidden border-2 shrink-0"
+                          style={{
+                            borderColor: "rgba(246,168,183,0.7)",
+                            boxShadow: "0 2px 12px rgba(246,168,183,0.35)",
+                          }}
+                        >
+                          <img
+                            src={user?.photos?.[0]?.url || "/blurred-avatar.png"}
+                            alt="You"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div>
+                          <p className="text-white font-extrabold text-[13px] leading-tight drop-shadow">
+                            {user?.firstName || "You"}
+                          </p>
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <span className="text-white/70 text-[10px] font-medium">
+                              {formattedDate} · {formattedTime}
+                            </span>
+                            <span
+                              className="inline-flex items-center gap-0.5 px-1.5 py-[1px] rounded-full text-[9px] font-bold"
+                              style={{
+                                background: "rgba(255,255,255,0.15)",
+                                border: "1px solid rgba(255,255,255,0.2)",
+                                color: "rgba(255,255,255,0.9)",
+                                backdropFilter: "blur(6px)",
+                              }}
+                            >
+                              <Lock className="w-2 h-2" />
+                              Private
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Right — Close */}
+                      <button
+                        onClick={() => setSelectedStoryIndex(null)}
+                        className="w-9 h-9 rounded-full flex items-center justify-center active:scale-90 transition-all"
+                        style={{
+                          background: "rgba(0,0,0,0.45)",
+                          border: "1px solid rgba(255,255,255,0.18)",
+                          backdropFilter: "blur(8px)",
+                        }}
+                      >
+                        <X className="w-4.5 h-4.5 text-white" />
+                      </button>
+                    </div>
+
+                    {/* ══ MAIN CONTENT AREA ══ */}
+                    <div className="flex-1 relative flex items-center justify-center overflow-hidden">
+
+                      {/* Tap Zones — Left (prev) / Right (next) */}
+                      <div className="absolute inset-0 z-20 flex pointer-events-none">
+                        <div
+                          className="w-[38%] h-full pointer-events-auto cursor-pointer"
+                          onClick={handlePrev}
+                        />
+                        <div
+                          className="flex-1 h-full pointer-events-auto cursor-pointer"
+                          onClick={handleNext}
+                        />
+                      </div>
+
+                      {/* ── IMAGE STORY ── */}
+                      {hasImage && (
+                        <img
+                          src={activeStory.imageUrl}
+                          alt="Story"
+                          className="w-full h-full"
+                          style={{ objectFit: "contain" }}
+                        />
+                      )}
+
+                      {/* ── TEXT-ONLY STORY ── */}
+                      {!hasImage && (
+                        <div
+                          className="w-full h-full flex flex-col items-center justify-center px-8 py-20 text-center"
+                          style={{
+                            background:
+                              "linear-gradient(160deg, #2d1020 0%, #3d1428 40%, #1f0c1a 100%)",
+                          }}
+                        >
+                          {/* Decorative soft glow blob */}
+                          <div
+                            className="absolute inset-0 pointer-events-none"
+                            style={{
+                              background:
+                                "radial-gradient(ellipse 70% 50% at 50% 50%, rgba(246,168,183,0.18) 0%, transparent 70%)",
+                            }}
+                          />
+
+                          {/* BookOpen icon */}
+                          <div
+                            className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 relative z-10"
+                            style={{
+                              background: "rgba(246,168,183,0.15)",
+                              border: "1px solid rgba(246,168,183,0.3)",
+                              backdropFilter: "blur(8px)",
+                            }}
+                          >
+                            <BookMarked className="w-7 h-7" style={{ color: "#F6A8B7" }} />
+                          </div>
+
+                          {/* Mood chip */}
+                          {hasMood && (
+                            <span
+                              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold mb-5 relative z-10"
+                              style={{
+                                background: "rgba(246,168,183,0.18)",
+                                border: "1px solid rgba(246,168,183,0.35)",
+                                color: "#F6A8B7",
+                                backdropFilter: "blur(6px)",
+                              }}
+                            >
+                              <span>✨</span>
+                              <span>{activeStory.mood}</span>
+                            </span>
+                          )}
+
+                          {/* Story text */}
+                          <p
+                            className="font-extrabold leading-relaxed relative z-10"
+                            style={{
+                              color: "rgba(255,255,255,0.95)",
+                              fontSize: activeStory.content?.length > 120 ? "16px" : "20px",
+                              textShadow: "0 2px 16px rgba(0,0,0,0.5)",
+                            }}
+                          >
+                            ❝ {activeStory.content} ❞
+                          </p>
+                        </div>
+                      )}
+
+                      {/* ── CAPTION OVERLAY (Image + Text) ── */}
+                      {hasImage && activeStory.content && (
+                        <div
+                          className="absolute bottom-0 left-0 right-0 z-10 px-5 pt-16 pb-5"
+                          style={{
+                            background:
+                              "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.55) 50%, transparent 100%)",
+                          }}
+                        >
+                          {hasMood && (
+                            <span
+                              className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold mb-2"
+                              style={{
+                                background: "rgba(246,168,183,0.2)",
+                                border: "1px solid rgba(246,168,183,0.3)",
+                                color: "#F6A8B7",
+                                backdropFilter: "blur(4px)",
+                              }}
+                            >
+                              <span>✨</span>
+                              <span>{activeStory.mood}</span>
+                            </span>
+                          )}
+                          <p
+                            className="text-white font-semibold text-sm leading-snug"
+                            style={{ textShadow: "0 1px 8px rgba(0,0,0,0.6)" }}
+                          >
+                            {activeStory.content}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* ══ BOTTOM ACTION BAR ══ */}
+                    <div
+                      className="relative z-30 flex items-center justify-between px-5 py-3"
+                      style={{
+                        paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 12px)",
+                        background:
+                          "linear-gradient(to top, rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.30) 80%, transparent 100%)",
+                        borderTop: "1px solid rgba(255,255,255,0.07)",
+                      }}
+                    >
+                      {/* Left actions: Like, Comment, Share */}
+                      <div className="flex items-center gap-2">
+                        {/* Like */}
+                        <button
+                          className="flex items-center gap-1.5 px-3.5 py-2 rounded-full active:scale-90 transition-all"
+                          style={{
+                            background: "rgba(246,168,183,0.15)",
+                            border: "1px solid rgba(246,168,183,0.25)",
+                            backdropFilter: "blur(8px)",
+                          }}
+                        >
+                          <Heart className="w-4 h-4" style={{ color: "#F6A8B7" }} />
+                          <span className="text-[11px] font-bold" style={{ color: "rgba(255,255,255,0.85)" }}>Like</span>
+                        </button>
+
+                        {/* Comment */}
+                        <button
+                          className="flex items-center gap-1.5 px-3.5 py-2 rounded-full active:scale-90 transition-all"
+                          style={{
+                            background: "rgba(255,255,255,0.09)",
+                            border: "1px solid rgba(255,255,255,0.14)",
+                            backdropFilter: "blur(8px)",
+                          }}
+                        >
+                          <MessageCircle className="w-4 h-4 text-white/70" />
+                          <span className="text-[11px] font-bold text-white/70">Note</span>
+                        </button>
+
+                        {/* Share */}
+                        <button
+                          className="flex items-center gap-1.5 px-3.5 py-2 rounded-full active:scale-90 transition-all"
+                          style={{
+                            background: "rgba(255,255,255,0.09)",
+                            border: "1px solid rgba(255,255,255,0.14)",
+                            backdropFilter: "blur(8px)",
+                          }}
+                        >
+                          <Share2 className="w-4 h-4 text-white/70" />
+                          <span className="text-[11px] font-bold text-white/70">Share</span>
+                        </button>
+                      </div>
+
+                      {/* Right — Delete */}
+                      <button
                         onClick={(e) => {
                           e.stopPropagation();
                           handleDelete(activeStory.id);
                           setSelectedStoryIndex(null);
                         }}
-                        className="w-8 h-8 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white/80 hover:text-red-400 flex items-center justify-center hover:bg-black/60 active:scale-95 transition-all shadow-md"
+                        className="w-9 h-9 rounded-full flex items-center justify-center active:scale-90 transition-all"
+                        style={{
+                          background: "rgba(239,68,68,0.15)",
+                          border: "1px solid rgba(239,68,68,0.25)",
+                          backdropFilter: "blur(8px)",
+                        }}
                         title="Delete story"
                       >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                      <button 
-                        onClick={() => setSelectedStoryIndex(null)} 
-                        className="w-8 h-8 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white flex items-center justify-center hover:bg-black/60 active:scale-95 transition-all shadow-md"
-                        title="Close story"
-                      >
-                        <X className="w-4 h-4" />
+                        <Trash2 className="w-4 h-4" style={{ color: "rgba(239,68,68,0.85)" }} />
                       </button>
                     </div>
-                  </div>
-                </div>
 
-                {/* Main Story Image / Text Content */}
-                <div className="relative flex-1 w-full h-full flex items-center justify-center bg-slate-950 overflow-hidden">
-                  {/* Left / Right Touch Tap Areas */}
-                  <div className="absolute inset-0 z-10 flex">
-                    <div 
-                      onClick={handlePrev}
-                      className="w-1/3 h-full cursor-pointer group flex items-center justify-start pl-3"
-                    >
-                      {selectedStoryIndex > 0 && (
-                        <div className="w-8 h-8 rounded-full bg-black/40 text-white flex items-center justify-center backdrop-blur-md border border-white/20 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <ChevronLeft className="w-5 h-5" />
-                        </div>
-                      )}
-                    </div>
-                    <div 
-                      onClick={handleNext}
-                      className="w-2/3 h-full cursor-pointer group flex items-center justify-end pr-3"
-                    >
-                      <div className="w-8 h-8 rounded-full bg-black/40 text-white flex items-center justify-center backdrop-blur-md border border-white/20 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <ChevronRight className="w-5 h-5" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Media or Text Display */}
-                  {activeStory.imageUrl ? (
-                    <img 
-                      src={activeStory.imageUrl} 
-                      alt="Archived story" 
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full p-8 flex flex-col items-center justify-center text-center bg-gradient-to-br from-[#FF7E95] via-[#FF477E] to-[#FF8FA3]">
-                      {activeStory.mood && (
-                        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-bold mb-4 border border-white/30">
-                          <span>✨</span>
-                          <span>{activeStory.mood}</span>
-                        </span>
-                      )}
-                      <p className="text-white font-extrabold text-xl sm:text-2xl leading-relaxed drop-shadow-lg max-w-xs px-2">
-                        "{activeStory.content}"
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Caption Overlay for Image Stories */}
-                  {activeStory.imageUrl && activeStory.content && (
-                    <div className="absolute bottom-6 left-0 right-0 p-5 z-20 bg-gradient-to-t from-black/95 via-black/60 to-transparent text-white">
-                      {activeStory.mood && (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-white text-[10px] font-bold mb-2 border border-white/20">
-                          <span>✨</span>
-                          <span>{activeStory.mood}</span>
-                        </span>
-                      )}
-                      <p className="text-white font-semibold text-sm sm:text-base leading-snug drop-shadow-md">
-                        {activeStory.content}
-                      </p>
-                    </div>
-                  )}
                 </div>
               </div>
-            </div>
-          );
-        })(),
-        document.body
-      )}
+            );
+          })()
+          ,
+          document.body
+        )
+      }
     </AppLayout>
   );
 }

@@ -17,6 +17,12 @@ export const CATEGORY_STYLES: Record<string, { bg: string; text: string; icon: a
   "Communication Style": { bg: "bg-[#F6A8B7]/20", text: "text-[#F6A8B7]", icon: MessageCircle },
   "Adventure & Travel": { bg: "bg-[#F8D9D2]/30", text: "text-[#F8D9D2]", icon: Plane },
   "Emotional Wellbeing": { bg: "bg-[#F6A8B7]/20", text: "text-[#F6A8B7]", icon: Lightbulb },
+  "Creativity & Hobbies": { bg: "bg-purple-500/20", text: "text-purple-500", icon: Sparkles },
+  "Cultural & Social Awareness": { bg: "bg-cyan-500/20", text: "text-cyan-500", icon: Globe },
+  "Financial Responsibility": { bg: "bg-emerald-500/20", text: "text-emerald-500", icon: TrendingUp },
+  "Pets & Animal Care": { bg: "bg-amber-500/20", text: "text-amber-500", icon: Heart },
+  "Food & Lifestyle Preferences": { bg: "bg-rose-500/20", text: "text-rose-500", icon: Apple },
+  "Spirituality & Life Philosophy": { bg: "bg-sky-500/20", text: "text-sky-500", icon: Star },
 };
 
 const MOODS: Record<string, string> = {

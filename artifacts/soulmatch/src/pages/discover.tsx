@@ -245,10 +245,9 @@ export default function DiscoverPage() {
       >
         <div className="w-full max-w-md mx-auto px-4 pt-3 space-y-4 flex flex-col flex-1">
           
-          {/* Discover Title & Subtitle */}
+          {/* Discover Title */}
           <div className="flex flex-col">
             <h1 className="text-2xl sm:text-3xl font-black text-[#1F1F1F] tracking-tight">Discover</h1>
-            <p className="text-xs sm:text-sm font-medium text-[#6D6D6D]">Find people who match your journey</p>
           </div>
 
           {/* Main Swipe Card Stack Container */}

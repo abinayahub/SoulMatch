@@ -1014,7 +1014,7 @@ var analyzeStory = async (stories) => {
   if (!apiKey) return { summary: "AI insights are currently unavailable." };
   try {
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash",
+      model: "gemini/gemini-3-flash-preview",
       generationConfig: {
         responseMimeType: "application/json",
         responseSchema: {

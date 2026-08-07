@@ -16,7 +16,7 @@ import {
   differenceInDays,
 } from "date-fns";
 import { Button } from "@/components/ui/button";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -167,6 +167,7 @@ const toBase64 = (file: File): Promise<string> => {
 export default function MyStory() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const [, setLocation] = useLocation();
 
   // State
   const [content, setContent] = useState("");
@@ -483,9 +484,6 @@ export default function MyStory() {
                   {/* Right Content */}
                   <div className="flex-1 min-w-0">
                     <h3 className="text-base sm:text-lg font-extrabold text-[#252525] leading-tight">Your Story</h3>
-                    <p className="text-xs sm:text-sm text-[#707070] font-medium leading-normal truncate">
-                      Share what's on your mind today
-                    </p>
                     <span className="text-xs sm:text-sm font-bold text-[#F6A8B7] mt-0.5 block group-hover:underline">
                       Tap to create your story
                     </span>
@@ -648,7 +646,37 @@ export default function MyStory() {
           </div>
 
 
-          {/* 3. MY STORY JOURNAL LINK CARD */}
+          {/* 3. COMMUNITY QUESTIONS CARD */}
+          <div className="w-full mb-6">
+            <div 
+              onClick={() => setLocation("/community-questions")}
+              className="w-full rounded-[24px] p-4.5 border border-[#F8D6DD]/40 cursor-pointer active:scale-[0.99] transition-all relative overflow-hidden group backdrop-blur-xl shadow-[0_10px_30px_rgba(246,168,183,0.08)]"
+              style={{
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,240,245,0.4) 100%)',
+              }}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 rounded-[20px] bg-[#F6A8B7]/10 flex items-center justify-center shrink-0 border border-[#F6A8B7]/30 shadow-2xs">
+                    <MessageCircle className="w-6 h-6 text-[#F6A8B7]" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-extrabold text-[#252525] leading-snug">Community Questions</h3>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end gap-2 shrink-0">
+                  <span className="px-2 py-0.5 rounded-full bg-[#F6A8B7] text-[10px] font-black uppercase text-white tracking-wider shadow-sm mr-2">
+                    NEW
+                  </span>
+                  <div className="w-9 h-9 rounded-full bg-white/70 backdrop-blur-md flex items-center justify-center text-[#707070] group-hover:text-[#F6A8B7] group-hover:scale-110 transition-all border border-[#F8D6DD]/40 mr-2">
+                    <ChevronRight className="w-5 h-5" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 4. MY STORY JOURNAL LINK CARD */}
           <div className="w-full mb-6">
             <Link href="/story-archive">
               <div 
@@ -789,211 +817,195 @@ export default function MyStory() {
 
         {/* Full-Screen Dedicated "Share Your Story" Page Overlay */}
         {isComposerOpen && ReactDOM.createPortal(
-          <div 
-            className="fixed inset-0 z-[99999] overflow-y-auto font-sans animate-in slide-in-from-bottom-5 duration-300"
-            style={{ background: 'linear-gradient(135deg, #FAF2EF 0%, #F5F0FB 50%, #FFFDFB 75%, #F7F7FA 100%)' }}
+          <div
+            className="fixed inset-0 z-[99999] overflow-hidden font-sans flex flex-col select-none"
+            style={{ background: "linear-gradient(135deg, #FAF2EF 0%, #F5F0FB 50%, #FFFDFB 75%, #F7F7FA 100%)" }}
           >
-            <div className="min-h-screen relative max-w-md mx-auto px-5 py-6 flex flex-col justify-between">
-              
-              {/* Top Header */}
-              <div>
-                <div className="flex items-center justify-between mb-5">
-                  <button 
-                    onClick={() => setIsComposerOpen(false)}
-                    className="w-10 h-10 rounded-full bg-white border border-black/5 shadow-sm flex items-center justify-center text-[#252525] hover:bg-white/80 active:scale-95 transition-all"
-                  >
-                    <ArrowLeft className="w-5 h-5" />
-                  </button>
+            <div
+              className="w-full max-w-md mx-auto flex flex-col gap-2.5 px-4 relative"
+              style={{
+                paddingTop: "calc(env(safe-area-inset-top, 0px) + 14px)",
+                paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 14px)",
+                height: "100%",
+              }}
+            >
 
-                  <div className="text-center">
-                    <h1 className="text-lg sm:text-xl font-extrabold text-[#252525] leading-tight">Share Your Story</h1>
-                    <p className="text-xs text-[#707070] font-medium mt-0.5">Your moment. Your story.</p>
-                  </div>
+              {/* ── COMPACT HEADER ── */}
+              <div className="shrink-0 flex items-center justify-between">
+                <button
+                  onClick={() => setIsComposerOpen(false)}
+                  className="w-8 h-8 rounded-full bg-white/90 border border-[#F8D6DD]/50 shadow-2xs flex items-center justify-center text-[#252525] active:scale-90 transition-all"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                </button>
 
-                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#FF477E]/20 bg-[#FF7E95]/10 text-[#FF477E] text-xs font-bold shadow-2xs">
-                    <ShieldCheck className="w-3.5 h-3.5" />
-                    <span>Private</span>
-                  </div>
+                <div className="text-center">
+                  <h1 className="text-[15px] font-extrabold text-[#252525] leading-tight">Share Your Story</h1>
+                  <p className="text-[10px] text-[#707070] font-medium">Your moment. Your story.</p>
                 </div>
 
-                {/* Progress Steps Indicator */}
-                <div className="flex items-center justify-center gap-4 my-6">
-                  {/* Step 1: Write */}
-                  <div className="flex flex-col items-center gap-1">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-all ${
-                      content.trim() || !imageFile ? "bg-[#FF477E] text-white shadow-md shadow-[#FF477E]/30" : "bg-black/5 text-[#707070]"
-                    }`}>
-                      1
-                    </div>
-                    <span className={`text-xs font-bold ${content.trim() ? "text-[#FF477E]" : "text-[#707070]"}`}>
-                      Write
-                    </span>
-                  </div>
-
-                  <div className="w-10 h-[2px] bg-black/10 -mt-4" />
-
-                  {/* Step 2: Add Media */}
-                  <div className="flex flex-col items-center gap-1">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-all ${
-                      imageFile ? "bg-[#FF477E] text-white shadow-md shadow-[#FF477E]/30" : "bg-black/5 text-[#707070]"
-                    }`}>
-                      2
-                    </div>
-                    <span className={`text-xs font-bold ${imageFile ? "text-[#FF477E]" : "text-[#707070]"}`}>
-                      Add Media
-                    </span>
-                  </div>
-
-                  <div className="w-10 h-[2px] bg-black/10 -mt-4" />
-
-                  {/* Step 3: Post */}
-                  <div className="flex flex-col items-center gap-1">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-all ${
-                      isPosting ? "bg-[#FF477E] text-white shadow-md shadow-[#FF477E]/30" : "bg-black/5 text-[#707070]"
-                    }`}>
-                      3
-                    </div>
-                    <span className="text-xs font-bold text-[#707070]">
-                      Post
-                    </span>
-                  </div>
-                </div>
-
-                {/* Main Content Card */}
-                <div className="bg-white border border-black/5 rounded-[28px] p-5 shadow-xl shadow-[#F6A8B7]/15 space-y-4 mb-5">
-                  
-                  {/* Title Box */}
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-2xl bg-[#FF477E]/10 border border-[#FF477E]/20 flex items-center justify-center shrink-0 mt-0.5">
-                      <BookOpen className="w-5 h-5 text-[#FF477E]" />
-                    </div>
-                    <div>
-                      <h2 className="text-base sm:text-lg font-extrabold text-[#252525] leading-snug">
-                        {todayPrompt || "What happened today that mattered to you?"}
-                      </h2>
-                      <p className="text-xs text-[#707070] font-medium mt-0.5">
-                        Try one of these starters:
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Prompt Chips */}
-                  <div className="grid grid-cols-2 gap-2">
-                    {[
-                      { id: "family", label: "I spent time with family..." },
-                      { id: "friend", label: "I helped a friend..." },
-                      { id: "goals", label: "I worked on my goals..." },
-                      { id: "myself", label: "I took care of myself..." },
-                    ].map((s) => (
-                      <button
-                        key={s.id}
-                        onClick={() => setContent(s.label.replace("...", " "))}
-                        className="px-3 py-2.5 rounded-full border border-black/5 text-xs text-[#707070] font-bold transition-all active:scale-95 text-center truncate whitespace-nowrap bg-[#FAF4F6]/50 hover:bg-white hover:border-[#FF477E]/30 shadow-2xs"
-                        title={s.label}
-                      >
-                        {s.label}
-                      </button>
-                    ))}
-                  </div>
-
-                  {/* Textarea Input Card */}
-                  <div className="relative border border-[#F6A8B7]/50 rounded-[20px] overflow-hidden bg-white shadow-2xs transition-all focus-within:border-[#FF477E] focus-within:ring-2 focus-within:ring-[#FF477E]/20 focus-within:shadow-[0_0_16px_rgba(255,71,126,0.15)]">
-                    {imagePreview && (
-                      <div className="relative p-3.5 pb-0 group">
-                        <img
-                          src={imagePreview}
-                          alt="Preview"
-                          className="w-full max-h-36 rounded-xl object-cover border border-black/5"
-                        />
-                        <button
-                          onClick={removeImage}
-                          className="absolute top-5 right-5 bg-black/60 backdrop-blur-sm text-white rounded-full p-1 border border-white/20"
-                        >
-                          <X className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    )}
-                    <textarea
-                      placeholder="What's on your mind today? Share something meaningful from your day..."
-                      spellCheck={false}
-                      value={content}
-                      onChange={(e) => setContent(e.target.value)}
-                      className="story-textarea w-full bg-transparent text-sm sm:text-base text-[#252525] placeholder:text-[#9E9E9E] leading-relaxed block"
-                      style={{
-                        outline: 'none',
-                        border: 'none',
-                        boxShadow: 'none',
-                        resize: 'none',
-                        borderRadius: '0',
-                        minHeight: '145px',
-                        padding: '16px 20px',
-                        WebkitAppearance: 'none',
-                        MozAppearance: 'none',
-                        appearance: 'none'
-                      }}
-                    />
-                    <div className="flex items-center justify-between px-4 sm:px-5 py-3 border-t border-black/5 bg-black/[0.01]">
-                      <button
-                        onClick={() => fileInputRef.current?.click()}
-                        className="flex items-center gap-1.5 text-xs font-bold text-[#707070] hover:text-[#FF477E] transition-colors"
-                      >
-                        <ImageIcon className="w-4 h-4 text-[#FF477E]" />
-                        <span>Add Photo</span>
-                      </button>
-                      <span className="text-xs font-extrabold text-[#9E9E9E] tracking-wider">
-                        {content.length}/1000
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Media Section */}
-                  <div className="border-2 border-dashed border-[#F6A8B7]/60 rounded-2xl p-5 bg-[#FFF0F3]/40 text-center flex flex-col items-center gap-2">
-                    <div className="w-11 h-11 rounded-2xl bg-[#FF477E]/10 flex items-center justify-center text-[#FF477E]">
-                      <ImageIcon className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-extrabold text-[#252525]">Add a photo or video (optional)</h4>
-                      <p className="text-xs text-[#707070] font-medium mt-0.5 max-w-[260px] mx-auto">Share a moment, a place, or something that made your day special.</p>
-                    </div>
-
-                    <input
-                      type="file"
-                      accept="image/jpeg,image/png,image/webp,video/mp4"
-                      className="hidden"
-                      ref={fileInputRef}
-                      onChange={handleImageSelect}
-                    />
-
-                    <div className="flex items-center justify-center gap-3 mt-1">
-                      <button
-                        onClick={() => fileInputRef.current?.click()}
-                        className="px-5 py-2 rounded-full bg-white border border-black/10 text-xs font-bold text-[#FF477E] flex items-center gap-1.5 shadow-2xs hover:bg-[#FFF0F3] active:scale-95 transition-all"
-                      >
-                        <Camera className="w-3.5 h-3.5" /> Photo
-                      </button>
-                      <button
-                        onClick={() => fileInputRef.current?.click()}
-                        className="px-5 py-2 rounded-full bg-white border border-black/10 text-xs font-bold text-[#FF477E] flex items-center gap-1.5 shadow-2xs hover:bg-[#FFF0F3] active:scale-95 transition-all"
-                      >
-                        <VideoIcon className="w-3.5 h-3.5" /> Video
-                      </button>
-                    </div>
-                  </div>
-
-
-
+                <div className="flex items-center gap-1 px-2.5 py-1 rounded-full border border-[#F6A8B7]/30 bg-[#F6A8B7]/10 text-[#FF477E] text-[10px] font-bold">
+                  <ShieldCheck className="w-2.5 h-2.5" />
+                  <span>Private</span>
                 </div>
               </div>
 
-              {/* Bottom Post Button */}
-              <div className="pt-2 pb-4">
+              {/* ── PROGRESS STEPS ── */}
+              <div className="shrink-0 flex items-center justify-center gap-2">
+                {[
+                  { step: 1, label: "Write", active: content.trim().length > 0 },
+                  { step: 2, label: "Media", active: Boolean(imageFile) },
+                  { step: 3, label: "Post", active: isPosting },
+                ].map((item, i) => (
+                  <div key={item.step} className="flex items-center gap-2">
+                    <div className="flex items-center gap-1">
+                      <div
+                        className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black transition-all ${
+                          item.active ? "bg-[#FF477E] text-white" : "bg-black/8 text-[#9E9E9E]"
+                        }`}
+                      >
+                        {item.step}
+                      </div>
+                      <span className={`text-[10px] font-bold ${item.active ? "text-[#FF477E]" : "text-[#9E9E9E]"}`}>
+                        {item.label}
+                      </span>
+                    </div>
+                    {i < 2 && <div className="w-5 h-[1.5px] bg-black/10 rounded-full" />}
+                  </div>
+                ))}
+              </div>
+
+              {/* ── MAIN CONTENT CARD ── */}
+              <div className="shrink-0 bg-white/90 backdrop-blur-md border border-[#F8D6DD]/40 rounded-[20px] p-3 shadow-[0_8px_24px_rgba(246,168,183,0.08)] space-y-2.5">
+
+                {/* Prompt Header */}
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-xl bg-[#F6A8B7]/10 border border-[#F6A8B7]/20 flex items-center justify-center shrink-0">
+                    <BookOpen className="w-3.5 h-3.5 text-[#F6A8B7]" />
+                  </div>
+                  <div>
+                    <h2 className="text-[12px] font-extrabold text-[#252525] leading-tight">
+                      {todayPrompt || "How did today make you feel?"}
+                    </h2>
+                    <p className="text-[10px] text-[#9E9E9E] font-medium">Try one of these starters:</p>
+                  </div>
+                </div>
+
+                {/* Prompt Chips — 2-column grid, tighter */}
+                <div className="grid grid-cols-2 gap-1.5">
+                  {[
+                    { id: "family", label: "I spent time with family..." },
+                    { id: "friend", label: "I helped a friend..." },
+                    { id: "goals", label: "I worked on my goals..." },
+                    { id: "myself", label: "I took care of myself..." },
+                  ].map((s) => (
+                    <button
+                      key={s.id}
+                      onClick={() => setContent(s.label.replace("...", " "))}
+                      className="px-2.5 py-1.5 rounded-full border border-black/5 text-[10px] text-[#707070] font-bold transition-all active:scale-95 text-left truncate bg-[#FAF4F6]/60 hover:bg-white hover:border-[#F6A8B7]/40 shadow-2xs"
+                      title={s.label}
+                    >
+                      {s.label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Textarea with inline toolbar */}
+                <div className="relative border border-[#F6A8B7]/40 rounded-[16px] overflow-hidden bg-white shadow-2xs focus-within:border-[#FF477E]/60 focus-within:ring-2 focus-within:ring-[#FF477E]/15 transition-all">
+                  {imagePreview && (
+                    <div className="relative p-2 pb-0 group">
+                      <img
+                        src={imagePreview}
+                        alt="Preview"
+                        className="w-full max-h-24 rounded-lg object-cover border border-black/5"
+                      />
+                      <button
+                        onClick={removeImage}
+                        className="absolute top-3 right-3 bg-black/60 text-white rounded-full p-1"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </div>
+                  )}
+                  <textarea
+                    placeholder="What's on your mind today? Share something meaningful..."
+                    spellCheck={false}
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    className="story-textarea w-full bg-transparent text-[13px] text-[#252525] placeholder:text-[#B0B0B0] leading-relaxed block"
+                    style={{
+                      outline: "none",
+                      border: "none",
+                      boxShadow: "none",
+                      resize: "none",
+                      borderRadius: "0",
+                      minHeight: "110px",
+                      maxHeight: "110px",
+                      padding: "12px 14px",
+                      WebkitAppearance: "none",
+                    }}
+                  />
+                  {/* Inline toolbar */}
+                  <div className="flex items-center justify-between px-3 py-2 border-t border-black/5 bg-[#FAFAFA]">
+                    <button
+                      onClick={() => fileInputRef.current?.click()}
+                      className="flex items-center gap-1.5 text-[11px] font-bold text-[#707070] hover:text-[#FF477E] transition-colors"
+                    >
+                      <ImageIcon className="w-3.5 h-3.5 text-[#F6A8B7]" />
+                      <span>Add Photo</span>
+                    </button>
+                    <span className="text-[10px] font-extrabold text-[#B0B0B0] tracking-wider">
+                      {content.length}/1000
+                    </span>
+                  </div>
+                </div>
+
+                {/* Compact Media Row */}
+                <div className="flex items-center justify-between border border-dashed border-[#F6A8B7]/40 rounded-[14px] px-3 py-2 bg-[#FFF0F3]/20">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-lg bg-[#F6A8B7]/15 flex items-center justify-center text-[#FF477E] shrink-0">
+                      <ImageIcon className="w-3 h-3" />
+                    </div>
+                    <div>
+                      <p className="text-[11px] font-extrabold text-[#252525] leading-tight">Add Media</p>
+                      <p className="text-[9px] text-[#9E9E9E] font-medium">Optional</p>
+                    </div>
+                  </div>
+
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,video/mp4"
+                    className="hidden"
+                    ref={fileInputRef}
+                    onChange={handleImageSelect}
+                  />
+
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <button
+                      onClick={() => fileInputRef.current?.click()}
+                      className="px-2.5 py-1 rounded-full bg-white border border-[#F8D6DD]/60 text-[10px] font-bold text-[#FF477E] flex items-center gap-1 shadow-2xs active:scale-95 transition-all"
+                    >
+                      <Camera className="w-2.5 h-2.5" /> Photo
+                    </button>
+                    <button
+                      onClick={() => fileInputRef.current?.click()}
+                      className="px-2.5 py-1 rounded-full bg-white border border-[#F8D6DD]/60 text-[10px] font-bold text-[#FF477E] flex items-center gap-1 shadow-2xs active:scale-95 transition-all"
+                    >
+                      <VideoIcon className="w-2.5 h-2.5" /> Video
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* ── POST BUTTON ── */}
+              <div className="shrink-0">
                 <button
                   onClick={handlePost}
                   disabled={(!content.trim() && !imageFile) || isPosting}
-                  className="w-full text-white rounded-full h-13 font-extrabold text-base transition-transform active:scale-[0.98] border border-white/40 disabled:opacity-50 flex items-center justify-center gradient-coral-pill shadow-lg shadow-[#FF477E]/25 gap-2"
+                  className="w-full text-white rounded-full h-12 font-extrabold text-sm transition-transform active:scale-[0.98] border border-white/40 disabled:opacity-50 flex items-center justify-center gradient-coral-pill shadow-md shadow-[#FF477E]/20 gap-2"
                 >
                   <span>{isPosting ? "Posting..." : "Post Story"}</span>
-                  <Send className="w-4.5 h-4.5 ml-1" />
+                  <Send className="w-4 h-4" />
                 </button>
               </div>
 

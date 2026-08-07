@@ -30,6 +30,12 @@ import PreferencesPage from "@/pages/preferences";
 import JourneyPage from "@/pages/journey";
 import MyStoryPage from "@/pages/my-story";
 import StoryArchivePage from "@/pages/story-archive";
+import CommunityQuestionsPage from "@/pages/community-questions";
+import AskCommunityQuestionPage from "@/pages/ask-community-question";
+import BrowseQuestionsPage from "@/pages/browse-questions";
+import AnswerCommunityQuestionPage from "@/pages/answer-community-question";
+import QuestionResponsesPage from "@/pages/question-responses";
+import MyAnswerPage from "@/pages/my-answer";
 import PersonalityPage from "@/pages/personality";
 import ReflectionPage from "@/pages/reflection";
 import InterestsPage from "@/pages/interests";
@@ -47,9 +53,11 @@ import AdminUserManagement from "@/pages/admin/UserManagement";
 import AdminQuestionnaireManager from "@/pages/admin/QuestionnaireManager";
 import MatchesManagement from "@/pages/admin/MatchesManagement";
 import JournalsManagement from "@/pages/admin/JournalsManagement";
+import AdminCommunityQuestionsManager from "@/pages/admin/CommunityQuestionsManager";
 import AdminComingSoon from "@/pages/admin/ComingSoon";
 import SuperAdmin from "@/pages/admin/SuperAdmin";
 import AdminSupport from "@/pages/admin/Support";
+import PremiumManagement from "@/pages/admin/PremiumManagement";
 import CheckoutCompatibilityPage from "@/pages/checkout-compatibility";
 
 const queryClient = new QueryClient({
@@ -116,6 +124,24 @@ function Router() {
       <Route path="/my-story">
         <PrivateRoute component={MyStoryPage} />
       </Route>
+      <Route path="/community-questions">
+        <PrivateRoute component={CommunityQuestionsPage} />
+      </Route>
+      <Route path="/ask-community-question">
+        <PrivateRoute component={AskCommunityQuestionPage} />
+      </Route>
+      <Route path="/browse-questions">
+        <PrivateRoute component={BrowseQuestionsPage} />
+      </Route>
+      <Route path="/community-questions/:id/answer">
+        {(params) => <PrivateRoute component={() => <AnswerCommunityQuestionPage questionId={params.id} />} />}
+      </Route>
+      <Route path="/community-questions/:id/responses">
+        {(params) => <PrivateRoute component={() => <QuestionResponsesPage questionId={params.id} />} />}
+      </Route>
+      <Route path="/community-questions/my-answers/:id">
+        {(params) => <PrivateRoute component={() => <MyAnswerPage answerId={params.id} />} />}
+      </Route>
       <Route path="/story-archive">
         <PrivateRoute component={StoryArchivePage} />
       </Route>
@@ -166,14 +192,14 @@ function Router() {
       <Route path="/admin/matches">
         <AdminRoute component={MatchesManagement} />
       </Route>
-      <Route path="/admin/ai">
-        <AdminRoute component={() => <AdminComingSoon title="Profile Insights Monitoring" />} />
-      </Route>
       <Route path="/admin/journals">
         <AdminRoute component={JournalsManagement} />
       </Route>
+      <Route path="/admin/community-questions">
+        <AdminRoute component={AdminCommunityQuestionsManager} />
+      </Route>
       <Route path="/admin/premium">
-        <AdminRoute component={() => <AdminComingSoon title="Premium Subscription Management" />} />
+        <AdminRoute component={PremiumManagement} />
       </Route>
       <Route path="/admin/verifications">
         <AdminRoute component={() => <AdminComingSoon title="Verification Center" />} />

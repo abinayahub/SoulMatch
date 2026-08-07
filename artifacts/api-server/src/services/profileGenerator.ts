@@ -1,32 +1,48 @@
 import { db, journeyAnswersTable, journeyQuestionsTable, dailyJournalsTable, personalityProfilesTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { calculateUnifiedScores, generateProfileInsights, UNIFIED_CATEGORIES, convertUnifiedToLegacyTraits, analyzeStoryKeywords } from "./keywordAnalysis";
+import fs from "fs";
+import path from "path";
+
+// Load dynamic N-dimensional Journey config
+const journeyConfigPath = path.join(__dirname, "journeyConfig.json");
+let journeyConfig: any = null;
+try {
+  journeyConfig = JSON.parse(fs.readFileSync(journeyConfigPath, "utf-8"));
+} catch (e) {
+  console.error("Failed to load journeyConfig.json", e);
+}
 
 export async function generateFullUserProfile(userId: number) {
   // 1. Fetch all journey answers and questions
   const answers = await db.select().from(journeyAnswersTable).where(eq(journeyAnswersTable.userId, userId));
   const questions = await db.select().from(journeyQuestionsTable);
 
-  const qScores: Record<string, number> = {
-    "Connection": 0,
-    "Growth": 0,
-    "Stability": 0,
-    "Exploration": 0
-  };
+  const dimensions: string[] = journeyConfig?.dimensions || ["Connection", "Growth", "Stability", "Exploration"];
+  const qScores: Record<string, number> = {};
+  dimensions.forEach(dim => qScores[dim] = 0);
 
   for (const answer of answers) {
     const question = questions.find(q => q.id === answer.questionId);
     if (question && question.options) {
+      const qId = String(question.id);
+      const questionConfig = journeyConfig?.questions?.[qId] || {};
+      const weight = questionConfig.weight ?? journeyConfig?.defaultWeight ?? 1.0;
+
       const answerStr = String(answer.answer);
       const optionIndex = question.options.findIndex((opt: string) => opt === answerStr || opt.startsWith(answerStr.charAt(0)));
       
       if (optionIndex !== -1) {
         const optionLetter = ['A', 'B', 'C', 'D'][optionIndex] || 'A';
-
-        if (optionLetter === 'A') qScores["Connection"] += 10;
-        else if (optionLetter === 'B') qScores["Growth"] += 10;
-        else if (optionLetter === 'C') qScores["Stability"] += 10;
-        else if (optionLetter === 'D') qScores["Exploration"] += 10;
+        const impact = questionConfig.options?.[optionLetter] ?? journeyConfig?.defaultOptions?.[optionLetter];
+        
+        if (impact) {
+          for (const [trait, points] of Object.entries(impact)) {
+            if (qScores[trait] !== undefined) {
+              qScores[trait] += (Number(points) * weight);
+            }
+          }
+        }
       }
     }
   }
@@ -46,20 +62,38 @@ export async function generateFullUserProfile(userId: number) {
   qScores["Adventure & Travel"] = qScores["Exploration"];
   qScores["Health & Lifestyle"] = qScores["Exploration"];
 
-  // 2. Fetch all journals for story analysis
-  const journals = await db.select().from(dailyJournalsTable).where(eq(dailyJournalsTable.userId, userId));
-  let sScores: Record<string, number> = {};
-
-  for (const journal of journals) {
-    if (journal.content) {
-      sScores = analyzeStoryKeywords(journal.content, sScores).updatedScores;
+  for (const cat of UNIFIED_CATEGORIES) {
+    if (qScores[cat] === undefined) {
+      qScores[cat] = 0;
     }
   }
 
-  // 3. Combine scores
-  const unifiedScores = calculateUnifiedScores(qScores, sScores);
-  const summary = generateProfileInsights(unifiedScores);
+  // 3. Independent Journey Profile
+  const unifiedScores = { ...qScores };
+  let rawSummary = generateProfileInsights(unifiedScores);
   const legacyTraits = convertUnifiedToLegacyTraits(unifiedScores);
+  
+  // Inject Journey Metadata
+  let summary = rawSummary;
+  try {
+    let summaryData = typeof rawSummary === "string" ? JSON.parse(rawSummary) : rawSummary;
+    if (typeof summaryData !== "object" || summaryData === null) summaryData = { text: rawSummary };
+
+    const totalQuestions = journeyConfig?.totalQuestions ?? 150;
+    const maturity = Math.min(1.0, answers.length / totalQuestions);
+    
+    summaryData.journeyMetadata = {
+      journeyProgress: answers.length,
+      totalJourneyQuestions: totalQuestions,
+      journeyMaturity: maturity,
+      profileConfidence: maturity >= 0.66 ? "High" : maturity >= 0.33 ? "Medium" : "Low",
+      analysisStatus: maturity >= 1.0 ? "Complete" : "Learning"
+    };
+
+    summary = JSON.stringify(summaryData);
+  } catch(e) {
+    console.error("Failed to inject metadata into summary JSON", e);
+  }
 
   const connectionTrait = legacyTraits.find((t: any) => t.trait === "Connection")?.score || 0;
   const stabilityTrait = legacyTraits.find((t: any) => t.trait === "Stability")?.score || 0;
@@ -77,8 +111,10 @@ export async function generateFullUserProfile(userId: number) {
       const optionIndex = question.options.findIndex((opt: string) => opt === answerStr || opt.startsWith(answerStr.charAt(0)));
       if (optionIndex !== -1) {
         const optionLetter = ['A', 'B', 'C', 'D'][optionIndex] || 'A';
-        const traitName = optionLetter === 'A' ? 'Connection' : optionLetter === 'B' ? 'Growth' : optionLetter === 'C' ? 'Stability' : 'Exploration';
-        console.log(`Question ${i + 1} → Option ${optionLetter} → ${traitName} +10`);
+        const qId = String(question.id);
+        const questionConfig = journeyConfig?.questions?.[qId] || {};
+        const weight = questionConfig.weight ?? journeyConfig?.defaultWeight ?? 1.0;
+        console.log(`Question ${question.id} (x${weight}) → Option ${optionLetter} applied to matrix`);
       }
     }
   }
@@ -120,7 +156,6 @@ export async function generateFullUserProfile(userId: number) {
   if (profile) {
     await db.update(personalityProfilesTable).set({
       questionnaireCategoryScores: JSON.stringify(qScores),
-      storyCategoryScores: JSON.stringify(sScores),
       finalUnifiedCategoryScores: JSON.stringify(unifiedScores),
       traits: JSON.stringify(legacyTraits),
       dominantType,
@@ -133,7 +168,6 @@ export async function generateFullUserProfile(userId: number) {
     await db.insert(personalityProfilesTable).values({
       userId: userId,
       questionnaireCategoryScores: JSON.stringify(qScores),
-      storyCategoryScores: JSON.stringify(sScores),
       finalUnifiedCategoryScores: JSON.stringify(unifiedScores),
       traits: JSON.stringify(legacyTraits),
       dominantType,

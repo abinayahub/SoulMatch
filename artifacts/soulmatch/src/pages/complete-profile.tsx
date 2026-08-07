@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
-import { Heart, Calendar, Phone, ArrowRight } from "lucide-react";
+import { Calendar, Phone, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -75,16 +75,8 @@ export default function CompleteProfilePage() {
         transition={{ duration: 0.4 }}
         className="w-full max-w-md relative mt-4 z-10"
       >
-        {/* Logo */}
+        {/* Header */}
         <div className="text-center mb-5 flex flex-col items-center">
-          <div className="inline-flex items-center gap-2 justify-center mb-3">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center gradient-coral-button shadow-sm border border-white/45 backdrop-blur-md">
-              <Heart className="w-5 h-5 text-white fill-white/20" />
-            </div>
-            <span className="text-xl font-black bg-clip-text text-transparent bg-gradient-to-r from-[#FF8F8F] to-[#FFB39A]">
-              SoulMatch
-            </span>
-          </div>
           <h1 className="text-3xl font-bold text-[#222222] tracking-tight">Complete Profile</h1>
           <p className="text-xs mt-1 text-[#6F6F6F]">Just a few more details to get started</p>
         </div>

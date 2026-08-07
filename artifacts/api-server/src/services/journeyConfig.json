@@ -1,0 +1,37 @@
+{
+  "dimensions": [
+    "Connection",
+    "Growth",
+    "Stability",
+    "Exploration",
+    "Emotional Maturity",
+    "Decision Making"
+  ],
+  "defaultWeight": 1.0,
+  "defaultOptions": {
+    "A": { "Connection": 7, "Stability": 2 },
+    "B": { "Growth": 7, "Exploration": 2 },
+    "C": { "Stability": 7, "Emotional Maturity": 2 },
+    "D": { "Exploration": 7, "Decision Making": 2 }
+  },
+  "questions": {
+    "20": {
+      "weight": 2.5,
+      "options": {
+        "A": { "Connection": 5, "Emotional Maturity": 5 },
+        "B": { "Growth": 8, "Exploration": 2 },
+        "C": { "Stability": 10 },
+        "D": { "Exploration": 5, "Decision Making": 5 }
+      }
+    },
+    "50": {
+      "weight": 3.0,
+      "options": {
+        "A": { "Connection": 8, "Decision Making": 2 },
+        "B": { "Growth": 5, "Emotional Maturity": 5 },
+        "C": { "Stability": 8, "Connection": 2 },
+        "D": { "Exploration": 10 }
+      }
+    }
+  }
+}

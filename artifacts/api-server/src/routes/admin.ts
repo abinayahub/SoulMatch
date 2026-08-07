@@ -8,6 +8,141 @@ const router = Router();
 
 const isAdmin = [authenticate, requireRole("admin", "superadmin")];
 
+import { communityQuestionsTable, communityAnswersTable, notificationsTable } from "@workspace/db/schema";
+
+// GET /admin/community-questions
+router.get("/community-questions", ...isAdmin, async (req: AuthRequest, res) => {
+  try {
+    const status = (req.query.status as string) || "Pending";
+
+    const questions = await db
+      .select({
+        id: communityQuestionsTable.id,
+        userId: communityQuestionsTable.userId,
+        userGender: communityQuestionsTable.userGender,
+        text: communityQuestionsTable.text,
+        category: communityQuestionsTable.category,
+        isAnonymous: communityQuestionsTable.isAnonymous,
+        status: communityQuestionsTable.status,
+        createdAt: communityQuestionsTable.createdAt,
+        updatedAt: communityQuestionsTable.updatedAt,
+        approvedAt: communityQuestionsTable.approvedAt,
+        rejectedAt: communityQuestionsTable.rejectedAt,
+        rejectionReason: communityQuestionsTable.rejectionReason,
+        totalAnswers: count(communityAnswersTable.id),
+        user: {
+          firstName: usersTable.firstName,
+          lastName: usersTable.lastName,
+          displayName: usersTable.displayName,
+          email: usersTable.email,
+          photoUrl: usersTable.selfieUrl,
+        }
+      })
+      .from(communityQuestionsTable)
+      .leftJoin(usersTable, eq(usersTable.id, communityQuestionsTable.userId))
+      .leftJoin(communityAnswersTable, eq(communityAnswersTable.questionId, communityQuestionsTable.id))
+      .where(eq(communityQuestionsTable.status, status))
+      .groupBy(communityQuestionsTable.id, usersTable.id)
+      .orderBy(desc(communityQuestionsTable.createdAt));
+
+    return res.json(questions);
+  } catch (err) {
+    console.error(`Error fetching ${req.query.status} community questions:`, err);
+    return res.status(500).json({ error: "Failed to fetch questions" });
+  }
+});
+
+// PATCH /admin/community-questions/:id/review
+router.patch("/community-questions/:id/review", ...isAdmin, async (req: AuthRequest, res) => {
+  try {
+    const questionId = parseInt(req.params.id);
+    const { status, reason } = req.body; // status: "Approved" | "Rejected"
+    const adminId = req.user!.userId;
+
+    if (!["Approved", "Rejected"].includes(status)) {
+      return res.status(400).json({ error: "Invalid status" });
+    }
+
+    const [question] = await db
+      .select()
+      .from(communityQuestionsTable)
+      .where(eq(communityQuestionsTable.id, questionId));
+
+    if (!question) {
+      return res.status(404).json({ error: "Question not found" });
+    }
+
+    const now = new Date();
+    await db.update(communityQuestionsTable)
+      .set({
+        status,
+        adminId,
+        approvedAt: status === "Approved" ? now : null,
+        rejectedAt: status === "Rejected" ? now : null,
+        rejectionReason: reason || null,
+        updatedAt: now
+      })
+      .where(eq(communityQuestionsTable.id, questionId));
+
+    // Send notification
+    await db.insert(notificationsTable).values({
+      userId: question.userId,
+      actorId: adminId,
+      type: "system",
+      title: status === "Approved" ? "Question Approved" : "Question Rejected",
+      body: status === "Approved" 
+        ? "Your community question has been approved and published!" 
+        : `Your community question was rejected.${reason ? ` Reason: ${reason}` : ""}`,
+      actionUrl: `/my-story`
+    });
+
+    return res.json({ success: true, message: `Question ${status.toLowerCase()}` });
+  } catch (err) {
+    console.error("Error reviewing community question:", err);
+    return res.status(500).json({ error: "Failed to review question" });
+  }
+});
+
+// GET /admin/community-questions/:id/answers
+router.get("/community-questions/:id/answers", ...isAdmin, async (req: AuthRequest, res) => {
+  try {
+    const questionId = parseInt(req.params.id);
+
+    const [question] = await db
+      .select()
+      .from(communityQuestionsTable)
+      .where(eq(communityQuestionsTable.id, questionId));
+
+    if (!question) {
+      return res.status(404).json({ error: "Question not found" });
+    }
+
+    const answers = await db
+      .select({
+        id: communityAnswersTable.id,
+        answer: communityAnswersTable.answer,
+        createdAt: communityAnswersTable.createdAt,
+        user: {
+          id: usersTable.id,
+          firstName: usersTable.firstName,
+          lastName: usersTable.lastName,
+          displayName: usersTable.displayName,
+          email: usersTable.email,
+          photoUrl: usersTable.selfieUrl,
+        }
+      })
+      .from(communityAnswersTable)
+      .leftJoin(usersTable, eq(usersTable.id, communityAnswersTable.userId))
+      .where(eq(communityAnswersTable.questionId, questionId))
+      .orderBy(desc(communityAnswersTable.createdAt));
+
+    return res.json(answers);
+  } catch (err) {
+    console.error("Error fetching community question answers:", err);
+    return res.status(500).json({ error: "Failed to fetch answers" });
+  }
+});
+
 // GET /admin/users/stats
 router.get("/users/stats", ...isAdmin, async (req: AuthRequest, res) => {
   try {
@@ -44,24 +179,75 @@ router.get("/users", ...isAdmin, async (req: AuthRequest, res) => {
     const limit = parseInt(req.query.limit as string) || 20;
     const offset = (page - 1) * limit;
     const search = req.query.search as string;
+    const gender = req.query.gender as string;
+    const ageRange = req.query.ageRange as string;
+    const location = req.query.location as string;
+    const premium = req.query.premium as string;
+    const verification = req.query.verification as string;
+    const progress = req.query.progress as string;
+    const insights = req.query.insights as string;
 
     let usersQuery = db.select().from(usersTable);
     const allUsers = await usersQuery;
     
-    let filteredUsers = allUsers;
-    if (search) {
-      const lowerSearch = search.toLowerCase();
-      filteredUsers = filteredUsers.filter((u) =>
-        u.email.toLowerCase().includes(lowerSearch) || 
-        (u.firstName || "").toLowerCase().includes(lowerSearch) || 
-        (u.lastName || "").toLowerCase().includes(lowerSearch)
-      );
-    }
+    const now = new Date();
+    
+    let filteredUsers = allUsers.filter(u => {
+      let matches = true;
+
+      if (search) {
+        const lowerSearch = search.toLowerCase();
+        matches = matches && (
+          u.email.toLowerCase().includes(lowerSearch) || 
+          (u.firstName || "").toLowerCase().includes(lowerSearch) || 
+          (u.lastName || "").toLowerCase().includes(lowerSearch)
+        );
+      }
+
+      if (gender) matches = matches && u.gender === gender;
+      
+      if (premium) {
+        const isPremium = u.role === "premium" || u.role === "admin";
+        matches = matches && (premium === "true" ? isPremium : !isPremium);
+      }
+      
+      if (verification) matches = matches && u.verificationStatus === verification;
+
+      if (location) {
+        const isLocal = u.country === "US" || u.country === "USA" || !u.country;
+        matches = matches && (location === "local" ? isLocal : !isLocal);
+      }
+
+      if (ageRange) {
+        let age = null;
+        if (u.dateOfBirth) {
+          const birthDate = new Date(u.dateOfBirth);
+          age = now.getFullYear() - birthDate.getFullYear();
+          const m = now.getMonth() - birthDate.getMonth();
+          if (m < 0 || (m === 0 && now.getDate() < birthDate.getDate())) age--;
+        }
+        if (age !== null) {
+          if (ageRange === "18-24") matches = matches && (age >= 18 && age <= 24);
+          else if (ageRange === "25-34") matches = matches && (age >= 25 && age <= 34);
+          else if (ageRange === "35-44") matches = matches && (age >= 35 && age <= 44);
+          else if (ageRange === "45+") matches = matches && (age >= 45);
+        } else {
+          matches = false;
+        }
+      }
+
+      if (progress) {
+        const p = u.journeyProgress || 0;
+        if (progress === "completed") matches = matches && p >= 150;
+        else if (progress === "in_progress") matches = matches && p > 0 && p < 150;
+        else if (progress === "not_started") matches = matches && p === 0;
+      }
+
+      return matches;
+    });
     
     const totalCount = filteredUsers.length;
     const paginatedUsers = filteredUsers.slice(offset, offset + limit);
-
-    const now = new Date();
 
     return res.json({
       users: paginatedUsers.map((u) => {
@@ -284,10 +470,25 @@ router.get("/overview", ...isAdmin, async (req: AuthRequest, res) => {
     const { gte } = await import("drizzle-orm");
     const { interestsTable, messagesTable } = await import("@workspace/db");
     
-    // Fetch all needed records for accurate in-memory aggregations (safe for small DB)
-    const allUsers = await db.select().from(usersTable);
-    const allInterests = await db.select().from(interestsTable);
-    const allMessages = await db.select().from(messagesTable);
+    // Fetch only needed columns to prevent massive memory usage
+    const allUsers = await db.select({
+      id: usersTable.id,
+      gender: usersTable.gender,
+      dateOfBirth: usersTable.dateOfBirth,
+      createdAt: usersTable.createdAt,
+      lastActive: usersTable.lastActive,
+      role: usersTable.role,
+      journeyProgress: usersTable.journeyProgress
+    }).from(usersTable);
+    
+    const allInterests = await db.select({
+      id: interestsTable.id,
+      status: interestsTable.status,
+      createdAt: interestsTable.createdAt
+    }).from(interestsTable);
+    
+    const [messagesCountRes] = await db.select({ count: count() }).from(messagesTable);
+    const messagesSent = Number(messagesCountRes.count) || 0;
 
     const now = new Date();
     const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
@@ -300,7 +501,6 @@ router.get("/overview", ...isAdmin, async (req: AuthRequest, res) => {
     const matchesGenerated = allInterests.length;
     const matchesAccepted = allInterests.filter(i => i.status === "accepted").length;
     const matchesRejected = allInterests.filter(i => i.status === "declined").length;
-    const messagesSent = allMessages.length;
     const monthlyRevenue = premiumUsers * 10; 
 
     // Questionnaire stats
@@ -373,26 +573,24 @@ router.get("/overview", ...isAdmin, async (req: AuthRequest, res) => {
 
     const recentUsers = await db.select().from(usersTable).orderBy(desc(usersTable.createdAt)).limit(5);
     const recentMatchesDb = await db.select().from(interestsTable)
-      .innerJoin(usersTable, or(eq(interestsTable.fromUserId, usersTable.id), eq(interestsTable.toUserId, usersTable.id)))
       .where(eq(interestsTable.status, "accepted"))
       .orderBy(desc(interestsTable.createdAt))
-      .limit(10); 
+      .limit(5); 
     
     const uniqueMatches: any[] = [];
-    const seenInterests = new Set();
     for (const match of recentMatchesDb) {
-      if (!seenInterests.has(match.interests.id)) {
-        seenInterests.add(match.interests.id);
-        const u1 = match.users;
-        uniqueMatches.push({
-          id: match.interests.id,
-          p1: u1.firstName || "User",
-          p1Avatar: u1.selfieUrl || u1.govIdFrontUrl || "",
-          p2: "Match", 
-          compatibility: 85, 
-          time: new Date(match.interests.createdAt).toLocaleDateString()
-        });
-      }
+      const u1 = await db.query.usersTable.findFirst({ where: eq(usersTable.id, match.fromUserId) });
+      const u2 = await db.query.usersTable.findFirst({ where: eq(usersTable.id, match.toUserId) });
+      
+      uniqueMatches.push({
+        id: match.id,
+        p1: u1?.firstName || "User",
+        p1Avatar: u1?.selfieUrl || u1?.govIdFrontUrl || "",
+        p2: u2?.firstName || "User",
+        p2Avatar: u2?.selfieUrl || u2?.govIdFrontUrl || "",
+        compatibility: 85, 
+        time: new Date(match.createdAt).toLocaleDateString()
+      });
     }
 
     const overview = {
@@ -954,6 +1152,95 @@ router.patch("/support/:id", ...isAdmin, async (req: AuthRequest, res) => {
       
     if (!updated) return res.status(404).json({ error: "Support message not found" });
     return res.json(updated);
+  } catch (err) {
+    req.log.error(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// GET /admin/premium/stats
+router.get("/premium/stats", ...isAdmin, async (req: AuthRequest, res) => {
+  try {
+    const allSubs = await db.select().from(subscriptionsTable);
+    const activeSubs = allSubs.filter(s => s.status === 'active' || s.status === 'trialing');
+    
+    // Calculate MRR
+    let mrr = 0;
+    for (const sub of activeSubs) {
+      if (sub.planId === 'premium_monthly') mrr += 24.99;
+      else if (sub.planId === 'premium_annual') mrr += (199.99 / 12);
+      else if (sub.planId === 'basic_monthly') mrr += 9.99;
+    }
+    
+    return res.json({
+      activeSubscriptions: activeSubs.length,
+      mrr: Math.round(mrr),
+      newThisWeek: activeSubs.filter(s => {
+        const start = s.currentPeriodStart ? new Date(s.currentPeriodStart) : new Date(s.createdAt);
+        return start > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+      }).length,
+      churnRate: allSubs.length > 0 ? Math.round((allSubs.filter(s => s.status === 'canceled').length / allSubs.length) * 100) : 0,
+    });
+  } catch (err) {
+    req.log.error(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// GET /admin/premium/users
+router.get("/premium/users", ...isAdmin, async (req: AuthRequest, res) => {
+  try {
+    const search = req.query.search as string || "";
+    const status = req.query.status as string || "All";
+    
+    let query = db.select({
+      id: subscriptionsTable.id,
+      userId: subscriptionsTable.userId,
+      planId: subscriptionsTable.planId,
+      status: subscriptionsTable.status,
+      currentPeriodEnd: subscriptionsTable.currentPeriodEnd,
+      currentPeriodStart: subscriptionsTable.currentPeriodStart,
+      cancelAtPeriodEnd: subscriptionsTable.cancelAtPeriodEnd,
+      user: {
+        id: usersTable.id,
+        firstName: usersTable.firstName,
+        lastName: usersTable.lastName,
+        displayName: usersTable.displayName,
+        email: usersTable.email,
+        selfieUrl: usersTable.selfieUrl,
+      }
+    }).from(subscriptionsTable)
+    .leftJoin(usersTable, eq(usersTable.id, subscriptionsTable.userId))
+    .orderBy(desc(subscriptionsTable.currentPeriodStart));
+    
+    let subs = await query;
+    
+    if (search) {
+      const lowerSearch = search.toLowerCase();
+      subs = subs.filter(s => 
+        s.user?.displayName?.toLowerCase().includes(lowerSearch) || 
+        s.user?.email?.toLowerCase().includes(lowerSearch) ||
+        s.user?.firstName?.toLowerCase().includes(lowerSearch) ||
+        s.user?.lastName?.toLowerCase().includes(lowerSearch)
+      );
+    }
+    
+    if (status !== 'All') {
+      subs = subs.filter(s => s.status.toLowerCase() === status.toLowerCase());
+    }
+    
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const offset = (page - 1) * limit;
+    
+    const paginatedSubs = subs.slice(offset, offset + limit);
+    
+    return res.json({
+      total: subs.length,
+      page,
+      totalPages: Math.ceil(subs.length / limit),
+      subscriptions: paginatedSubs,
+    });
   } catch (err) {
     req.log.error(err);
     return res.status(500).json({ error: "Internal server error" });

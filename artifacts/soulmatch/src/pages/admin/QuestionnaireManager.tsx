@@ -200,63 +200,63 @@ export default function QuestionnaireManager() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
           <div>
             <h1 className="text-3xl font-bold">Questionnaire Management</h1>
-            <p className="text-[#707070] mt-1">Manage all questions in the 30-day assessment journey.</p>
+            <p className="text-[#6B7280] mt-1">Manage all questions in the 30-day assessment journey.</p>
           </div>
-          <Button onClick={() => openSidePanel()} className="w-full text-white gradient-coral-pill rounded-full border border-white/40 transition-all hover:bg-pink-700  border-0" >
+          <Button onClick={() => openSidePanel()} className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-full transition-all border-0" >
             <Plus className="w-4 h-4 mr-2" /> Add Question
           </Button>
         </div>
 
         {/* Stats Row */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-[#1A1A24] border border-white/5 p-5 rounded-2xl flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-[#F6A8B7]/10 flex items-center justify-center shrink-0">
-              <ClipboardList className="w-6 h-6 text-[#F6A8B7]" />
+          <div className="bg-[#FFFFFF] shadow-sm border border-[#E5E7EB] p-5 rounded-2xl flex items-center gap-4">
+            <div className="w-12 h-12 rounded-full bg-[#EEF4FF] flex items-center justify-center shrink-0">
+              <ClipboardList className="w-6 h-6 text-[#2563EB]" />
             </div>
             <div>
-              <div className="text-sm text-[#707070] mb-1">Total Questions</div>
-              <div className="text-2xl font-bold">{stats?.totalQuestions?.value || 0}</div>
-              <div className="text-xs text-[#707070]">Across {stats?.totalQuestions?.acrossCategories || 0} Categories</div>
+              <div className="text-sm text-[#6B7280] mb-1">Total Questions</div>
+              <div className="text-2xl font-bold text-[#111827]">{stats?.totalQuestions?.value || 0}</div>
+              <div className="text-xs text-[#6B7280]">Across {stats?.totalQuestions?.acrossCategories || 0} Categories</div>
             </div>
           </div>
-          <div className="bg-[#1A1A24] border border-white/5 p-5 rounded-2xl flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center shrink-0">
-              <CheckCircle2 className="w-6 h-6 text-green-500" />
+          <div className="bg-[#FFFFFF] shadow-sm border border-[#E5E7EB] p-5 rounded-2xl flex items-center gap-4">
+            <div className="w-12 h-12 rounded-full bg-[#DCFCE7] flex items-center justify-center shrink-0">
+              <CheckCircle2 className="w-6 h-6 text-[#16A34A]" />
             </div>
             <div>
-              <div className="text-sm text-[#707070] mb-1">Active Questions</div>
-              <div className="text-2xl font-bold">{stats?.activeQuestions?.value || 0}</div>
-              <div className="text-xs text-[#707070]">{stats?.activeQuestions?.percentage || 0}% of total</div>
+              <div className="text-sm text-[#6B7280] mb-1">Active Questions</div>
+              <div className="text-2xl font-bold text-[#111827]">{stats?.activeQuestions?.value || 0}</div>
+              <div className="text-xs text-[#6B7280]">{stats?.activeQuestions?.percentage || 0}% of total</div>
             </div>
           </div>
-          <div className="bg-[#1A1A24] border border-white/5 p-5 rounded-2xl flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-[#F6A8B7]/10 flex items-center justify-center shrink-0">
-              <PauseCircle className="w-6 h-6 text-[#F6A8B7]" />
+          <div className="bg-[#FFFFFF] shadow-sm border border-[#E5E7EB] p-5 rounded-2xl flex items-center gap-4">
+            <div className="w-12 h-12 rounded-full bg-[#FEF2F2] flex items-center justify-center shrink-0">
+              <PauseCircle className="w-6 h-6 text-[#DC2626]" />
             </div>
             <div>
-              <div className="text-sm text-[#707070] mb-1">Inactive Questions</div>
-              <div className="text-2xl font-bold">{stats?.inactiveQuestions?.value || 0}</div>
-              <div className="text-xs text-[#707070]">{stats?.inactiveQuestions?.percentage || 0}% of total</div>
+              <div className="text-sm text-[#6B7280] mb-1">Inactive Questions</div>
+              <div className="text-2xl font-bold text-[#111827]">{stats?.inactiveQuestions?.value || 0}</div>
+              <div className="text-xs text-[#6B7280]">{stats?.inactiveQuestions?.percentage || 0}% of total</div>
             </div>
           </div>
-          <div className="bg-[#1A1A24] border border-white/5 p-5 rounded-2xl flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-[#F6A8B7]/10 flex items-center justify-center shrink-0">
-              <CalendarDays className="w-6 h-6 text-[#F6A8B7]" />
+          <div className="bg-[#FFFFFF] shadow-sm border border-[#E5E7EB] p-5 rounded-2xl flex items-center gap-4">
+            <div className="w-12 h-12 rounded-full bg-[#EEF4FF] flex items-center justify-center shrink-0">
+              <CalendarDays className="w-6 h-6 text-[#2563EB]" />
             </div>
             <div>
-              <div className="text-sm text-[#707070] mb-1">Total Days</div>
-              <div className="text-2xl font-bold">{stats?.totalDays?.value || 30}</div>
-              <div className="text-xs text-[#707070]">Assessment Journey</div>
+              <div className="text-sm text-[#6B7280] mb-1">Total Days</div>
+              <div className="text-2xl font-bold text-[#111827]">{stats?.totalDays?.value || 30}</div>
+              <div className="text-xs text-[#6B7280]">Assessment Journey</div>
             </div>
           </div>
         </div>
 
         {/* Tabs Row */}
-        <div className="flex gap-6 border-b border-white/10 mb-6">
+        <div className="flex gap-6 border-b border-[#E5E7EB] mb-6">
           {['All Questions', 'By Category', 'By Day', 'Question Analytics'].map((tab) => (
             <button 
               key={tab}
-              className={`pb-3 text-sm font-medium transition-colors ${tab === 'All Questions' ? 'border-b-2 border-[#F6A8B7] text-[#F6A8B7]' : 'text-[#707070] hover:text-white'}`}
+              className={`pb-3 text-sm font-medium transition-colors ${tab === 'All Questions' ? 'border-b-2 border-[#2563EB] text-[#2563EB]' : 'text-[#6B7280] hover:text-[#111827]'}`}
             >
               {tab}
             </button>
@@ -266,19 +266,19 @@ export default function QuestionnaireManager() {
         {/* Filters Row */}
         <div className="flex flex-wrap gap-3 mb-6">
           <div className="relative flex-1 min-w-[clamp(170px,50.89vw,230px)]">
-            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#707070]" />
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#6B7280]" />
             <Input 
               placeholder="Search questions..." 
-              className="pl-9 bg-[#1A1A24] border-white/10 w-full"
+              className="pl-9 bg-[#FFFFFF] border-[#E5E7EB] text-[#111827] placeholder:text-[#6B7280] w-full"
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
             />
           </div>
           <Select value={categoryFilter} onValueChange={(v) => { setCategoryFilter(v); setPage(1); }}>
-            <SelectTrigger className="w-[clamp(136px,40.71vw,184px)] bg-[#1A1A24] border-white/10">
+            <SelectTrigger className="w-[clamp(136px,40.71vw,184px)] bg-[#FFFFFF] text-[#111827] border-[#E5E7EB]">
               <SelectValue placeholder="All Categories" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-[#FFFFFF] border-[#E5E7EB]">
               <SelectItem value="All Categories">All Categories</SelectItem>
               <SelectItem value="Lifestyle">Lifestyle</SelectItem>
               <SelectItem value="Relationship">Relationship</SelectItem>
@@ -289,10 +289,10 @@ export default function QuestionnaireManager() {
             </SelectContent>
           </Select>
           <Select value={dayFilter} onValueChange={(v) => { setDayFilter(v); setPage(1); }}>
-            <SelectTrigger className="w-[clamp(102px,30.53vw,138px)] bg-[#1A1A24] border-white/10">
+            <SelectTrigger className="w-[clamp(102px,30.53vw,138px)] bg-[#FFFFFF] text-[#111827] border-[#E5E7EB]">
               <SelectValue placeholder="All Days" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-[#FFFFFF] border-[#E5E7EB]">
               <SelectItem value="All Days">All Days</SelectItem>
               {Array.from({length: 30}).map((_, i) => (
                 <SelectItem key={i} value={`Day ${i+1}`}>Day {i+1}</SelectItem>
@@ -300,10 +300,10 @@ export default function QuestionnaireManager() {
             </SelectContent>
           </Select>
           <Select value={typeFilter} onValueChange={(v) => { setTypeFilter(v); setPage(1); }}>
-            <SelectTrigger className="w-[clamp(119px,35.62vw,161px)] bg-[#1A1A24] border-white/10">
+            <SelectTrigger className="w-[clamp(119px,35.62vw,161px)] bg-[#FFFFFF] text-[#111827] border-[#E5E7EB]">
               <SelectValue placeholder="All Types" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-[#FFFFFF] border-[#E5E7EB]">
               <SelectItem value="All Types">All Types</SelectItem>
               <SelectItem value="choice">Single Choice</SelectItem>
               <SelectItem value="multi_choice">Multiple Choice</SelectItem>
@@ -312,84 +312,84 @@ export default function QuestionnaireManager() {
             </SelectContent>
           </Select>
           <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v); setPage(1); }}>
-            <SelectTrigger className="w-[clamp(102px,30.53vw,138px)] bg-[#1A1A24] border-white/10">
+            <SelectTrigger className="w-[clamp(102px,30.53vw,138px)] bg-[#FFFFFF] text-[#111827] border-[#E5E7EB]">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-[#FFFFFF] border-[#E5E7EB]">
               <SelectItem value="Status">Status</SelectItem>
               <SelectItem value="Active">Active</SelectItem>
               <SelectItem value="Inactive">Inactive</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant="outline" className="bg-[#1A1A24] border-white/10 gap-2">
+          <Button variant="outline" className="bg-[#FFFFFF] text-[#111827] hover:bg-[#F3F4F6] border-[#E5E7EB] gap-2">
             <Filter className="w-4 h-4" /> Filters
           </Button>
         </div>
 
         {/* Table */}
-        <div className="bg-[#1A1A24] rounded-2xl border border-white/5 overflow-hidden">
+        <div className="bg-[#FFFFFF] shadow-sm rounded-2xl border border-[#E5E7EB] overflow-hidden">
           <Table>
-            <TableHeader className="bg-[#13131A]">
-              <TableRow className="border-b border-white/5 hover:bg-transparent">
-                <TableHead className="w-[clamp(43px,12.72vw,57px)] font-medium text-[#707070]">#</TableHead>
-                <TableHead className="font-medium text-[#707070]">Question</TableHead>
-                <TableHead className="font-medium text-[#707070]">Category</TableHead>
-                <TableHead className="font-medium text-[#707070]">Day</TableHead>
-                <TableHead className="font-medium text-[#707070]">Type</TableHead>
-                <TableHead className="font-medium text-[#707070]">Status</TableHead>
-                <TableHead className="text-right font-medium text-[#707070]">Actions</TableHead>
+            <TableHeader className="bg-[#F9FAFB]">
+              <TableRow className="border-b border-[#E5E7EB] hover:bg-[#F9FAFB]">
+                <TableHead className="w-[clamp(43px,12.72vw,57px)] font-medium text-[#374151]">#</TableHead>
+                <TableHead className="font-medium text-[#374151]">Question</TableHead>
+                <TableHead className="font-medium text-[#374151]">Category</TableHead>
+                <TableHead className="font-medium text-[#374151]">Day</TableHead>
+                <TableHead className="font-medium text-[#374151]">Type</TableHead>
+                <TableHead className="font-medium text-[#374151]">Status</TableHead>
+                <TableHead className="text-right font-medium text-[#374151]">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {questionsLoading ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="text-center py-8 text-[#707070]">Loading questions...</TableCell>
+                  <TableCell colSpan={7} className="text-center py-8 text-[#6B7280]">Loading questions...</TableCell>
                 </TableRow>
               ) : questionsData?.questions?.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="text-center py-8 text-[#707070]">No questions found matching criteria.</TableCell>
+                  <TableCell colSpan={7} className="text-center py-8 text-[#6B7280]">No questions found matching criteria.</TableCell>
                 </TableRow>
               ) : (
                 questionsData?.questions?.map((q: any) => (
-                  <TableRow key={q.id} className="border-b border-white/5 border-dashed hover:bg-card/[0.02] cursor-pointer" onClick={() => openSidePanel(q)}>
-                    <TableCell className="font-medium text-[#707070]">{q.index}</TableCell>
-                    <TableCell className="max-w-[clamp(255px,76.34vw,345px)] truncate">{q.question}</TableCell>
+                  <TableRow key={q.id} className="border-b border-[#E5E7EB] hover:bg-[#F3F4F6] cursor-pointer" onClick={() => openSidePanel(q)}>
+                    <TableCell className="font-medium text-[#6B7280]">{q.index}</TableCell>
+                    <TableCell className="max-w-[clamp(255px,76.34vw,345px)] truncate text-[#111827]">{q.question}</TableCell>
                     <TableCell>
-                      <Badge className={`${CATEGORY_COLORS[q.category] || "bg-card/10 text-white"} border hover:${CATEGORY_COLORS[q.category] || "bg-card/10"}`}>
+                      <Badge className="bg-[#F3F4F6] text-[#111827] border-0 hover:bg-[#E5E7EB]">
                         {q.category}
                       </Badge>
                     </TableCell>
-                    <TableCell>Day {q.day}</TableCell>
+                    <TableCell className="text-[#111827]">Day {q.day}</TableCell>
                     <TableCell>
-                      <div className="flex items-center gap-2 text-sm text-[#707070]">
+                      <div className="flex items-center gap-2 text-sm text-[#6B7280]">
                         {TYPE_ICONS[q.type]}
                         {TYPE_LABELS[q.type] || q.type}
                       </div>
                     </TableCell>
                     <TableCell>
                       {q.isActive ? (
-                        <Badge className="bg-green-500/10 text-green-500 hover:bg-green-500/20 border-0">Active</Badge>
+                        <Badge className="bg-[#DCFCE7] text-[#16A34A] hover:bg-[#DCFCE7] border-0">Active</Badge>
                       ) : (
-                        <Badge className="bg-[#F6A8B7]/10 text-[#F6A8B7] hover:bg-[#F6A8B7]/20 border-0">Inactive</Badge>
+                        <Badge className="bg-[#FEF2F2] text-[#DC2626] hover:bg-[#FEF2F2] border-0">Inactive</Badge>
                       )}
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-1" onClick={e => e.stopPropagation()}>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-[#707070] hover:text-white" onClick={() => openSidePanel(q)}>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-[#6B7280] hover:text-[#111827] hover:bg-[#E5E7EB]" onClick={() => openSidePanel(q)}>
                           <Eye className="w-4 h-4" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-[#707070] hover:text-white" onClick={() => openSidePanel(q)}>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-[#6B7280] hover:text-[#111827] hover:bg-[#E5E7EB]" onClick={() => openSidePanel(q)}>
                           <Edit className="w-4 h-4" />
                         </Button>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon" className="h-8 w-8 text-[#707070] hover:text-white">
+                            <Button variant="ghost" size="icon" className="h-8 w-8 text-[#6B7280] hover:text-[#111827] hover:bg-[#E5E7EB]">
                               <MoreVertical className="w-4 h-4" />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-[clamp(136px,40.71vw,184px)] bg-[#1A1A24] border-white/10">
-                            <DropdownMenuItem className="cursor-pointer" onClick={() => handleDelete(q.id)}>
-                              <Trash2 className="w-4 h-4 mr-2 text-red-500" /> <span className="text-red-500">Delete Question</span>
+                          <DropdownMenuContent align="end" className="w-[clamp(136px,40.71vw,184px)] bg-[#FFFFFF] border-[#E5E7EB]">
+                            <DropdownMenuItem className="cursor-pointer hover:bg-[#F3F4F6]" onClick={() => handleDelete(q.id)}>
+                              <Trash2 className="w-4 h-4 mr-2 text-[#DC2626]" /> <span className="text-[#DC2626]">Delete Question</span>
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -402,14 +402,14 @@ export default function QuestionnaireManager() {
           </Table>
           
           {/* Pagination */}
-          <div className="flex items-center justify-between px-6 py-4 border-t border-white/5 bg-[#13131A]/50">
-            <div className="text-sm text-[#707070]">
+          <div className="flex items-center justify-between px-6 py-4 border-t border-[#E5E7EB] bg-[#FFFFFF]">
+            <div className="text-sm text-[#6B7280]">
               Showing {(page - 1) * 10 + 1} to Math.min(page * 10, questionsData?.total || 0) of {questionsData?.total || 0} questions
             </div>
             <div className="flex items-center gap-2">
               <Button 
                 variant="outline" 
-                className="bg-[#1A1A24] border-white/10 px-3" 
+                className="bg-[#FFFFFF] hover:bg-[#F3F4F6] text-[#111827] border-[#E5E7EB] px-3" 
                 disabled={page === 1}
                 onClick={() => setPage(p => p - 1)}
               >
@@ -421,18 +421,18 @@ export default function QuestionnaireManager() {
                   <Button 
                     key={p} 
                     variant="outline" 
-                    className={`${page === p ? 'bg-[#F6A8B7] border-[#F6A8B7] text-white' : 'bg-[#1A1A24] border-white/10'}`}
+                    className={`${page === p ? 'bg-[#EEF4FF] border-[#2563EB] text-[#2563EB]' : 'bg-[#FFFFFF] hover:bg-[#F3F4F6] text-[#111827] border-[#E5E7EB]'}`}
                     onClick={() => setPage(p)}
                   >
                     {p}
                   </Button>
                 );
               })}
-              {questionsData?.totalPages > 5 && <span className="px-2 text-[#707070]">...</span>}
+              {questionsData?.totalPages > 5 && <span className="px-2 text-[#6B7280]">...</span>}
               {questionsData?.totalPages > 5 && (
                 <Button 
                   variant="outline" 
-                  className={`bg-[#1A1A24] border-white/10`}
+                  className={`bg-[#FFFFFF] hover:bg-[#F3F4F6] text-[#111827] border-[#E5E7EB]`}
                   onClick={() => setPage(questionsData.totalPages)}
                 >
                   {questionsData.totalPages}
@@ -440,7 +440,7 @@ export default function QuestionnaireManager() {
               )}
               <Button 
                 variant="outline" 
-                className="bg-[#1A1A24] border-white/10 px-3"
+                className="bg-[#FFFFFF] hover:bg-[#F3F4F6] text-[#111827] border-[#E5E7EB] px-3"
                 disabled={!questionsData || page >= questionsData.totalPages}
                 onClick={() => setPage(p => p + 1)}
               >
@@ -448,10 +448,10 @@ export default function QuestionnaireManager() {
               </Button>
               
               <Select defaultValue="10">
-                <SelectTrigger className="w-[clamp(85px,25.45vw,115px)] bg-[#1A1A24] border-white/10 ml-4">
+                <SelectTrigger className="w-[clamp(85px,25.45vw,115px)] bg-[#FFFFFF] text-[#111827] border-[#E5E7EB] ml-4">
                   <SelectValue placeholder="10 / page" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-[#FFFFFF] border-[#E5E7EB]">
                   <SelectItem value="10">10 / page</SelectItem>
                   <SelectItem value="20">20 / page</SelectItem>
                   <SelectItem value="50">50 / page</SelectItem>
@@ -467,11 +467,11 @@ export default function QuestionnaireManager() {
       {isSidePanelOpen && (
         <>
           <div className="fixed inset-0 bg-transparent/40 z-40 backdrop-blur-sm lg:hidden" onClick={closeSidePanel} />
-          <div className="fixed top-0 right-0 h-screen w-full sm:w-[450px] bg-[#13131A] border-l border-white/10 z-50 flex flex-col shadow-2xl animate-in slide-in-from-right duration-300">
+          <div className="fixed top-0 right-0 h-screen w-full sm:w-[450px] bg-[#FFFFFF] border-l border-[#E5E7EB] z-50 flex flex-col shadow-2xl animate-in slide-in-from-right duration-300">
             
-            <div className="flex items-center justify-between p-6 border-b border-white/10 bg-[#1A1A24]">
-              <h2 className="text-xl font-bold">{editingQuestion ? 'Edit Question' : 'Add Question'}</h2>
-              <Button variant="ghost" size="icon" onClick={closeSidePanel} className="text-[#707070] hover:text-white hover:bg-card/5 rounded-full">
+            <div className="flex items-center justify-between p-6 border-b border-[#E5E7EB] bg-[#F9FAFB]">
+              <h2 className="text-xl font-bold text-[#111827]">{editingQuestion ? 'Edit Question' : 'Add Question'}</h2>
+              <Button variant="ghost" size="icon" onClick={closeSidePanel} className="text-[#6B7280] hover:text-[#111827] hover:bg-[#F3F4F6] rounded-full">
                 <X className="w-5 h-5" />
               </Button>
             </div>
@@ -480,12 +480,12 @@ export default function QuestionnaireManager() {
               
               <div className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-white mb-2 block">Question Category <span className="text-red-500">*</span></label>
+                  <label className="text-sm font-medium text-[#111827] mb-2 block">Question Category <span className="text-red-500">*</span></label>
                   <Select value={formData.category} onValueChange={(v) => setFormData({...formData, category: v})}>
-                    <SelectTrigger className="bg-[#1A1A24] border-white/10">
+                    <SelectTrigger className="bg-[#FFFFFF] text-[#111827] border-[#E5E7EB]">
                       <SelectValue placeholder="Select Category" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-[#FFFFFF] border-[#E5E7EB]">
                       <SelectItem value="Lifestyle">Lifestyle</SelectItem>
                       <SelectItem value="Relationship">Relationship</SelectItem>
                       <SelectItem value="Personality">Personality</SelectItem>
@@ -497,12 +497,12 @@ export default function QuestionnaireManager() {
                 </div>
                 
                 <div>
-                  <label className="text-sm font-medium text-white mb-2 block">Assign to Day <span className="text-red-500">*</span></label>
+                  <label className="text-sm font-medium text-[#111827] mb-2 block">Assign to Day <span className="text-red-500">*</span></label>
                   <Select value={formData.day} onValueChange={(v) => setFormData({...formData, day: v})}>
-                    <SelectTrigger className="bg-[#1A1A24] border-white/10">
+                    <SelectTrigger className="bg-[#FFFFFF] text-[#111827] border-[#E5E7EB]">
                       <SelectValue placeholder="Select Day" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-[#FFFFFF] border-[#E5E7EB]">
                       {Array.from({length: 30}).map((_, i) => (
                         <SelectItem key={i} value={`${i+1}`}>Day {i+1}</SelectItem>
                       ))}
@@ -511,40 +511,40 @@ export default function QuestionnaireManager() {
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium text-white mb-2 block">Question Type <span className="text-red-500">*</span></label>
+                  <label className="text-sm font-medium text-[#111827] mb-2 block">Question Type <span className="text-red-500">*</span></label>
                   <div className="grid grid-cols-2 gap-2">
                     <Button 
                       variant="outline" 
                       onClick={() => setFormData({...formData, type: 'choice'})}
-                      className={`justify-start ${formData.type === 'choice' ? 'border-[#F6A8B7] bg-[#F6A8B7]/10 text-[#F6A8B7]' : 'border-white/10 bg-[#1A1A24]'}`}
+                      className={`justify-start hover:bg-[#F3F4F6] text-[#111827] ${formData.type === 'choice' ? 'border-[#2563EB] bg-[#EEF4FF] text-[#2563EB]' : 'border-[#E5E7EB] bg-[#FFFFFF]'}`}
                     >
                       <CheckCircle2 className="w-4 h-4 mr-2" /> Single Choice
                     </Button>
                     <Button 
                       variant="outline" 
                       onClick={() => setFormData({...formData, type: 'multi_choice'})}
-                      className={`justify-start ${formData.type === 'multi_choice' ? 'border-[#F6A8B7] bg-[#F6A8B7]/10 text-[#F6A8B7]' : 'border-white/10 bg-[#1A1A24]'}`}
+                      className={`justify-start hover:bg-[#F3F4F6] text-[#111827] ${formData.type === 'multi_choice' ? 'border-[#2563EB] bg-[#EEF4FF] text-[#2563EB]' : 'border-[#E5E7EB] bg-[#FFFFFF]'}`}
                     >
                       <ListPlus className="w-4 h-4 mr-2" /> Multiple Choice
                     </Button>
                     <Button 
                       variant="outline" 
                       onClick={() => setFormData({...formData, type: 'text'})}
-                      className={`justify-start ${formData.type === 'text' ? 'border-[#F6A8B7] bg-[#F6A8B7]/10 text-[#F6A8B7]' : 'border-white/10 bg-[#1A1A24]'}`}
+                      className={`justify-start hover:bg-[#F3F4F6] text-[#111827] ${formData.type === 'text' ? 'border-[#2563EB] bg-[#EEF4FF] text-[#2563EB]' : 'border-[#E5E7EB] bg-[#FFFFFF]'}`}
                     >
                       <HelpCircle className="w-4 h-4 mr-2" /> Short Answer
                     </Button>
                     <Button 
                       variant="outline" 
                       onClick={() => setFormData({...formData, type: 'text'})} // Mapping paragraph to text
-                      className={`justify-start ${formData.type === 'text' ? 'border-white/10 bg-[#1A1A24]' : 'border-white/10 bg-[#1A1A24]'}`}
+                      className={`justify-start hover:bg-[#F3F4F6] text-[#111827] ${formData.type === 'text' ? 'border-[#E5E7EB] bg-[#FFFFFF]' : 'border-[#E5E7EB] bg-[#FFFFFF]'}`}
                     >
                       <ClipboardList className="w-4 h-4 mr-2" /> Paragraph
                     </Button>
                     <Button 
                       variant="outline" 
                       onClick={() => setFormData({...formData, type: 'scale'})}
-                      className={`justify-start col-span-2 sm:col-span-1 ${formData.type === 'scale' ? 'border-[#F6A8B7] bg-[#F6A8B7]/10 text-[#F6A8B7]' : 'border-white/10 bg-[#1A1A24]'}`}
+                      className={`justify-start col-span-2 sm:col-span-1 hover:bg-[#F3F4F6] text-[#111827] ${formData.type === 'scale' ? 'border-[#2563EB] bg-[#EEF4FF] text-[#2563EB]' : 'border-[#E5E7EB] bg-[#FFFFFF]'}`}
                     >
                       <Settings className="w-4 h-4 mr-2" /> Rating Scale
                     </Button>
@@ -552,25 +552,25 @@ export default function QuestionnaireManager() {
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium text-white mb-2 block">Question Text <span className="text-red-500">*</span></label>
+                  <label className="text-sm font-medium text-[#111827] mb-2 block">Question Text <span className="text-red-500">*</span></label>
                   <div className="relative">
                     <textarea 
                       placeholder="Enter your question here..." 
-                      className="w-full bg-[#1A1A24] border border-white/10 rounded-xl p-3 min-h-[clamp(102px,30.53vw,138px)] text-sm focus:outline-none focus:border-[#F6A8B7] custom-scrollbar"
+                      className="w-full bg-[#FFFFFF] border border-[#E5E7EB] rounded-xl p-3 min-h-[clamp(102px,30.53vw,138px)] text-sm text-[#111827] placeholder:text-[#6B7280] focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] custom-scrollbar"
                       value={formData.text}
                       onChange={(e) => setFormData({...formData, text: e.target.value})}
                     />
-                    <div className="absolute bottom-3 right-3 text-xs text-[#707070]">{formData.text.length} / 500</div>
+                    <div className="absolute bottom-3 right-3 text-xs text-[#6B7280]">{formData.text.length} / 500</div>
                   </div>
                 </div>
 
                 {['choice', 'multi_choice'].includes(formData.type) && (
                   <div>
-                    <label className="text-sm font-medium text-white mb-2 block">Options <span className="text-red-500">*</span> <span className="text-[#707070] text-xs font-normal">({TYPE_LABELS[formData.type]})</span></label>
+                    <label className="text-sm font-medium text-[#111827] mb-2 block">Options <span className="text-red-500">*</span> <span className="text-[#6B7280] text-xs font-normal">({TYPE_LABELS[formData.type]})</span></label>
                     <div className="space-y-3">
                       {formData.options.map((opt, i) => (
                         <div key={i} className="flex items-center gap-2">
-                          <div className="w-4 h-4 rounded-full border border-white/30 shrink-0" />
+                          <div className="w-4 h-4 rounded-full border border-[#E5E7EB] shrink-0" />
                           <Input 
                             value={opt} 
                             onChange={(e) => {
@@ -578,9 +578,9 @@ export default function QuestionnaireManager() {
                               newOpts[i] = e.target.value;
                               setFormData({...formData, options: newOpts});
                             }}
-                            className="bg-[#1A1A24] border-white/10 h-10" 
+                            className="bg-[#FFFFFF] border-[#E5E7EB] text-[#111827] h-10" 
                           />
-                          <Button variant="ghost" size="icon" className="text-red-400 hover:text-red-300 hover:bg-red-500/10 shrink-0 h-10 w-10 border border-white/5 bg-[#1A1A24]" onClick={() => {
+                          <Button variant="ghost" size="icon" className="text-[#DC2626] hover:text-[#B91C1C] hover:bg-[#FEF2F2] shrink-0 h-10 w-10 border border-[#E5E7EB] bg-[#FFFFFF]" onClick={() => {
                             const newOpts = formData.options.filter((_, idx) => idx !== i);
                             setFormData({...formData, options: newOpts});
                           }}>
@@ -588,7 +588,7 @@ export default function QuestionnaireManager() {
                           </Button>
                         </div>
                       ))}
-                      <Button variant="ghost" className="text-[#F6A8B7] hover:text-[#F6A8B7] hover:bg-[#F6A8B7]/10 p-0 h-auto font-medium" onClick={() => {
+                      <Button variant="ghost" className="text-[#2563EB] hover:text-[#1D4ED8] hover:bg-[#EEF4FF] p-0 h-auto font-medium" onClick={() => {
                         setFormData({...formData, options: [...formData.options, `Option ${formData.options.length + 1}`]});
                       }}>
                         <Plus className="w-4 h-4 mr-1" /> Add Option
@@ -597,18 +597,18 @@ export default function QuestionnaireManager() {
                   </div>
                 )}
 
-                <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                  <div className="text-sm font-medium text-white">Is Mandatory?</div>
+                <div className="flex items-center justify-between pt-4 border-t border-[#E5E7EB]">
+                  <div className="text-sm font-medium text-[#111827]">Is Mandatory?</div>
                   <Switch defaultChecked />
                 </div>
 
                 <div className="pt-2">
-                  <label className="text-sm font-medium text-white mb-2 block">Status</label>
+                  <label className="text-sm font-medium text-[#111827] mb-2 block">Status</label>
                   <Select value={formData.isActive ? "Active" : "Inactive"} onValueChange={(v) => setFormData({...formData, isActive: v === "Active"})}>
-                    <SelectTrigger className="bg-[#1A1A24] border-white/10">
+                    <SelectTrigger className="bg-[#FFFFFF] text-[#111827] border-[#E5E7EB]">
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-[#FFFFFF] border-[#E5E7EB]">
                       <SelectItem value="Active">Active</SelectItem>
                       <SelectItem value="Inactive">Inactive</SelectItem>
                     </SelectContent>
@@ -618,11 +618,11 @@ export default function QuestionnaireManager() {
               </div>
             </div>
 
-            <div className="p-6 border-t border-white/10 bg-[#1A1A24] flex gap-3">
-              <Button variant="outline" className="flex-1 bg-transparent border-white/10" onClick={closeSidePanel}>
+            <div className="p-6 border-t border-[#E5E7EB] bg-[#F9FAFB] flex gap-3">
+              <Button variant="outline" className="flex-1 bg-[#FFFFFF] hover:bg-[#F3F4F6] text-[#111827] border-[#E5E7EB]" onClick={closeSidePanel}>
                 Cancel
               </Button>
-              <Button className="flex-1 w-full text-white gradient-coral-pill rounded-full border border-white/40 transition-all hover:bg-pink-700  border-0"  onClick={handleSave} disabled={saveMutation.isPending}>
+              <Button className="flex-1 w-full text-white bg-[#2563EB] hover:bg-[#1D4ED8] rounded-full transition-all border-0" onClick={handleSave} disabled={saveMutation.isPending}>
                 <Plus className="w-4 h-4 mr-2" /> {editingQuestion ? 'Update Question' : 'Save Question'}
               </Button>
             </div>

@@ -162,7 +162,7 @@ export function PersonalDetailsForm({ p, onSave, onCancel, hasPrevious, isPendin
             Bio <span className="text-[#FF8FA8]">*</span>
           </Label>
           <Textarea 
-            className={`min-h-[92px] p-4 rounded-[18px] text-sm sm:text-base font-medium leading-relaxed resize-none text-[#1E1E1E] placeholder:text-[#6D6D6D]/40 focus-visible:ring-2 focus-visible:ring-[#FF8FA8]/30 focus-visible:border-[#FF8FA8] bg-white border ${form.formState.errors.bio ? "border-red-500" : "border-[#F4DCE3]"}`} 
+            className={`min-h-[92px] p-4 rounded-[18px] text-sm sm:text-base font-medium leading-relaxed resize-none text-[#1E1E1E] placeholder:text-[#6D6D6D]/40 focus-visible:ring-2 focus-visible:ring-[#FF8FA8]/50 focus-visible:border-[#FF8FA8] bg-[#FDF8F9] border ${form.formState.errors.bio ? "border-red-500" : "border-[#FFB3C6]"}`} 
             placeholder="I love quiet mornings, long walks, and discovering new coffee spots..." 
             {...form.register("bio", { required: "Please write a short bio" })} 
           />

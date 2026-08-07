@@ -394,7 +394,7 @@ export default function DashboardPage() {
              
              <div className="w-full">
                 {(() => {
-                  const isCompleted = (journeyProgress as any)?.journeyCompleted === true || answeredQuestions >= 30;
+                  const isCompleted = (journeyProgress as any)?.journeyCompleted === true || answeredQuestions >= 150;
                   return (
                     <SwipeToUnlockButton 
                       label={isCompleted ? "🎉 Journey Complete" : `Swipe to unlock Day ${Math.min(30, Math.floor(answeredQuestions / 5) + 1)}`}

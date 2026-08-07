@@ -61,26 +61,26 @@ export default function AdminUserDetailPage({ userId }: Props) {
   return (
     <AppLayout>
       <div className="max-w-3xl mx-auto px-4 py-8">
-        <Button variant="ghost" onClick={() => navigate("/admin/users")} className="mb-4 text-[#707070]">
+        <Button variant="ghost" onClick={() => navigate("/admin/users")} className="mb-4 text-[#6B7280]">
           <ChevronLeft className="w-4 h-4 mr-1" />Back to Users
         </Button>
 
         {isLoading ? (
-          <Skeleton className="h-96 rounded-2xl bg-card/5" />
+          <Skeleton className="h-96 rounded-2xl bg-[#F3F4F6]" />
         ) : !u ? (
-          <div className="text-center py-16 text-[#707070]">User not found</div>
+          <div className="text-center py-16 text-[#6B7280]">User not found</div>
         ) : (
           <div className="space-y-5">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-6">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-[#FFFFFF] shadow-sm rounded-2xl p- border border-[#E5E7EB]">
               <div className="flex items-start gap-5">
                 <Avatar className="w-16 h-16 ring-2 ring-primary/30">
-                  <AvatarFallback className="bg-primary text-primary-foreground shadow-md text-white text-xl font-bold">
+                  <AvatarFallback className="bg-primary text-primary-foreground shadow-md text-[#111827] text-xl font-bold">
                     {getInitials(u.firstName, u.lastName)}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1">
                   <h1 className="text-2xl font-bold">{u.firstName} {u.lastName}</h1>
-                  <p className="text-[#707070] text-sm mt-0.5">{u.email}</p>
+                  <p className="text-[#6B7280] text-sm mt-0.5">{u.email}</p>
                   <div className="flex flex-wrap gap-2 mt-3">
                     <Badge className="text-xs border">{u.role}</Badge>
                     <Badge className={`text-xs border ${u.status === "active" ? "bg-green-500/20 text-green-400 border-green-500/30" : "bg-red-500/20 text-red-400 border-red-500/30"}`}>
@@ -92,23 +92,23 @@ export default function AdminUserDetailPage({ userId }: Props) {
               </div>
 
               <div className="grid grid-cols-2 gap-4 mt-6 text-sm">
-                <div><p className="text-xs text-[#707070]">Journey Progress</p><p className="font-semibold">{u.journeyProgress}/30</p></div>
-                <div><p className="text-xs text-[#707070]">Joined</p><p className="font-semibold">{formatDate(u.createdAt)}</p></div>
-                <div><p className="text-xs text-[#707070]">Premium</p><p className="font-semibold">{u.isPremium ? "Yes" : "No"}</p></div>
-                <div><p className="text-xs text-[#707070]">Reports</p><p className="font-semibold">{u.reportCount ?? 0}</p></div>
+                <div><p className="text-xs text-[#6B7280]">Journey Progress</p><p className="font-semibold">{u.journeyProgress}/30</p></div>
+                <div><p className="text-xs text-[#6B7280]">Joined</p><p className="font-semibold">{formatDate(u.createdAt)}</p></div>
+                <div><p className="text-xs text-[#6B7280]">Premium</p><p className="font-semibold">{u.isPremium ? "Yes" : "No"}</p></div>
+                <div><p className="text-xs text-[#6B7280]">Reports</p><p className="font-semibold">{u.reportCount ?? 0}</p></div>
               </div>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-5">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-[#FFFFFF] shadow-sm rounded-2xl p- border border-[#E5E7EB]">
               <h2 className="font-semibold mb-4">Admin Actions</h2>
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div className="space-y-1.5">
-                  <label className="text-xs text-[#707070]">Change Role</label>
+                  <label className="text-xs text-[#6B7280]">Change Role</label>
                   <Select value={role} onValueChange={setRole}>
-                    <SelectTrigger className="bg-card/5 border-white/10">
+                    <SelectTrigger className="bg-[#F3F4F6] border-[#E5E7EB]">
                       <SelectValue placeholder={u.role} />
                     </SelectTrigger>
-                    <SelectContent className="bg-card border border-border shadow-md rounded-2xl border-white/10">
+                    <SelectContent className="bg-card border border-border shadow-md rounded-2xl border-[#E5E7EB]">
                       <SelectItem value="user">User</SelectItem>
                       <SelectItem value="premium">Premium</SelectItem>
                       <SelectItem value="admin">Admin</SelectItem>
@@ -116,12 +116,12 @@ export default function AdminUserDetailPage({ userId }: Props) {
                   </Select>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs text-[#707070]">Change Status</label>
+                  <label className="text-xs text-[#6B7280]">Change Status</label>
                   <Select value={status} onValueChange={setStatus}>
-                    <SelectTrigger className="bg-card/5 border-white/10">
+                    <SelectTrigger className="bg-[#F3F4F6] border-[#E5E7EB]">
                       <SelectValue placeholder={u.status} />
                     </SelectTrigger>
-                    <SelectContent className="bg-card border border-border shadow-md rounded-2xl border-white/10">
+                    <SelectContent className="bg-card border border-border shadow-md rounded-2xl border-[#E5E7EB]">
                       <SelectItem value="active">Active</SelectItem>
                       <SelectItem value="suspended">Suspended</SelectItem>
                       <SelectItem value="banned">Banned</SelectItem>
@@ -129,7 +129,7 @@ export default function AdminUserDetailPage({ userId }: Props) {
                   </Select>
                 </div>
               </div>
-              <Button onClick={handleUpdate} className="bg-primary text-primary-foreground shadow-md border-0 text-white" disabled={update.isPending || (!role && !status)}>
+              <Button onClick={handleUpdate} className="bg-primary text-primary-foreground shadow-md border-0 text-[#111827]" disabled={update.isPending || (!role && !status)}>
                 {update.isPending ? "Updating..." : "Apply Changes"}
               </Button>
             </motion.div>

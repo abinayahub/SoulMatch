@@ -19,7 +19,7 @@ function authHeaders() {
 }
 
 const roleColors: Record<string, string> = {
-  user: "bg-card/10 text-[#707070]",
+  user: "bg-[#F3F4F6] text-[#6B7280]",
   premium: "bg-accent/20 text-accent border-accent/30",
   admin: "bg-blue-500/20 text-blue-400 border-blue-500/30",
   superadmin: "bg-[#F6A8B7]/20 text-[#F6A8B7] border-[#F6A8B7]/30",
@@ -51,18 +51,18 @@ export default function AdminUsersPage() {
             <h1 className="text-3xl font-bold flex items-center gap-3 mb-1">
               <Users className="w-7 h-7 text-primary" />User Management
             </h1>
-            <p className="text-[#707070]">{(data as any)?.total ?? 0} total users</p>
+            <p className="text-[#6B7280]">{(data as any)?.total ?? 0} total users</p>
           </div>
         </motion.div>
 
         {/* Search */}
         <div className="relative mb-6 max-w-sm">
-          <Search className="absolute z-10 left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#707070]" />
+          <Search className="absolute z-10 left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
           <Input
             placeholder="Search by name or email..."
             value={search}
             onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-            className="pl-9 bg-card/5 border-white/10"
+            className="pl-9 bg-[#F3F4F6] border-[#E5E7EB]"
           />
         </div>
 
@@ -70,10 +70,10 @@ export default function AdminUsersPage() {
         <div className="bg-card border border-border shadow-md rounded-2xl rounded-2xl overflow-hidden">
           {isLoading ? (
             <div className="p-6 space-y-3">
-              {[...Array(8)].map((_, i) => <Skeleton key={i} className="h-14 rounded-xl bg-card/5" />)}
+              {[...Array(8)].map((_, i) => <Skeleton key={i} className="h-14 rounded-xl bg-[#F3F4F6]" />)}
             </div>
           ) : users.length === 0 ? (
-            <div className="text-center py-16 text-[#707070]">
+            <div className="text-center py-16 text-[#6B7280]">
               <Users className="w-10 h-10 mx-auto mb-3 opacity-30" />
               <p>No users found</p>
             </div>
@@ -81,13 +81,13 @@ export default function AdminUsersPage() {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-white/10">
-                    <th className="text-left text-xs text-[#707070] font-medium px-4 py-3">User</th>
-                    <th className="text-left text-xs text-[#707070] font-medium px-4 py-3">Role</th>
-                    <th className="text-left text-xs text-[#707070] font-medium px-4 py-3">Status</th>
-                    <th className="text-left text-xs text-[#707070] font-medium px-4 py-3">Verification</th>
-                    <th className="text-left text-xs text-[#707070] font-medium px-4 py-3">Journey</th>
-                    <th className="text-left text-xs text-[#707070] font-medium px-4 py-3">Joined</th>
+                  <tr className="border-b border-[#E5E7EB]">
+                    <th className="text-left text-xs text-[#6B7280] font-medium px-4 py-3">User</th>
+                    <th className="text-left text-xs text-[#6B7280] font-medium px-4 py-3">Role</th>
+                    <th className="text-left text-xs text-[#6B7280] font-medium px-4 py-3">Status</th>
+                    <th className="text-left text-xs text-[#6B7280] font-medium px-4 py-3">Verification</th>
+                    <th className="text-left text-xs text-[#6B7280] font-medium px-4 py-3">Journey</th>
+                    <th className="text-left text-xs text-[#6B7280] font-medium px-4 py-3">Joined</th>
                     <th className="px-4 py-3" />
                   </tr>
                 </thead>
@@ -99,18 +99,18 @@ export default function AdminUsersPage() {
                       animate={{ opacity: 1 }}
                       transition={{ delay: i * 0.03 }}
                       onClick={() => navigate(`/admin/users/${u.id}`)}
-                      className="border-b border-white/5 hover:bg-card/5 cursor-pointer transition-colors"
+                      className="border-b border-[#E5E7EB] hover:bg-[#F3F4F6] cursor-pointer transition-colors"
                     >
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
                           <Avatar className="w-8 h-8">
-                            <AvatarFallback className="bg-primary text-primary-foreground shadow-md text-white text-xs font-semibold">
+                            <AvatarFallback className="bg-primary text-primary-foreground shadow-md text-[#111827] text-xs font-semibold">
                               {getInitials(u.firstName, u.lastName)}
                             </AvatarFallback>
                           </Avatar>
                           <div>
                             <p className="text-sm font-medium">{u.firstName} {u.lastName}</p>
-                            <p className="text-xs text-[#707070]">{u.email}</p>
+                            <p className="text-xs text-[#6B7280]">{u.email}</p>
                           </div>
                         </div>
                       </td>
@@ -121,16 +121,16 @@ export default function AdminUsersPage() {
                         <Badge className={`text-xs border ${statusColors[u.status] ?? ""}`}>{u.status}</Badge>
                       </td>
                       <td className="px-4 py-3">
-                        <span className="text-xs text-[#707070] capitalize">{u.verificationStatus}</span>
+                        <span className="text-xs text-[#6B7280] capitalize">{u.verificationStatus}</span>
                       </td>
                       <td className="px-4 py-3">
-                        <span className="text-xs text-[#707070]">{u.journeyProgress}/30</span>
+                        <span className="text-xs text-[#6B7280]">{u.journeyProgress}/30</span>
                       </td>
                       <td className="px-4 py-3">
-                        <span className="text-xs text-[#707070]">{formatDate(u.createdAt)}</span>
+                        <span className="text-xs text-[#6B7280]">{formatDate(u.createdAt)}</span>
                       </td>
                       <td className="px-4 py-3">
-                        <ChevronRight className="w-4 h-4 text-[#707070]" />
+                        <ChevronRight className="w-4 h-4 text-[#6B7280]" />
                       </td>
                     </motion.tr>
                   ))}
@@ -143,9 +143,9 @@ export default function AdminUsersPage() {
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="flex justify-center gap-2 mt-6">
-            <Button variant="outline" disabled={page === 1} onClick={() => setPage(p => p - 1)} className="border-white/20 bg-card/5">Previous</Button>
-            <span className="flex items-center text-sm text-[#707070] px-4">Page {page} of {totalPages}</span>
-            <Button variant="outline" disabled={page >= totalPages} onClick={() => setPage(p => p + 1)} className="border-white/20 bg-card/5">Next</Button>
+            <Button variant="outline" disabled={page === 1} onClick={() => setPage(p => p - 1)} className="border-white/20 bg-[#F3F4F6]">Previous</Button>
+            <span className="flex items-center text-sm text-[#6B7280] px-4">Page {page} of {totalPages}</span>
+            <Button variant="outline" disabled={page >= totalPages} onClick={() => setPage(p => p + 1)} className="border-white/20 bg-[#F3F4F6]">Next</Button>
           </div>
         )}
       </div>

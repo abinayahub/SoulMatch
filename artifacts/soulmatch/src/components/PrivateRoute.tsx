@@ -28,6 +28,9 @@ export function PrivateRoute({ component: Component }: PrivateRouteProps) {
   const isPricingPage = location === "/pricing";
   const isProfileSetup = location === "/profile" || location === "/settings";
   const isMyStoryPage = location === "/my-story";
+  const isCommunityQuestionsPage = location === "/community-questions";
+  const isAskCommunityQuestionPage = location === "/ask-community-question";
+  const isBrowseQuestionsPage = location === "/browse-questions";
   const isStoryArchivePage = location === "/story-archive";
   const isChatPage = location.startsWith("/chat");
   const isNotificationsPage = location === "/notifications";
@@ -40,9 +43,12 @@ export function PrivateRoute({ component: Component }: PrivateRouteProps) {
   const isActivityPage = location === "/activity";
   const isCheckoutPage = location.startsWith("/checkout");
   const isRegistrationSuccessPage = location === "/registration-success";
+  const isAnswerCommunityQuestionPage = location.startsWith("/community-questions/") && location.endsWith("/answer");
+  const isQuestionResponsesPage = location.startsWith("/community-questions/") && location.endsWith("/responses");
+  const isMyAnswerPage = location.startsWith("/community-questions/my-answers/");
   const questionsNeeded = 150; // 30 days * 5 questions
   
-  if (user && user.journeyProgress < questionsNeeded && !isRegistrationSuccessPage && !isPersonalityPage && !isReflectionPage && !isSupportPage && !isJourneyPage && !isProfileSetup && !isDashboardPage && !isDiscoverPage && !isPricingPage && !isMyStoryPage && !isStoryArchivePage && !isChatPage && !isNotificationsPage && !isInterestsPage && !isMatchesPage && !isUserProfilePage && !isActivityPage && !isCheckoutPage) {
+  if (user && user.journeyProgress < questionsNeeded && !isRegistrationSuccessPage && !isPersonalityPage && !isReflectionPage && !isSupportPage && !isJourneyPage && !isProfileSetup && !isDashboardPage && !isDiscoverPage && !isPricingPage && !isMyStoryPage && !isCommunityQuestionsPage && !isAskCommunityQuestionPage && !isBrowseQuestionsPage && !isAnswerCommunityQuestionPage && !isQuestionResponsesPage && !isMyAnswerPage && !isStoryArchivePage && !isChatPage && !isNotificationsPage && !isInterestsPage && !isMatchesPage && !isUserProfilePage && !isActivityPage && !isCheckoutPage) {
     return <Redirect to="/dashboard" />;
   }
 

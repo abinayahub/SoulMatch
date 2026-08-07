@@ -7,7 +7,7 @@ import { useAuth, getAccessToken } from "@/lib/auth-context";
 import { useToast } from "@/hooks/use-toast";
 import { useGetMe, useUpdateMe, getGetMeQueryKey } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { User, Briefcase, MapPin, Coffee, Heart, Camera, ShieldCheck, ChevronLeft } from "lucide-react";
+import { User, Briefcase, MapPin, Coffee, Heart, Camera, ShieldCheck } from "lucide-react";
 import { getMandatoryCompletion } from "@/lib/profile-utils";
 import { useLocation } from "wouter";
 
@@ -134,33 +134,6 @@ export default function ProfilePage() {
       <div className="min-h-screen relative bg-[#FFF8F8] pb-12">
         <div className="max-w-xl mx-auto px-4 pt-4 pb-8">
 
-          {/* Top Bar: Back & Logo */}
-          <div className="flex items-center justify-between mb-5">
-            <button 
-              type="button" 
-              onClick={() => {
-                if (currentStepNum > 1) {
-                  handlePrevious();
-                } else {
-                  navigate('/dashboard');
-                }
-              }}
-              className="flex items-center gap-1.5 text-[#6D6D6D] hover:text-[#1E1E1E] text-sm font-semibold transition-colors py-1 px-2 -ml-2"
-            >
-              <ChevronLeft className="w-5 h-5 text-[#FF8FA8]" />
-              Back
-            </button>
-
-            {/* SoulMatch Logo */}
-            <div className="flex items-center gap-1.5 font-black text-lg text-[#1E1E1E] tracking-tight">
-              <div className="w-6 h-6 rounded-full bg-gradient-to-r from-[#FF9CB3] to-[#FF7E9C] flex items-center justify-center shadow-xs">
-                <Heart className="w-3.5 h-3.5 text-white fill-white" />
-              </div>
-              <span>Soul<span className="text-[#FF7E9C]">Match</span></span>
-            </div>
-
-            <div className="w-12" /> {/* Spacer for symmetry */}
-          </div>
 
           {/* Header Step & Progress */}
           <div className="mb-6">

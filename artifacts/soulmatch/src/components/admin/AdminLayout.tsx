@@ -4,7 +4,7 @@ import { useAuth } from "@/lib/auth-context";
 import {
   LayoutDashboard, Users, FileQuestion, Brain, HeartHandshake,
   BookOpen, Crown, ShieldCheck, AlertTriangle, LineChart,
-  Bell, FileText, Settings, Key, Heart, HeadphonesIcon
+  Bell, FileText, Settings, Key, Heart, HeadphonesIcon, MessageCircleQuestion
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Navbar } from "../layout/Navbar";
@@ -17,9 +17,9 @@ const adminModules = [
   { name: "Overview", path: "/admin", icon: LayoutDashboard },
   { name: "User Management", path: "/admin/users", icon: Users },
   { name: "Questionnaires", path: "/admin/questions", icon: FileQuestion },
-  { name: "Profile Insights", path: "/admin/ai", icon: Brain },
   { name: "Matches", path: "/admin/matches", icon: Heart },
   { name: "Stories & Journals", path: "/admin/journals", icon: BookOpen },
+  { name: "Community Questions", path: "/admin/community-questions", icon: MessageCircleQuestion },
   { name: "Subscriptions", path: "/admin/premium", icon: Crown },
   { name: "Verification", path: "/admin/verifications", icon: ShieldCheck },
   { name: "Reports & Safety", path: "/admin/reports", icon: AlertTriangle },
@@ -37,13 +37,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const isSuperAdmin = user?.role === "superadmin";
 
   return (
-    <div className="w-full min-h-screen relative flex flex-col font-sans flex flex-col" style={{ background: 'linear-gradient(135deg, #F8F3F7 0%, #FAF1ED 100%)' }}>
-      <div className="absolute inset-0 opacity-40 pointer-events-none" style={{ background: 'radial-gradient(circle at 0% 0%, #F4F1FF 0%, transparent 50%), radial-gradient(circle at 100% 100%, #FFFDFC 0%, transparent 50%)' }} />
+    <div className="w-full min-h-screen relative flex flex-col font-sans" style={{ backgroundColor: '#F8FAFC' }}>
       <Navbar />
       
       <div className="flex-1 flex overflow-hidden pt-[calc(4rem+env(safe-area-inset-top,0px))]">
         {/* Sidebar */}
-        <aside className="w-64 border-r border-white/10 bg-background/50 backdrop-blur-md hidden md:flex flex-col h-[calc(100vh-4rem-env(safe-area-inset-top,0px))] sticky top-[calc(4rem+env(safe-area-inset-top,0px))] overflow-y-auto">
+        <aside className="w-64 border-r border-[#E5E7EB] bg-[#FFFFFF] hidden md:flex flex-col h-[calc(100vh-4rem-env(safe-area-inset-top,0px))] sticky top-[calc(4rem+env(safe-area-inset-top,0px))] overflow-y-auto">
           <div className="p-6">
             <h2 className="text-sm font-semibold text-primary uppercase tracking-wider mb-4">
               Admin Console
@@ -55,8 +54,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   <Link key={module.path} href={module.path} className={cn(
                     "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sm font-medium",
                     isActive 
-                      ? "bg-primary/10 text-primary" 
-                      : "text-[#707070] hover:bg-white/5 hover:text-white"
+                      ? "bg-[#EEF4FF] text-[#2563EB]" 
+                      : "text-[#475569] hover:bg-[#F1F5F9]"
                   )}>
                     <module.icon className="w-4 h-4 shrink-0" />
                     {module.name}
@@ -71,8 +70,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               <Link href="/admin/super" className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sm font-medium",
                 location.startsWith("/admin/super")
-                  ? "bg-destructive/10 text-destructive" 
-                  : "text-[#707070] hover:bg-white/5 hover:text-white"
+                  ? "bg-[#EEF4FF] text-[#2563EB]" 
+                  : "text-[#475569] hover:bg-[#F1F5F9]"
               )}>
                 <Key className="w-4 h-4 shrink-0" />
                 System Controls
@@ -82,7 +81,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto bg-black/20 p-6 md:p-8">
+        <main className="flex-1 overflow-y-auto p-6 md:p-8">
           <div className="max-w-6xl mx-auto">
             {children}
           </div>

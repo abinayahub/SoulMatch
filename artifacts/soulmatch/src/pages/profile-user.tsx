@@ -670,6 +670,27 @@ export default function UserProfilePage({ userId }: Props) {
                       <h3 className="font-bold text-[#252525] text-sm">Personality Comparison</h3>
                       <span className="ml-auto text-base font-extrabold text-[#F6A8B7]">{personalityMatch}%</span>
                     </div>
+
+                    {pConfidence && typeof pConfidence === 'object' && (
+                      <div className="mb-4 bg-transparent p-3 rounded-xl border border-border">
+                        <div className="flex justify-between items-center mb-1.5">
+                          <span className="text-[clamp(9px,2.54vw,12px)] text-[#707070] font-bold uppercase">Journey Progress</span>
+                          <span className="text-[clamp(9px,2.80vw,13px)] text-[#F6A8B7] font-bold">{pConfidence.confidencePct}% Data</span>
+                        </div>
+                        <div className="h-1.5 bg-border rounded-full overflow-hidden">
+                          <div className="h-full bg-[#F6A8B7] rounded-full" style={{ width: `${pConfidence.confidencePct}%` }} />
+                        </div>
+                        <div className="flex justify-between text-[clamp(8px,2.29vw,10px)] text-[#707070] mt-1">
+                          <span>{pConfidence.commonDays} of 30 Days</span>
+                          <span className={`font-bold ${pConfidence.level === 'High' ? 'text-green-500' : pConfidence.level === 'Medium' ? 'text-yellow-500' : 'text-red-500'}`}>{pConfidence.level} Confidence</span>
+                        </div>
+                        {pConfidence.level !== 'High' && (
+                          <div className="text-[clamp(8px,2.29vw,10px)] text-[#707070] mt-2 italic bg-[#F6A8B7]/5 p-2 rounded-lg">
+                            Your compatibility score will become more accurate as both of you complete more Journey days.
+                          </div>
+                        )}
+                      </div>
+                    )}
                     <div className="grid grid-cols-12 gap-2 text-[clamp(8px,2.29vw,10px)] font-bold text-[#707070] uppercase mb-3 px-1">
                       <div className="col-span-5">Trait</div>
                       <div className="col-span-2 text-[#F6A8B7]">You</div>

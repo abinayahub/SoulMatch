@@ -191,8 +191,51 @@ router.get("/", authenticate, async (req: AuthRequest, res) => {
 
       const isPremiumUser = u.role === "premium" || u.role === "admin";
       return {
-      isMutualInterest: isMutualMatch,
-    };
+        userId: u.id,
+        isLocked,
+        profile: {
+          id: u.id,
+          firstName: isLocked ? "Hidden" : u.firstName,
+          displayName: isLocked ? "Hidden Profile" : u.displayName,
+          age: calculateAge(u.dateOfBirth),
+          occupation: u.occupation,
+          education: u.education,
+          city: u.city,
+          country: u.country,
+          religion: u.religion,
+          bio: isLocked ? "Profile is locked. Upgrade to reveal or wait 30 days." : u.bio,
+          photos: isLocked 
+            ? [{ id: 0, url: "/blurred-avatar.png", isPrimary: true, publicId: "" }]
+            : (photosByUser.get(u.id) || []).map((p) => ({ id: p.id, url: p.url, isPrimary: p.isPrimary, publicId: p.publicId })),
+          verificationStatus: u.verificationStatus,
+          isPremium: isPremiumUser,
+          compatibilityScore,
+          journeyProgress: u.journeyProgress,
+          hasPendingInterest,
+          interestSentByViewer,
+          isMutualMatch,
+          commonInterestsCount,
+          sharedInterestsPreview: sharedInterests,
+          valueMatchScore: result.personalityMatch || compatibilityScore,
+          personalityMatch: result.personalityMatch ?? null,
+          aiStoryMatch: result.aiStoryMatch ?? null,
+          valueAlignment: (result as any).valueAlignment ?? null,
+          communicationMatch: (result as any).communicationMatch ?? null,
+          emotionalCompatibility: (result as any).emotionalCompatibility ?? null,
+          overallCompatibility: (result as any).overallCompatibility ?? null,
+          sConfidenceData: result.sConfidenceData ?? null,
+          pConfidence: result.pConfidence ?? null,
+          hasStories: result.hasStories ?? null,
+          rawCompatibility: (result as any).rawCompatibility ?? null,
+          journeyConfidence: (result as any).journeyConfidence ?? null,
+          displayedCompatibility: (result as any).displayedCompatibility ?? null,
+        },
+        compatibilityScore,
+        commonTraits,
+        aiInsight,
+        isNew: i < 3,
+        isMutualInterest: isMutualMatch,
+      };
     }));
 
     matches.sort((a, b) => b.compatibilityScore - a.compatibilityScore);

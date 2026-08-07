@@ -45,7 +45,7 @@ export default function AdminDashboard() {
           <h1 className="text-3xl font-bold flex items-center gap-3 mb-1">
             <Crown className="w-7 h-7 text-accent" />Admin Dashboard
           </h1>
-          <p className="text-[#707070]">Platform overview and management tools.</p>
+          <p className="text-[#6B7280]">Platform overview and management tools.</p>
         </motion.div>
 
         {/* Stats grid */}
@@ -56,17 +56,17 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: i * 0.04 }}
-              className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-4"
+              className="bg-[#FFFFFF] shadow-sm rounded-2xl p- border border-[#E5E7EB]"
             >
               {isLoading ? (
-                <Skeleton className="h-16 rounded-xl bg-card/5" />
+                <Skeleton className="h-16 rounded-xl bg-[#F3F4F6]" />
               ) : (
                 <>
                   <div className={`w-10 h-10 rounded-xl ${stat.bg} flex items-center justify-center mb-3`}>
                     <stat.icon className={`w-5 h-5 ${stat.color}`} />
                   </div>
                   <div className="text-2xl font-bold">{stat.value}</div>
-                  <div className="text-xs text-[#707070] mt-0.5">{stat.label}</div>
+                  <div className="text-xs text-[#6B7280] mt-0.5">{stat.label}</div>
                 </>
               )}
             </motion.div>
@@ -78,13 +78,13 @@ export default function AdminDashboard() {
           {quickLinks.map((link, i) => (
             <motion.div key={link.href} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.08 }}>
               <Link href={link.href}>
-                <div className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-5 cursor-pointer hover:bg-card/5 transition-colors group flex items-start gap-4">
+                <div className="bg-[#FFFFFF] shadow-sm rounded-2xl p- border border-[#E5E7EB] cursor-pointer hover:bg-[#F3F4F6] transition-colors group flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
                     <link.icon className="w-6 h-6 text-primary" />
                   </div>
                   <div>
                     <h3 className="font-semibold group-hover:text-primary transition-colors">{link.label}</h3>
-                    <p className="text-sm text-[#707070] mt-0.5">{link.description}</p>
+                    <p className="text-sm text-[#6B7280] mt-0.5">{link.description}</p>
                   </div>
                 </div>
               </Link>

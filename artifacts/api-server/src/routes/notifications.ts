@@ -22,15 +22,30 @@ router.get("/", authenticate, async (req: AuthRequest, res) => {
       ? and(eq(notificationsTable.userId, req.user!.userId), eq(notificationsTable.isRead, false))
       : eq(notificationsTable.userId, req.user!.userId);
 
-    const notifications = await db.select().from(notificationsTable)
-      .where(conditions).orderBy(desc(notificationsTable.createdAt));
+    const notifications = await db.select({
+      notification: notificationsTable,
+      actorGender: usersTable.gender
+    })
+      .from(notificationsTable)
+      .leftJoin(usersTable, eq(usersTable.id, notificationsTable.actorId))
+      .where(conditions)
+      .orderBy(desc(notificationsTable.createdAt));
 
-    const enriched = await Promise.all(notifications.map(async (n) => {
-      let actorGender = null;
-      if (n.actorId) {
-        const actorUser = await db.query.usersTable.findFirst({ where: eq(usersTable.id, n.actorId) });
-        actorGender = actorUser?.gender;
-      }
+    // Filter out notifications from same gender (unless system notifications where actorId is null, or it is a direct interaction like call/message)
+    let filtered = notifications.filter(({ notification, actorGender }) => 
+      !notification.actorId || 
+      !oppositeGender || 
+      actorGender === oppositeGender ||
+      notification.type === "call" ||
+      notification.type === "message"
+    );
+    
+    // Manual pagination after filtering
+    const paginated = filtered.slice(offset, offset + limit);
+    const unreadCount = filtered.filter(n => !n.notification.isRead).length;
+
+    // Only enrich the paginated results to avoid N+1 queries on everything
+    const enrichedPaginated = await Promise.all(paginated.map(async ({ notification: n, actorGender }) => {
       return {
         id: n.id, type: n.type, title: n.title, body: n.body, isRead: n.isRead,
         actionUrl: n.actionUrl,
@@ -41,21 +56,8 @@ router.get("/", authenticate, async (req: AuthRequest, res) => {
       };
     }));
 
-    // Filter out notifications from same gender (unless system notifications where actorId is null, or it is a direct interaction like call/message)
-    let filtered = enriched.filter(n => 
-      !n.actorId || 
-      !oppositeGender || 
-      n.actorGender === oppositeGender ||
-      n.type === "call" ||
-      n.type === "message"
-    );
-    
-    // Manual pagination after filtering
-    const paginated = filtered.slice(offset, offset + limit);
-    const unreadCount = filtered.filter(n => !n.isRead).length;
-
     return res.json({
-      notifications: paginated,
+      notifications: enrichedPaginated,
       total: filtered.length,
       unreadCount,
     });
@@ -68,16 +70,20 @@ router.get("/count", authenticate, async (req: AuthRequest, res) => {
     const currentUser = await db.query.usersTable.findFirst({ where: eq(usersTable.id, req.user!.userId) });
     const oppositeGender = currentUser?.gender === "male" ? "female" : currentUser?.gender === "female" ? "male" : null;
 
-    const notifications = await db.select().from(notificationsTable)
+    const notifications = await db.select({
+      notification: notificationsTable,
+      actorGender: usersTable.gender
+    })
+      .from(notificationsTable)
+      .leftJoin(usersTable, eq(usersTable.id, notificationsTable.actorId))
       .where(and(eq(notificationsTable.userId, req.user!.userId), eq(notificationsTable.isRead, false)));
     
     let unreadCount = 0;
-    for (const n of notifications) {
+    for (const { notification: n, actorGender } of notifications) {
       if (!n.actorId || n.type === "call" || n.type === "message") {
         unreadCount++;
       } else {
-        const actorUser = await db.query.usersTable.findFirst({ where: eq(usersTable.id, n.actorId) });
-        if (!oppositeGender || actorUser?.gender === oppositeGender) {
+        if (!oppositeGender || actorGender === oppositeGender) {
           unreadCount++;
         }
       }

@@ -4,8 +4,7 @@ import { db, dailyJournalsTable, personalityProfilesTable, insertDailyJournalSch
 import { eq, desc, inArray, sql, and } from "drizzle-orm";
 import { authenticate, type AuthRequest } from "../lib/auth";
 
-import { analyzeStoryKeywords, generateProfileInsights, generateCumulativeProfile, UNIFIED_CATEGORIES, calculateUnifiedScores, convertUnifiedToLegacyTraits } from "../services/keywordAnalysis";
-import { generateFullUserProfile } from "../services/profileGenerator";
+import { analyzeStoryContextually, generateCumulativeStoryProfile, generateStorySummary, CumulativeStoryProfile } from "../services/storyAnalysisEngine";
 
 const router = Router();
 
@@ -30,24 +29,39 @@ router.post("/", authenticate, async (req: AuthRequest, res) => {
       imageUrl: parsed.imageUrl,
     }).returning();
 
-    // Deterministic Keyword Analysis - Regenerate full profile
-    const profile = await generateFullUserProfile(userId);
+    // Fetch existing profile
+    let profile = await db.query.personalityProfilesTable.findFirst({
+      where: eq(personalityProfilesTable.userId, userId)
+    });
     
-    // Attach insights to the journal for client feedback
-    if (profile) {
-      const currentStoryScores = profile.storyCategoryScores ? JSON.parse(profile.storyCategoryScores) : {};
-      const newSummary = profile.summary || "Story added.";
-      
-      const { storyScores, matchedKeywords } = analyzeStoryKeywords(parsed.content, currentStoryScores);
-      
-      const userJournals = await db.select().from(dailyJournalsTable).where(eq(dailyJournalsTable.userId, userId));
-      const unifiedScores = profile.finalUnifiedCategoryScores ? JSON.parse(profile.finalUnifiedCategoryScores) : {};
-      const cumulativeProfile = generateCumulativeProfile(unifiedScores, userJournals);
-      
-      await db.update(dailyJournalsTable)
-        .set({ aiAnalysis: { insights: [newSummary], storyCategoryScores: currentStoryScores, cumulativeProfile, storyAnalysis: { storyScores, matchedKeywords } } })
-        .where(eq(dailyJournalsTable.id, journal.id));
+    if (!profile) {
+      // Create empty profile if none exists
+      const [newProfile] = await db.insert(personalityProfilesTable).values({
+        userId,
+        storyCategoryScores: "{}"
+      }).returning();
+      profile = newProfile;
     }
+
+    const currentCumulative = profile.storyCategoryScores ? JSON.parse(profile.storyCategoryScores) : undefined;
+    
+    // Analyze Contextually
+    const analysis = await analyzeStoryContextually(parsed.content);
+    
+    // Update Cumulative Profile
+    const cumulativeProfile = generateCumulativeStoryProfile(analysis, currentCumulative.totalStories !== undefined ? currentCumulative : undefined);
+    const storySummary = generateStorySummary(cumulativeProfile);
+    
+    // Attach summary to the profile payload
+    (cumulativeProfile as any).storySummary = storySummary;
+    
+    await db.update(personalityProfilesTable)
+      .set({ storyCategoryScores: JSON.stringify(cumulativeProfile), generatedAt: new Date() })
+      .where(eq(personalityProfilesTable.userId, userId));
+      
+    await db.update(dailyJournalsTable)
+      .set({ aiAnalysis: { insights: [storySummary], analysis, cumulativeProfile } })
+      .where(eq(dailyJournalsTable.id, journal.id));
 
     res.status(201).json(journal);
   } catch (error) {

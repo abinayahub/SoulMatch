@@ -15,6 +15,7 @@ import journalRouter from "./journal";
 import metricsRouter from "./metrics";
 import supportRouter from "./support";
 import reflectionsRouter from "./reflections";
+import communityQuestionsRouter from "./community-questions";
 
 import { notesRouter } from "./notes";
 
@@ -37,5 +38,6 @@ router.use("/metrics", metricsRouter);
 router.use("/support", supportRouter);
 router.use("/reflections", reflectionsRouter);
 router.use("/notes", notesRouter);
+router.use("/community-questions", communityQuestionsRouter);
 
 export default router;

@@ -43,11 +43,11 @@ export default function AdminOverview() {
   };
 
   if (isLoading) {
-    return <div className="text-[#707070] animate-pulse flex h-[80vh] items-center justify-center text-xl">Loading dashboard...</div>;
+    return <div className="text-[#6B7280] animate-pulse flex h-[80vh] items-center justify-center text-xl">Loading dashboard...</div>;
   }
 
   if (!data || !data.topMetrics) {
-    return <div className="text-[#707070] animate-pulse flex h-[80vh] items-center justify-center text-xl">Updating data structure...</div>;
+    return <div className="text-[#6B7280] animate-pulse flex h-[80vh] items-center justify-center text-xl">Updating data structure...</div>;
   }
 
   return (
@@ -55,16 +55,16 @@ export default function AdminOverview() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Overview</h1>
-          <p className="text-[#707070] mt-1">Welcome back, Admin! Here's what's happening with SoulMatch.</p>
+          <h1 className="text-3xl font-bold text-[#111827]">Overview</h1>
+          <p className="text-[#6B7280] mt-1">Welcome back, Admin! Here's what's happening with SoulMatch.</p>
         </div>
         <div className="flex items-center gap-3">
-          <Button onClick={() => handleSoon('Date filtering')} variant="outline" className="bg-[#1A1A24] border-white/10 text-[#707070] h-10 px-4 hover:text-white">
+          <Button onClick={() => handleSoon('Date filtering')} variant="outline" className="bg-[#FFFFFF] border-[#E5E7EB] text-[#6B7280] h-10 px-4 hover:bg-[#F3F4F6] hover:text-[#374151]">
             <Calendar className="w-4 h-4 mr-2" />
             Last 30 Days
             <Calendar className="w-4 h-4 ml-2 opacity-50" />
           </Button>
-          <Button onClick={() => handleSoon('Report Export')} className="bg-gradient-to-r from-[#F8C7C8] via-[#F8D9D2] to-[#F7E8EE] hover:from-purple-700 hover:to-pink-700 h-10">
+          <Button onClick={() => handleSoon('Report Export')} className="bg-[#2563EB] hover:bg-[#1D4ED8] text-[#111827] h-10 border-0">
             <Download className="w-4 h-4 mr-2" />
             Export Report
           </Button>
@@ -73,20 +73,20 @@ export default function AdminOverview() {
 
       {/* Top Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-        <MetricCard icon={<Users className="text-[#8B5CF6]" />} title="Total Users" value={data.topMetrics.totalUsers.value.toLocaleString()} trend={data.topMetrics.totalUsers.trend} trendColor="text-green-400" />
-        <MetricCard icon={<Crown className="text-[#F59E0B]" />} title="Premium Users" value={data.topMetrics.premiumUsers.value.toLocaleString()} trend={data.topMetrics.premiumUsers.trend} trendColor="text-green-400" />
-        <MetricCard icon={<Heart className="text-[#EC4899]" />} title="Matches Generated" value={data.topMetrics.matchesGenerated.value.toLocaleString()} trend={data.topMetrics.matchesGenerated.trend} trendColor="text-[#F6A8B7]" />
-        <MetricCard icon={<Lightbulb className="text-[#3B82F6]" />} title="Insights Completed" value={data.topMetrics.aiAnalysisCompleted.value.toLocaleString()} trend={data.topMetrics.aiAnalysisCompleted.trend} trendColor="text-green-400" />
-        <MetricCard icon={<UserCheck className="text-[#10B981]" />} title="Daily Active Users" value={data.topMetrics.dailyActiveUsers.value.toLocaleString()} trend={data.topMetrics.dailyActiveUsers.trend} trendColor="text-green-400" />
-        <MetricCard icon={<DollarSign className="text-[#10B981]" />} title="Monthly Revenue" value={`${data.topMetrics.monthlyRevenue.prefix}${data.topMetrics.monthlyRevenue.value.toLocaleString()}`} trend={data.topMetrics.monthlyRevenue.trend} trendColor="text-green-400" />
+        <MetricCard icon={<Users className="text-[#8B5CF6]" />} title="Total Users" value={data.topMetrics.totalUsers.value.toLocaleString()} trend={data.topMetrics.totalUsers.trend} trendColor="text-[#16A34A]" />
+        <MetricCard icon={<Crown className="text-[#F59E0B]" />} title="Premium Users" value={data.topMetrics.premiumUsers.value.toLocaleString()} trend={data.topMetrics.premiumUsers.trend} trendColor="text-[#16A34A]" />
+        <MetricCard icon={<Heart className="text-[#2563EB]" />} title="Matches Generated" value={data.topMetrics.matchesGenerated.value.toLocaleString()} trend={data.topMetrics.matchesGenerated.trend} trendColor="text-[#16A34A]" />
+        <MetricCard icon={<Lightbulb className="text-[#3B82F6]" />} title="Insights Completed" value={data.topMetrics.aiAnalysisCompleted.value.toLocaleString()} trend={data.topMetrics.aiAnalysisCompleted.trend} trendColor="text-[#16A34A]" />
+        <MetricCard icon={<UserCheck className="text-[#10B981]" />} title="Daily Active Users" value={data.topMetrics.dailyActiveUsers.value.toLocaleString()} trend={data.topMetrics.dailyActiveUsers.trend} trendColor="text-[#16A34A]" />
+        <MetricCard icon={<DollarSign className="text-[#10B981]" />} title="Monthly Revenue" value={`${data.topMetrics.monthlyRevenue.prefix}${data.topMetrics.monthlyRevenue.value.toLocaleString()}`} trend={data.topMetrics.monthlyRevenue.trend} trendColor="text-[#16A34A]" />
       </div>
 
       {/* Second Row: User Growth & Demographics */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2 bg-card border border-border shadow-md rounded-2xl bg-[#13131A] p-5 rounded-2xl border border-white/5">
+        <div className="lg:col-span-2 bg-[#FFFFFF] shadow-sm rounded-2xl p-5 border border-[#E5E7EB]">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="font-semibold">User Growth</h3>
-            <Button onClick={() => handleSoon('Chart Timeline Filter')} variant="ghost" size="sm" className="h-8 text-xs text-[#707070] hover:text-white">
+            <h3 className="font-semibold text-[#374151]">User Growth</h3>
+            <Button onClick={() => handleSoon('Chart Timeline Filter')} variant="ghost" size="sm" className="h-8 text-xs text-[#6B7280] hover:text-[#111827] hover:bg-[#F3F4F6]">
               Last 30 Days <ChevronDown className="ml-1 w-3 h-3" />
             </Button>
           </div>
@@ -103,11 +103,11 @@ export default function AdminOverview() {
                     <stop offset="95%" stopColor={CHART_COLORS.pink} stopOpacity={0}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ffffff10" />
-                <XAxis dataKey="date" stroke="#ffffff40" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis stroke="#ffffff40" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(v) => v >= 1000 ? `${v/1000}K` : v} />
-                <RechartsTooltip contentStyle={{ backgroundColor: '#1A1A24', borderColor: '#ffffff10', borderRadius: '8px' }} />
-                <Legend verticalAlign="top" height={36} iconType="circle" wrapperStyle={{ fontSize: '12px', top: -10 }} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
+                <XAxis dataKey="date" stroke="#6B7280" fontSize={12} tickLine={false} axisLine={false} />
+                <YAxis stroke="#6B7280" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(v) => v >= 1000 ? `${v/1000}K` : v} />
+                <RechartsTooltip contentStyle={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB', borderRadius: '8px', color: '#111827' }} />
+                <Legend verticalAlign="top" height={36} iconType="circle" wrapperStyle={{ fontSize: '12px', top: -10, color: '#6B7280' }} />
                 <Area type="monotone" dataKey="totalUsers" name="Total Users" stroke={CHART_COLORS.purple} strokeWidth={2} fillOpacity={1} fill="url(#colorTotal)" />
                 <Area type="monotone" dataKey="newUsers" name="New Users" stroke={CHART_COLORS.pink} strokeWidth={2} fillOpacity={1} fill="url(#colorNew)" />
               </AreaChart>
@@ -115,14 +115,14 @@ export default function AdminOverview() {
           </div>
         </div>
 
-        <div className="bg-card border border-border shadow-md rounded-2xl bg-[#13131A] p-5 rounded-2xl border border-white/5 flex flex-col">
+        <div className="bg-[#FFFFFF] shadow-sm rounded-2xl p-5 border border-[#E5E7EB] flex flex-col">
           <div className="flex justify-between items-center mb-2">
-            <h3 className="font-semibold">User Demographics</h3>
-            <span onClick={() => handleSoon('Demographics Detailed View')} className="text-xs text-[#F6A8B7] cursor-pointer hover:underline">View All</span>
+            <h3 className="font-semibold text-[#374151]">User Demographics</h3>
+            <span onClick={() => handleSoon('Demographics Detailed View')} className="text-xs text-[#2563EB] cursor-pointer hover:underline">View All</span>
           </div>
           <div className="flex-1 flex gap-4 h-[clamp(213px,63.61vw,288px)]">
             <div className="flex-1 flex flex-col">
-              <span className="text-xs text-[#707070] mb-2">Gender Distribution</span>
+              <span className="text-xs text-[#6B7280] mb-2">Gender Distribution</span>
               <div className="flex-1 relative">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -131,7 +131,7 @@ export default function AdminOverview() {
                       <Cell fill={CHART_COLORS.blue} />
                       <Cell fill={CHART_COLORS.purple} />
                     </Pie>
-                    <RechartsTooltip contentStyle={{ backgroundColor: '#1A1A24', borderColor: '#ffffff10', borderRadius: '8px' }} />
+                    <RechartsTooltip contentStyle={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB', borderRadius: '8px', color: '#111827' }} />
                   </PieChart>
                 </ResponsiveContainer>
                 {/* Custom Legend */}
@@ -139,7 +139,7 @@ export default function AdminOverview() {
                   {data.charts.genderDistribution.map((item: any, i: number) => (
                     <div key={item.name} className="flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full" style={{ backgroundColor: [CHART_COLORS.pink, CHART_COLORS.blue, CHART_COLORS.purple][i] }} />
-                      <span className="w-12 text-[#707070]">{item.name}</span>
+                      <span className="w-12 text-[#6B7280]">{item.name}</span>
                       <span>{item.value}%</span>
                     </div>
                   ))}
@@ -147,7 +147,7 @@ export default function AdminOverview() {
               </div>
             </div>
             <div className="flex-1 flex flex-col">
-              <span className="text-xs text-[#707070] mb-2">Age Distribution</span>
+              <span className="text-xs text-[#6B7280] mb-2">Age Distribution</span>
               <div className="flex-1 relative">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -157,14 +157,14 @@ export default function AdminOverview() {
                       <Cell fill={CHART_COLORS.orange} />
                       <Cell fill={CHART_COLORS.purple} />
                     </Pie>
-                    <RechartsTooltip contentStyle={{ backgroundColor: '#1A1A24', borderColor: '#ffffff10', borderRadius: '8px' }} />
+                    <RechartsTooltip contentStyle={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB', borderRadius: '8px', color: '#111827' }} />
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="absolute right-0 top-1/2 -translate-y-1/2 flex flex-col gap-2 text-xs">
                   {data.charts.ageDistribution.map((item: any, i: number) => (
                     <div key={item.name} className="flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full" style={{ backgroundColor: [CHART_COLORS.green, CHART_COLORS.blue, CHART_COLORS.orange, CHART_COLORS.purple][i] }} />
-                      <span className="w-10 text-[#707070]">{item.name}</span>
+                      <span className="w-10 text-[#6B7280]">{item.name}</span>
                       <span>{item.value}%</span>
                     </div>
                   ))}
@@ -178,10 +178,10 @@ export default function AdminOverview() {
       {/* Third Row: 3 Donut/Line Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Insights Overview */}
-        <div className="bg-card border border-border shadow-md rounded-2xl bg-[#13131A] p-5 rounded-2xl border border-white/5">
+        <div className="bg-[#FFFFFF] shadow-sm rounded-2xl p-5 border border-[#E5E7EB]">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="font-semibold">Insights Overview</h3>
-            <span onClick={() => handleSoon('Insights Detailed View')} className="text-xs text-[#F6A8B7] cursor-pointer hover:underline">View Details</span>
+            <h3 className="font-semibold text-[#374151]">Insights Overview</h3>
+            <span onClick={() => handleSoon('Insights Detailed View')} className="text-xs text-[#2563EB] cursor-pointer hover:underline">View Details</span>
           </div>
           <div className="flex items-center h-[clamp(153px,45.80vw,207px)]">
             <div className="w-[clamp(119px,35.62vw,161px)] h-[clamp(119px,35.62vw,161px)] relative">
@@ -190,12 +190,12 @@ export default function AdminOverview() {
                   <Pie data={data.charts.aiAnalysis.breakdown} cx="50%" cy="50%" innerRadius={50} outerRadius={65} paddingAngle={2} dataKey="value" stroke="none">
                     {data.charts.aiAnalysis.breakdown.map((e: any, i: number) => <Cell key={i} fill={e.color} />)}
                   </Pie>
-                  <RechartsTooltip contentStyle={{ backgroundColor: '#1A1A24', borderColor: '#ffffff10', borderRadius: '8px' }} />
+                  <RechartsTooltip contentStyle={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB', borderRadius: '8px', color: '#111827' }} />
                 </PieChart>
               </ResponsiveContainer>
               <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                 <span className="text-2xl font-bold">{data.charts.aiAnalysis.averageScore}%</span>
-                <span className="text-[clamp(8px,2.29vw,10px)] text-[#707070] text-center leading-tight">Average Confidence<br/>Score</span>
+                <span className="text-[clamp(8px,2.29vw,10px)] text-[#6B7280] text-center leading-tight">Average Confidence<br/>Score</span>
               </div>
             </div>
             <div className="flex-1 ml-4 flex flex-col gap-3 text-xs">
@@ -203,7 +203,7 @@ export default function AdminOverview() {
                 <div key={i} className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }} />
-                    <span className="text-[#707070]">{item.name}</span>
+                    <span className="text-[#6B7280]">{item.name}</span>
                   </div>
                   <span className="tabular-nums">{item.value.toLocaleString()} ({item.percentage}%)</span>
                 </div>
@@ -212,37 +212,21 @@ export default function AdminOverview() {
           </div>
         </div>
 
-        {/* Match Performance */}
-        <div className="bg-card border border-border shadow-md rounded-2xl bg-[#13131A] p-5 rounded-2xl border border-white/5">
+        {/* Activity Trends */}
+        <div className="bg-[#FFFFFF] shadow-sm rounded-2xl p-5 border border-[#E5E7EB]">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="font-semibold">Match Performance</h3>
-            <span onClick={() => handleSoon('Match Performance Detailed View')} className="text-xs text-[#F6A8B7] cursor-pointer hover:underline">View Details</span>
-          </div>
-          <div className="flex justify-between text-center mb-4 text-sm">
-             <div>
-               <div className="text-[#707070] text-xs">Matches Generated</div>
-               <div className="font-semibold mt-1">{data.charts.matchPerformance.generated.toLocaleString()}</div>
-             </div>
-             <div>
-               <div className="text-[#707070] text-xs">Matches Accepted</div>
-               <div className="font-semibold mt-1 text-blue-400">{data.charts.matchPerformance.accepted.toLocaleString()}</div>
-             </div>
-             <div>
-               <div className="text-[#707070] text-xs">Matches Rejected</div>
-               <div className="font-semibold mt-1 text-[#F6A8B7]">{data.charts.matchPerformance.rejected.toLocaleString()}</div>
-             </div>
-             <div>
-               <div className="text-[#707070] text-xs">Success Rate</div>
-               <div className="font-semibold mt-1 text-green-400">{data.charts.matchPerformance.successRate}%</div>
-             </div>
+            <h3 className="font-semibold text-[#374151]">Activity Trends</h3>
+            <Button onClick={() => handleSoon('Activity Detailed View')} variant="ghost" size="sm" className="h-8 text-xs text-[#6B7280] hover:text-[#111827] hover:bg-[#F3F4F6]">
+              7 Days <ChevronDown className="ml-1 w-3 h-3" />
+            </Button>
           </div>
           <div className="h-[clamp(85px,25.45vw,115px)]">
-             <ResponsiveContainer width="100%" height="100%">
-               <LineChart data={data.charts.matchPerformance.trend}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ffffff10" />
-                  <XAxis dataKey="date" stroke="#ffffff40" fontSize={10} tickLine={false} axisLine={false} />
-                  <YAxis hide domain={['auto', 'auto']} />
-                  <RechartsTooltip contentStyle={{ backgroundColor: '#1A1A24', borderColor: '#ffffff10', borderRadius: '8px' }} />
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={data.charts.activityTrends} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
+                  <XAxis dataKey="day" stroke="#6B7280" fontSize={10} tickLine={false} axisLine={false} />
+                  <YAxis stroke="#6B7280" fontSize={10} tickLine={false} axisLine={false} />
+                  <RechartsTooltip contentStyle={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB', borderRadius: '8px', color: '#111827' }} />
                   <Line type="monotone" dataKey="rate" stroke={CHART_COLORS.green} strokeWidth={2} dot={false} />
                </LineChart>
              </ResponsiveContainer>
@@ -250,10 +234,10 @@ export default function AdminOverview() {
         </div>
 
         {/* Questionnaire Progress */}
-        <div className="bg-card border border-border shadow-md rounded-2xl bg-[#13131A] p-5 rounded-2xl border border-white/5">
+        <div className="bg-[#FFFFFF] shadow-sm rounded-2xl p-5 border border-[#E5E7EB]">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="font-semibold">Questionnaire Progress</h3>
-            <span onClick={() => handleSoon('Questionnaire Progress Details')} className="text-xs text-[#F6A8B7] cursor-pointer hover:underline">View Details</span>
+            <h3 className="font-semibold text-[#374151]">Questionnaire Progress</h3>
+            <span onClick={() => handleSoon('Questionnaire Progress Details')} className="text-xs text-[#2563EB] cursor-pointer hover:underline">View Details</span>
           </div>
           <div className="flex items-center h-[clamp(153px,45.80vw,207px)]">
             <div className="w-[clamp(119px,35.62vw,161px)] h-[clamp(119px,35.62vw,161px)] relative">
@@ -262,12 +246,12 @@ export default function AdminOverview() {
                   <Pie data={data.charts.questionnaireProgress.breakdown} cx="50%" cy="50%" innerRadius={50} outerRadius={65} paddingAngle={2} dataKey="value" stroke="none">
                     {data.charts.questionnaireProgress.breakdown.map((e: any, i: number) => <Cell key={i} fill={e.color} />)}
                   </Pie>
-                  <RechartsTooltip contentStyle={{ backgroundColor: '#1A1A24', borderColor: '#ffffff10', borderRadius: '8px' }} />
+                  <RechartsTooltip contentStyle={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB', borderRadius: '8px', color: '#111827' }} />
                 </PieChart>
               </ResponsiveContainer>
               <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                 <span className="text-2xl font-bold">{data.charts.questionnaireProgress.averageCompletion}%</span>
-                <span className="text-[clamp(8px,2.29vw,10px)] text-[#707070] text-center">Avg. Completion</span>
+                <span className="text-[clamp(8px,2.29vw,10px)] text-[#6B7280] text-center">Avg. Completion</span>
               </div>
             </div>
             <div className="flex-1 ml-6 flex flex-col gap-4 text-xs">
@@ -275,7 +259,7 @@ export default function AdminOverview() {
                 <div key={i} className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }} />
-                    <span className="text-[#707070]">{item.name}</span>
+                    <span className="text-[#6B7280]">{item.name}</span>
                   </div>
                   <span className="tabular-nums">{item.value.toLocaleString()} ({item.percentage}%)</span>
                 </div>
@@ -287,11 +271,11 @@ export default function AdminOverview() {
 
       {/* Fourth Row: Lists */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Recent Registrations */}
-        <div className="bg-card border border-border shadow-md rounded-2xl bg-[#13131A] p-5 rounded-2xl border border-white/5">
+        {/* Most Active Today */}
+        <div className="bg-[#FFFFFF] shadow-sm rounded-2xl p-5 border border-[#E5E7EB] flex flex-col">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="font-semibold">Recent Registrations</h3>
-            <span onClick={() => handleSoon('Recent Registrations List')} className="text-xs text-[#F6A8B7] cursor-pointer hover:underline">View All</span>
+            <h3 className="font-semibold text-[#374151]">Most Active Today</h3>
+            <span onClick={() => handleSoon('Active Users List')} className="text-xs text-[#2563EB] cursor-pointer hover:underline">View All</span>
           </div>
           <div className="space-y-4 mt-4">
             {data.lists.recentRegistrations.map((user: any) => (
@@ -302,13 +286,13 @@ export default function AdminOverview() {
                     <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <div className="font-medium text-white">{user.name}</div>
-                    <div className="text-[#707070] mt-0.5">{user.email}</div>
+                    <div className="font-medium text-[#111827]">{user.name}</div>
+                    <div className="text-[#6B7280] mt-0.5">{user.email}</div>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-[#707070]">{user.time}</div>
-                  <div className="text-[#707070] mt-0.5">{user.location}</div>
+                  <div className="text-[#6B7280]">{user.time}</div>
+                  <div className="text-[#6B7280] mt-0.5">{user.location}</div>
                 </div>
               </div>
             ))}
@@ -316,55 +300,55 @@ export default function AdminOverview() {
         </div>
 
         {/* Recent Matches */}
-        <div className="bg-card border border-border shadow-md rounded-2xl bg-[#13131A] p-5 rounded-2xl border border-white/5">
+        <div className="bg-[#FFFFFF] shadow-sm rounded-2xl p-5 border border-[#E5E7EB]">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="font-semibold">Recent Matches</h3>
-            <span onClick={() => handleSoon('Recent Matches List')} className="text-xs text-[#F6A8B7] cursor-pointer hover:underline">View All</span>
+            <h3 className="font-semibold text-[#374151]">Recent Matches</h3>
+            <span onClick={() => handleSoon('Recent Matches List')} className="text-xs text-[#2563EB] cursor-pointer hover:underline">View All</span>
           </div>
           <div className="space-y-4 mt-4">
             {data.lists.recentMatches.map((match: any) => (
               <div key={match.id} className="flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2">
                   <div className="flex -space-x-2">
-                    <Avatar className="h-8 w-8 border-2 border-[#13131A]">
+                    <Avatar className="h-8 w-8 border-2 border-[#FFFFFF]">
                        {match.p1Avatar && <AvatarImage src={match.p1Avatar} className="object-cover" />}
                        <AvatarFallback>{match.p1.charAt(0)}</AvatarFallback>
                     </Avatar>
-                    <Avatar className="h-8 w-8 border-2 border-[#13131A]">
+                    <Avatar className="h-8 w-8 border-2 border-[#FFFFFF]">
                        {match.p2Avatar && <AvatarImage src={match.p2Avatar} className="object-cover" />}
                        <AvatarFallback>{match.p2.charAt(0)}</AvatarFallback>
                     </Avatar>
                   </div>
-                  <span className="ml-2 text-white font-medium">{match.p1} & {match.p2}</span>
+                  <span className="ml-2 text-[#111827] font-medium">{match.p1} & {match.p2}</span>
                 </div>
-                <div className="text-[#707070]">{match.compatibility}% Compatible</div>
-                <div className="text-[#707070]">{match.time}</div>
+                <div className="text-[#6B7280]">{match.compatibility}% Compatible</div>
+                <div className="text-[#6B7280]">{match.time}</div>
               </div>
             ))}
           </div>
         </div>
 
         {/* System Health */}
-        <div className="bg-card border border-border shadow-md rounded-2xl bg-[#13131A] p-5 rounded-2xl border border-white/5">
+        <div className="bg-[#FFFFFF] shadow-sm rounded-2xl p-5 border border-[#E5E7EB]">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="font-semibold">System Health</h3>
-            <span onClick={() => handleSoon('System Health Dashboard')} className="text-xs text-[#F6A8B7] cursor-pointer hover:underline">View All</span>
+            <h3 className="font-semibold text-[#374151]">System Health</h3>
+            <span onClick={() => handleSoon('System Health Dashboard')} className="text-xs text-[#2563EB] cursor-pointer hover:underline">View All</span>
           </div>
           <div className="space-y-5 mt-6">
             {data.lists.systemHealth.map((sys: any, i: number) => (
               <div key={i} className="flex items-center justify-between text-xs">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded bg-[#1A1A24] flex items-center justify-center">
-                    {sys.name.includes("API") && <Lightbulb className="w-4 h-4 text-green-400" />}
-                    {sys.name.includes("Database") && <Lightbulb className="w-4 h-4 text-green-400" />}
-                    {sys.name.includes("AI") && <Lightbulb className="w-4 h-4 text-green-400" />}
-                    {sys.name.includes("Storage") && <div className="w-4 h-4 bg-green-400/20 border border-green-400 rounded-sm" />}
-                    {sys.name.includes("Email") && <div className="w-4 h-4 border border-yellow-400 rounded-sm" />}
+                  <div className="w-8 h-8 rounded bg-[#F3F4F6] flex items-center justify-center">
+                    {sys.name.includes("API") && <Lightbulb className="w-4 h-4 text-[#16A34A]" />}
+                    {sys.name.includes("Database") && <Lightbulb className="w-4 h-4 text-[#16A34A]" />}
+                    {sys.name.includes("AI") && <Lightbulb className="w-4 h-4 text-[#16A34A]" />}
+                    {sys.name.includes("Storage") && <div className="w-4 h-4 bg-[#16A34A]/20 border border-[#16A34A] rounded-sm" />}
+                    {sys.name.includes("Email") && <div className="w-4 h-4 border border-[#F59E0B] rounded-sm" />}
                   </div>
-                  <span className="text-white">{sys.name}</span>
+                  <span className="text-[#111827]">{sys.name}</span>
                 </div>
-                <div className={`flex items-center gap-2 ${sys.color}`}>
-                  <div className={`w-1.5 h-1.5 rounded-full ${sys.status === 'Operational' ? 'bg-green-500' : 'bg-yellow-500'}`} />
+                <div className={`flex items-center gap-2 ${sys.status === 'Operational' ? 'text-[#16A34A]' : 'text-[#F59E0B]'}`}>
+                  <div className={`w-1.5 h-1.5 rounded-full ${sys.status === 'Operational' ? 'bg-[#16A34A]' : 'bg-[#F59E0B]'}`} />
                   {sys.status}
                 </div>
               </div>
@@ -379,14 +363,14 @@ export default function AdminOverview() {
 
 function MetricCard({ icon, title, value, trend, trendColor }: any) {
   return (
-    <div className="bg-card border border-border shadow-md rounded-2xl bg-[#13131A] p-4 rounded-2xl border border-white/5 flex flex-col justify-between min-h-[clamp(94px,27.99vw,126px)]">
+    <div className="bg-[#FFFFFF] shadow-sm rounded-2xl p-4 border border-[#E5E7EB] flex flex-col justify-between min-h-[clamp(94px,27.99vw,126px)]">
       <div className="flex items-start gap-3">
-        <div className="p-2 bg-[#1A1A24] rounded-lg">
+        <div className="p-2 bg-[#F3F4F6] rounded-lg">
           {icon}
         </div>
         <div className="flex-1">
-          <div className="text-xs text-[#707070] font-medium">{title}</div>
-          <div className="text-2xl font-bold mt-1 text-white">{value}</div>
+          <div className="text-xs text-[#6B7280] font-medium">{title}</div>
+          <div className="text-4xl font-bold mt-1 text-[#111827] tracking-tight">{value}</div>
         </div>
       </div>
       <div className={`text-[clamp(9px,2.54vw,12px)] mt-3 ${trendColor}`}>

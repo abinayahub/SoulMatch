@@ -51,14 +51,14 @@ export default function AdminVerificationsPage() {
           <h1 className="text-3xl font-bold flex items-center gap-3 mb-1">
             <Shield className="w-7 h-7 text-yellow-400" />Verification Queue
           </h1>
-          <p className="text-[#707070]">Review and process identity verification requests.</p>
+          <p className="text-[#6B7280]">Review and process identity verification requests.</p>
         </motion.div>
 
         <div className="space-y-4">
           {isLoading ? (
-            [...Array(4)].map((_, i) => <Skeleton key={i} className="h-36 rounded-2xl bg-card/5" />)
+            [...Array(4)].map((_, i) => <Skeleton key={i} className="h-36 rounded-2xl bg-[#F3F4F6]" />)
           ) : (verifications as any[]).length === 0 ? (
-            <div className="text-center py-16 text-[#707070]">
+            <div className="text-center py-16 text-[#6B7280]">
               <Shield className="w-10 h-10 mx-auto mb-3 opacity-30" />
               <p>No pending verifications</p>
             </div>
@@ -71,12 +71,12 @@ export default function AdminVerificationsPage() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.06 }}
-                  className="bg-card border border-border shadow-md rounded-2xl rounded-2xl p-5"
+                  className="bg-[#FFFFFF] shadow-sm rounded-2xl p- border border-[#E5E7EB]"
                 >
                   <div className="flex items-start gap-5">
                     <Avatar className="w-12 h-12 shrink-0">
                       <AvatarImage src={photo?.url} />
-                      <AvatarFallback className="bg-primary text-primary-foreground shadow-md text-white font-semibold">
+                      <AvatarFallback className="bg-primary text-primary-foreground shadow-md text-[#111827] font-semibold">
                         {getInitials(v.user?.firstName ?? "U")}
                       </AvatarFallback>
                     </Avatar>
@@ -85,15 +85,15 @@ export default function AdminVerificationsPage() {
                         <h3 className="font-semibold">{v.user?.firstName}</h3>
                         <Badge className="text-xs bg-yellow-500/20 text-yellow-400 border-yellow-500/30">{v.status}</Badge>
                       </div>
-                      <p className="text-sm text-[#707070]">Document: <span className="text-[#252525]">{v.documentType?.replace(/_/g, " ")}</span></p>
-                      <p className="text-xs text-[#707070] mt-0.5">Submitted {formatDate(v.createdAt)}</p>
+                      <p className="text-sm text-[#6B7280]">Document: <span className="text-[#252525]">{v.documentType?.replace(/_/g, " ")}</span></p>
+                      <p className="text-xs text-[#6B7280] mt-0.5">Submitted {formatDate(v.createdAt)}</p>
                       <div className="mt-3 flex gap-2">
                         <a href={v.documentUrl} target="_blank" rel="noopener noreferrer">
-                          <Button size="sm" variant="outline" className="border-white/20 bg-card/5 text-xs">View Document</Button>
+                          <Button size="sm" variant="outline" className="border-white/20 bg-[#F3F4F6] text-xs">View Document</Button>
                         </a>
                         {v.selfieUrl && (
                           <a href={v.selfieUrl} target="_blank" rel="noopener noreferrer">
-                            <Button size="sm" variant="outline" className="border-white/20 bg-card/5 text-xs">View Selfie</Button>
+                            <Button size="sm" variant="outline" className="border-white/20 bg-[#F3F4F6] text-xs">View Selfie</Button>
                           </a>
                         )}
                       </div>

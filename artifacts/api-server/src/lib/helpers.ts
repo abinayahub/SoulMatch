@@ -131,6 +131,7 @@ export async function buildPublicProfile(userId: number, viewerUserId?: number) 
 export async function calculateAndStoreCompatibility(currentUserProfile: any, targetUserProfile: any, currentUserId: number, targetUserId: number) {
   try {
     const { generateFullUserProfile } = await import("../services/profileGenerator");
+    const { calculateStoryCompatibility } = await import("../services/storyAnalysisEngine");
 
     let viewerHasAll = currentUserProfile?.questionnaireCategoryScores && currentUserProfile?.storyCategoryScores;
     if (!viewerHasAll) {
@@ -203,48 +204,76 @@ export async function calculateAndStoreCompatibility(currentUserProfile: any, ta
       db.select().from(journeyAnswersTable).where(eq(journeyAnswersTable.userId, targetUserId))
     ]);
 
-    const { pMatch, sMatch, finalScore, hasStories, traitBreakdowns, storyBreakdowns, whyYouMatch, areasToExplore, aiSummary, sConfidenceData, pConfidence } = calculateSoulMatchCompatibility(qScoresA, qScoresB, sScoresA, sScoresB, userA, userB, reflectionsA, reflectionsB, answersA, answersB);
+    const { pMatch, rawPMatch, jointConfidence, sMatch, finalScore: journeyScore, traitBreakdowns, storyBreakdowns, whyYouMatch, areasToExplore, aiSummary, sConfidenceData, pConfidence } = calculateSoulMatchCompatibility(qScoresA, qScoresB, sScoresA, sScoresB, userA, userB, reflectionsA, reflectionsB, answersA, answersB);
 
-    const compatibilityScore = finalScore;
+    // Completely independent Story Analysis
+    let cumulativeA, cumulativeB;
+    try { cumulativeA = JSON.parse(currentUserProfile?.storyCategoryScores || "{}"); } catch(e){}
+    try { cumulativeB = JSON.parse(targetUserProfile?.storyCategoryScores || "{}"); } catch(e){}
+    const storyComp = calculateStoryCompatibility(cumulativeA, cumulativeB);
     
-    let band = "Low Match";
-    if (compatibilityScore >= 95) band = "Exceptional Match";
-    else if (compatibilityScore >= 90) band = "Excellent Match";
-    else if (compatibilityScore >= 80) band = "Strong Match";
-    else if (compatibilityScore >= 70) band = "Good Match";
-    else if (compatibilityScore >= 60) band = "Moderate Match";
+    // Completely independent Community Analysis (using fallback if not fully implemented)
+    const communitySimilarityScore = 85; 
 
-    const summary = `You have a ${band} with a score of ${compatibilityScore}%.`;
+    // Calculate final displayed compatibility using the new Engine
+    const { calculateFinalCompatibility } = await import("../services/compatibilityEngine");
+    const finalEngineResult = calculateFinalCompatibility({
+      journeyScore: journeyScore,
+      journeyCount: Math.min(answersA.length, answersB.length),
+      storyScore: storyComp.storyMatchScore > 0 ? storyComp.storyMatchScore : 80,
+      storyCount: Math.min(reflectionsA.length, reflectionsB.length),
+      communityScore: communitySimilarityScore,
+      communityCount: 0 // Mocked for now since table might be empty or missing from helpers
+    });
+
+    const compatibilityScore = finalEngineResult.displayedCompatibility;
+    
+    let summary = "";
+    if (compatibilityScore === "Insufficient Data") {
+      summary = "Insufficient data to calculate compatibility.";
+    } else {
+      let band = "Low Match";
+      if (compatibilityScore >= 95) band = "Exceptional Match";
+      else if (compatibilityScore >= 90) band = "Excellent Match";
+      else if (compatibilityScore >= 80) band = "Strong Match";
+      else if (compatibilityScore >= 70) band = "Good Match";
+      else if (compatibilityScore >= 60) band = "Moderate Match";
+
+      summary = `You have a ${band} with a score of ${compatibilityScore}%.`;
+    }
 
     // Upsert the cache — always overwrite so stale scores from old buggy engine are corrected
-    try {
-      if (cached) {
-        await db.update(compatibilityScoresTable)
-          .set({ score: compatibilityScore })
-          .where(
-            or(
-              and(
-                eq(compatibilityScoresTable.userAId, currentUserId),
-                eq(compatibilityScoresTable.userBId, targetUserId),
-              ),
-              and(
-                eq(compatibilityScoresTable.userAId, targetUserId),
-                eq(compatibilityScoresTable.userBId, currentUserId),
-              ),
-            )
-          );
-      } else {
-        await db.insert(compatibilityScoresTable).values({
-          userAId: currentUserId,
-          userBId: targetUserId,
-          score: compatibilityScore,
-        });
+    if (typeof compatibilityScore === "number") {
+      try {
+        if (cached) {
+          await db.update(compatibilityScoresTable)
+            .set({ score: compatibilityScore })
+            .where(
+              or(
+                and(
+                  eq(compatibilityScoresTable.userAId, currentUserId),
+                  eq(compatibilityScoresTable.userBId, targetUserId),
+                ),
+                and(
+                  eq(compatibilityScoresTable.userAId, targetUserId),
+                  eq(compatibilityScoresTable.userBId, currentUserId),
+                ),
+              )
+            );
+        } else {
+          await db.insert(compatibilityScoresTable).values({
+            userAId: currentUserId,
+            userBId: targetUserId,
+            score: compatibilityScore,
+          });
+        }
+      } catch (e) {
+        console.error("Error upserting compatibility score cache", e);
       }
-    } catch (e) {
-      console.error("Error upserting compatibility score cache", e);
     }
 
     return {
+      engineDetails: finalEngineResult,
       compatibilityScore,
       personalityMatch: pMatch,
       aiStoryMatch: sMatch,
@@ -256,7 +285,13 @@ export async function calculateAndStoreCompatibility(currentUserProfile: any, ta
       aiSummary,
       sConfidenceData,
       pConfidence,
-      hasStories
+      hasStories: storyComp.storyMatchScore > 0,
+      storyMatchInsight: storyComp.insight,
+      storyThemeAlignment: storyComp.themeAlignment,
+      storyValueAlignment: storyComp.valueAlignment,
+      rawCompatibility: rawPMatch,
+      journeyConfidence: jointConfidence,
+      displayedCompatibility: pMatch
     };
   } catch (error) {
     console.error("Error calculating compatibility:", error);

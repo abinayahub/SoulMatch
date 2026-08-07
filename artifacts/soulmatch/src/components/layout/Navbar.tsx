@@ -1,5 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
 import { Bell, Heart, MessageCircle, Search, Menu, X, LogOut, User, Settings, Crown, BookOpen } from "lucide-react";
 import { useState } from "react";
 import { useAuth, getAccessToken } from "@/lib/auth-context";
@@ -42,8 +43,15 @@ export function Navbar() {
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 md:top-3 md:left-4 md:right-4 z-50 rounded-none md:rounded-full transition-all duration-300"
-      style={{
+      className={cn(
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        location.startsWith("/admin") 
+          ? "bg-[#FFFFFF] border-b border-[#E5E7EB]" 
+          : "md:top-3 md:left-4 md:right-4 rounded-none md:rounded-full"
+      )}
+      style={location.startsWith("/admin") ? {
+        paddingTop: 'env(safe-area-inset-top, 0px)',
+      } : {
         paddingTop: 'env(safe-area-inset-top, 0px)',
         background: 'linear-gradient(180deg, rgba(255,248,250,0.92) 0%, rgba(255,245,248,0.92) 100%)',
         backdropFilter: 'blur(20px)',
